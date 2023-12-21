@@ -1,21 +1,21 @@
 ---
 title: Stud.IP VUEJS
 slug: /vuejs/
-sidebar_label: Einführung
+sidebar_label: Introduction
 ---
 
-Seit Stud.IP 4.5 ist [Vue.js](https://vuejs.org/) in Stud.IP verfügbar und wird für einige Komponenten genutzt.
+Since Stud.IP 4.5 [Vue.js](https://vuejs.org/) is available in Stud.IP and is used for some components.
 
 
-** `STUDIP.Vue`**
+** Stud.IP.Vue**
 
-Mit der Version 5.0 von Stud.IP soll die Nutzung von Vue.js weiter vorangetrieben werden. Dafür werden über das Objekt `STUDIP.Vue` in Javascript Methoden bereitgestellt, die die Integration erleichtern sollen, indem manche Dinge abstrahiert bzw. generalisiert werden.
+With version 5.0 of Stud.IP, the use of Vue.js is to be further promoted. For this purpose, methods are provided via the object `STUDIP.Vue` in Javascript, which are intended to facilitate integration by abstracting or generalizing some things.
 
-Vue.js wird nun als Chunk geladen und ist somit nicht mehr sofort auf jeder Seite verfügbar. Alle über `STUDIP.Vue` verfügbaren Methoden kümmern sich um das Laden und sind daher der präfertierte Weg, Vue.js zu nutzen.
+Vue.js is now loaded as a chunk and is therefore no longer immediately available on every page. All methods available via `STUDIP.Vue` take care of loading and are therefore the preferred way to use Vue.js.
 
 ** `STUDIP.Vue.load()` **
 
-Über diese Methode wird Vue.js geladen und über ein Promise zurückgegeben.
+Vue.js is loaded via this method and returned via a Promise.
 
 ```Javascript
 STUDIP.Vue.load().then(({Vue, createApp, eventBus, store}) => {
@@ -25,39 +25,39 @@ STUDIP.Vue.load().then(({Vue, createApp, eventBus, store}) => {
 
 ** `Vue` **
 
-Das verwendete `Vue`-Objekt kann dazu genutzt werden, um Komponenten oder Direktiven global zu registrieren.
+The `Vue` object used can be used to register components or directives globally.
 
 ** `createApp(options)`**
 
-Diese Methode lädt den Vue-Chunk und erstellt eine App. Die Parameter sind wie folgt:
+This method loads the Vue chunk and creates an app. The parameters are as follows:
 
-| Parameter | Beschreibung |
+| Parameter | Description |
 | ---- | ---- |
-|`options`|Optionen wie `data`, `methods` oder `computed`|
+|`options`|options like `data`, `methods` or `computed`|
 
-Anschliessend kann diese App mittels `app.$mount(element)` auf das gewünschte Element gemountet werden.
+This app can then be mounted on the desired element using `app.$mount(element)`.
 
-Diese Abstraktion ist trivial, aber soll die Erstellung einer App kapseln, falls sich die API von Vue.js ändert und einen leichten Einstieg bieten.
+This abstraction is trivial, but is intended to encapsulate the creation of an app if the API of Vue.js changes and provide an easy way to get started.
 
 ** `eventBus` **
 
-Der `eventBus` kann genutzt werden, um global Events abzusetzen bzw. auf diese zu horchen.
+The `eventBus` can be used to send events globally or to listen for them.
 
 ** `store` **
 
-Der `store` ist eine [vuex](https://vuex.vuejs.org/guide/)-Instanz, die für die Datenhaltung zuständig ist.
+The `store` is a [vuex](https://vuex.vuejs.org/guide/) instance that is responsible for data storage.
 
-Weitere Details hierzu werden folgen...
+Further details will follow...
 
-** `STUDIP.Vue.emit(eventName, ...args)` und `STUDIP.Vue.on(eventName, ...args)` **
+** `STUDIP.Vue.emit(eventName, ...args)` and `STUDIP.Vue.on(eventName, ...args)` **
 
-Über diese beiden Methoden können Nachrichten und Daten zwischen Vue-Komponenten bzw. dem umliegenden System und Vue-Apps ausgetauscht werden. Intern wird ein Event-Bus realisiert, der über ein globales Mixin in jeder Vue-Komponente über die Methoden `globalEmit(eventName, ...args)` bzw. `globalOn(eventName, ...args)` bereitgestellt werden.
+These two methods can be used to exchange messages and data between Vue components or the surrounding system and Vue apps. An event bus is realized internally, which is provided via a global mixin in each Vue component using the methods `globalEmit(eventName, ...args)` or `globalOn(eventName, ...args)`.
 
 ** `[data-vue-app]` **
 
-Über das HTML-Attribut `[data-vue-app]` kann ohne weitere Initialisierung eine Vue-App erstellt werden. Über den Inhalt des Attributs können noch weitere Angaben zu den Daten oder verwendeten Komponenten gemacht werden, indem ein entsprechendes Objekt übergeben wird. Mögliche Optionen:
+The HTML attribute `[data-vue-app]` can be used to create a Vue app without further initialization. The content of the attribute can be used to provide further information on the data or components used by passing a corresponding object. Possible options:
 
-| Parameter | Beschreibung |
+| Parameter | Description |
 | ---- | ---- |
-|`id`|Die Id der App. Ist diese gesetzt und es gibt ein Objekt `STUDIP.AppData`, welches unter der übergebenen Id Daten bereithält, so werden diese Daten der App übergeben |
-|`components`|Die von der App verwendeten Komponenten als Array.|
+|`id`|The ID of the app. If this is set and there is a `STUDIP.AppData` object that contains data under the transferred ID, this data is transferred to the app |
+|`components`|The components used by the app as an array.

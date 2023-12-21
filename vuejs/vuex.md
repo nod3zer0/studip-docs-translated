@@ -4,36 +4,36 @@ slug: /vuejs/vuex
 sidebar_label: VUEX
 ---
 
-Natürlich wollen wir die Stud.IP-JSONAPI auch gerne in Vue.js verwenden. Mit den bekannten Tools wie XMLHttpRequest und fetch bzw. mit Wrapper-Bibliotheken wie axios ist das einfach möglich. Können wir das aber noch ein bisschen praktisch nutzbarer gestalten?
+Of course, we also want to use the Stud.IP JSONAPI in Vue.js. This is easily possible with the familiar tools such as XMLHttpRequest and fetch or with wrapper libraries such as axios. But can we make this a little more practical?
 
-Wichtig in dem Zusammenhang ist, dass Vue.js ein komponentenbasiertes Framework ist. Das generierte HTML entsteht aus mehrfach verwendbaren Komponenten, die letztlich einen Komponentenbaum bilden. 
+In this context, it is important to note that Vue.js is a component-based framework. The generated HTML is created from reusable components that ultimately form a component tree.
 
-### State-Management mit vuex
+### State management with vuex
 
-Ein häufig wiederkehrendes Problem in komponentenbasierten Web-Frameworks ist die Frage des State-Managements. Wie gestalte ich den Zugriff auf den State, die Daten, meiner Applikation. Die üblichen Ansätze, die in Vue.js verwendet werden, ist die Weitergabe von relevanten Daten von Elternkomponenten an ihre Kindkomponenten.
+A frequently recurring problem in component-based web frameworks is the question of state management. How do I organize access to the state, the data, of my application? The usual approach used in Vue.js is to pass relevant data from parent components to their child components.
 
-Ein Beispiel:
+Example:
 
-* Zwei Komponentenknoten benötigen dieselben Daten.
-* Sie sind aber nur sehr weit entfernt miteinander verwandt, hängen also z.B. jeweils tief in zwei unterschiedlichen Hauptästen
+* Two component nodes need the same data.
+* However, they are only very distantly related to each other, e.g. they are each deeply connected to two different main branches
 
-Das führt in der Regel dazu, dass die Daten dann vom nächsten gemeinsamen Verwandten bereitgestellt und dann über die komplette Verwandtschaftslinien durchgereicht werden müssen, obwohl die dazwischen liegenden Knoten nichts mit diesen Daten zu tun haben.
+As a rule, this means that the data is then provided by the next common relative and must then be passed through the complete relationship lines, although the nodes in between have nothing to do with this data.
 
-An dieser Stelle hakt `vuex` ein und bietet einen zentralen Store an, auf den **alle** Komponenten zugreifen können.
+This is where `vuex` comes in and provides a central store that **all** components can access.
 
-Wenn wir Daten aus der JSONAPI auslesen, lohnt es sich also, diese in den Store einzuspeisen, damit es unter anderem klar definierte Punkte gibt, an denen auf die JSONAPI zugegriffen wird, um performanzproblematische Doppelungen zu verhindern.
+When we read data from the JSONAPI, it is therefore worth feeding it into the store so that, among other things, there are clearly defined points at which the JSONAPI is accessed in order to prevent duplications that cause performance problems.
 
-**Wir wollen also unbedingt eine Kombination von JSONAPI und vuex haben.**
+**So we definitely want to have a combination of JSONAPI and vuex.
 
 ### `reststate-vuex`
 
-Zum Glück gibt es schon ein paar Bibliotheken, um JSONAPI und `vuex` zu verknüpfen. Für die Implementation der *Courseware 5* haben wir uns für eine Bibliothek entschieden, die wir um weitere Möglichkeiten erweitert haben und gegenwärtig vom ELAN e.V. gepflegt wird:
+Fortunately, there are already a few libraries for linking JSONAPI and `vuex`. For the implementation of *Courseware 5* we decided to use a library which we have extended by further possibilities and which is currently maintained by ELAN e.V.:
 
 https://github.com/elan-ev/reststate-vuex
 
 ### Setup
 
-Das Setup, um `reststate-vuex` zu nutzen, konfiguriert eine `axios`-Instanz mit unserer JSONAPI-Schnittstelle. Diesen Code sehen wir ja in der Regel nur sehr selten. 
+The setup to use `reststate-vuex` configures an `axios` instance with our JSONAPI interface. As a rule, we only see this code very rarely.
 
 ```javascript
 const getHttpClient = () =>
@@ -44,7 +44,7 @@ const getHttpClient = () =>
         },
     });
 
-// []
+// [ ]
 
 const store = new Vuex.Store({
     modules: {
@@ -70,11 +70,11 @@ const store = new Vuex.Store({
 });
 ```
 
-Im obigen Code machen wir u.a. die JSONAPI-Schemata "courses", "users", "files" usw. bekannt. Was können wir jetzt damit anstellen?
+In the code above, we make the JSONAPI schemas "courses", "users", "files" etc. known. What can we do with them now?
 
-### Auslesen
+### Read out
 
-Vielleicht wollen wir gerne alle Nutzer auslesen und in einer Vue.js-Komponente ausgeben:
+Perhaps we would like to read out all users and output them in a Vue.js component:
 
 ```php
 <template>
@@ -109,66 +109,66 @@ export default {
 </script>
 ```
 
- Das verschafft schon einen guten Überblick, was uns `reststate-vuex` bieten kann. Hier die wichtigsten Punkte:
+ This already provides a good overview of what `reststate-vuex` can offer us. Here are the most important points:
 
-* Wir verwenden wie gewohnt `mapActions` und `mapGetters`, um Actions und Getter von `reststate-vuex` aufzurufen.
-* Die `loadAll`-Action lädt alle Daten des jeweiligen JSONAPI-Schemas und speichert diese im Store.
-* Wir verwenden den `all`-Getter, um alle Ressourcen eines JSONAPI-Schemas aus dem Store zu erhalten.
-* Der Zugriff auf eine `user`-Ressource erfolgt dann erwartungsgemäß mit `user.id` oder im `user.attributes`-Objekts.
+* We use `mapActions` and `mapGetters` as usual to call actions and getters of `reststate-vuex`.
+* The `loadAll` action loads all data of the respective JSONAPI schema and saves it in the store.
+* We use the `all` getter to get all resources of a JSONAPI schema from the store.
+* A `user` resource is then accessed as expected with `user.id` or in the `user.attributes` object.
 
-Einzelne Ressourcen können über die Action `users/loadById` aus dem JSONAPI-Backend in den Store geladen und über den Getter `users/byId` aus dem Store geholt werden. 
+Individual resources can be loaded into the store via the action `users/loadById` from the JSONAPI backend and retrieved from the store via the getter `users/byId`.
 
-### Ladefortschritt und Fehler
+### Loading progress and errors
 
-Damit wir nicht immer wieder Ladefortschritt- und Fehlerbehandlung implementieren müssen, sind nur wenige Änderungen notwendig. Zunächst ergänzen wir die vorhandenen Getter: 
+Only a few changes are necessary so that we do not have to implement load progress and error handling again and again. First, we add the existing getters:
 
 ```javascript
 ...mapGetters({
-+      isLoading: 'users/isLoading',
-+      isError: 'users/isError',
++ isLoading: 'users/isLoading',
++ isError: 'users/isError',
        allUsers: 'users/all',
      })
 ```
 
-und können dann auf diese im Template zugreifen: 
+and can then access these in the template:
 
 ```php
 <template>
    <div>
--    <ul>
-+    <p v-if="isLoading" v-translate>Laden...</p>
-+    <p v-else-if="isError" v-translate>Fehler beim Laden.</p>
-+    <ul v-else>
+- <ul>
++ <p v-if="isLoading" v-translate>Loading...</p>
++ <p v-else-if="isError" v-translate>Error while loading.</p>
++ <ul v-else>
        <li
          v-for="user in allUsers"
 ```
 
-### Anlegen von Ressourcen
+### Creation of resources
 
-Mit `reststate-vuex` können wir:
+With `reststate-vuex` we can:
 
-* Ressourcen im JSONAPI-Backend via `axios` anlegen
-* und diese natürlich auch im `vuex` Store zugänglich machen
+* create resources in the JSONAPI backend via `axios`
+* and of course also make them accessible in the `vuex` store
 
-Dazu ergänzen wir nur eine Action. Hier ein Beispiel für die Courseware, um Blöcke zu erstellen: 
+To do this, we only need to add one action. Here is an example for the courseware to create blocks:
 
 ```javascript
 methods: {
      ...mapActions({
-+      createBlock: 'courseware-blocks/create',
++ createBlock: 'courseware-blocks/create',
      }),
 ```
 
-Diese Action können wir jetzt im JavaScript-Code verwenden:
+We can now use this action in the JavaScript code:
 
 ```javascript
-// Der `container` stammt aus dem Store, aber das geht auch per Hand.
+// The `container` comes from the store, but this can also be done manually.
 const container = { type: 'courseware-containers', id: '17' };
 
-// Wir erstellen eine JSON-Repräsentation eines Courseware-Blocks:
-//   - mit einem Beispiel-Block-Type.
-//   - ohne `payload`
-//   - mit Verknüpfung zu einem Courseware-Container
+// We create a JSON representation of a courseware block:
+// - with a sample block type.
+// - without `payload`
+// - with a link to a courseware container
 const block = {
     attributes: {
         'block-type': 'text',
@@ -185,37 +185,37 @@ this.createBlock('courseware-blocks/create', block);
 ```
 
 
-### Löschen von Ressourcen
+### Deleting resources
 
-Um Ressourcen im JSONAPI-Backend und im `vuex`-Store zu löschen, verwenden wir einfach die entsprechende Action:
+To delete resources in the JSONAPI backend and in the `vuex` store, we simply use the corresponding action:
 
 ```javascript
 methods: {
      ...mapActions({
-+      deleteBlock: 'courseware-blocks/delete',
++ deleteBlock: 'courseware-blocks/delete',
      }),
 ```
 
-und verwenden diese Action dann einfach in unsere Vue.js-Komponente:
+and then simply use this action in our Vue.js component:
 
 ```php
 + <button @click="deleteBlock(block)" v-translate>
-+   Block löschen
++ delete block
 + </button>
 ```
 
-### Ändern von Ressourcen
+### Changing resources
 
-Auch für das Ändern von Ressourcen im JSONAPI-Backend und im `vuex`-Store gibt es eine entsprechende Action:
+There is also a corresponding action for changing resources in the JSONAPI backend and in the `vuex` store:
 
 ```javascript
 methods: {
      ...mapActions({
-+      updateBlock: 'courseware-blocks/update',
++ updateBlock: 'courseware-blocks/update',
      }),
 ```
 
-und verwenden diese Action im JavaScript-Code
+and use this action in the JavaScript code
 
 ```javascript
 const block = this.getBlock({ id: '17' });
@@ -223,8 +223,8 @@ block.attributes.payload = { foo: 'bar' };
 this.updateBlock(block);
 ```
 
-Da der `vuex` Store reaktiv ist, ändern sich dadurch wie gewohnt alle Komponenten, die mit dieser Ressource zusammenarbeiten und natürlich auch im JSONAPI-Backend.
+Since the `vuex` store is reactive, all components that work with this resource and of course in the JSONAPI backend will change as usual.
 
-### Mehr
+### More
 
-Die `reststate-vuex`-Bibliothek bietet noch viele andere Möglichkeiten, die von der JSONAPI angeboten werden,  gut dokumentiert unter https://vuex.reststate.codingitwrong.com/
+The `reststate-vuex` library offers many other possibilities offered by the JSONAPI, well documented at https://vuex.reststate.codingitwrong.com/
