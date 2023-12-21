@@ -1,321 +1,321 @@
 ---
 id: introduction
-title: Regeln für die Stud.IP-Entwicklung
-sidebar_label: Entwicklungsregularien
+title: Rules for Stud.IP development
+sidebar_label: Development rules
 ---
 
-Stud.IP ist Open-Source-Software. Offizielle Release-Versionen werden von der Stud.IP-Core-Group unter einer Open-Source-Lizenz veröffentlicht.
+Stud.IP is open source software. Official release versions are published by the Stud.IP Core Group under an open source license.
 
-# Test- und Entwicklungsserver
+# Test and development server
 
-Hauptkommunikationsinstrument für die Stud.IP-Entwicklung ist der Test- und Entwicklungsserver unter http://develop.studip.de. Jeder aktive Stud.IP-Entwickler soll diesen Server regelmäßig besuchen, um aktuelle Diskussionen verfolgen und eigene Fragen und Anregungen einbringen zu können.
+The main communication tool for Stud.IP development is the test and development server at http://develop.studip.de. Every active Stud.IP developer should visit this server regularly to follow current discussions and contribute their own questions and suggestions.
 
-# Versionskontrolle und Ticket-Verwaltung
+# Version control and ticket management
 
-Für die Stud.IP-Entwicklung wird eine git-Installation unterhalten, die jeweilige Hauptversion liegt unter https://gitlab.studip.de/studip/studip.git.
-Zur Ticketverwaltung wird Gitlab genutzt, das unter http://gitlab.studip.de erreichbar ist.
+A git installation is maintained for Stud.IP development, the respective main version is located at https://gitlab.studip.de/studip/studip.git.
+Gitlab is used for ticket management and can be accessed at http://gitlab.studip.de.
 
-## Vergabe und Nutzung von Schreibrechten
+## Assignment and use of write permissions
 
-Schreibrechte im svn werden auf Anfrage von den jeweils Zuständigen der Core-Group vergeben.
-Im main-Zweig und den Release-Zweigen dürfen nur Checkins vorgenommen werden, die den unten aufgeführten Regelungen entsprechen.
+Write permissions in the svn are granted on request by the respective responsible person in the core group.
+In the main branch and the release branches, only checkins that comply with the regulations listed below may be made.
 
-# Core-Group
+# Core group
 
-## Zusammensetzung der Core-Group
-Die Core-Group besteht aus Personen, die sich für die Entwicklung und Pflege der offiziellen Release-Version von Stud.IP engagieren
-und dabei das Vertrauen der Core-Group besitzen. Es gibt keine Größenbeschränkung und keine Proporzregeln für die Core-Group.
+## Composition of the core group
+The core group consists of people who are committed to the development and maintenance of the official release version of Stud.IP
+and have the trust of the core group. There is no size limit and no proportionality rules for the core group.
 
-## Aufnahme in die Core-Group
-Potenzielle neue Mitglieder müssen von einem Mitglied der Core-Group in Form einer Aufnahmeabstimmung zur Aufnahme vorgeschlagen werden. Ein Aufnahmevorschlag gilt als akzeptiert, wenn mindestens 2/3 der Core-Group-Mitglieder zugestimmt haben. Das neu gewählte Core-Group-Mitglied muss der Aufnahme zustimmen.
+## Admission to the core group
+Potential new members must be proposed for admission by a member of the core group in the form of an admission vote. A proposal for admission is deemed to have been accepted if at least 2/3 of the Core Group members have voted in favor. The newly elected Core Group member must approve the admission.
 
-*Die Abstimmung ist anonym.*
+*The vote is anonymous.
 
-Eine Person soll regelmäßig dann zur Aufnahme in die Core-Group vorgeschlagen werden, wenn zu erwarten ist, dass sie längerfristiges persönliches Engagement für die Ziele der Core-Group zeigt. Die Core-Group-Mitglieder sollen bei der Abstimmung positiv berücksichtigen, ob ein potenzielles neues Mitglied einem noch nicht repräsentierten aktiv entwickelnden Standort entstammt. Die in der Person liegenden Gründe für oder gegen eine Aufnahme müssen aber ausschlaggebend sein.
+A person should regularly be proposed for admission to the Core Group if it can be expected that they will demonstrate a long-term personal commitment to the goals of the Core Group. When voting, the core group members should positively consider whether a potential new member comes from an actively developing location that is not yet represented. However, the personal reasons for or against admission must be decisive.
 
-## Aufgaben der Core-Group-Mitglieder
-Die Core-Group definiert regelmäßig die aus ihrer Sicht notwendigen Aufgaben für die Entwicklung und Pflege der offiziellen Release-Version von Stud.IP. Beide Begriffe umfassen nicht ausschließlich technische Aspekte.
+## Tasks of the Core Group members
+The core group regularly defines the tasks it considers necessary for the development and maintenance of the official release version of Stud.IP. Both terms do not exclusively include technical aspects.
 
-Jede dieser Aufgaben soll von mindestens einem Core-Group-Mitglied verantwortlich übernommen werden.
+At least one core group member should be responsible for each of these tasks.
 
-Jedes Core-Group-Mitglied soll mindestens eine dieser Aufgaben verantwortlich oder mitverantwortlich übernehmen. Das Mitglied kann Teilaufgaben auch an Nicht-Core-Group-Mitglieder übertragen, verantwortet die regelkonforme Ausführung aber gegenüber der gesamten Core-Group. Die Übertragung von Aufgaben geschieht durch die unwidersprochene Erklärung der Übernahme oder durch im Fall eines Widerspruchs durch Abstimmung mit 2/3-Mehrheit, die Abgabe oder Entziehung von Aufgaben durch Erklärung der Abgabe oder Abstimmung mit 2/3-Mehrheit.
+Each core group member should be responsible or jointly responsible for at least one of these tasks. The member can also delegate subtasks to non-core group members, but is responsible to the entire core group for ensuring that they are carried out in accordance with the rules. The transfer of tasks is carried out by an unopposed declaration of acceptance or, in the event of an objection, by a vote with a two-thirds majority; the surrender or withdrawal of tasks is carried out by a declaration of surrender or a vote with a two-thirds majority.
 
-Jedes Core-Group-Mitglied soll sich an organisatorischen Tätigkeiten und Treffen der Core-Group beteiligen.
+Each Core Group member shall participate in organizational activities and meetings of the Core Group.
 
-Alle Core-Group-Mitglieder sollen sich an den Abstimmungen der Core-Group beteiligen.
+All Core Group members should participate in the Core Group's votes.
 
-## Austritt und Ausschluss aus der Core-Group
-Die Core-Group-Mitgliedschaft endet mit der Erklärung des Austritts oder einer erfolgreichen Ausschluss-Abstimmung mit 2/3-Mehrheit. Jedes Core-Group-Mitglied kann den Ausschluss eines Mitgliedes durch Start einer entsprechenden Abstimmung beantragen.
+## Resignation and exclusion from the Core Group
+Core Group membership ends with the declaration of resignation or a successful expulsion vote with a 2/3 majority. Each Core Group member can request the exclusion of a member by starting a corresponding vote.
 
-Ein Ausschlussantrag soll regelmäßig dann gestellt werden, wenn ein Mitglied den in 3. genannten Aufgaben ohne hinreichende Begründung nicht nachkommt.
+A request for expulsion should be made regularly if a member does not fulfill the tasks mentioned in 3. without sufficient justification.
 
-Die Abstimmung ist anonym.
+The vote is anonymous.
 
-## Wiederaufnahme
-Die Wiederaufnahme in die Core-Group ist möglich.
+## Readmission
+Re-admission to the Core Group is possible.
 
-## Änderungen der Regeln
-Jedes Core-Group-Mitglied kann Änderungsvorschläge für diese Regeln einbringen.
-Ein Änderungsvorschlag gilt als akzeptiert, wenn 2/3 der Mitglieder zustimmen.
+## Changes to the rules
+Any Core Group member can propose amendments to these rules.
+A proposed change is considered accepted if 2/3 of the members agree.
 
 # StEPs
 
 ![image](../assets/dc7253456d69ace6eb97258059ce0a87/image.png)
 
-Stud.IP-Enhancement-Proposals (StEPs) sind Änderungsvorschläge für eine kommende Stud.IP-Release-Version. Sie sind das Standardinstrument zur Diskussion und strukturierten Umsetzung aller Änderungen, die nicht der Fehlerbehebung (BIESTs), der Einführung kleiner unstrittiger Änderungen (TICs) oder der Etablierung längerfristiger Codeänderungen (Lifters) dienen.
+Stud.IP enhancement proposals (StEPs) are proposed changes for an upcoming Stud.IP release version. They are the standard instrument for the discussion and structured implementation of all changes that do not serve the purpose of bug fixing (BIESTs), the introduction of small uncontroversial changes (TICs) or the establishment of longer-term code changes (lifters).
 
-Jeder Entwicklungsinteressierte darf Proposals einbringen. Proposals müssen konkrete Maßnahmen mit Umsätzungsplan vorschlagen und nicht lediglich ein Problem oder einen Wunsch identifizieren und um Lösungsvorschläge bitten. In diesen Fällen sind weiterhin die etablierten Foren (Developer-Board etc.) zu nutzen.
+Anyone interested in development may submit proposals. Proposals must propose concrete measures with an implementation plan and not merely identify a problem or a wish and ask for suggested solutions. In these cases, the established forums (developer board etc.) should continue to be used.
 
-Die Core-Group entscheidet über die Annahme eines StEPs.
+The Core Group decides on the acceptance of a StEP.
 
 ## Proposal
-Ein StEP muss folgendes beinhalten
+A StEP must contain the following
 
-### Ziel
-Sehr knappe Zusammenfassung des Proposals (Titel/Überschrift)
+### Goal
+Very brief summary of the proposal (title/heading)
 
-### Beschreibung:
-* Problembeschreibung bzw. Ziel der Änderung
-* Begründung, warum das Proposal sinnvoll bzw. notwendig erscheint
+### Description:
+* Description of the problem or aim of the change
+* Reasons why the proposal seems sensible or necessary
 
-### Maßnahmen (Überblick)
-* Knappe Beschreibung einer Lösung ohne Implementationsdetails
-* sollte dennoch in Grundzügen auf die wichtige Punkte eingehen (neue DB-Tabellen, Benutzung von vorhandenen Funktionalitäten,...).
+### Measures (overview)
+* Brief description of a solution without implementation details
+* should nevertheless outline the important points (new DB tables, use of existing functionalities, ...).
 
-### Maßnahmen (Details)
-* konkrete Beschreibung, die keine wesentlichen Fragen hinsichtlich technischer Umsetzung und Interfacegestaltung offen lässt.
-* kann schrittweise entwickelt werden
+### Measures (details)
+* Concrete description that leaves no major questions unanswered with regard to technical implementation and interface design.
+* can be developed step by step
 
-### Kurzbezeichnung des Integrationsaufwandes
-* gering: eigenständiges Modul, das über Konfigurationsschalter komplett ein-/ausschaltbar ist oder Änderungen an einzelnen Dateien, die keine Änderungen an Datenbank oder systemweit genutzten Datenstrukturen erfordern
-* mittel: tief greifende Änderung an wenigen Dateien, die geringe Modifikationen der Datenbankstruktur erfordern und keine systemweiten Auswirkungen haben, oder geringfügige Änderungen an vielen Dateien, die gut überschaubare systemweite Auswirkungen haben
-* hoch: alle Änderungen mit gravierenden systemweiten Auswirkungen
+### Short description of the integration effort
+* low: stand-alone module that can be completely switched on/off via configuration switches or changes to individual files that do not require changes to the database or system-wide data structures
+* medium: far-reaching changes to a few files that require minor modifications to the database structure and have no system-wide impact, or minor changes to many files that have a manageable system-wide impact
+* high: all changes with serious system-wide effects
 
-### Durchführung
-* Verbindliches Angebot eines Durchführungsplanes, bestehend aus:
-* klar benannter Zuständigkeit für die Implementation, ggf. auch die Pflege
-* mit dem Releasezyklus abgestimmter Zeitplan für die Implementation
+### Implementation
+* Binding offer of an implementation plan, consisting of:
+* clearly named responsibility for implementation, including maintenance if necessary
+* implementation schedule coordinated with the release cycle
 
-## Kommentar- und Diskussionphase
-Die Mitglieder der Core-Group, aber auch alle anderen Entwicklungsinteressierten sind unmittelbar nach Veröffentlichung eines Proposals aufgerufen, es zu kommentieren und zu diskutieren. Der StEP-Text darf bis zur Abstimmung beliebig häufig geändert werden
+## Comment and discussion phase
+The members of the core group, as well as all other development stakeholders, are invited to comment on and discuss a proposal as soon as it is published. The StEP text may be changed as often as desired up to the voting stage
 
-## Abstimmungsphase
-Nach Abschluss der Kommentar- und Diskussionphase startet ein Core-Group-Mitglied in der Veranstaltung "Stud.IP Enhancement Proposals" eine Abstimmung über Annahme oder Ablehnung eines Proposals in der dann aktuellen Form. Der StEP-Autor und die im Umsetzungsplan Genannten müssen ihre Zustimmung dazu signalisieren. Eine Abstimmung sollte nur dann erfolgen, wenn der Diskussionsverlauf eine Annahme als wahrscheinlich erscheinen lässt.
+## Voting phase
+Once the comment and discussion phase is complete, a core group member starts a vote in the "Stud.IP Enhancement Proposals" event to accept or reject a proposal in its current form. The StEP author and those named in the implementation plan must signal their approval. A vote should only take place if the course of the discussion indicates that acceptance is likely.
 
-Die Abstimmung wird mittels eines nichtanonymen Stud.IP-Votings in der Veranstaltung "Stud.IP Enhancement Proposals" vorgenommen, bei dem jedes Mitglied der Core-Group eine Stimme hat. Als Abstimmungszeitraum sind mindestens 14 Tage vorgesehen. Ein positives Abstimmungsergebnis gilt für 12 Monate.
+The vote is carried out by means of a non-anonymous Stud.IP vote in the "Stud.IP Enhancement Proposals" event, in which each member of the core group has one vote. The voting period is at least 14 days. A positive vote is valid for 12 months.
 
-Für jedes Proposal sind folgende Abstimmungsmöglichkeiten vorzusehen:
-* Annahme (ja)
-* Ablehnung (nein)
-* Enthaltung
+The following voting options must be provided for each proposal:
+* Acceptance (yes)
+* Rejection (no)
+* abstention
 
-Dabei gelten folgende Regeln:
-* Für die Annahme eines StEPs müssen mindestens doppelt soviele Ja- wie Nein-Stimmen abgegeben werden
-* Für eine gültige Abstimmung ist eine Mindestbeteiligung von 2/3 der Coregroup-Mitgliedern notwendig
-* Sobald eine absolute 2/3-Mehrheit der Coregroup-Mitglieder mit "Ja" gestimmt hat, kann das Voting auch schon vor Ablauf der zwei Wochen beendet werden
+The following rules apply:
+* At least twice as many yes votes as no votes must be cast for a StEP to be accepted
+* A minimum participation of 2/3 of the core group members is required for a valid vote
+* As soon as an absolute 2/3 majority of Coregroup members have voted "yes", the voting can be ended even before the two weeks have expired
 
-Grundlage für das Abstimmungsverhalten sollten folgende Fragen sein:
-* ist das Feature sinnvoll?
-* ist das Feature mit der Stud.IP-Philosophie vereinbar?
-* ist die inhaltliche Konzeption akzeptabel und hinreichend generisch?
-* ist die technische Konzeption akzeptabel?
-* sind eventuelle Auswirkungen auf andere Stud.IP-Bereiche berücksichtigt?
-* sind alle offenen Fragen beantwortet?
+Voting should be based on the following questions:
+* is the feature useful?
+* Is the feature compatible with the Stud.IP philosophy?
+* Is the content concept acceptable and sufficiently generic?
+* Is the technical conception acceptable?
+* Have possible effects on other Stud.IP areas been taken into account?
+* Have all open questions been answered?
 
-## Umsetzungsphase
-Nach der Annahme eines StEPs dürfen die im Proposal genannten Zuständigen innerhalb von 12 Monaten eine dem StEP-Text entsprechende Implementation in einen für diesen StEP angelegten branch des Stud.IP-gitlab einchecken bzw. einchecken lassen. Eine Verlängerung der Frist ist nach entsprechender Core-Group-Abstimmung möglich.
+## Implementation phase
+Once a StEP has been accepted, the responsible persons named in the proposal may check in or have checked in an implementation corresponding to the StEP text in a branch of Stud.IP-gitlab created for this StEP within 12 months. An extension of the deadline is possible after a corresponding core group vote.
 
-Bis zum Codefreeze muss ein öffentlicher branch der Umsetzung vorliegen sowie ein MR (ohne Draft) und die entsprechenden QM::?-Labels an dem Issue müssen gesetzt sein.
+A public branch of the implementation must be available by the code freeze as well as an MR (without draft) and the corresponding QM::? labels must be set on the issue.
 
-## Test- und Vetophase
-Die Core-Group definiert regelmäßig eine Liste von Zuständigkeiten mit Vetorecht, die die Qualität des Stud.IP-Releases sichern sollen. Die jeweils aktuelle Liste der Zuständigkeiten wird zusammen mit diesen StEP-Regeln veröffentlicht und umfasst u.a. Aspekte wie Einhaltung der Code-Konventionen, Code-Qualität, Einhaltung der GUI-Richtlinien und hinreichende Dokumenation. Das Vetorecht darf (gemeinschaftlich) von den jeweils zuständigen Core-Group-Mitglieder vom ersten Check-In des StEPs bis zum Ende des Testzeitraumes ausgeübt werden.
+## Test and veto phase
+The core group regularly defines a list of responsibilities with veto rights to ensure the quality of the Stud.IP release. The current list of responsibilities is published together with these StEP rules and includes aspects such as compliance with code conventions, code quality, compliance with GUI guidelines and sufficient documentation. The right of veto may be exercised (jointly) by the respective responsible core group members from the first check-in of the StEP until the end of the test period.
 
-Erst wenn alle Qualitätsbeauftragten ihre Zustimmung zur Umsetzung des StEPs in Form eines "+" abgegeben haben darf der StEP in den main überführt werden. Verantwortliche Core-Group-Mitglieder sind verpflichtet, möglichst frühzeitig nach dem Einchecken eines angenommenen StEPs Rückmeldung zu kritischen Punkten zu geben und konstruktive Vorschläge zur Behebung erkannter Missstände zu machen. Ein endgültiges Veto ("-") erfolgt, wenn diese Vorschläge nicht beachtet werden und der Zeitplan für das Release keine andere Wahl lässt. StEPs sollten möglichst in der Reihenfolge getestet und in den trunk überführt werden, in der sie von den Entwicklern zum Testen freigegeben wurden.
+The StEP may only be transferred to main once all quality representatives have given their consent to the implementation of the StEP in the form of a "+". Responsible core group members are obliged to provide feedback on critical points as soon as possible after checking in an accepted StEP and to make constructive suggestions for remedying identified shortcomings. A final veto ("-") is issued if these suggestions are not heeded and the release schedule leaves no other choice. If possible, StEPs should be tested and transferred to the trunk in the order in which they were released for testing by the developers.
 
-## Release-Branch
-Zu einem am Anfang des Release-Zyklus festgelegten Termin erfolgt das Ausbranchen des neuen Releases aus dem main.
+## Release branch
+The new release is branched out from the main on a date set at the beginning of the release cycle.
 
 ## Status
-Jeder StEP befindet sich in genau einem Status, der jeweils in der Beschreibung aktualisiert wird:
+Each StEP has exactly one status, which is updated in the description:
 
-* **neu** - initialer Status, der StEP wurde vorgestellt und befindet sich in der Diskussions- oder 1. Abstimmungsphase
-* **angenommen** - die erste Abstimmung ist positiv verlaufen, der StEP darf in den trunk eingespielt werden
-* **test** - der Code wurde in einen eigenen branch eingebaut und ist nach Meinung des Verantwortlichen vollständig und weitgehend fehlerfrei; allgemeine Aufforderung zum Testen an alle
-* **veto** - gegen den eingespielten StEP hat ein zuständiges Core-Group-Mitglied Einwände erhoben, der StEP kann in dieser Form nicht in den trunk gelangen
-* **tested** - alle Qualitäts-Zuständigen haben ihr Einverständnis gegeben, der StEP darf in den trunk übernommen werden
-* **release** - es wurde endgültig kein Veto erhoben und der StEP ist in den Release-Branch eingegangen
-* **abgelehnt** - die erste Abstimmung ist negativ verlaufen oder liegt länger als 12 Monate zurück, oder ein Veto hat verhindert, dass der StEP in das Release gelangt; das Verfahren muss neu gestartet werden oder der StEP wird verworfen
-* **verworfen** - die Funktionalität wird nicht mehr benötigt, ist durch anderen StEP abgedeckt, etc.
+* **new** - initial status, the StEP has been presented and is in the discussion or 1st coordination phase
+**accepted** - the first vote has been positive, the StEP may be imported into the trunk
+**test** - the code has been integrated into a separate branch and is, in the opinion of the person responsible, complete and largely error-free; general request for testing to everyone
+** **veto** - a responsible core group member has raised objections to the StEP that has been uploaded, the StEP cannot be uploaded to the trunk in this form
+** **tested** - all quality approvers have given their approval, the StEP may be included in the trunk
+**release** - no final veto has been raised and the StEP has been included in the release branch
+**rejected** - the first vote was negative or took place more than 12 months ago, or a veto has prevented the StEP from being included in the release; the procedure must be restarted or the StEP is rejected
+**discarded** - the functionality is no longer required, is covered by another StEP, etc.
 
 ![image](../assets/dc7253456d69ace6eb97258059ce0a87/image.png)
 
 # TICs
 
-Nicht jede Änderung muss den StEP-Prozess durchlaufen. TICs (tiny improvement commits) sind eingecheckte Code-Änderungen, die keiner Abstimmung bedürfen.
+Not every change has to go through the StEP process. TICs (tiny improvement commits) are checked-in code changes that do not require approval.
 
-## Erstellen
+## Create
 
-Ein TIC wird durch Anlegen eines Tickets vom Typ TIC im Gitlab erzeugt. Alle Entwickler mit Schreibrechten im svn-Repository für den Release-Zweig dürfen TICs anlegen. Das Ticket muss eine Beschreibung der Änderungen enthalten.
+A TIC is created by creating a ticket of type TIC in Gitlab. All developers with write permissions in the svn repository for the release branch may create TICs. The ticket must contain a description of the changes.
 
-## Einbauen
+## Install
 
-Alle TIC-bezüglichen Commits müssen dem Ticket zugeordnet werden. Commits sind nur bis zum Codefreeze erlaubt. Bis zum Codefreeze muss ein öffentlicher branch der Umsetzung vorliegen sowie ein MR (ohne Draft).
+All TIC-related commits must be assigned to the ticket. Commits are only permitted up to the code freeze. A public branch of the implementation and an MR (without draft) must be available until the code freeze.
 
-## Widerspruch
+## Contradiction
 
-Sämtlicher einem TIC zugeordneten Commits müssen rückgängig gemacht werden, wenn ein Core-Group-Mitgliedes Widerspruch gegen den TIC einlegt. Die Widerspruchsfrist endet mit dem Release-Branch.
+All commits assigned to a TIC must be reversed if a core group member objects to the TIC. The objection period ends with the release branch.
 
-TICs, gegen die Widerspruch eingelegt wurde, können in StEPs umgewandelt und dann diskutiert werden.
+TICs against which an objection has been lodged can be converted into StEPs and then discussed.
 
 # Lifters
 
-* **L**aufende, **i**nkrementell **f**ortschreitende **Te**chnik**r**enovierung für **S**tud.IP*
+* **L**ing, **i**ncremental **f**progressive **technical**r**enovation for **S**tud.IP*
 
-Einige wichtige, sinnvolle und gewünschte Überarbeitungen des Stud.IP-Quellcodes erfordern Eingriffe an vielen Stellen des Codes. Beschränkte Ressourcen bei Entwicklungskapazität und Qualitätssicherung machen aber eine Umstellung "auf einen Schlag" unmöglich. Insbesondere will es die Entwickler-Community vermeiden, laufende Entwicklungen bis zur Fertigstellung einer runderneuerten Version des Codes zu stoppen. Verzögerungen bei der - häufig rein technisch motivierten und nach außen "unichtbaren" - Runderneuerung könnten das gesamte Projekt gefährden.
+Some important, sensible and desired revisions of the Stud.IP source code require interventions in many parts of the code. However, limited resources in terms of development capacity and quality assurance make it impossible to change the code "in one fell swoop". In particular, the developer community wants to avoid stopping ongoing developments until a completely new version of the code is ready. Delays in the - often purely technically motivated and externally "invisible" - retread could jeopardize the entire project.
 
-Die "Stud.IP-Lifters" etablieren ein Verfahren, solche Überarbeitungen in die laufenden Release-Zyklen einzubinden. Sie setzen klare Ziele und definieren eindeutige Anweisungen für Entwickler, wie sie bestehenden Code überarbeiten und neuen Code Lifter-konform gestalten können.
+The "Stud.IP lifters" establish a procedure for integrating such revisions into the ongoing release cycles. They set clear goals and define clear instructions for developers on how to revise existing code and make new code Lifter-compliant.
 
-"Lifters" definieren Mittel zur Fortschrittskontrolle. Zwar haben sie keinen verbindlichen Endtermin oder ein verbindliches Fertigstellungs-Release, es ist aber zu jedem Zeitpunkt nachvollziehbar, wie weit die Umsellungsarbeiten fortgeschritten sind.
+"Lifters" define means of progress control. Although they do not have a binding end date or a binding completion release, it is always possible to see how far the implementation work has progressed.
 
-"Lifters" helfen den Entwicklern. Sie geben klare Richtlinien, wie bislang oft individuell zu lösende Codierungs-Probleme zu handhaben sind. Sie geben Einsteigern und Entwicklern, die dem Projekt "etwas Gutes" tun wollen, ohne genau zu wissen, welche Arbeiten gerade sinnvoll und erwünscht sind, wohlportionierte Arbeitspakete an die Hand.
+"Lifters" help the developers. They provide clear guidelines on how to handle coding problems that previously often had to be solved individually. They provide well-portioned work packages for beginners and developers who want to "do something good" for the project without knowing exactly what work is currently useful and desired.
 
-"Lifters" laufen quasi "nebenher" zur normalen Stud.IP-Entwicklung. sie sollen klar und einfach beschrieben, wie Code-Überarbeitungen, die "ohnehin" passieren, gleich weitere Aspekte mitberücksichtigen können. "Lifters" sind damit keine neue Art von Vorschrift, sondern vereinheitlichen bisherige Entwicklungsleitlinien.
+"Lifters" run "alongside" normal Stud.IP development, so to speak. They are intended to clearly and simply describe how code revisions that happen "anyway" can take other aspects into account at the same time. "Lifters" are therefore not a new type of regulation, but standardize previous development guidelines.
 
-"Lifters" durchlaufen einen ähnlichen Prozess wie StEPs. Sie werden von einem Core-Group-Mitglied vorgeschlagen, öffentlich diskutiert und schließlich in der Core-Group verbindlich abgestimmt. Nach der ersten Abstimung hat ein Lifter den Status "in der Umsetzung". SVN-Checkins, die Lifter-Richtlinien umetzen, bedürfen keines gesonderten StEPs (Stichwort: Kein Check-In ohne StEP), müssen aber im Rahmen der Fortschrittskontrolle (s.u.) bekannt gemacht und getestet werden.
+"Lifters go through a similar process to StEPs. They are proposed by a core group member, discussed publicly and finally voted on by the core group. After the first vote, a lifter has the status "in implementation". SVN check-ins that implement Lifter guidelines do not require a separate StEP (keyword: no check-in without a StEP), but must be announced and tested as part of the progress check (see below).
 
-Damit haben Lifter folgende Stadien:
-* **neu** = Vorschlag in der Diskussion
-* **angenommen** = Lifter zur Umsetzung verabschiedet. Angenommene Lifter sind verbindlich für alle neuen Entwicklungen, ausgenommen Bugfixes.
-* **abgeschlossen** = Alle Arbeiten sind abgeschlossen. Abgeschlossene Lifter sind verbindlich für alle zukünftigen Entwicklungen.
-* **inaktiv** = Alter Lifter, der nicht mehr beachtet werden muss.
+Lifters therefore have the following stages:
+* **new** = proposal under discussion
+**accepted** = lifter approved for implementation. Adopted lifters are binding for all new developments, with the exception of bug fixes.
+**completed** = All work has been completed. Completed lifters are binding for all future developments.
+**inactive** = Old lifter that no longer needs to be observed.
 
-## Formulieren
-Lifter werden über das Formular im Wiki der Veranstaltung "Stud.IP Lifters" erstellt und anchließend im Wiki gepflegt.
-Dabei wird ein Ticket im Gitlab angelegt.
-Alle folgenden Lifter-bezogenen Checkins müssen sich auf dieses Ticket beziehen.
+## Formulate
+Lifters are created via the form in the wiki of the course "Stud.IP Lifters" and then maintained in the wiki.
+A ticket is created in Gitlab.
+All subsequent lifter-related checkins must refer to this ticket.
 
-Lifter-Vorschläge müssen folgende Anforderungen erfüllen:
-* eindeutig spezifizierte Umstellungsregeln (umfassende Beschreibung von Vorher- und Nachher-Zustand)
-* alter Code muss in der Übergangssphase lauffähig bleiben
-* soweit automatisierte Umstellungshilfen erstellt werden können (z.B. sed-Skripte), solten diese vom Lifter-Autor erstellt werden und ihre Anwendung wie manuelle Umstellungen dokumentiert werden. Auch automatische Umstellungen müssen wie manuelle kontrolliert werden.
-* Im Rahmen der Diskussion sollen Testszenarien, d.h. belastbare Aussagen über den Zielzustand definiert werden, die laufend qualitätssichernd, vor allem vor Release-Terminen, durchgeführt werden können. Ausreichende Testszenarien müssen VOR der Core-Group-Abstimmung vorgelegt werden.
-* Fortschrittskontrolle. Ein Lifter-Vorschlag muss eine abarbeitbare Liste von Arbeitspaketen enthalten, die zur Erledigung des Lifters notwendig sind. Dies kann z.B. durch Markierung der zu bearbeitenden Dateien (s.u.) passieren.
-* Ergeben sich im Laufe der Arbeiten an einem Lifter neuen Anforderungen, die von der ursprünglichen Beschreibung abweichen, muss entweder:
-    * für die fragliche Anpassung ein StEP erstellt werden,
-    * die Lifter-Beschreibung ergänzt und die Ergänzung zur Abstimmung gestellt werden, oder,
-    * der Lifter per Abstimmung (s.u.) eingestellt werden.
-* Lifter können mit der gleichen Mehrheit, die zu ihrer Annahme nötig war, als inaktiv oder bloße Empfehlung gekennzeichnet werden. Sollten die schon vorhandenen Änderungen rückgängig gemacht werden, ist dies in offensichtlich einfachen Fällen unmittelbar nach der Abstimmung zulässig, in komplexeren Fällen nur nach Annahme eines entsprechenden StEPs oder Lifters.
-* Neu erstelle Dateien und Arbeiten an StEPs müssen nach Annahme eines Lifters dessen Anforderungen genügen.
-* Bugfixes müssen sich bei Dateien, die noch nicht Lifter-konform sind, nicht an die Lifter-Anforderungen halten.
+Lifter proposals must meet the following requirements
+* clearly specified transition rules (comprehensive description of before and after state)
+* old code must remain executable during the transition phase
+* if automated conversion aids can be created (e.g. sed scripts), these should be created by the Lifter author and their use documented in the same way as manual conversions. Automatic conversions must also be checked in the same way as manual conversions.
+* As part of the discussion, test scenarios, i.e. reliable statements about the target state, should be defined that can be carried out on an ongoing basis to ensure quality, especially before release dates. Sufficient test scenarios must be submitted BEFORE the core group vote.
+* Progress control. A lifter proposal must contain a workable list of work packages that are necessary to complete the lifter. This can be done, for example, by marking the files to be processed (see below).
+* If, in the course of work on a lifter, new requirements arise that deviate from the original description, either:
+    * a StEP must be created for the adaptation in question,
+    * the lifter description must be amended and the amendment put to the vote, or,
+    * the lifter must be adjusted by vote (see below).
+* Lifters can be marked as inactive or as a mere recommendation with the same majority that was required to approve them. If the existing changes are to be reversed, this is permitted in obviously simple cases immediately after the vote, in more complex cases only after a corresponding StEP or lifter has been accepted.
+* Newly created files and work on StEPs must meet the requirements of a lifter after it has been accepted.
+* Bugfixes do not have to adhere to the Lifter requirements for files that are not yet Lifter-compliant.
 
-## Abstimmung
-Die Abstimmung wird mittels eines nichtanonymen Stud.IP-Votings in der Core-Group-Veranstaltung vorgenommen, bei dem jedes Mitglied der Core-Group eine Stimme hat. Als Abstimmungszeitraum sind mindestens 14 Tage vorgesehen.
+## Voting
+Voting is carried out by means of a non-anonymous Stud.IP voting in the core group event, in which each member of the core group has one vote. The voting period is at least 14 days.
 
-Für jedes Proposal sind folgende Abstimmungsmöglichkeiten vorzusehen:
-* Annahme (ja)
-* Ablehnung (nein)
-* Enthaltung
+The following voting options must be provided for each proposal:
+* Accept (yes)
+* Rejection (no)
+* Abstention
 
-Dabei gelten folgende Regeln:
-* Für die Annahme eines Lifters müssen mindestens doppelt soviele Ja- wie Nein-Stimmen abgegeben werden
-* Eine Enthaltung zählt unabhängig vom Komplexitätsgrad immer als Enthaltung
-* Für eine gültige Abstimmung ist eine Mindestbeteiligung von 2/3 der Coregroup-Mitgliedern notwendig
-* Sobald eine absolute 2/3-Mehrheit der Coregroup-Mitglieder mit "Ja" gestimmt hat, kann das Voting auch schon vor Ablauf der zwei Wochen beendet werden
+The following rules apply:
+* At least twice as many yes votes as no votes must be cast for a lifter to be accepted
+* An abstention always counts as an abstention, regardless of the degree of complexity
+* A minimum participation of 2/3 of the core group members is required for a valid vote
+* As soon as an absolute 2/3 majority of Coregroup members have voted "yes", the voting can be ended before the two weeks have expired
 
-Grundlage für das eigene Abstimmungsverhalten sollten folgende Fragen sein:
-* ist das Feature sinnvoll?
-* ist das Feature mit der Stud.IP-Philosophie vereinbar?
-* ist die inhaltliche Konzeption akzeptabel und hinreichend generisch?
-* ist die technische Konzeption akzeptabel?
-* sind eventuelle Auswirkungen auf andere Stud.IP-Bereiche berücksichtigt?
-* sind alle offenen Fragen beantwortet?
+The following questions should form the basis for your own voting behavior:
+* is the feature useful?
+* Is the feature compatible with the Stud.IP philosophy?
+* Is the content concept acceptable and sufficiently generic?
+* Is the technical conception acceptable?
+* Have possible effects on other Stud.IP areas been taken into account?
+* Have all open questions been answered?
 
-### Umsetzungsphase und Fortschrittskontrolle
-In aller Regel betreffen Lifters PHP-Dateien. In diesen Fällen ist nach Annahme eines Lifters ein SVN-Checkin durchzuführen, der in allen betroffenen Dateien einen Kommentar der Form
+### Implementation phase and progress check
+As a rule, lifters affect PHP files. In these cases, an SVN check-in must be carried out after a lifter has been accepted, which creates a comment of the form
 ```php
 <?
-# Lifter001: TODO - evtl. genauere Beschreibung.. (alles nach dem - ist Beschreibung)
+# Lifter001: TODO - possibly more detailed description... (everything after the - is description)
 ?>
 ```
-einfügt.
+is inserted.
 
-Ist ein Lifter für eine Datei komplett oder teilweise erledigt, ist der Kommentar zu ändern in:
+If a lifter for a file is completely or partially completed, the comment must be changed to:
 
 ```php
 <?
-# Lifter001: TEST - evtl. genauere Beschreibung der Maßnahmen.. (alles nach dem - ist Beschreibung)
+# Lifter001: TEST - possibly a more detailed description of the measures... (everything after the - is description)
 ?>
 ```
 
-Bei teilweiser Erledigung kann zusätzlich erläutert werden, welche Arbeiten noch verbleiben.
+In the case of partial completion, the remaining work can also be explained.
 
-In HTML- oder CSS-Dateien werden ebenfalls den obigen Konventionen entsprechende Kommentare angebracht.
+In HTML or CSS files, comments are also added in accordance with the above conventions.
 
-Bei zu bearbeitenden Binärdateien ist eine Markierung in der Datei nicht möglich. Stattdessen ist in der Lifter-Beschreibung eine Liste von noch anzupassenden Dateien zu pflegen, die jeweils aktualisiert wird. Da davon auszugehen ist, dass solche Typen seltener sind, werden genauere Regelungen erst bei Bedarf getroffen.
+It is not possible to mark binary files to be edited in the file. Instead, a list of files still to be adapted is to be maintained in the Lifter description, which is updated in each case. As it can be assumed that such types are rare, more precise regulations are only made when required.
 
-## Qualitätskontrolle
-Lifter erfordern erhöhte Aufmerksamkeit beim Testen. In kritischen Phasen eines Branches  (Betatestphase im Release-Branch) dürfen dort keine Lifter-bezogenen Änderungen eingecheckt werden. Bei größeren Checkins bzw. besonders kritischen Codeteilen verpflichtet sich die Core-Group angemessene Tests durchzuführen.
+## Quality control
+Lifters require increased attention during testing. In critical phases of a branch (beta test phase in the release branch), no Lifter-related changes may be checked in there. For larger checkins or particularly critical code parts, the core group undertakes to carry out appropriate tests.
 
-Jedes Lifter-bezogene Checkin wird zunächst mit dem Status "TEST" versehen (s.o.). Ein anderer Entwickler mit Schreibrechten im SVN muss den Code überprüfen und testen und anschließend die TEST-Markierung entfernen und den Code neu einchecken. Damit erscheint er als Tester im Revisions-Log. Wurde eine Datei nur teilweise bearbeitet, setzt der Tester wieder eine TODO-Markierung ein und beschreibt ggf. die noch verbleibenden Maßnahmen.
+Each Lifter-related checkin is initially assigned the status "TEST" (see above). Another developer with write access in SVN must check and test the code and then remove the TEST marker and check the code in again. He then appears as a tester in the revision log. If a file has only been partially edited, the tester inserts a TODO marker again and describes any remaining measures.
 
-LIFTERN ist nur erlaubt bis zur TIC-Deadline und unterliegt dann demselben Test- und Vetoverfahren wie StEPs und TICs.
+LIFTERN is only permitted until the TIC deadline and is then subject to the same test and veto procedure as StEPs and TICs.
 
-Entdeckte Fehler (die vermutlich mit einem Lifter zusammenhängen) werden als ganz normale BIESTs über das PlugIn in der BIEST-Veranstaltung oder direkt im Gitlab dokumentiert.
+Discovered errors (which are presumably related to a lifter) are documented as normal BIESTs via the plug-in in the BIEST event or directly in Gitlab.
 
-## Abschluss und Dokumentation
-Insbesondere für die Außendarstellung ist es wichtig, Lifter als einmalige Anstrengung als abgeschlossen zu erklären: In der Regel wird damit ein positiv vermarktbarer Zustand erreicht (Multi-Tab-Browsing geht jetzt, Stud.IP basiert vollständig auf Layout-Templates, ...).
+## Conclusion and documentation
+It is particularly important for the external presentation to declare Lifter as a one-time effort as completed: As a rule, this achieves a positively marketable state (multi-tab browsing now works, Stud.IP is based entirely on layout templates, ...).
 
-Um einen Lifter als abgeschlossen zu erklären ist eine Abstimmung der Core-Group erforderlich, die den gleichen Bedingungen wie zur Annahme unterliegt. Damit ist sichergestellt, dass sich die Core-Group fortan mit dem erreichten Status identifiziert und öffentliche Aussagen über den erreichten Status mitträgt.
+In order to declare a lifter as completed, a vote of the core group is required, which is subject to the same conditions as for acceptance. This ensures that the core group henceforth identifies with the status achieved and supports public statements about the status achieved.
 
-Ein abgeschlossener Lifter bekommt den Status "done" und ist weiterhin verbindlich für alle Neuentwicklungen, Erweiterungen und Bugfixes. Werden anschließend Stellen identifiziert, die nicht Lifter-konform sind, sind sie als normale Biests zu melden.
+A completed lifter is given the status "done" and continues to be binding for all new developments, extensions and bug fixes. If any areas are subsequently identified that are not Lifter-compliant, they must be reported as normal bugs.
 
-Verworfene oder obsolet gewordene Lifter werden mit dem Status "inaktiv" markiert und sind nicht verbindlich für die weitere Entwicklung.
+Discarded or obsolete lifters are marked with the status "inactive" and are not binding for further development.
 
 # BIESTs
 
-## Fehler melden
+## Report bugs
 
-BIESTer werden über das gitlab des Stud.IP-Projektes gemeldet und mit den entsprechenden Labels "BIEST" und "Version::x.x" für die früheste Version, in der der Fehler aufgetreten ist ausgezeichnet. Optional kann noch die betroffene Komponente angegeben werden.
+BIESTs are reported via the gitlab of the Stud.IP project and marked with the corresponding labels "BIEST" and "Version::x.x" for the earliest version in which the error occurred. Optionally, the affected component can also be specified.
 
-## Fehler beheben
+## Fix error
 
-Checkins, die ein BIEST beheben, müssen dem jeweiligen Ticket zugeordnet werden.
+Checkins that fix a BIEST must be assigned to the respective ticket.
 
-Komplexe Fehler sollten in einem eigenen branch behandelt werden und die Fixes wenn möglich von einer zweiten Person approved werden.
+Complex errors should be handled in a separate branch and the fixes should be approved by a second person if possible.
 
-Bugfixes müssen immer in einem einzigen Commit auf den main gebracht werden. Kommt es zu einem Fehler und das Issue ist noch nicht gemerged, muss der Commit rückgängig gemacht und der Bug in einem MR gelöst werden. Ist das Issue bereits in alte Versionen portiert, so muss ein neues Issue aufgemacht werden, was dieses Problem behebt.
+Bug fixes must always be brought to the main in a single commit. If an error occurs and the issue has not yet been merged, the commit must be reversed and the bug resolved in an MR. If the issue has already been ported to old versions, a new issue must be created to fix this problem.
 
 # Release
 
-## Service-Release erstellen
+## Create service release
 
-Die folgenden Schritte sind zum Erstellen eines Service-Releases (z.B. 4.5.5) durchzuführen:
-* Klären ob alle relevanten Bugfixes "nach unten" portiert wurden (nachfragen bei André oder Jan-Hendrik)
-* Prüfen ob alle Issues & Merge requests am entsprechenden Milestone geschlossen wurden, gegebenenfalls offene Issues an nächsten Milestone verschieben
-* Auschecken des aktuellen Standes des Release-Branches
-* Kompilieren der notwendigen Assets
-* Test der wichtigsten Stud.IP-Seiten
-* gegebenenfalls Übernahme der Changelog-Einträge vorhergehender Service-Releases (z.B. von 4.5.5 -> 4.6.3)
-* Extrahieren aller Issues des Milestones, umformatieren und oben zum Changelog hinzufügen
-* Link zu den Issues des Milestones im gitlab oben zum Changelog hinzufügen
-* aktuelles Datum und version number oben zum Changelog hinzufügen
-* version number in ./VERSION und ./lib/bootstrap.php aktualisieren
-* aktuellen Stand des Release-Branches mit der version number taggen
-* Milestone schließen
-* Release als .tar.gz und .zip erstellen
-* readme-x.y.z.txt mit den Changelog-Einträgen des Milestones erstellen
-* .tar.gz .zip und readme.txt zu Sourceforge hochladen
-* News bei Sourceforge erstellen
-* Ankündigung auf dem Developer-Server erstellen bzw. aktualisieren
+The following steps must be carried out to create a service release (e.g. 4.5.5):
+* Clarify whether all relevant bugfixes have been ported "down" (ask André or Jan-Hendrik)
+* Check whether all issues & merge requests have been closed on the corresponding milestone, if necessary move open issues to the next milestone
+* Check out the current status of the release branch
+* Compile the necessary assets
+* Test the most important Stud.IP pages
+* If necessary, transfer the changelog entries of previous service releases (e.g. from 4.5.5 -> 4.6.3)
+* Extract all issues of the milestone, reformat and add to the top of the changelog
+* Add link to the issues of the milestone in gitlab at the top of the changelog
+* Add current date and version number to the top of the changelog
+* Update version number in ./VERSION and ./lib/bootstrap.php
+* Tag the current status of the release branch with the version number
+* Close milestone
+* Create release as .tar.gz and .zip
+* create readme-x.y.z.txt with the changelog entries of the milestone
+* Upload .tar.gz .zip and readme.txt to Sourceforge
+* Create news at Sourceforge
+* Create or update announcement on the developer server
 
-## Main-Release erstellen
+## Create main release
 
-Beim Erstellen eines Main-Releases (z.B. 4.6) sind zusätzlich zu der Liste oben die folgenden Schritte notwendig:
-* Erstellen des entsprechenden Branches
-* Vervollständigung der Übersetzung und Aktualisieren der Übersetztungsdateien
-* history.txt Aktualisieren
-* gegebenenfalls Aktualisierung von ./AUTHORS ./INSTALL ./README
-* Umstellen von DEFAULT_ENV = 'production' in ./lib/bootstrap.php
-* Test einer Neuinstallation
-* Tests eines Upgrades von der letzten nicht mehr unterstützten Stud.IP-Version aus
-* gegebenenfalls Anpassung von https://www.studip.de/home/download/
+When creating a main release (e.g. 4.6), the following steps are necessary in addition to the list above:
+* Creating the corresponding branch
+* Complete the translation and update the translation files
+* Update history.txt
+* Update ./AUTHORS ./INSTALL ./README if necessary
+* Change DEFAULT_ENV = 'production' in ./lib/bootstrap.php
+* Test a new installation
+* Test an upgrade from the last Stud.IP version that is no longer supported
+* Adaptation of https://www.studip.de/home/download/ if necessary

@@ -1,104 +1,104 @@
 ---
-title: Fehler berichten
+title: Report error
 ---
 
-Für Meldung und Verwaltung von Fehlern wird das [Gitlab](http://gitlab.studip.de) auf dem Entwicklungsserver verwendet. 
-Dort sind alle bekannten und behobenen Fehler dokumentiert, und auch die Planung für die zukünftigen Stud.IP-Releases wird dort organisiert.
+The [Gitlab](http://gitlab.studip.de) on the development server is used for reporting and managing bugs.
+All known and corrected errors are documented there, and the planning for future Stud.IP releases is also organized there.
 
-## Wie berichte ich einen Fehler?
+## How do I report a bug?
 
-Für die Meldung von Fehlern in Stud.IP gibt es verschiedene Wege:
+There are various ways to report errors in Stud.IP:
 
-* Direkt über das Formular im [Gitlab](https://gitlab.studip.de/studip/studip/-/issues/new) (Registrierung im Entwickler- und Anwenderforum erforderlich)
-* Im Developer-Board im Forum berichten [Veranstaltung Bugboard (BIESTs)](https://develop.studip.de/studip/dispatch.php/course/forum/index?cid=28e888802838a57bc1fbac4e39f0b13a) im [Entwickler- und Anwenderforum](https://develop.studip.de/studip/) (Registrierung erforderlich)
-* per E-Mail an [studip-users@lists.sourceforge.net](mailto:studip-users@lists.sourceforge.net)
-* Oder im [Entwickler-Chat](https://develop.studip.de/studip/assets/images/icons/blue/chat.svg) uns mitteilen.
+* Directly via the form in [Gitlab](https://gitlab.studip.de/studip/studip/-/issues/new) (registration in the developer and user forum required)
+* Report in the developer board in the forum [Event Bugboard (BIESTs)](https://develop.studip.de/studip/dispatch.php/course/forum/index?cid=28e888802838a57bc1fbac4e39f0b13a) in the [Developer and User Forum](https://develop.studip.de/studip/) (registration required)
+* by e-mail to [studip-users@lists.sourceforge.net](mailto:studip-users@lists.sourceforge.net)
+* Or let us know in the [Developer Chat](https://develop.studip.de/studip/assets/images/icons/blue/chat.svg).
 
-**Bitte geben Sie in jedem Fall unbedingt an:**
+**In any case, please always state:**
 
-* In welcher Stud.IP-Version bzw. an welchem Standort tritt der Fehler auf? (z.B.: Version 5.4, Uni Göttingen)
-* Welchen Browser in welcher Version verwenden Sie? (z.B.: Internet Explorer 7)
-* In welcher Rolle sind Sie im System unterwegs? (z.B. "Dozent")
-* Beschreiben Sie möglichst genau, was unter welchen Umständen getan werden muß, um den Fehler zu reproduzieren.
+* In which Stud.IP version or at which location does the error occur? (e.g.: Version 5.4, University of Göttingen)
+* Which browser and version are you using? (e.g.: Internet Explorer 7)
+* What is your role in the system? (e.g. "Lecturer")
+* Describe as precisely as possible what needs to be done under which circumstances to reproduce the error.
 
-### Fehlerbericht über das gitlab
+### Error report via the gitlab
 
-Der "normale" Weg, einen Fehler in Stud.IP zu melden, ist die Verwendung des entsprechenden Formulars im gitlab: https://gitlab.studip.de/studip/studip/-/issues/new
+The "normal" way to report an error in Stud.IP is to use the corresponding form in gitlab: https://gitlab.studip.de/studip/studip/-/issues/new
 
-Beachten Sie, dass es für die Entwickelnden hilfreich ist, wenn Sie möglichst präzise Angaben zu dem Fehler machen. 
+Please note that it is helpful for the developers if you provide as precise information as possible about the error.
 
-- Was genau muss man tun, um den Fehler reproduzieren zu können? 
-- Tritt der Fehler in jedem Browser auf oder nur in manchen (Chrome, Firefox, Safari, Edge)
-- In welcher Version von Stud.IP tritt der Fehler auf (Ihre Stud.IP-Version steht meist im Impressum)?
-- Idealerweise laden Sie einen Screenshot mit hoch, wo auch die Adresszeile des Browsers sichtbar ist.
+- What exactly do you have to do to reproduce the error?
+- Does the error occur in every browser or only in some (Chrome, Firefox, Safari, Edge)
+- In which version of Stud.IP does the error occur (your Stud.IP version is usually listed in the imprint)?
+- Ideally, please upload a screenshot where the address bar of the browser is also visible.
 
 
-### Fehlerbericht via E-Mail
+### Error report via e-mail
 
-Alternativ können Fehler auch per Mail an die Adresse [studip-users@lists.sourceforge.net](mailto:studip-users@lists.sourceforge.net) berichtet werden. Diese landen allerdings nicht automatisch in unserem Stud.IP-Ticketsystem, es kann daher gelegentlich passieren, daß diese längere Zeit unbearbeitet sind oder sogar wieder ganz in Vergessenheit geraten.
+Alternatively, errors can also be reported by e-mail to [studip-users@lists.sourceforge.net](mailto:studip-users@lists.sourceforge.net). However, these do not automatically end up in our Stud.IP ticket system, so it can occasionally happen that they are unprocessed for a long time or even completely forgotten.
 
-Daher sollten Fehler, wenn möglich, nicht via E-Mail berichtet werden, sondern über den unter 1.1 oder 1.2 genannten Weg.
+Therefore, if possible, errors should not be reported via e-mail, but via the channels mentioned under 1.1 or 1.2.
 
-## Wie berichte ich einen Verbesserungsvorschlag?
+## How do I report a suggestion for improvement?
 
-Die erste Anlaufstelle für Erweiterungs- oder Verbesserungsvorschläge sollte das Forum der Veranstaltung [Developer-Board](https://develop.studip.de/studip/forum.php?cid=a70c45ca747f0ab2ea4acbb17398d370&view=tree) im [Entwickler- und Anwenderforum](https://develop.studip.de/studip/) sein. Dort kann man mit den Stud.IP-Entwicklern diskutieren, ob und ggf. in welcher Forum die eigenen Ideen umgesetzt werden könnten. Verbesserungsvorschläge sollten (von Ausnahmefällen abgesehen) nicht ohne vorherige Diskussion ins gitlab eingetragen werden.
+The first point of contact for suggestions for enhancements or improvements should be the forum of the event [Developer-Board](https://develop.studip.de/studip/forum.php?cid=a70c45ca747f0ab2ea4acbb17398d370&view=tree) in the [Developer and User Forum](https://develop.studip.de/studip/). There you can discuss with the Stud.IP developers whether and in which forum your ideas could be implemented. Suggestions for improvement should (apart from exceptional cases) not be entered into gitlab without prior discussion.
 
-### Typen von Tickets
+### Types of tickets
 
-Es gibt folgende Ticket-Typen:
+There are the following ticket types:
 
-| Typ | Beschreibung |
+| Type | Description |
 | ---- | ---- |
-| BIEST | ein Fehler im offiziellen Release |
-| Lifters | eine langfristig angelegte Überarbeitung, muß zuvor von der Core-Group abgestimmt werden |
-| StEP | ein Verbesserungsvorschlag, muß zuvor von der Core-Group abgestimmt werden |
-| TIC | ein "kleiner" Verbesserungsvorschlag |
+| BIEST | a bug in the official release |
+| Lifters | a long-term revision, must first be approved by the core group |
+| StEP | an improvement proposal, must be voted on by the core group beforehand |
+| TIC | a "small" improvement proposal |
 
 
 ### Milestone
-// TODO: muss überarbeitet werden
+// TODO: needs to be revised
 
-Ein Milestone im gitlab entspricht jeweils einem offiziellen Release von Stud.IP (wie 5.3 oder 5.4) und wird als ein Label abgebildet. 
-Über die Milestone-Angabe im Ticket wird verwaltet, welche Tickets für welches Stud.IP-Release erfolgreich geschlossen worden sind oder noch erledigt werden müssen. Nur Tickets, die sich auf das offizielle Release beziehen, haben einen Milestone, und der Milestone sollte nur von der Person bearbeitet werden, der das Ticket zugewiesen ist (oder einem der Release-Verantwortlichen). Dabei gelten folgende Regeln:
+A milestone in gitlab corresponds to an official release of Stud.IP (such as 5.3 or 5.4) and is represented as a label.
+The milestone information in the ticket is used to manage which tickets for which Stud.IP release have been successfully closed or still need to be completed. Only tickets relating to the official release have a milestone, and the milestone should only be processed by the person to whom the ticket is assigned (or one of the release managers). The following rules apply:
 
-| Typ | Beschreibung |
+| Type | Description |
 | ---- | ---- |
-| **BIEST** | Ein offenes BIEST hat keinen Milestone. Wenn das BIEST geschlossen wird, gibt der Milestone die erste Version von Stud.IP an, die diese Korrektur enthält, das ist in der Regel der jeweils aktuelle Release-Branch. |
-| **StEP**, **TIC** | Der Milestone ist die Version, für die der StEP bzw. TIC eingebaut werden soll. |
-| **Lifters**| Ein Lifters hat keinen Milestone. |
+| An open BIEST does not have a milestone. If the BIEST is closed, the milestone indicates the first version of Stud.IP that contains this correction, which is usually the current release branch. |
+**StEP**, **TIC** | The milestone is the version for which the StEP or TIC is to be installed. |
+| **Lifters**| A lifter has no milestone. |
 
-**Wichtig**: Der Milestone gibt *nicht* an, in welcher Version der Fehler aufgetreten ist. Das sollte Teil des Beschreibungstextes sein.
+**Important**: The milestone does *not* indicate in which version the error occurred. This should be part of the description text.
 
 
-### Zusätzliche Felder zur Qualitätssicherung
+### Additional fields for quality assurance
 
-Bei Tickets der Typen StEP und TIC gibt es zusätzliche Felder, die der Qualitätssicherung durch die Coregroup dienen und an die entsprechend mit Veto-Vollmacht ausgestatteten Zuständigkeiten gekoppelt sind. Derzeit werden folgende Felder verwendet:
+For tickets of the StEP and TIC types, there are additional fields that are used for quality assurance by the core group and are linked to the corresponding responsibilities with veto power. The following fields are currently used:
 
-| Typ| Beschreibung |
+| Type| Description |
 | ---- | --- |
-| **Code-Qualität?** | Code-Review erwünscht |
-| **Code-Qualität+** | Code-Review positiv |
-| **Code-Qualität-** | Code-Review negativ, d.h. Veto des Verantwortlichen |
-| **Sicherheit?** | Security-Review erwünscht |
-| **Sicherheit+** | Security-Review positiv |
-| **Sicherheit-** | Security-Review negativ, d.h. Veto des Verantwortlichen |
-| **Code-Konventionen?** | Review der formalen Code-Konventionen erwünscht |
-| **Code-Konventionen+** | Review der formalen Code-Konventionen positiv |
-| **Code-Konventionen-** | Review der formalen Code-Konventionen negativ, d.h. Veto des Verantwortlichen |
-| **Entwickler-Dokumentation?** | Entwicklerdokumentations-Review erwünscht |
-| **Entwickler-Dokumentation+** | Entwicklerdokumentations-Review positiv |
-| **Entwickler-Dokumentation-** | Entwicklerdokumentations-Review negativ, d.h. Veto des Verantwortlichen |
-| **Anwender-Dokumentation?** | Anwenderdokumentations-Review erwünscht |
-| **Anwender-Dokumentation+** | Anwenderdokumentations-Review positiv |
-| **Anwender-Dokumentation-** | Anwenderdokumentations-Review negativ, d.h. Veto des Verantwortlichen |
-| **Funktionalität?** | Funktionstest aus Anwendersicht-Review erwünscht |
-| **Funktionalität+** | Funktionstest aus Anwendersicht-Review positiv |
-| **Funktionalität-** | Funktionstest aus Anwendersicht-Review negativ, d.h. Veto des Verantwortlichen |
-| **GUI-Richtlinien?** | Review bezüglich der Nutzeroberfläche erwünscht |
-| **GUI-Richtlinien+** | Review bezüglich der Nutzeroberfläche positiv |
-| **GUI-Richtlinien-** | Review bezüglich der Nutzeroberfläche negativ, d.h. Veto des Verantwortlichen |
+| **Code quality?** | Code review desired |
+| **Code-Quality+** | Code-Review positive |
+| **Code-Quality-** | Code-Review negative, i.e. veto of the responsible person |
+| **Security?** | Security review desired |
+| **Security+** | Security review positive |
+| **Security-** | Security review negative, i.e. veto by the person responsible |
+| **Code conventions?** | Review of formal code conventions desired |
+| **Code conventions+** | Review of formal code conventions positive |
+| **Code conventions-** | Review of formal code conventions negative, i.e. veto by responsible person |
+| **Developer documentation?** | Developer documentation review desired |
+| **Developer documentation+** | Developer documentation review positive |
+| **Developer documentation-** | Developer documentation review negative, i.e. veto by responsible person |
+| **user documentation?** | user documentation review desired |
+| **user documentation+** | user documentation review positive |
+| **User documentation-** | User documentation review negative, i.e. veto by responsible person |
+| **Functionality?** | Functionality test from user perspective review desired |
+| **Functionality+** | Functionality test from user perspective review positive |
+| **Functionality-** | Functionality test from user's perspective review negative, i.e. veto by responsible person |
+| **GUI guidelines?** | Review of the user interface desired |
+| **GUI guidelines+** | Review regarding the user interface positive |
+| **GUI-Guidelines-** | Review regarding the user interface negative, i.e. veto of the person responsible |
 
 
 ## Keywords
 
-Über die Standardattribute hinausgehende Markierungen an einem Ticket werden über Keywords abgebildet.
+Markings on a ticket that go beyond the standard attributes are mapped using keywords.
