@@ -1,37 +1,37 @@
 ---
-title: Nachrichten
+title: News
 ---
 
 :::info
-Studip bietet die Möglichkeit Nachrichten ("messages")
-innerhalb des Systems zwischen Nutzern und Nutzergruppen zu versenden.
-Das Nachrichten-System ist aufgebaut wie ein interner Mail-Service.
+Studip offers the possibility to send messages within the system
+within the system between users and user groups.
+The message system is structured like an internal mail service.
 :::
 
-## Schema "messages"
+## Schema "messages
 
-Die Bestandteile einer Nachricht sind mit denen einer typischen Mail gleichzusetzen.
+The components of a message are the same as those of a typical mail.
 
-### Attribute
+### Attributes
 
-Attribut | Beschreibung
+Attribute | Description
 -------- | ------------
-subject  | Der Betreff einer Nachricht
-message  | Der Content einer Nachricht
-mkdate   | Erstellungsdatum einer Nachricht
-priority | Art der Relevanz
-tags     | Themen der Nachricht
+subject | The subject of a message
+message | The content of a message
+mkdate | Creation date of a message
+priority | Type of relevance
+tags | Topics of the message
 
-### Relationen
+### relations
 
-Relation   | Beschreibung
---------   | ------------
-sender     | Absendender Nutzer
-recipients | Emfpänger einer Nachricht
+relation | description
+-------- | ------------
+sender | sending user
+recipients | Receiver of a message
 
-## Alle Inbox-Nachrichten
+## All inbox messages
 
-Gibt alle Nachrichten eines Nutzers zurück.
+Returns all messages of a user.
 
 ### HTTP Request
 
@@ -39,63 +39,63 @@ Gibt alle Nachrichten eines Nutzers zurück.
 
 #### Parameter
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID des Nutzers
+id | ID of the user
 
-#### URL-Parameter
+#### URL parameter
 
-Parameter         | Beschreibung
----------         | ------------
-filter[unread]    | Sollen nur ungelesene Nachrichten ausgeliefert werden?
+Parameter | Description
+--------- | ------------
+filter[unread] | Should only unread messages be delivered?
 
-Wenn "filter[unread]" nicht gesetzt ist, werden alle Nachrichten ausgeliefert. Mit "filter[unread]=1" werden nur ungelesene Nachrichten zurück gegeben.
+If "filter[unread]" is not set, all messages are delivered. With "filter[unread]=1", only unread messages are returned.
 
-### Authorisierung
+### Authorization
 
-Diese Route kann nur vom Besitzer der betreffenden Nachrichten genutzt werden.
+This route can only be used by the owner of the relevant messages.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id>/users/<user-id>/inbox \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-## Alle Outbox-Nachrichten
-Gibt alle Outbox-Nachrichten eines Nutzers zurück
+## All outbox messages
+Returns all outbox messages of a user
 
 ### HTTP Request
    `GET /users/{id}/outbox`
 
 ### Parameter
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID des Nutzers
+id | ID of the user
 
-### Authorisierung
+### Authorization
 
-Diese Route kann nur vom Besitzer der betreffenden Nachrichten genutzt werden.
+This route can only be used by the owner of the relevant messages.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id>/users/<user-id>/outbox \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-## Eine Nachricht senden
+## Send a message
 
 ### HTTP Request
 
 `POST /messages`
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von jedem Studip-Nutzer genutzt werden.
+This route can be used by any Studip user.
 
-### Parameter
+### Parameters
 
-Diese Route benötigt keine Parameter
+This route does not require any parameters
 
    ```shell
    curl --request POST \
@@ -103,42 +103,42 @@ Diese Route benötigt keine Parameter
        --header "Content-Type: application/vnd.api+json" \
        --header "Authorization: Basic `echo -ne "root@studip:testing" | base64`" \
        --data
-       '{"data": {"type": "messages","attributes": {"subject": "Eine neue E-Mail","message": "Das ist meine erste Mail - Dank der API super einfach.", "priority": "normal" }, "relationships": {"recipients": {"data": [{"type": "users","id": "6235c46eb9e962866ebdceece739ace5"}]}}}}'
+       '{"data": {"type": "messages", "attributes": {"subject": "A new email", "message": "This is my first email - super easy thanks to the API.", "priority": "normal" }, "relationships": {"recipients": {"data": [{"type": "users", "id": "6235c46eb9e962866ebdceeceece739ace5"}]}}}}'
    ```
 
-## Eine Nachricht ansehen
+## View a message
 
 ### HTTP Request
 
    `GET /messages/{id}`
 
-   Parameter |  Beschreibung
+   Parameter | Description
    --------- | -------
-   id        | ID der Nachricht
+   id | ID of the message
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von Besitzern der jeweiligen Nachricht genutzt werden.
+This route can be used by owners of the respective message.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/messages/<message-id>/ \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
 
-## Eine Nachricht löschen
-Löscht eine Nachrichten
+## Delete a message
+Deletes a message
 
-### HTTP Request
+### HTTP request
    `DELETE /messages/{id}`
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von Besitzern der jeweiligen Nachricht genutzt werden.
+This route can be used by owners of the respective message.
 
   ```shell
     curl --request DELETE \
     --url https://example.com/messages/<messages-id> \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
   ```

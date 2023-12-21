@@ -1,43 +1,43 @@
 ---
-title: Routen
-slug: /jsonapi/routen
-sidebar_label: Routen
+title: Routes
+slug: /jsonapi/routes
+sidebar_label: Routes
 ---
 
-Diese Dokumentation befasst sich mit der Entwicklung von JSON:API-Routen.
+This documentation deals with the development of JSON:API routes.
 
-Die Stud.IP JSON:API ist zu erreichen unter der URI:
+The Stud.IP JSON:API can be reached under the URI:
 
-`https://<meine.studip.installation.de>/<eventuell-mit-pfad>/jsonapi.php/v1/<routen>`
+`https://<my.studip.installation.de>/<eventual-with-path>/jsonapi.php/v1/<routes>`
 
-Für den Developer-Server also zum Beispiel unter:
+For the developer server, for example, under:
 
 `https://develop.studip.de/studip/jsonapi.php/v1/semesters`
 
 
-### Was ist die Stud.IP JSON:API?
-Die Stud.IP JSON:API implementiert eine externe Schnittstelle zum Zugriff auf Stud.IP-Datenstrukturen und entspricht der JSON:API-Spezifikation (https://jsonapi.org/). Zur Verständnis empfiehlt es sich, diese Spezifikation zu lesen.
+### What is the Stud.IP JSON:API?
+The Stud.IP JSON:API implements an external interface for accessing Stud.IP data structures and corresponds to the JSON:API specification (https://jsonapi.org/). It is recommended to read this specification to understand it.
 
-Geht ein JSON:API-Request ein, werden nacheinander die folgenden Schritte durchlaufen:
+If a JSON:API request is received, the following steps are run through one after the other:
 
-* Routen-Zuordnung: Welcher Code wird für welche URI und welches HTTP-Verb ausgeführt?
-* Routen-Handler: Liefert eine JSON:API-konforme Antwort. Oft werden ein oder mehrere Stud.IP-Objekte zurückgegeben.
-* Schema-Zuordnung: Welche Schemaklasse kann Objekte einer bestimmten Stud.IP-Klasse in JSON umwandeln?
-* Schemas: Definiert die Abbildung eines Stud.IP-Objekts in JSON.
+* Route mapping: which code is executed for which URI and which HTTP verb?
+* Route handler: Delivers a JSON:API-compliant response. Often one or more Stud.IP objects are returned.
+* Schema mapping: Which schema class can convert objects of a specific Stud.IP class into JSON?
+* Schemas: Defines the mapping of a Stud.IP object to JSON.
 
 
 ![image](../assets/3a528f8f2de835a0ba5c4e342929179a/image.png)
-JSON:API-Ablauf
+JSON:API flow
 
-### Routen-Zuordnung
+### Route mapping
 
-In der Datei `/lib/classes/JsonApi/RouteMap.php` werden URIs auf zuständigen Code abgebildet. Dabei beginnen alle URIs immer mit `<STUDIP-URI>/jsonapi.php/v1/`. Sobald ein Request an solche URIs geht, wird mithilfe der `RouteMap` der entsprechende Code, der Routen-Handler, herausgesucht und aufgerufen.
+In the file `/lib/classes/JsonApi/RouteMap.php` URIs are mapped to responsible code. All URIs always start with `<STUDIP-URI>/jsonapi.php/v1/`. As soon as a request is sent to such URIs, the corresponding code, the route handler, is retrieved and called using the `RouteMap`.
 
-Routen können erfordern, dass Nutzer angemeldet sind: In diesem Fall werden die Routen in der Methode `RouteMap#authenticatedRoutes` definiert. Ist keine Nutzeranmeldung erforderlich, werden die Routen in `RouteMap#unauthenticatedRoutes` definiert.
+Routes may require users to be logged in: In this case, the routes are defined in the `RouteMap#authenticatedRoutes` method. If no user login is required, the routes are defined in `RouteMap#unauthenticatedRoutes`.
 
-Da `Slim` für das Routing verwendet wird, lohnt sich ein Blick in die entsprechende [Doku.](https://www.slimframework.com/docs/v3/objects/router.html)
+Since `Slim` is used for routing, it is worth taking a look at the corresponding [Docs](https://www.slimframework.com/docs/v3/objects/router.html)
 
-Ausschnitt aus der der Datei `RouteMap.php`:
+Excerpt from the file `RouteMap.php`:
 
 ```php
 namespace JsonApi;
@@ -58,23 +58,23 @@ class RouteMap
 ```
 
 
-### Routen-Handler
+### Route handlers
 
-Routen-Handler sind Unterklassen von `JsonApi\JsonApiController` und implementieren die magische Methode `__invoke`. Routen-Handler verhalten sich JSON:API-konform und bedienen sich dabei insbesondere der geerbeten Methoden:
+Route handlers are subclasses of `JsonApi\JsonApiController` and implement the magic method `__invoke`. Route handlers behave in a JSON:API-compliant manner and use the inherited methods in particular:
 
 * `getContentResponse`
 * `getPaginatedContentResponse`
 * `getCreatedResponse`
 * `getCodeResponse`
 
-Die wichtigsten Methoden sind dabei `getContentResponse` und `getPaginatedContentResponse`, da sie verwendet werden, um Stud.IP-Objekte zurückzugeben. Der Unterschiede wird schon im Namen deutlich. Die paginierte Variante funktioniert nur mit Listen von Stud.IP-Objekten.
+The most important methods are `getContentResponse` and `getPaginatedContentResponse`, as they are used to return Stud.IP objects. The difference is already clear from the name. The paginated variant only works with lists of Stud.IP objects.
 
-Beide Methoden werden verwendet, wenn in der JSON:API Stud.IP-Datenstrukturen ausgelesen werden sollen, wenn also ein `GET`-Request an die Stud.IP JSON:API gerichtet wurde.
+Both methods are used if Stud.IP data structures are to be read in the JSON:API, i.e. if a `GET` request has been sent to the Stud.IP JSON:API.
 
-Dazu übergibt man lediglich das Stud.IP-Objekt an diese Methode und ist fertig:
+Simply pass the Stud.IP object to this method and you're done:
 
 ```php
-    // in der RouteMap
+    // in the RouteMap
     $this->app->get('/blubber-threads/{id}', Routes\Blubber\ThreadsShow::class);
 ```
 
@@ -96,36 +96,36 @@ class ThreadsShow extends JsonApiController
 }
 ```
 
-Hier sieht man den generellen Aufruf der Methode `getContentResponse`.
+Here you can see the general call of the method `getContentResponse`.
 
-* Der Routen-Handler `ThreadsShow` ist eine Unterklasse von `JsonApi\JsonApiController`.
-* Der Routen-Handler implementiert die magische Methode `__invoke`.
-* Hier kommt der typische Dreisatz: Auslesen, Authorisieren, Zurückgeben.
-* Um den `BlubberThread` auslesen zu können, entnehmen wir der URI den Parameter `id`. Dieser war in der RouteMap definiert worden.
-* Nun überprüfen wir, ob der eingeloggte Nutzer diese Daten lesen darf. Dafür verwenden wir die Methode `JsonApiController#getUser`.
-* Zum Schluß übergeben wir den ausgelesenen `BlubberThread` an `getContentResponse` und das Ergebnis ist dann auch das Ergebnis des Requests.
+* The route handler `ThreadsShow` is a subclass of `JsonApi\JsonApiController`.
+* The route handler implements the magic method `__invoke`.
+* Here comes the typical rule of three: read, authorize, return.
+* In order to be able to read the `BlubberThread`, we take the parameter `id` from the URI. This was defined in the RouteMap.
+* Now we check whether the logged-in user is allowed to read this data. We use the method `JsonApiController#getUser` for this.
+* Finally, we pass the read `BlubberThread` to `getContentResponse` and the result is then also the result of the request.
 
-### Schema-Zuordnung
+### Schema mapping
 
-Wie kann die Stud.IP-JSON:API wissen, wie aus einem Stud.IP-`BlubberThread`-Objekt spezifikationskonformes JSON wird?
+How can the Stud.IP-JSON:API know how to turn a Stud.IP-`BlubberThread` object into specification-compliant JSON?
 
-Dafür ist zunächst die Schema-Zuordnung wichtig. Diese befindet sich in der Datei `/lib/classes/JsonApi/SchemaMap.php`. Und darin werden Stud.IP-Klassen auf Schema-Klassen abgebildet:
+First of all, the schema mapping is important. This can be found in the file `/lib/classes/JsonApi/SchemaMap.php`. And this is where Stud.IP classes are mapped to schema classes:
 
 ```php
 \BlubberThread::class => \JsonApi\Schemas\BlubberThread::class,
-``` 
+```
 
-Wird also mithilfe von beispielsweise `getContentResponse` ein `BlubberThread`-Objekt geliefert, wird die Schema-Klasse `JsonApi\Schemas\BlubberThread` für die Umwandlung verwendet.
+If, for example, a `BlubberThread` object is delivered using `getContentResponse`, the schema class `JsonApi\Schemas\BlubberThread` is used for the conversion.
 
-### Schemaklassen
+### Schema classes
 
-Schemaklassen machen aus einem Stud.IP-Objekt eine JSON:API-konforme Repräsentation. Die `User`-Schemaklasse macht zum Beispiel aus diesem Objekt:
+Schema classes turn a Stud.IP object into a JSON:API-compliant representation. For example, the `User` schema class turns this object into:
 
 ```php
 $me = \User::findCurrent();
 ```
 
-diese Darstellung, die JSON:API-konforme ist:
+this representation, which is JSON:API-compliant:
 
 ```javascript
 {
@@ -134,12 +134,12 @@ diese Darstellung, die JSON:API-konforme ist:
     "id": "205f3efb7997a0fc9755da2b535038da",
     "attributes": {
       "username": "test_dozent",
-      "formatted-name": "Testaccount Dozent",
-      "family-name": "Dozent",
+      "formatted-name": "Testaccount lecturer",
+      "family-name": "Lecturer",
       "given-name": "Testaccount",
       "name-prefix": "",
       "name-suffix": "",
-      "permission": "dozent",
+      "permission": "lecturer",
       "email": "dozent@studip.de",
       "phone": null,
       "homepage": null,
@@ -153,13 +153,13 @@ diese Darstellung, die JSON:API-konforme ist:
       },
     }
 }
-``` 
+```
 
-Wenn man die Schemaklassen in aller Ausführlichkeit verstehen möchte, sollte man zuvor den entsprechenden Teil der JSON:API-Spezifikation gelesen haben: https://jsonapi.org/format/#document-structure
+If you want to understand the schema classes in detail, you should first read the corresponding part of the JSON:API specification: https://jsonapi.org/format/#document-structure
 
-Die Schemaklassen bieten alle Möglichkeiten, die in der Spezifikation vorgestellt werden. Am wichtigsten sind sicherlich aber die ID, der Type, die Attribute und Relationships eines `Resource Object`s.
+The schema classes offer all the options presented in the specification. However, the ID, type, attributes and relationships of a `Resource Object` are certainly the most important.
 
-Zunächst ein Beispiel:  Diese Schemaklasse beschreibt die Umwandlung von Stud.IPs `Semester`-Objekten in eine spezifikationskonforme JSON-Form.
+First an example: This schema class describes the conversion of Stud.IP's `Semester` objects into a specification-compliant JSON form.
 
 ```php
 <?php
@@ -185,41 +185,41 @@ class Semester extends SchemaProvider
         return [
             'title' => (string) $semester->name,
             'description' => (string) $semester->description,
-            'start' => date('c', $semester->beginn),
-            'end' => date('c', $semester->ende),
+            'start' => date('c', $semester->start),
+            'end' => date('c', $semester->end),
         ];
     }
 }
 ```
 
-#### ID und Type
-Laut [Spezifikation](https://jsonapi.org/format/#document-resource-object-identification) benötigt jedes `Resource Object` eine ID und einen Type. Im Beispiel oben werden an Stelle A der Type und an Stelle B die ID definiert. Für alle Stud.IP-JSON:API-Types gilt:
+#### ID and type
+According to [Specification](https://jsonapi.org/format/#document-resource-object-identification), every `Resource Object` requires an ID and a type. In the example above, the type is defined at position A and the ID at position B. The following applies to all Stud.IP JSON:API types:
 
-* Der Type steht immer im Plural.
-* Der Type muss in `kebap-case` geschrieben sein.
+* The type is always in the plural.
+* The type must be written in `kebap-case`.
 
-Die ID wird über die überschriebene Methode `getId` festgelegt und muss einen String zurückliefern.
+The ID is defined via the overridden method `getId` and must return a string.
 
-#### Attribute
-Die [Spezifikation](https://jsonapi.org/format/#document-resource-object-attributes) ist bezüglich der Attribute von `Resource Objects` sehr klar. In der Stud.IP JSON:API werden sie definiert, indem man die Methode `getAttributes` überschreibt.
+#### Attributes
+The [Specification](https://jsonapi.org/format/#document-resource-object-attributes) is very clear about the attributes of `Resource Objects`. In the Stud.IP JSON:API they are defined by overriding the `getAttributes` method.
 
-* Rückgabewert muss ein PHP-Array sein.
-* Schlüssel und Werte müssen UTF-8 kodiert sind.
-* Erlaubte Zeichen für Schlüssel werden in der [Spezifikation](https://jsonapi.org/format/#document-member-names) definiert.
-* Folgende Schlüssel können nicht gewählt werden: `type`, `id`, `data`.
-* Die in Stud.IP-SORM häufig direkt verwendeten Fremdschlüssel `<irgendwas>_id` sollten in aller Regel keine Attribute sondern Relationen sein.
-* Etwaige menschenlesbare Versionen von Attributen müssen den Zusatz `-readable` am Attributnamen erhalten.
+* The return value must be a PHP array.
+* Keys and values must be UTF-8 encoded.
+* Allowed characters for keys are defined in the [Specification](https://jsonapi.org/format/#document-member-names).
+* The following keys cannot be selected: `type`, `id`, `data`.
+* The foreign keys `<something>_id` frequently used directly in Stud.IP-SORM should generally not be attributes but relations.
+* Any human-readable versions of attributes must have the addition `-readable` to the attribute name.
 
 #### Relationships
-Die [Relationships](https://jsonapi.org/format/#document-resource-object-relationships) sind ein sehr mächtiges Merkmal der JSON:API-Spezifikation. Es empfiehlt sich sehr, die entsprechenden Kapitel zu lesen, um die verschiedene Termini zu kennen.
+The [Relationships](https://jsonapi.org/format/#document-resource-object-relationships) are a very powerful feature of the JSON:API specification. It is highly recommended that you read the relevant chapters to familiarize yourself with the various terms.
 
-Letztendlich muss auch hier wieder die Methode `getRelationships` überschrieben werden, die ein Array von Relationships liefert. Wesentlich für eine Relation sind sicherlich:
+Finally, the `getRelationships` method, which returns an array of relationships, must also be overwritten here. Essential for a relationship are certainly:
 
-* Die Relationship möchte Daten liefern: `data`
-* Die Relationship möchte einen Link zur Relation selbst liefern: `links[self]`
-* Die Relationship möchte einen Link auf das verknüpfte Objekt liefern: `links[related]`
+* The relationship wants to provide data: `data`
+* The relationship wants to provide a link to the relation itself: `links[self]`
+* The relationship wants to provide a link to the linked object: `links[related]`
 
-Eine Relationship mit diesen drei Merkmalen gleichzeitig, sieht im Beispiel so aus:
+A relationship with these three characteristics at the same time looks like this in the example:
 ```php
 <?php
 
@@ -231,18 +231,18 @@ class BlubberThread extends SchemaProvider
     public function getRelationships($resource, $isPrimary, array $includeList)
     {
         $relationships = [];
-        
+
         //
-        
+
         $course = \Course::find($resource['context_id']);
         $relationships[self::REL_CONTEXT] = [
             self::SHOW_SELF => true,
             self::LINKS => [
                 Link::RELATED => new Link('/courses/'.$course->id)
-            ],           
+            ],
             self::DATA => $course
         ];
-    
+
         //
 
         return $relationships;
@@ -250,17 +250,17 @@ class BlubberThread extends SchemaProvider
 }
 ```
 
-Die `context`-Relationship eines BlubberThreads möchte:
-*  Daten liefern und legt diese unter dem Schlüssel `self::DATA` in der Relationship ab.
-* einen Link zur Relationship selbst liefern und ergänzt daher: `self::SHOW_SELF => true`
-* einen Link auf das verknüpfte Objekt liefern und setzt daher einen entsprechenden Eintrag im `self::LINKS`-Array.
+The `context` relationship of a BlubberThread wants to:
+* provide data and stores it under the key `self::DATA` in the relationship.
+* provide a link to the relationship itself and therefore adds: `self::SHOW_SELF => true`
+* provide a link to the linked object and therefore sets a corresponding entry in the `self::LINKS` array.
 
-#### Was ist mit Plugins?
+#### What about plugins?
 
-Plugins dürfen ebenfalls Routen und Schemata registrieren. Dazu muss
-ein Plugin lediglich das Plugin-Interface `JsonApi\Contracts\JsonApiPlugin` implementieren.
+Plugins may also register routes and schemas. To do this
+a plugin only needs to implement the plugin interface `JsonApi\Contracts\JsonApiPlugin`.
 
-Ein Beispiel:
+An example:
 
 ```php
 <?php
@@ -292,8 +292,8 @@ class MyPlugin extends StudIPPlugin implements StandardPlugin, JsonApiPlugin
 }
 ```
 
-Die darin angegebenen Routen und Schemata werden dann wie oben beschrieben implementiert.
+The routes and schemes specified therein are then implemented as described above.
 
-Ein Beispiel zur Einbindung findet sich hier:
+An example of integration can be found here:
 
 https://gitlab.studip.de/marcus/studip-plugin-jsonapi-example

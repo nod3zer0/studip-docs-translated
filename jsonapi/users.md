@@ -1,56 +1,56 @@
 ---
-title: Nutzer*innen
+title: Users
 ---
 
-Nutzer*innen (`users`) von Stud.IP-Installationen können mit den folgenden Routen
-abgefragt werden.
+Users of Stud.IP installations can be queried with the following routes
+can be queried with the following routes.
 
 ## Schema
 
-Alle Nutzer*innen werden in Stud.IP mit diesem Schema abgebildet. Die `id`
-entspricht der in Stud.IP verwendeten `user_id`. Der Typ ist `users`.
+All users are mapped in Stud.IP with this schema. The `id`
+corresponds to the `user_id` used in Stud.IP. The type is `users`.
 
-### Attribute
+### Attributes
 
-Attribut          | Beschreibung
---------          | ------------
-username          | der `username` wird beim Login-Vorgang verwendet
-formatted-name    | der formatierte Echtname
-family-name       | der Nachname
-given-name        | der Vorname
-name-prefix       | evtl. vorangestellte Titel
-name-suffix       | evtl. nachgestellte Titel
-permission        | die globale Berechtigungsstufe
-email             | die E-Mail-Adresse
-phone             | die Telefonnummer
-homepage          | die URL der Homepage
-address           | die private Adresse
+Attribute | Description
+-------- | ------------
+username | the `username` is used during the login process
+formatted-name | the formatted real name
+family-name | the last name
+given-name | the first name
+name-prefix | possibly preceding titles
+name-suffix | possibly trailing titles
+permission | the global authorization level
+email | the e-mail address
+phone | the telephone number
+homepage | the URL of the homepage
+address | the private address
 
-Die Berechtigungsstufe kann eine der folgenden sein: `root`, `admin`,
-`dozent`, `tutor`, `autor`
+The permission level can be one of the following: `root`, `admin`,
+`lecturer`, `tutor`, `author`
 
-Die Sichtbarkeit der Attribute `phone`, `homepage`, `address` folgt
-den Sichtbarkeitseinstellungen, die Nutzer*innen vorgenommen haben.
+The visibility of the attributes `phone`, `homepage`, `address` follows
+the visibility settings that users have made.
 
-### Relationen
+### Relations
 
 :::info
-Nicht alle Relationen sind für alle Betrachtenden zugänglich.
+Not all relations are accessible to all viewers.
 :::
 
-Relation              | Beschreibung
---------              | ------------
-activitystream        | ein Link zum `activity stream`
-blubber-postings      | die Blubber
-contacts              | die Kontakte
-courses               | die Veranstaltungen als `dozent`
-course-memberships    | die Teilnahmen an Veranstaltungen
-events                | der Terminkalender
-institute-memberships | die Institute
-schedule              | der Stundenplan
+Relation | Description
+-------- | ------------
+activitystream | a link to the `activity stream`
+blubber-postings | the blubber
+contacts | the contacts
+courses | the courses as `lecturer`
+course-memberships | the participation in events
+events | the calendar of events
+institute-memberships | the institutes
+schedule | the timetable
 
 
-## Alle `users`
+## All `users`
 
 ```shell
 curl --request GET \
@@ -58,7 +58,7 @@ curl --request GET \
     --header "Authorization: Basic `echo -ne "root@studip:testing" | base64`" \
 ```
 
-  > Der Request liefert JSON ähnlich wie dieses:
+  > The request returns JSON similar to this:
 
 ```json
 {
@@ -144,36 +144,36 @@ curl --request GET \
 }
 ```
 
-Dieser Endpoint liefert alle Nutzer*innen im Stud.IP, die mit den
-`credentials` des JSON:API-Nutzenden auch in Stud.IP selbst gesehen
-werden dürfen. Die Ausgabe erfolgt paginiert und kann durch Angabe von
-Offset und Limit weitergeblättert werden.
+This endpoint provides all users in Stud.IP who can be seen with the
+`credentials` of the JSON:API user can also be seen in Stud.IP itself.
+may be seen in Stud.IP itself. The output is paginated and can be scrolled through by specifying
+offset and limit.
 
 ### HTTP Request
 
-`GET /users`
+GET /users
 
-### Query-Parameter
+### Query parameters
 
 ```shell
 curl --request GET \
-     --url 'https://example.com/jsonapi.php/v1/users?filter[search]=test_autor'\
+     --url 'https://example.com/jsonapi.php/v1/users?filter[search]=test_author'\
      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
 ```
 
-Parameter      | Default | Beschreibung
----------      | ------- | ------------
-page[offset]   | 0       | der Offset
-page[limit]    | 30      | das Limit
-filter[search] | %%%     | der Suchbegriff, um Nutzer zu finden; mind. 3 Zeichen
+Parameter | Default | Description
+--------- | ------- | ------------
+page[offset] | 0 | the offset
+page[limit] | 30 | the limit
+filter[search] | %%% | the search term to find users; at least 3 characters
 
-### Autorisierung
+### Authorization
 
-Diese Route kann nur von Nutzern der Rechtestufe "root" verwendet werden.
+This route can only be used by users with the "root" authorization level.
 
 
 
-## Sich selbst auslesen
+## Read out yourself
 
 ```shell
 curl --request GET \
@@ -181,7 +181,7 @@ curl --request GET \
     --header "Authorization: Basic `echo -ne "test_dozent:testing" | base64`"
 ```
 
-> Der Request liefert JSON ähnlich wie dieses:
+> The request returns JSON similar to this:
 
 ```json
 {
@@ -190,12 +190,12 @@ curl --request GET \
     "id": "205f3efb7997a0fc9755da2b535038da",
     "attributes": {
       "username": "test_dozent",
-      "formatted-name": "Testaccount Dozent",
-      "family-name": "Dozent",
+      "formatted-name": "Testaccount lecturer",
+      "family-name": "Lecturer",
       "given-name": "Testaccount",
       "name-prefix": "",
       "name-suffix": "",
-      "permission": "dozent",
+      "permission": "lecturer",
       "email": "dozent@studip.de",
       "phone": null,
       "homepage": null,
@@ -253,23 +253,23 @@ curl --request GET \
 }
 ```
 
-Mit diesem Endpoint bekommt man denjenigen Stud.IP Nutzer, der
-autorisiert auf diesen Endpoint zugreift – also sich selbst.
+With this endpoint you get the Stud.IP user who
+authorized to access this endpoint - i.e. himself.
 
 ### HTTP Request
 
 `GET /users/me`
 
-### Query-Parameter
+### Query parameters
 
-Es werden keine Query-Parameter unterstützt.
+No query parameters are supported.
 
-### Autorisierung
+### Authorization
 
-Diese Route kann von jedem autorisierten Nutzer verwendet werden.
+This route can be used by any authorized user.
 
 
-## Einzelne Nutzende auslesen
+## Read out individual users
 
 ```shell
 curl --request GET \
@@ -277,24 +277,24 @@ curl --request GET \
     --header "Authorization: Basic `echo -ne "test_dozent:testing" | base64`"
 ```
 
-Diese Route liefert einzelne, beliebige Nutzende zurück. Unsichtbare
-Nutzende können sich allerdings nur selbst sehen.
+This route returns individual, arbitrary users. Invisible
+users can only see themselves.
 
-### HTTP Request
+### HTTP request
 
 `GET /users/{id}`
 
-### Query-Parameter
+### Query parameters
 
-Es werden keine Query-Parameter unterstützt.
+No query parameters are supported.
 
-### Autorisierung
+### Authorization
 
-Man kann sich selbst sehen. `root` darf alle Nutzenden sehen. Gesperrte
-und unsichtbare Nutzende sind ansonsten nicht sichtbar.
+You can see yourself. `root` may see all users. Locked
+and invisible users are otherwise not visible.
 
 
-## Nutzende löschen
+## Delete users
 
 ```shell
 curl --request DELETE \
@@ -302,26 +302,26 @@ curl --request DELETE \
     --header "Authorization: Basic `echo -ne "test_dozent:testing" | base64`"
 ```
 
-Diese Route löscht einen beliebigen Nutzenden.
+This route deletes any user.
 
 ### HTTP Request
 
 `DELETE /users/{id}`
 
-### Query-Parameter
+### Query parameters
 
-Es werden keine Query-Parameter unterstützt.
+No query parameters are supported.
 
-### Autorisierung
+### Authorization
 
-Diese Route ist nur aktiviert, wenn die Stud.IP-Konfiguration
-"JSONAPI_DANGEROUS_ROUTES_ALLOWED" gesetzt ist.
+This route is only activated if the Stud.IP configuration
+"JSONAPI_DANGEROUS_ROUTES_ALLOWED" is set.
 
-Ist das der Fall, dürfen Nutzende der Rechtestufe `root` andere
-Nutzende löschen. Man kann sich selbst **nicht** löschen.
+If this is the case, users with the `root` rights level may delete other users.
+delete other users. You **cannot** delete yourself.
 
 
-## Mitgliedschaften in Einrichtungen
+## Memberships in institutions
 
 ```shell
 curl --request GET \
@@ -329,16 +329,16 @@ curl --request GET \
     --header "Authorization: Basic `echo -ne "test_dozent:testing" | base64`"
 ```
 
-Mit dieser Route erhält man die Mitgliedschaften in Einrichtungen von Nutzenden.
+This route is used to obtain memberships in user institutions.
 
 ### HTTP Request
 
 `GET http://example.com/api/users/{id}/institute-memberships`
 
-### Query-Parameter
+### Query parameters
 
-Es werden keine Query-Parameter unterstützt.
+No query parameters are supported.
 
-### Autorisierung
+### Authorization
 
-Ein Nutzer kann nur die eigenen Mitgliedschaften in Einrichtungen einsehen.
+A user can only view their own memberships in institutions.

@@ -3,50 +3,50 @@ title: Wiki
 ---
 
 :::info
-Wikis bieten Dozenten und Studenten die Möglichkeit,
-gemeinsame Dokumente zu erstellen. Zu verschiedenen Themen in der
-Veranstaltungen können Wikis erstellt und gepflegt werden. Eine
-Versionskontrolle ermöglicht, sich Änderungen zwischen den
-Dokumentenversionen anzuschauen.
+Wikis offer lecturers and students the opportunity to
+to create joint documents. Wikis can be created and maintained for various topics in the
+courses, wikis can be created and maintained. A
+version control makes it possible to view changes between the
+document versions.
 :::
 
 ## Schema "wiki-pages"
-Neben dem Inhalt und Namen enthält jede Wiki-Seite Metadaten zur aktuellen Version.
-### Attribute
+In addition to the content and name, each wiki page contains metadata on the current version.
+### Attributes
 
-Attribut | Beschreibung
+Attribute | Description
 -------- | ------------
-keyword  | Der Name der Wiki-Seite
-content  | Der Inhalt der Wiki-Seite
-chdate   | Das Datum der letzten Änderung
-version  | Die aktuelle Versionsnummer
+keyword | The name of the wiki page
+content | The content of the wiki page
+chdate | The date of the last change
+version | The current version number
 
-### Relationen
+### Relations
 
- Relation | Beschreibung
---------  | ------------
-author    | Der Verfasser der Wiki-Seite
-range     | Der Range einer Wiki-Seite ist der entsprechende Kurs
+ Relation | Description
+-------- | ------------
+author | The author of the wiki page
+range | The range of a wiki page is the corresponding course
 
-## Wiki-Seiten eines Kurses
+## Wiki pages of a course
    `GET /courses/{id}/wiki-pages`
 
 ### Parameter
 
-   Parameter | Beschreibung
+   Parameter | Description
   ---------- | ------------
-  id         | Die ID des Kurses
+  id | The ID of the course
 
   ```shell
   curl --request GET \
       --url https://example.com/courses/<COURSE-ID>/wiki-pages \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
   ```
-### Autorisierung
-      Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
+### Authorization
+      The user should be a member of the corresponding course.
 
-> Der Request liefert JSON ähnlich wie dieses:
+> The request returns JSON similar to this:
 
 ```json
 {
@@ -67,7 +67,7 @@ range     | Der Range einer Wiki-Seite ist der entsprechende Kurs
       "id": "a07535cf2f8a72df33c12ddfa4b53dde_ulyq",
       "attributes": {
         "keyword": "ulyq",
-        "content": "Es gibt im Moment in diese Mannschaft, oh, einige Spieler vergessen ihren Profi was sie sind. Ich lese nicht sehr viele Zeitungen, aberich habe geh\u00f6rt viele Situationen. Erstens: Wir haben nicht offensivgespielt.",
+        "content": "There are in this team at the moment, oh, some players forget their pro what they are. I don't read a lot of newspapers, but I've seen a lot of situations. First of all, we didn't play offense.",
         "chdate": "2019-04-23T12:10:26+02:00",
         "version": 1
       },
@@ -97,7 +97,7 @@ range     | Der Range einer Wiki-Seite ist der entsprechende Kurs
       "id": "a07535cf2f8a72df33c12ddfa4b53dde_yxilo",
       "attributes": {
         "keyword": "yxilo",
-        "content": "Es gibt im Moment in diese Mannschaft, oh, einige Spieler vergessen ihren Profi was sie sind. Ich lese nicht sehr viele Zeitungen, aberich habe geh\u00f6rt viele Situationen. Erstens: Wir haben nicht offensivgespielt.",
+        "content": "There are in this team at the moment, oh, some players forget their pro what they are. I don't read a lot of newspapers, but I've seen a lot of situations. First of all, we didn't play offense.",
         "chdate": "2019-04-23T12:10:26+02:00",
         "version": 1
       },
@@ -127,27 +127,27 @@ range     | Der Range einer Wiki-Seite ist der entsprechende Kurs
 }
 ```
 
-## Wiki-Seite
+## Wiki page
 
-Gibt eine Wiki-Seite zurück.
+Returns a wiki page.
 
    `GET /wiki-pages/{id}`
 
-   Parameter | Beschreibung
+   Parameter | Description
   ---------- | ------------
-  id         | Die ID der Wiki-Seite
+  id | The ID of the wiki page
 
 
   ```shell
   curl --request GET \
       --url https://example.com/wiki-pages/<ID> \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
   ```
-### Autorisierung
-        Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
-  > Der Request liefert JSON ähnlich wie dieses:
+### Authorization
+        The user should be a member of the corresponding course.
+  > The request returns JSON similar to this:
 
 ```json
 {
@@ -188,46 +188,46 @@ Gibt eine Wiki-Seite zurück.
 ```
 
 
-## Wiki-Seite anlegen
+## Create wiki page
 
-Legt eine Wiki-Seite an.
+Creates a wiki page.
 
    `POST /courses/{id}/wiki-pages`
 
-   Parameter | Beschreibung
+   Parameters | Description
   ---------- | ------------
-  id         | Die ID der Veranstaltung
+  id | The ID of the course
 
   ```shell
   curl --request POST \
       --url https://example.com/courses/<COURSE-ID>/wiki \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
-      '{"data": {"type": "wiki-pages","attributes": {"keyword": "testing","content": "wiki created"}}}'
+      '{"data": {"type": "wiki-pages", "attributes": {"keyword": "testing", "content": "wiki created"}}}'
   ```
-### Autorisierung
-          Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
+### Authorization
+          The user should be a member of the corresponding course.
 
 
-## Wiki-Seite ändern
+## Change wiki page
 
-Aktualisiert eine Wiki-Seite.
+Updates a wiki page.
 
    `PATCH /wiki-pages/{id}`
 
-   Parameter | Beschreibung
+   Parameter | Description
   ---------- | ------------
-  id         | Die ID der Wiki-Seite
+  id | The ID of the wiki page
 
 ```
 curl --request PATCH \
       --url https://example.com/wiki-pages/<ID> \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
-      '{"data": {"type": "wiki-pages","attributes": {"content": "wiki changed"}}}'
+      '{"data": {"type": "wiki-pages", "attributes": {"content": "wiki changed"}}}'
 ```
 
-### Autorisierung
-Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
+### Authorization
+The user should be a member of the corresponding course.

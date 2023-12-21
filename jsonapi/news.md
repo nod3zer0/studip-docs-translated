@@ -1,74 +1,74 @@
 ---
-title: Ankündigungen (News)
+title: Announcements (News)
 ---
 
 :::info
-  Ankündigungen informieren Stud.IP-Nutzer über neuste Ereignisse rund um
-  die Lehre. In Stud.IP können Ankündigungen z.B. systemweit (global) oder für
-  einen bestimmten Nutzerkreis erstellt werden.
+  Announcements inform Stud.IP users about the latest events concerning
+  teaching. In Stud.IP announcements can be created system-wide (global) or for a specific
+  a specific group of users.
 :::
 
 ## Schema "news"
 
-Ankündigungen bestehen aus ihrem Inhalt und einigen Meta-Daten. Die Dauer der
-Sichtbarkeit einer Anküdnigung wird durch ihre Attribute publication-start und
-end bestimmt (siehe Relationen).
+Announcements consist of their content and some meta data. The duration of the
+visibility of an announcement is determined by its attributes publication-start and
+end attributes (see relations).
 
-### Attribute
+### Attributes
 
-Attribut          | Beschreibung
---------          | ------------
-title             | Name einer news
-content           | Inhalt einer News
-mkdate            | Erstellungs-Datum einer News
-chdate            | Datum der letzten Änderung
-publication-start | Start der Sichtbarkeit für den Nutzerkreis einer News
-publication-end   | Ende der Sichtbarkeit für den Nutzerkreis einer News
-comments-allowed  | Bestimmung, ob Kommentare erlaubt sind (Boolean)
+Attribute | Description
+-------- | ------------
+title | Name of a news item
+content | Content of a news item
+mkdate | Creation date of a news item
+chdate | Date of the last change
+publication-start | Start of visibility for the user group of a news item
+publication-end | End of visibility for the user group of a news item
+comments-allowed | Determination of whether comments are allowed (Boolean)
 
-Ein Beispiel zum erstellen einer News anhand des Schemas folgt in News anlegen.
+An example of how to create a news item using the schema follows in Create news.
 
-### Relationen
+### Relations
 
- Relation | Beschreibung
---------  | ------------
-author    | Ersteller einer News
-ranges    | global, institute, semester, course, users
+ Relation | Description
+-------- | ------------
+author | creator of a news item
+ranges | global, institute, semester, course, users
 
-Der Range einer News gibt an wo sie publiziert wird und somit auch für wen
-sie sichtbar ist.
+The range of a news item indicates where it is published and therefore for whom
+it is visible.
 
 ## Schema "comments"
 
-Kommentare werden in Stud.IP an eine Ankündigung angehangen, wenn der Ersteller
-der News die Erlaubnis vergeben hat.
+Comments are attached to an announcement in Stud.IP if the creator of the news has given
+of the news has given permission.
 
-### Attribute
+### Attributes
 
-Attribut          | Beschreibung
---------          | ------------
-content           | Inhalt eines Kommentars
-mkdate            | Erstellungs-Datum
-chdate            | Datum der letzten Änderung
+Attribute | Description
+-------- | ------------
+content | Content of a comment
+mkdate | Creation date
+chdate | Date of last change
 
-### Relationen
+### Relations
 
- Relation | Beschreibung
---------  | ------------
-author    | Der Ersteller des Kommentars
-news      | Die kommentierte News
+ Relation | Description
+-------- | ------------
+author | The creator of the comment
+news | The commented news
 
-## News anlegen
-  Das Anlegen einer News ist in verschiedenen Kontexten möglich. Sie kann
-  global als systemweite News, kursintern oder nutzerbezogen angelegt werden.
+## Create news
+  It is possible to create a news item in various contexts. It can be
+  be created globally as system-wide news, course-internal or user-related.
 
-## Eine globale News anlegen
+## Create a global news item
 
 ### Route
    `POST /news`
-### Autorisierung
-Die Erstellung einer globalen News erfordern zur Zeit noch Root-Rechte.
-Es wird diskutiert ob hier Adminrechte reichen.
+### Authorization
+The creation of a global news item currently requires root rights.
+It is being discussed whether admin rights are sufficient here.
 
    ```shell
    curl --request POST \
@@ -76,10 +76,10 @@ Es wird diskutiert ob hier Adminrechte reichen.
        --header "Content-Type: application/vnd.api+json" \
        --header "Authorization: Basic `echo -ne "root@studip:testing" | base64`" \
        --data
-       '{"data": {"type": "news","attributes": {"title": "Neue News","comments-allowed": true,"publication-start": "2020-01-01T12:12:12+00:00","publication-end": "2021-01-01T12:12:12+00:00","content": "Eine neue News sieht das Tageslicht."}}}'
+       '{"data": {"type": "news", "attributes": {"title": "New news", "comments-allowed": true, "publication-start": "2020-01-01T12:12:12+00:00", "publication-end": "2021-01-01T12:12:12+00:00", "content": "A new news item sees the light of day."}}}'
    ```
 
-## Eine Kurs-News anlegen
+## Create a course news item
 
    `POST /courses/{id}/news`
 
@@ -89,32 +89,32 @@ Es wird diskutiert ob hier Adminrechte reichen.
        --header "Content-Type: application/vnd.api+json" \
        --header "Authorization: Basic `echo -ne "test_dozent:testing" | base64`" \
        --data
-       '{"data": {"type": "news","attributes": {"title": "Neue News","comments-allowed": true,"publication-start": "2020-01-01T12:12:12+00:00","publication-end": "2021-01-01T12:12:12+00:00","content": "Eine neue News sieht das Tageslicht."}}}'
+       '{"data": {"type": "news", "attributes": {"title": "New news", "comments-allowed": true, "publication-start": "2020-01-01T12:12:12+00:00", "publication-end": "2021-01-01T12:12:12+00:00", "content": "A new news item sees the light of day."}}}'
    ```
-   Parameter | Beschreibung
+   Parameter | Description
   ---------- | ------------
-  id         | Die ID des Kurses
-### Autorisierung
-Der Nutzer muss mindestens Dozenten- oder Adminrechte innerhalb des Kurses haben.
-## Eine Nutzer-News anlegen
+  id | The ID of the course
+### Authorization
+The user must have at least instructor or admin rights within the course.
+## Create a user news
    `POST /users/{id}/news`
 
    ```shell
    curl --request POST \
        --url https://example.com/users/<USER-ID>/news \
        --header "Content-Type: application/vnd.api+json" \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
        --data
-       '{"data": {"type": "news","attributes": {"title": "Neue News","comments-allowed": true,"publication-start": "2020-01-01T12:12:12+00:00","publication-end": "2021-01-01T12:12:12+00:00","content": "Eine neue News sieht das Tageslicht."}}}'
+       '{"data": {"type": "news", "attributes": {"title": "New news", "comments-allowed": true, "publication-start": "2020-01-01T12:12:12+00:00", "publication-end": "2021-01-01T12:12:12+00:00", "content": "A new news item sees the light of day."}}}'
    ```
 
-   Parameter | Beschreibung
+   Parameter | Description
   ---------- | ------------
-  id         | Die ID des Users
-### Autorisierung
-  Der Nutzer muss mindestens User-Rechte haben.
+  id | The ID of the user
+### Authorization
+  The user must have at least user rights.
 
-## Einen Kommentar anlegen
+## Create a comment
    `POST /news/{id}/comments`
 
    ```shell
@@ -123,49 +123,49 @@ Der Nutzer muss mindestens Dozenten- oder Adminrechte innerhalb des Kurses haben
        --header "Content-Type: application/vnd.api+json" \
        --header "Authorization: Basic `echo -ne "test_dozent:testing" | base64`" \
        --data
-       '{"data": {"type": "comments","attributes": {"content": "Ein Kommentar wurde geupdatet"}}}'
+       '{"data": {"type": "comments", "attributes": {"content": "A comment has been updated"}}}'
    ```
-   ### Autorisierung
-     Der Nutzer muss mindestens User-Rechte haben.
+   ### Authorization
+     The user must have at least user rights.
 
-   Parameter | Beschreibung
+   Parameter | Description
   ---------- | ------------
-  id         | Die ID der News
-## Eine News ändern
+  id | The ID of the news item
+## Change a news item
    `PATCH /news/{id}`
 
-   Parameter | Beschreibung
+   Parameter | Description
   ---------- | ------------
-  id         | Die ID der News
+  id | The ID of the news item
 
-  Die Data-Felder beim Update einer News sind optional.
+  The data fields when updating a news item are optional.
 
   ```shell
   curl --request PATCH \
       --url https://example.com/news/<NEWS-ID> \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
-      '{"data": {"type": "news","attributes": {"title": "Aenderungen","comments-allowed": true,"publication-start": "2020-01-01T12:12:12+00:00","publication-end": "2021-01-01T12:12:12+00:00","content": "Eine News wurde geaendert."}}}'
+      '{"data": {"type": "news", "attributes": {"title": "Changes", "comments-allowed": true, "publication-start": "2020-01-01T12:12:12+00:00", "publication-end": "2021-01-01T12:12:12+00:00", "content": "A news item has been changed."}}}'
   ```
-### Autorisierung
-    Der Nutzer muss Inhaber der News sein oder die entsprechenden Root-Rechte
-    besitzen.
-## Eine News ansehen
+### Authorization
+    The user must be the owner of the news item or have the corresponding root rights.
+    rights.
+## View a news item
    `GET /news/{id}`
 
-   Parameter | Beschreibung
+   Parameter | Description
   ---------- | ------------
-  id         | Die ID der News
+  id | The ID of the news item
   ```shell
   curl --request GET \
       --url https://example.com/news/<NEWS-ID> \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
   ```
-### Autorisierung
-      Der Nutzer muss Inhaber der News sein oder die entsprechenden Range-Rechte
-      besitzen.
-  > Der Request liefert JSON ähnlich wie dieses:
+### Authorization
+      The user must be the owner of the news or have the corresponding range rights
+      have.
+  > The request returns JSON similar to this:
 
 ```json
 {
@@ -207,22 +207,22 @@ Der Nutzer muss mindestens Dozenten- oder Adminrechte innerhalb des Kurses haben
 }
 ```
 
-## Alle Kurs-News
+## All course news
    `GET /courses/{id}/news`
 
-   Parameter | Beschreibung
+   Parameters | Description
   ---------- | ------------
-  id         | Die ID des Kurses
+  id | The ID of the course
 
   ```shell
   curl --request GET \
       --url https://example.com/course/<COURSE-ID>/news \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
   ```
-### Autorisierung
-  Der Nutzer muss mindestens Teilnehmer des Kurses sein.
+### Authorization
+  The user must be at least a participant of the course.
 
-  > Der Request liefert JSON ähnlich wie dieses:
+  > The request returns JSON similar to this:
 
 ```json
 {
@@ -395,22 +395,22 @@ Der Nutzer muss mindestens Dozenten- oder Adminrechte innerhalb des Kurses haben
 ```
 
 
-## Alle Nutzer-News
+## All user news
    `GET /users/{id}/news`
 
-   Parameter | Beschreibung
+   Parameter | Description
    ---------- | ------------
-   id         | Die ID des Nutzers
+   id | The ID of the user
 
    ```shell
    curl --request GET \
        --url https://example.com/user/<USER-ID>/news \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
    ```
-### Autorisierung
-   Der Nutzer muss mindestens eingeloggt sein oder über Root-Rechte verfügen.
+### Authorization
+   The user must at least be logged in or have root rights.
 
-   > Der Request liefert JSON ähnlich wie dieses:
+   > The request returns JSON similar to this:
 
 ```json
 {
@@ -418,8 +418,8 @@ Der Nutzer muss mindestens Dozenten- oder Adminrechte innerhalb des Kurses haben
     "type": "news",
     "id": "0e8df7da383d7515c4dc081bfe889897",
     "attributes": {
-    "title": "Neue News",
-    "content": "Eine neue News sieht das Tageslicht.",
+    "title": "New news",
+    "content": "A new news item sees the light of day.",
     "mkdate": "2018-06-19T16:08:51+02:00",
     "chdate": "2018-08-15T14:22:38+02:00",
     "publication-start": "2018-06-19T16:08:51+02:00",
@@ -455,27 +455,27 @@ Der Nutzer muss mindestens Dozenten- oder Adminrechte innerhalb des Kurses haben
 }
 ```
 
-## Alle News-Kommentare
+## All news comments
    GET /news/{id}/comments
 
-   Parameter | Beschreibung
+   Parameter | Description
    ---------- | ------------
-   id         | Die ID einer News
+   id | The ID of a news item
 
-## Alle globalen News
-   `GET /studip/news`
+## All global news
+   GET /studip/news
 
    ```shell
    curl --request GET \
        --url https://example.com/user/studip/news \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
    ```
 
-### Autorisierung
+### Authorization
 
-    Der Nutzer muss mindestens eingeloggt sein oder über Root-Rechte verfügen.
+    The user must at least be logged in or have root rights.
 
-> Der Request liefert JSON ähnlich wie dieses:
+> The request returns JSON similar to this:
 
 ```json
 {
@@ -483,8 +483,8 @@ Der Nutzer muss mindestens Dozenten- oder Adminrechte innerhalb des Kurses haben
     "type": "news",
     "id": "0e8df7da383d7515c4dc081bfe889897",
     "attributes": {
-    "title": "Globale News",
-    "content": "Eine neue News sieht das Tageslicht.",
+    "title": "Global News",
+    "content": "A new news item sees the light of day.",
     "mkdate": "2018-06-19T16:08:51+02:00",
     "chdate": "2018-08-15T14:22:38+02:00",
     "publication-start": "2018-06-19T16:08:51+02:00",
@@ -521,20 +521,20 @@ Der Nutzer muss mindestens Dozenten- oder Adminrechte innerhalb des Kurses haben
 ```
 
 
-## Alle News des aktuell eingeloggten Nutzers abrufen
+## Retrieve all news of the currently logged in user
     `GET /news`
 
   ```shell
   curl --request GET \
       --url https://example.com/news \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
   ```
 
-### Autorisierung
+### Authorization
 
-    Der Nutzer muss mindestens eingeloggt sein oder über Root-Rechte verfügen.
+    The user must at least be logged in or have root rights.
 
-> Der Request liefert JSON ähnlich wie dieses:
+> The request returns JSON similar to this:
 
 ```json
 {
@@ -542,8 +542,8 @@ Der Nutzer muss mindestens Dozenten- oder Adminrechte innerhalb des Kurses haben
     "type": "news",
     "id": "0e8df7da383d7515c4dc081bfe889897",
     "attributes": {
-    "title": "Neue News",
-    "content": "Eine neue News sieht das Tageslicht.",
+    "title": "New news",
+    "content": "A new news item sees the light of day.",
     "mkdate": "2018-06-19T16:08:51+02:00",
     "chdate": "2018-08-15T14:22:38+02:00",
     "publication-start": "2018-06-19T16:08:51+02:00",
@@ -580,54 +580,54 @@ Der Nutzer muss mindestens Dozenten- oder Adminrechte innerhalb des Kurses haben
 ```
 
 
-## Eine News löschen
+## Delete a news item
    `DELETE /news/{id}`
 
-   Parameter  | Beschreibung
+   Parameter | Description
    ---------- | ------------
-   id         | Die ID der News
+   id | The ID of the news item
 
-### Authorisierung
+### Authorization
 
-Diese Route kann nur vom Nutzer der betreffenden Nachrichten genutzt werden.
+This route can only be used by the user of the news in question.
 
    ```shell
    curl --request DELETE \
        --url https://example.com/news/<NEWS-ID> \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
    ```
- ### Autorisierung
+ ### Authorization
 
-       Der Nutzer muss mindestens eingeloggt sein oder über Root-Rechte verfügen.
+       The user must at least be logged in or have root rights.
 
-## Einen Kommentar löschen
+## Delete a comment
    `DELETE /comments/{id}`
 
-   Parameter  | Beschreibung
+   Parameter | Description
    ---------- | ------------
-   id         | Die ID eines Kommentars
+   id | The ID of a comment
 
    ```shell
    curl --request DELETE \
        --url https://example.com/comments/studip/news \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
    ```
-## Alle News-Ranges
+## All news ranges
    `GET /news/{id}/relationships/ranges`
 
    see http://jsonapi.org/format/#fetching-relationships
 
-## News-Ranges setzen
+## Set news ranks
    `PATCH /news/{id}/relationships/ranges`
 
    see http://jsonapi.org/format/#crud-updating-to-many-relationships
 
-## News-Ranges hinzufügen
+## Add news-ranges
    `POST /news/{id}/relationships/ranges`
 
    see http://jsonapi.org/format/#crud-updating-to-many-relationships
 
-## News-Ranges löschen
+## Delete news-ranges
    `DELETE /news/{id}/relationships/ranges`
 
    see http://jsonapi.org/format/#crud-updating-to-many-relationships

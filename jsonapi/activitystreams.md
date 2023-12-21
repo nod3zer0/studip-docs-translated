@@ -2,52 +2,52 @@
 title: Activity Streams
 ---
 
-Mit Stud.IP Version 3.5 wurde eine neue API zum Erzeugen, Darstellen
-und Filtern von kontextrelevanten Aktivitäten eingeführt. Diese API
-kann u.a. dafür genutzt werden um Nutzern einen schnellen Überblick
-über die für ihn relevanten Information/Aktivitäten zu geben.
+Stud.IP version 3.5 introduces a new API for creating, displaying and filtering
+and filtering of context-relevant activities was introduced. This API
+can be used to give users a quick overview of the information/activities
+of the information/activities relevant to them.
 
 ## Schema "activities"
 
-Activity Streams enthalten Objekte des Typs "activities". Diese geben
-enthalten eine textuelle Beschreibung der Aktivität, ein Datum, eine
-(etwas) detailiertere Beschreibung und die Art der Aktivität (das
-Verb). Aktivitäten beziehen sich auf einen Akteur (in der Regel ein
-Nutzer), einen Kontext, in dem sie stattfinden, und ein Objekt, auf
-das sie sich beziehen.
+Activity streams contain objects of the type "activities". These give
+contain a textual description of the activity, a date, a
+(slightly) more detailed description and the type of activity (the
+verb). Activities refer to an actor (usually a user), a context in which the
+user), a context in which they take place and an object to which they refer.
+to which they refer.
 
-### Attribute
+### Attributes
 
-Attribut      | Beschreibung
---------      | ------------
-title         | knappe Beschreibung der Aktivität: "Wer tut was mit wem/was wo?"
-mkdate        | Datum der Aktivität
-content       | etwas detailiertere Beschreibung der Aktivität
-verb          | Art der Aktivität
-activity-type | Typ der Aktivität
+Attribute | Description
+-------- | ------------
+title | brief description of the activity: "Who is doing what with whom/what where?"
+mkdate | date of the activity
+content | somewhat more detailed description of the activity
+verb | type of activity
+activity-type | type of activity
 
-Die verwendeten Verben sind normiert. Der Wertebereich umfasst:
+The verbs used are standardized. The value range includes:
 
 <code>answered, attempted, attended, completed, created, deleted,
 edited, experienced, failed, imported, interacted, passed, shared,
 sent, voided</code>
 
-### Relationen
+### Relationships
 
-Die Relationen sind nicht änderbar und können nur ausgelesen werden.
+The relations cannot be changed and can only be read.
 
- Relation | Beschreibung
---------  | ------------
-actor     | Wenn der Akteur der Aktivität ein Nutzer ist, wird mit dieser Relation auf ihn verwiesen.
-context   | der Kontext, in dem die Aktivität stattfindet; kann eine der folgenden sein: Veranstaltung, Einrichtung, Nutzer oder System.
-object    | das Objekt, mit dem die Aktivität stattfindet; falls möglich wird hier auf eine Route in der JSON:API verwiesen
+ Relation | Description
+-------- | ------------
+actor | If the actor of the activity is a user, this relation is used to refer to them.
+context | the context in which the activity takes place; can be one of the following: event, institution, user or system.
+object | the object with which the activity takes place; if possible, a route in the JSON:API is referenced here
 
-## Alle Aktivitäten auslesen
+## Read all activities
 
 ```shell
 curl --request GET \
     --url https://example.com/jsonapi.php/v1/users/<USER-ID>/activitystream \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
 ```javascript
@@ -55,86 +55,86 @@ fetch('https://example.com/jsonapi.php/v1/users/<USER-ID>/activitystream', {
     method: 'GET',
     mode: 'cors',
     headers: new Headers({
-        'Authorization': `Basic ${btoa('test_autor:testing')}`
+        'Authorization': `Basic ${btoa('test_author:testing')}`
     })
 }).then(response => console.log(response))
 ```
 
 
-Mit dieser Route können die Aktivitäten ausgelesen werden, die für einen
-Nutzer sichtbar sind. Der Activity Stream wird paginiert ausgegeben.
-Standardmäßig werden nur Aktivitäten **der letzten 6 Monate**
-ausgegeben. Diese Einschränkung kann mit Hilfe des URL-Parameters
-'filter' verändert werden.
+This route can be used to read out the activities that are visible to a user.
+visible to a user. The activity stream is output paginated.
+By default, only activities **from the last 6 months**
+are displayed. This restriction can be changed using the URL parameter
+'filter' to change this restriction.
 
-### HTTP Request
+### HTTP request
 
 `GET /users/{id}/activitystream`
 
-### URL-Parameter
+### URL parameter
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-filter    | Filtermöglichkeit der anzuzeigenden Aktivitäten (Zeit und Typ)
-include   | ermöglicht das Inkludieren des Akteurs, des Kontexts und des Objekts in die JSON:API-Antwort
-page      | Einstellmöglichkeiten [zur Paginierung](#paginierung)
+filter | filter option for the activities to be displayed (time and type)
+include | enables the actor, context and object to be included in the JSON:API response
+page | setting options [for pagination](#pagination)
 
-#### URL-Parameter 'filter'
+#### URL parameter 'filter'
 
 ```shell
 curl --request GET \
      --url 'https://example.com/jsonapi.php/v1/users/<USER-ID>/activitystream?filter\[start\]=1263078000&filter\[end\]=1409695200&filter[activity-type]=documents' \
-     --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+     --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Mit diesem URL-Parameter kann nach Typ und Datum der Aktivitäten
-gefiltert werden. Möglich sind folgende Filter:
+This URL parameter can be used to filter by type and date of the activities
+can be filtered. The following filters are possible:
 
-Filter                | Beschreibung
+Filter | Description
 --------------------- | ------------
-filter[start]         | zeitliche Beschränkung: Start des Abfrageintervalls
-filter[end]           | zeitliche Beschränkung: Ende des Abfrageintervalls
-filter[activity-type] | nur Aktivitäten dieses Typs/dieser Typen werden zurückgeliefert
+filter[start] | time restriction: Start of the query interval
+filter[end] | time restriction: end of the query interval
+filter[activity-type] | only activities of this type/these types are returned
 
-Mit Hilfe der Parameter 'start' und 'end' kann das Abfrageintervall
-verändert werden. Standardmäßig werden alle Aktivitäten der letzten 6
-Monate bis zum aktuellen Zeitpunkt zurückgeliefert. Mit 'start' und
-'end' können diese Intervallgrenzen beliebig gestaltet werden. Für diese
-beiden Parameter können nur ganzzahlige Werte angegeben werden, die
-die Anzahl der Sekunden seit dem 01.01.1970 bis zum gewünschten
-Zeitpunkt angeben ('unix epoch time').
+The query interval can be changed using the 'start' and 'end' parameters.
+can be changed. By default, all activities from the last 6
+months up to the current point in time are returned. With 'start' and
+'end', these interval limits can be set as required. For these
+only integer values can be specified for these two parameters, which
+the number of seconds since 01.01.1970 up to the desired point in time ('unix
+time ('unix epoch time').
 
-Der Parameter 'activity-type' schränkt die Aktivitäten nach Typ ein.
-Mögliche Werte sind:
+The 'activity-type' parameter restricts the activities by type.
+Possible values are:
 
 `activity`, `documents`, `forum`, `literature`, `message`, `news`, `participants`, `schedule`, `wiki`
 
-Um nach mehreren Aktivitätstypen zu filtern, können mehrere dieser
-Typen durch Komma getrennt verwendet werden.
+To filter by several activity types, several of these types can be used
+types can be used, separated by commas.
 
-#### URL-Parameter 'include'
+#### URL parameter 'include'
 
 ```shell
 curl --request GET \
      --url 'https://example.com/jsonapi.php/v1/users/<USER-ID>/activitystream?include=actor,context'\
-     --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+     --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Werte      | Beschreibung
+Values | Description
 ---------- | ------------
-actor      | inkludiert die Akteure der gelieferten Aktivitäten
-context    | inkludiert die Kontexte der gelieferten Aktivitäten
-object     | inkludiert die Objekte der gelieferten Aktivitäten
+actor | includes the actors of the delivered activities
+context | includes the contexts of the delivered activities
+object | includes the objects of the delivered activities
 
-Der 'include'-Parameter wird der JSON:API-Spezifikation entsprechend
-verwendet. Es können auch mehrere Werte durch Komma getrennt angegeben werden.
+The 'include' parameter is used in accordance with the JSON:API specification.
+is used. Multiple values can also be specified separated by commas.
 
-### Meta-Informationen
+### Meta information
 
-Damit klar ersichtlich ist, welche Filter für die Abfrage galten,
-werden diese Informationen als Top-Level-'meta'-Objekt zurückgegeben.
+So that it is clear which filters applied to the query,
+this information is returned as a top-level 'meta' object.
 
-### Authorisierung
+### Authorization
 
-Mit dieser Route kann nur der Nutzer selbst oder Root-Nutzer
-diejenigen Aktivitäten sehen, die für einen Nutzers sichtbar wären.
+With this route, only the user himself or root user can see
+can see the activities that would be visible to a user.

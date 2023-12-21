@@ -1,165 +1,165 @@
 ---
-title: Einrichtungen
+title: Facilities
 ---
 
 
-Die Einrichtungen der Stud.IP-Installation können mit den folgenden Routen
-abgefragt werden.
+The facilities of the Stud.IP installation can be queried using the following routes
+can be queried with the following routes.
 
 ## Schema 'institutes'
 
-Alle Einrichtungen werden in Stud.IP mit diesem Schema abgebildet. Die `id`
-entspricht der in Stud.IP verwendeten `Institut_id`. Der Typ ist `institutes`.
+All institutions are mapped in Stud.IP with this schema. The `id`
+corresponds to the `Institut_id` used in Stud.IP. The type is `institutes`.
 
-### Attribute
+### Attributes
 
-Attribut      | Beschreibung
---------      | ------------
-name          | der Einrichtungsname
-city          | die Stadt in der die Einrichtung liegt
-street        | die Anschrift (Straße) der Einrichtung
-phone         | die Telefonnummer der Einrichtung
-fax           | die Faxnummer der Einrichtung
-url           | die URL der Webseite der Einrichtung
-mkdate        | das Erstellungsdatum der Einrichtung in Stud.IP
-chdate        | das letztes Änderungsdatum der Einrichtungsdaten in Stud.IP
+Attribute | Description
+-------- | ------------
+name | the name of the institution
+city | the city in which the institution is located
+street | the address (street) of the institution
+phone | the telephone number of the institution
+fax | the fax number of the institution
+url | the URL of the institution's website
+mkdate | the creation date of the institution in Stud.IP
+chdate | the last modification date of the institution data in Stud.IP
 
-### Relationen
+### relations
 
-keine Relationen
+no relations
 
 
 ## Schema 'institute-memberships'
 
-Die Mitgliedschaft in einer Einrichtung wird in Stud.IP mit diesem
-Schema abgebildet.
+Membership of an institution is represented in Stud.IP with this
+schema in Stud.IP.
 
-### Attribute
+### Attributes
 
-Attribut        | Beschreibung
---------        | ------------
-permission      | die Rolle des Nutzers in der Einrichtung
-office-hours    | die Sprechzeiten des Nutzers bzgl. der Einrichtung
-location        | der Raum/Ort des Nutzers bzgl. der Einrichtung
-phone           | die Telefonnummer des Nutzers bzgl. der Einrichtung
-fax             | die Faxnummer des Nutzers bzgl. der Einrichtung
+Attribute | Description
+-------- | ------------
+permission | the role of the user in the institution
+office-hours | the office hours of the user with regard to the facility
+location | the room/location of the user with regard to the facility
+phone | the user's telephone number in relation to the institution
+fax | the user's fax number for the facility
 
-### Relationen
+### Relations
 
-Relation  | Beschreibung
+Relation | Description
 --------- | ------------
-institute | die Einrichtung dieser Mitgliedschaft
-user      | der Nutzer dieser Mitgliedschaft
+institute | the institution of this membership
+user | the user of this membership
 
-## Alle Einrichtungen
+## All institutions
 
-Dieser Endpoint liefert alle Einrichtungen im Stud.IP, die der
-JSON:API-Nutzer mit seinen ``credentials`` auch im Stud.IP selbst
-sehen darf. Die Ausgabe erfolgt paginiert und kann durch Angabe von
-Offset und Limit weitergeblättert werden.
+This endpoint provides all institutions in Stud.IP that the
+JSON:API user with his ``credentials`` can also see in Stud.IP itself.
+itself. The output is paginated and can be scrolled through by specifying
+offset and limit.
 
 ### HTTP Request
 
-   `GET /institutes`
+   GET /institutes
 
    ```shell
    curl --request GET \
        --url https://example.com/institutes \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
    ```
 
-### URL-Parameter
+### URL parameters
 
-Parameter    | Default | Beschreibung
----------    | ------- | ------------
-page[offset] | 0       | der Offset
-page[limit]  | 30      | das Limit
+Parameter | Default | Description
+--------- | ------- | ------------
+page[offset] | 0 | the offset
+page[limit] | 30 | the limit
 
-### Authorisierung
+### Authorization
 
-Jeder Nutzer darf diese Route verwenden.
+Any user may use this route.
 
 
-## Eine Einrichtung
+## A setup
 
    ```shell
    curl --request GET \
        --url https://example.com/institutes/<INSTITUTE-ID> \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
    ```
 
-Eine bestimmte Einrichtung kann einfach über diese Route ausgelesen werden.
+A specific institution can simply be read out via this route.
 
 ### HTTP Request
 
    `GET /institutes/{id}`
 
 
-       Parameter | Beschreibung
+       Parameter | Description
       ---------- | ------------
-      id         | Die ID des Instituts
+      id | The ID of the institution
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Authorisierung
+### Authorization
 
-Jeder Nutzer darf diese Route verwenden.
+Every user may use this route.
 
 
-## Mitgliedschaften in einer Einrichtung
+## Memberships in an institution
 
    ```shell
    curl --request GET \
        --url https://example.com/institutes/<institute-id>/memberships \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-Gibt alle Mitgliedschaften mit den jeweiligen Daten der Nutzer zurück.
+Returns all memberships with the respective user data.
 
 ### HTTP Request
    `GET /institutes/{id}/memberships`
 
 ### Parameter
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID der Einrichtung
+id | ID of the institution
 
-### URL-Parameter
+### URL parameter
 
-Parameter          | Default | Beschreibung
----------          | ------- | ------------
-filter[permission] | -       | Rolle des Nutzers in der Einrichtung
+Parameter | Default | Description
+--------- | ------- | ------------
+filter[permission] | - | Role of the user in the institution
 
-### Autorisierung
+### Authorization
 
-Jeder Nutzer darf diese Route verwenden.
+Every user may use this route.
 
 
-## Eine Mitgliedschaft
+## A membership
 
    ```shell
    curl --request GET \
        --url https://example.com/institute-memberships/<ID> \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
    ```
 
-Mit dieser Route kann man eine Mitgliedschaft in einer Einrichtung auslesen.
+This route can be used to read a membership in an institution.
 
 ### HTTP Request
 
 `GET /institute-memberships/{id}`
 
-       Parameter | Beschreibung
+       Parameter | Description
       ---------- | ------------
-      id         | Die ID der Mitgliedschaft
+      id | The ID of the membership
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Authorisierung
+### Authorization
 
-Jeder Nutzer darf diese Route verwenden.
+Any user may use this route.

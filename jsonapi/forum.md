@@ -3,56 +3,56 @@ title: Forum
 ---
 
 
-Das Stud.IP-Forum bietet die Möglichkeit Beiträge zu erstellen, zu kommentieren
-und zu Kategorisieren. Jedes Forum ist an genau eine Veranstaltung gebunden.
-Die Schema's werden in Forum-Categories und Forum-Entries unterteilt.
+The Stud.IP forum offers the possibility to create, comment and categorize posts.
+and to categorize. Each forum is linked to exactly one course.
+The schemes are divided into forum categories and forum entries.
 
 ## Schema "forum-categories"
 
-Kategorien für Einträge haben einen Namen und geben die Hierarchie des Forums
-anhand ihrer Position an.
+Categories for entries have a name and indicate the hierarchy of the forum
+based on their position.
 
-### Attribute
+### Attributes
 
-Attribut          | Beschreibung
---------          | ------------
-title             | Name einer Kategorie
-position          | Position einer Kategorie
+Attribute | Description
+-------- | ------------
+title | Name of a category
+position | Position of a category
 
-### Relationen
+### Relations
 
-Relation | Beschreibung
---------  | ------------
-course    | Der Kurs des Forums, indem die Kategorie angelegt ist
-entries   | Alle Forum-Einträge einer Forum-Kategorie
+relation | description
+-------- | ------------
+course | The course of the forum in which the category is created
+entries | All forum entries of a forum category
 
 ## Schema "forum-entries"
 
-Einträge des Forums liegen auf verschiedenen Ebenen. Sie können direkt in
-Kategorien als Themen erstellt werden oder an vorhandene Einträge angebunden
-werden.
+Forum entries are located at different levels. They can be created directly in
+created directly in categories as topics or linked to existing entries.
+to existing entries.
 
-### Attribute
+### Attributes
 
-Attribut          | Beschreibung
---------          | ------------
-title             | Name eines Entries (sollte nur bei Themen angezeigt werden)
-content           | Gibt den Inhalt eines Entries wieder
-area              | Dieses Attribut wird mitgeführt (ist aber idr. '0')
+Attribute | Description
+-------- | ------------
+title | Name of an entry (should only be displayed for topics)
+content | Indicates the content of an entry
+area | This attribute is included (but is usually '0')
 
-### Relationen
+### Relations
 
-Relation | Beschreibung
---------  | ------------
-category  | Die Forum-Kategorie des Forumeintrags
-entries   | Alle Untereinträge eines Forumeintrags
+Relation | Description
+-------- | ------------
+category | The forum category of the forum entry
+entries | All subentries of a forum entry
 
-## Alle Forum-Kategorien eines Kurses auslesen
+## Read all forum categories of a course
    GET /courses/{id}/forum-categories
 
-   Parameter | Beschreibung
+   Parameters | Description
   ---------- | ------------
-  id         | Die ID des Kurses
+  id | The ID of the course
 
    ```shell
    curl --request GET \
@@ -62,9 +62,9 @@ entries   | Alle Untereinträge eines Forumeintrags
        --data
    ```
 
-### Autorisierung
-         Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
-   > Der Request liefert JSON ähnlich wie dieses:
+### Authorization
+         The user should be a member of the corresponding course.
+   > The request returns JSON similar to this:
 
 ```json
 {
@@ -161,7 +161,7 @@ entries   | Alle Untereinträge eines Forumeintrags
       "type": "forum-categories",
       "id": "1b7d3834e42c1569947e0eab7b63ed19",
       "attributes": {
-        "title": "Allgemein",
+        "title": "General",
         "position": 4
       },
       "relationships": {
@@ -183,24 +183,24 @@ entries   | Alle Untereinträge eines Forumeintrags
 }
 ```
 
-## Eine Forum-Kategorie auslesen
+## Read a forum category
     GET /forum-categories/{id}
 
-    Parameter | Beschreibung
+    Parameters | Description
    ---------- | ------------
-   id         | Die ID der Kategorie
+   id | The ID of the category
 
    ```shell
    curl --request GET \
        --url https://example.com/forum-categories/<FORUM-CATEGORY-ID> \
        --header "Content-Type: application/vnd.api+json" \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
        --data
    ```
-### Autorisierung
-      Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
+### Authorization
+      The user should be a member of the corresponding course.
 
-  > Der Request liefert JSON ähnlich wie dieses:
+  > The request returns JSON similar to this:
 
 ```json
 {
@@ -208,7 +208,7 @@ entries   | Alle Untereinträge eines Forumeintrags
 "type": "forum-categories",
 "id": "1b7d3834e42c1569947e0eab7b63ed19",
 "attributes": {
-"title": "Allgemein",
+"title": "General",
 "position": 4
 },
 "relationships": {
@@ -229,24 +229,24 @@ entries   | Alle Untereinträge eines Forumeintrags
 }
 ```
 
-## Einen Forum-Eintrag auslesen
+## Read a forum entry
        GET /forum-entries/{id}
 
-       Parameter | Beschreibung
+       Parameters | Description
       ---------- | ------------
-      id         | Die ID des Entries
+      id | The ID of the entry
 
   ```shell
   curl --request GET \
       --url https://example.com/forum-entries/<FORUM-ENTRY-ID> \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
   ```
-### Autorisierung
-         Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
+### Authorization
+         The user should be a member of the corresponding course.
 
-  > Der Request liefert JSON ähnlich wie dieses:
+  > The request returns JSON similar to this:
 
 ```json
 {
@@ -254,7 +254,7 @@ entries   | Alle Untereinträge eines Forumeintrags
     "type": "forum-entries",
     "id": "1b7d3834e42c1569947e0eab7b63ed19",
     "attributes": {
-      "title": "Übersicht",
+      "title": "Overview",
       "area": 0,
       "content": ""
     },
@@ -315,24 +315,24 @@ entries   | Alle Untereinträge eines Forumeintrags
 }
 ```
 
-## Alle Forum-Einträge einer Kategorie auslesen
+## Read all forum entries of a category
        GET /forum-categories/{id}/entries
 
-       Parameter | Beschreibung
+       Parameters | Description
       ---------- | ------------
-      id         | Die ID der Kategorie
+      id | The ID of the category
 
   ```shell
   curl --request GET \
       --url https://example.com/forum-categories/<CATEGORY-ID>/entries \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
   ```
-### Autorisierung
-  Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
+### Authorization
+  The user should be a member of the corresponding course.
 
-  > Der Request liefert JSON ähnlich wie dieses:
+  > The request returns JSON similar to this:
 
 ```json
 {
@@ -340,7 +340,7 @@ entries   | Alle Untereinträge eines Forumeintrags
     "type": "forum-entries",
     "id": "1b7d3834e42c1569947e0eab7b63ed19",
     "attributes": {
-      "title": "Übersicht",
+      "title": "Overview",
       "area": 0,
       "content": ""
     },
@@ -401,47 +401,47 @@ entries   | Alle Untereinträge eines Forumeintrags
 }
 ```
 
-## Alle Untereinträge eines Forumeintrags auslesen
+## Read all subentries of a forum entry
        GET /forum-entries/{id}/entries
 
-       Parameter | Beschreibung
+       Parameter | Description
       ---------- | ------------
-      id         | Die ID des Eintrags
+      id | The ID of the entry
 
   ```shell
   curl --request GET \
       --url https://example.com/forum-entries/<FORUM-ENTRY-ID>/entries \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
   ```
-### Autorisierung
-  Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
+### Authorization
+  The user should be a member of the corresponding course.
 
 __
-## Eine Kategorie innerhalb eines Kurses anlegen
+## Create a category within a course
 
        POST /courses/{id}/forum-categories
 
-       Parameter | Beschreibung
+       Parameters | Description
       ---------- | ------------
-      id         | Die ID des Kurses
+      id | The ID of the course
 
   ```shell
   curl --request POST \
       --url https://example.com/courses/<COURSE-ID>/categories \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
-      '{"data": {"type": "forum-categories","attributes": {"title": "CreateCategoryTest","content": "works"}
+      '{"data": {"type": "forum-categories", "attributes": {"title": "CreateCategoryTest", "content": "works"}
   }
 }'
 
   ```
-### Autorisierung
-  Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
+### Authorization
+  The user should be a member of the corresponding course.
 
-  > Der Request liefert JSON ähnlich wie dieses:
+  > The request returns JSON similar to this:
 
 ```json
 {
@@ -449,7 +449,7 @@ __
 "type": "forum-categories",
 "id": "1b7d3834e42c1569947e0eab7b63ed19",
 "attributes": {
-"title": "Allgemein",
+"title": "General",
 "position": 4
 },
 "relationships": {
@@ -470,71 +470,71 @@ __
 }
 ```
 
-## Einen Eintrag in eine Kategorie posten
+## Post an entry to a category
 
        POST /forum-categories/{id}/entries
 
-       Parameter | Beschreibung
+       Parameters | Description
       ---------- | ------------
-      id         | Die ID der Kategorie
+      id | The ID of the category
 
   ```shell
   curl --request POST \
       --url https://example.com/forum-entries/<FORUM-CATEGORY-ID>/entries \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
-      '{"data": {"type": "forum-entries","attributes": {"title": "TestTheRoute","content": "works!"}}}'
+      '{"data": {"type": "forum-entries", "attributes": {"title": "TestTheRoute", "content": "works!"}}}'
 
   ```
-### Autorisierung
-  Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
+### Authorization
+  The user should be a member of the corresponding course.
 
 
-## Einen Eintrag unter einen Eintrag posten
+## Post an entry under an entry
 
        POST /forum-entries/{id}/entries
 
-       Parameter | Beschreibung
+       Parameter | Description
       ---------- | ------------
-      id         | Die ID des Eintrags
+      id | The ID of the entry
 
   ```shell
   curl --request POST \
       --url https://example.com/forum-entries/<FORUM-ENTRY-ID>/entries \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
-      '{"data": {"type": "forum-entries","attributes": {"title": "TestTheRoute","content": "works!"}}}'
+      '{"data": {"type": "forum-entries", "attributes": {"title": "TestTheRoute", "content": "works!"}}}'
 
   ```
-### Autorisierung
-  Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
+### Authorization
+  The user should be a member of the corresponding course.
 
 
-## Einen Kategorie aktualisieren
+## Update a category
 
        PATCH /forum-categories/{id}
 
-       Parameter | Beschreibung
+       Parameter | Description
       ---------- | ------------
-      id         | Die ID der Kategorie
+      id | The ID of the category
 
   ```shell
   curl --request PATCH \
       --url https://example.com/forum-categories/<FORUM-CATEGORY-ID> \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
-      '{"data": {"type": "forum-categories","attributes": {"title": "UpdateCategory","content": "time for a change"}
+      '{"data": {"type": "forum-categories", "attributes": {"title": "UpdateCategory", "content": "time for a change"}
 
   ```
-### Autorisierung
-  Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
-  Der Nutzer sollte die entsprechenden Adminrechte verfügen oder Ersteller der
-  Kategorie sein
+### Authorization
+  The user should be a member of the corresponding course.
+  The user should have the appropriate admin rights or be the creator of the
+  category
 
-  > Der Request liefert JSON ähnlich wie dieses:
+  > The request returns JSON similar to this:
 
 ```json
 {
@@ -542,7 +542,7 @@ __
 "type": "forum-categories",
 "id": "1b7d3834e42c1569947e0eab7b63ed19",
 "attributes": {
-"title": "Allgemein",
+"title": "General",
 "position": 4
 },
 "relationships": {
@@ -563,64 +563,64 @@ __
 }
 ```
 
-## Einen Forum-Eintrag aktualisieren
+## Update a forum entry
 
        PATCH /forum-entries/{id}
 
-       Parameter | Beschreibung
+       Parameter | Description
       ---------- | ------------
-      id         | Die ID des Eintrags
+      id | The ID of the entry
 
   ```shell
   curl --request PATCH \
       --url https://example.com/forum-entries/<FORUM-ENTRY-ID> \
       --header "Content-Type: application/vnd.api+json" \
-      --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+      --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
       --data
-      '{"data": {"type": "forum-entries","attributes": {"title": "Update an entry","content": "time for a change"}}}'
+      '{"data": {"type": "forum-entries", "attributes": {"title": "Update an entry", "content": "time for a change"}}}'
 
   ```
-  ### Autorisierung
-  Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
-  Der Nutzer sollte die entsprechenden Adminrechte verfügen oder Ersteller des
-  Eintrags sein
+  ### Authorization
+  The user should be a member of the corresponding course.
+  The user should have the appropriate admin rights or be the creator of the entry.
+  entry
 
-## Eine Forum-Kategorie entfernen
+## Remove a forum category
 
          DELETE /forum-categories/{id}
 
-         Parameter | Beschreibung
+         Parameter | Description
         ---------- | ------------
-        id         | Die ID der Kategorie
+        id | The ID of the category
 
   ```shell
   curl --request DELETE \
     --url https://example.com/forum-categories/<FORUM-CATEGORY-ID> \
     --header "Content-Type: application/vnd.api+json" \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
     --data
   ```
-### Autorisierung
-    Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
-    Der Nutzer sollte die entsprechenden Adminrechte verfügen oder Ersteller der
-    Kategorie sein.
+### Authorization
+    The user should be a member of the corresponding course.
+    The user should have the appropriate admin rights or be the creator of the
+    category.
 
-## Einen Forum-Eintrag entfernen
+## Remove a forum entry
 
          DELETE /forum-categories/{id}
 
-         Parameter | Beschreibung
+         Parameter | Description
         ---------- | ------------
-        id         | Die ID des Eintrags
+        id | The ID of the entry
 
 ```shell
 curl --request DELETE \
     --url https://example.com/forum-entries/<FORUM-ENTRY-ID> \
     --header "Content-Type: application/vnd.api+json" \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
     --data
 ```
-### Autorisierung
-    Der Nutzer sollte Mitglied des entsprechenden Kurses sein.
-    Der Nutzer sollte die entsprechenden Adminrechte verfügen oder Ersteller des
-    Eintrags sein.
+### Authorization
+    The user should be a member of the corresponding course.
+    The user should have the appropriate admin rights or be the creator of the entry.
+    entry.

@@ -2,47 +2,47 @@
 title: Stud.IP-System
 ---
 
-Alle Routen, die mit dem Stud.IP-System an sich zu tun haben, sind in dieser Kategorie versammelt.
+All routes that have to do with the Stud.IP system itself are gathered in this category.
 
-## Schemata
+## Schemas
 
 ### Schema "studip-properties"
 
-Ausgewählte Konfigurationseinstellungen und Merkmale der Stud.IP-Installation werden mit diesem Schema abgebildet.
+Selected configuration settings and features of the Stud.IP installation are mapped with this schema.
 
 ### ID
 
-Die ID der Einstellung ist kein MD5-Hash sondern ein festes Kürzel für eine Einstellung/ein Merkmal.
+The ID of the setting is not an MD5 hash but a fixed abbreviation for a setting/feature.
 
-### Attribute
+### Attributes
 
-Attribut    | Beschreibung
---------    | ------------
-description | eine Beschreibung der Einstellung/des Merkmals
-value       | der Wert der Einstellung/des Merkmals
+Attribute | Description
+-------- | ------------
+description | a description of the setting/feature
+value | the value of the setting/feature
 
-### Relationen
+### relations
 
-keine Relationen vorhanden
+no relations available
 
-## Alle Stud.IP-Properties auslesen
+## Read all Stud.IP properties
 ```shell
 curl --request GET \
     --url https://example.com/studip/properties \
     --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
 ```
 
-Liefert alle Stud.IP-Einstellungen/Merkmale
+Returns all Stud.IP settings/characteristics
 
 ### HTTP Request
 
 `GET /studip/properties`
 
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Jeder eingeloggte Nutzer darf diese Route aufrufen.
+Every logged in user may access this route.

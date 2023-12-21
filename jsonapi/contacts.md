@@ -1,167 +1,167 @@
 ---
-title: Kontakte
+title: Contacts
 ---
 
 
-Nutzer können in Stud.IP sich andere Nutzer als Kontakte merken. Dafür
-ist kein neuer Ressourcentyp nötig.
+Users can remember other users as contacts in Stud.IP. For this
+no new resource type is necessary.
 
-## Alle Kontakte
+## All contacts
 
 ```shell
 curl --request GET \
     --url https://example.com/users/<ID>/contacts \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Mit dieser Route können alle Kontakte eines Nutzers ausgelesen werden.
+With this route all contacts of a user can be read.
 
 ### HTTP Request
 
 `GET /users/{id}/contacts`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Nutzers
+id | the ID of the user
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Jeder Nutzer kann seine eigenen Kontakte sehen.
+Each user can see their own contacts.
 
 
-## Alle Kontakt-IDs eines Nutzer
+## All contact IDs of a user
 
 ```shell
 curl --request GET \
     --url https://example.com/users/<ID>/relationships/contacts \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Mit dieser Route können alle IDs der Kontakte eines Nutzers ausgelesen werden.
+This route can be used to read all IDs of a user's contacts.
 
-(siehe http://jsonapi.org/format/#fetching-relationships)
+(see http://jsonapi.org/format/#fetching-relationships)
 
 ### HTTP Request
 
 `GET /users/{id}/relationships/contacts`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Nutzers
+id | the ID of the user
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Jeder Nutzer kann seine eigenen Kontakte sehen.
+Each user can see their own contacts.
 
 
-## Kontakte eines Nutzers setzen
+## Set contacts of a user
 
 ```shell
 curl --request PATCH \
     --url https://example.com/users/<ID>/relationships/contacts \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
     --header "Content-Type: application/vnd.api+json" \
     --data '{"data": [ \
-        {"type": "users","id":"<id1>"}, \
-        {"type": "users","id":"<id2>"}, \
-        {"type": "users","id":"<id3>"} \
+        {"type": "users", "id":"<id1>"}, \
+        {"type": "users", "id":"<id2>"}, \
+        {"type": "users", "id":"<id3>"} \
         ]}'
 ```
 
-Mit dieser Route kann man die alle Kontakte eines Nutzers setzen.
+With this route you can set all contacts of a user.
 
-(siehe http://jsonapi.org/format/#crud-updating-to-many-relationships)
+(see http://jsonapi.org/format/#crud-updating-to-many-relationships)
 
 
 ### HTTP Request
 
 `PATCH /users/{id}/relationships/contacts`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Nutzers
+id | the ID of the user
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Jeder Nutzer kann seine eigenen Kontakte setzen.
+Each user can set their own contacts.
 
 
-## Kontakte eines Nutzers hinzufügen
+## Add contacts of a user
 
 ```shell
 curl --request POST \
     --url https://example.com/users/<ID>/relationships/contacts \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
     --header "Content-Type: application/vnd.api+json" \
     --data '{"data": [ \
-        {"type": "users","id":"<id4>"} \
+        {"type": "users", "id":"<id4>"} \
         ]}'
 ```
 
-Mit dieser Route kann man Kontakte eines Nutzers hinzufügen.
+This route can be used to add a user's contacts.
 
-(siehe http://jsonapi.org/format/#crud-updating-to-many-relationships)
+(see http://jsonapi.org/format/#crud-updating-to-many-relationships)
 
 
 ### HTTP Request
 
 `POST /users/{id}/relationships/contacts`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Nutzers
+id | the ID of the user
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Jeder Nutzer kann seine eigenen Kontakte setzen.
+Each user can set their own contacts.
 
 
-## Kontakte eines Nutzers löschen
+## Delete a user's contacts
 
 ```shell
 curl --request DELETE \
     --url https://example.com/users/<ID>/relationships/contacts \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
     --header "Content-Type: application/vnd.api+json" \
     --data '{"data": [ \
-        {"type": "users","id":"<id1>"}, \
-        {"type": "users","id":"<id4>"} \
+        {"type": "users", "id":"<id1>"}, \
+        {"type": "users", "id":"<id4>"} \
         ]}'
 ```
 
-Mit dieser Route kann man Kontakte eines Nutzers löschen.
+This route can be used to delete a user's contacts.
 
-(siehe http://jsonapi.org/format/#crud-updating-to-many-relationships)
+(see http://jsonapi.org/format/#crud-updating-to-many-relationships)
 
 
 ### HTTP Request
 
 `DELETE /users/{id}/relationships/contacts`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Nutzers
+id | the ID of the user
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Jeder Nutzer kann seine eigenen Kontakte löschen.
+Each user can delete their own contacts.

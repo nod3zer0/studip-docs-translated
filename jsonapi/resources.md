@@ -1,123 +1,123 @@
 ---
-title: Räume/Gebäude
+title: Rooms/Buildings
 ---
 
 
-In dieser Kategorie ist alles versammelt, was mit Ressourcenverwaltung zu tun hat.
+This category contains everything that has to do with resource management.
 
 
 ## Schema "resources-objects"
 
-Alle Ressourcenobjekte der Ressourcenverwaltung werden mit diesem Schema repräsentiert.
+All resource objects of resource management are represented with this schema.
 
-### Attribute
+### Attributes
 
-Attribut        | Beschreibung
---------        | ------------
-name            | der Name der Ressource
-description     | die Beschreibung der Ressource
-is-room         | Handelt es sich bei dieser Ressource um einen Raum?
-multiple-assign | Darf diese Ressource zeitgleich mehrfach belegt werden?
-requestable     | Kann man zu dieser Ressource eine Raumanfrage stellen?
-lockable        | Ist diese Ressource betroffen von einer globalen Sperrzeit?
-mkdate          | Erstellungsdatum
-chdate          | Änderungsdatum
+Attribute | Description
+-------- | ------------
+name | the name of the resource
+description | the description of the resource
+is-room | Is this resource a room?
+multiple-assign | Can this resource be assigned multiple times at the same time?
+requestable | Can a room request be made for this resource?
+lockable | Is this resource affected by a global locking period?
+mkdate | Creation date
+chdate | Modification date
 
-### Relationen
+### Relations
 
-Relation  | Beschreibung
---------  | ------------
-category  | Kategorie der Ressource
+Relation | Description
+-------- | ------------
+category | Category of the resource
 
 
 ## Schema "resources-categories"
 
-Dieses Schema beschreibt Ressourcenarten.
+This schema describes resource types.
 
-### Attribute
+### Attributes
 
-Attribut    | Beschreibung
---------    | ------------
-name        | der Name der Art
-description | die Beschreibung der Art
-system      |
-is-room     | Handelt es sich bei dieser Art um einen Raum?
-icon        | Nummer des zu verwendenden Icons
+Attribute | Description
+-------- | ------------
+name | the name of the type
+description | the description of the type
+system |
+is-room | Is this species a room?
+icon | number of the icon to be used
 
-### Relationen
+### relations
 
-keine Relationen
+no relations
 
 
 ## Schema "resources-assign-events"
 
-Alle Ressourcenbelegungen werden mit diesem Schema abgebildet.
+All resource assignments are mapped with this schema.
 
-### Attribute
+### Attributes
 
-Attribut        | Beschreibung
---------        | ------------
-repeat-mode     | in welchem Abstand und in welcher Frequenz wird diese Ressourcenbelegung ausgeführt
-start           | das Datum des Beginns der Belegung
-end             | das Datum des Endes der Belegung
-owner-free-text | Freitextangabe für den Besitzer dieser Belegung
+Attribute | Description
+-------- | ------------
+repeat-mode | the interval and frequency at which this resource allocation is executed
+start | the date of the start of the allocation
+end | the date of the end of the allocation
+owner-free-text | Free text specification for the owner of this allocation
 
-### Relationen
+### Relations
 
-Relation         | Beschreibung
---------         | ------------
-owner            | (optional) der Besitzer der Belegung
-resources-object | die belegte Ressource
+relation | description
+-------- | ------------
+owner | (optional) the owner of the allocation
+resources-object | the assigned resource
 
 
-## Alle Ressourcen
+## All resources
 ```shell
 curl --request GET \
     --url https://example.com/resources-objects \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Diese Route liefert alle Ressourcenobjekte.
+This route returns all resource objects.
 
 ### HTTP Request
 
 `GET /resources-objects`
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Jeder eingeloggte Nutzer kann die Liste der Ressourcenobjekte sehen.
+Every logged-in user can see the list of resource objects.
 
 
-## Alle Belegungen einer Ressource
+## All assignments of a resource
 ```shell
 curl --request GET \
     --url https://example.com/resources-objects/<ID>/assignments \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Mit dieser Route können die Belegungen einer Ressource abgefragt werden.
+This route can be used to query the assignments of a resource.
 
 ### HTTP Request
 
 `GET /resources-objects/{id}/assignments`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Ressourcenobjekts
+id | the ID of the resource object
 
-### URL-Parameter
+### URL parameter
 
-Parameter     | Default  | Beschreibung
----------     | -------  | ------------
-filter[start] | (heute)  | optional; Zeitpunkt (in Sekunden seit 1.1.1970), ab dem die Belegungen angezeigt werden sollen
-filter[end]   | (morgen)  | optional; Zeitpunkt (in Sekunden seit 1.1.1970), bis zu dem die Belegungen angezeigt werden sollen
+Parameter | Default | Description
+--------- | ------- | ------------
+filter[start] | (today) | optional; time (in seconds since 1.1.1970), from which the occupancy should be displayed
+filter[end] | (tomorrow) | optional; time (in seconds since 1.1.1970) up to which the assignments are to be displayed
 
-Die Parameter "filter[start]" und "filter[end]" müssen als Integer angegeben werden (Sekunden seit 1.1.1970 00:00:00 UTC). Werden sie nicht angegeben, werden die Belegungen des heutigen Tages angezeigt.
+The parameters "filter[start]" and "filter[end]" must be specified as integers (seconds since 1.1.1970 00:00:00 UTC). If they are not specified, today's occupancy is displayed.
 
-### Autorisierung
+### Authorization
 
-Jeder eingeloggte Nutzer kann die Liste der Ressourcenbelegungen sehen.
+Every logged-in user can see the list of resource allocations.

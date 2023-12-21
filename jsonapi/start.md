@@ -1,33 +1,33 @@
 ---
 title: Stud.IP JSON:API
 slug: /jsonapi/
-sidebar_label: Einführung
+sidebar_label: Introduction
 ---
 
-Willkommen bei der Dokumentation der Stud.IP-JSON:API! Mit dieser API
-kann auf viele Daten einer Stud.IP-Installation zugegriffen werden.
-Die API verhält sich konform zur <a rel="noopener noreferrer" href="http://jsonapi.org/">JSON:API-Spezifikation</a>.
+Welcome to the documentation of the Stud.IP JSON:API! With this API
+many data of a Stud.IP installation can be accessed.
+The API conforms to the <a rel="noopener noreferrer" href="http://jsonapi.org/">JSON:API specification</a>.
 
-# Authentifizierung
+# Authentication
 
-Stud.IP JSON:API verwendet drei verschiedene Verfahren um Nutzer
-zu authentifizieren:
+Stud.IP JSON:API uses three different methods to authenticate users
+authenticate users:
 
 * HTTP Basic access authentication
-* Stud.IP-Session-Cookies
-* [OAuth2](../functions/oauth2)
+* Stud.IP session cookies
+* OAuth2](../functions/oauth2)
 
-Für HTTP-Basic-Access-Authentication benötigt man die Zugangsdaten, die auch
-für ein „normales“ Login verwendet werden.
+For HTTP Basic Access Authentication you need the access data that is also used for a
+used for a "normal" login.
 
-# Paginierung
+# Pagination
 
-Viele Routen der Stud.IP JSON:API liefern ihre Ergebnisse seitenweise.
-Die zu betrachtende Seite und die Anzahl der Einträge von Seiten
-können durch URL-Parameter beeinflusst werden.
+Many Stud.IP JSON:API routes deliver their results page by page.
+The page to be viewed and the number of entries of pages
+can be influenced by URL parameters.
 
-Routen, die ihre Ergebnisse seitenweise liefern, enthalten
-entsprechende `meta` und `links` in ihren Antworten:
+Routes that deliver their results page by page contain
+corresponding `meta` and `links` in their responses:
 
 ```json title="GET jsonapi.php/v1/courses"
 {
@@ -49,22 +49,22 @@ entsprechende `meta` und `links` in ihren Antworten:
 }
 ```
 
-In diesem Fall wurden alle Veranstaltungen abgefragt, die Route
-liefert jedoch nur die erste Seite mit 30 der 347 Einträge zurück.
-Unterhalb von `links` werden auf die URLs der ersten, letzten und
-nächsten Seite verwiesen. In jedem Fall enthalten diese URLs die
-URL-Parameter `page[offset]` und `page[limit]`.
+In this case, all events were queried, but the route
+only returns the first page with 30 of the 347 entries.
+Below `left` the URLs of the first, last and next page are referenced.
+next page. In each case, these URLs contain the
+URL parameters `page[offset]` and `page[limit]`.
 
-Die Gesamtheit aller Ergebnisse wird auf mehrere Seiten verteilt und
-man erhält jeweils nur einen Ausschnitt. Dieser Ausschnitt kann durch
-diese URL-Parameter beeinflusst werden
+The entirety of all results is distributed over several pages and
+only a section is obtained in each case. This section can be influenced by
+be influenced by these URL parameters
 
-Page-Parameter | Beschreibung
+Page parameters | Description
 -------------- | ------------
-page[offset]   | der Paginierungsoffset
-page[limit]    | das Paginierungslimit
+page[offset] | the pagination offset
+page[limit] | the pagination limit
 
-Der `page`-Parameter wird der JSON:API-Spezifikation entsprechend verwendet.
+The `page` parameter is used in accordance with the JSON:API specification.
 
 ```json title="GET jsonapi.php/v1/courses?page[offset]=7&page[limit]=17"
 {

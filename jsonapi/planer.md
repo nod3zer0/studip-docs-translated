@@ -1,294 +1,294 @@
 ---
-title: Planer
+title: Planner
 ---
 
 
-In diese Kategorie fällt alles, was mit dem Stundenplan oder dem
-Terminkalender zu tun hat. Dabei ist der Stundenplan ein
-semesterabhängiger Wochenplan, der wöchentlich wiederkehrende Termine
-enthält, die entweder selbst eingetragen wurden oder aufgrund von
-besuchten Veranstaltungen dort hinein gelangen.
+This category includes everything that has to do with the timetable or the
+timetable or appointment calendar. The timetable is a
+semester-dependent weekly schedule that contains recurring weekly appointments
+which are either entered by the students themselves or are entered due to
+entered by the students themselves or due to events attended.
 
-## Schemata
+## Schemas
 
 ### Schema "calendar-events"
 
-Ressourcen dieses Typs sind selbst in den Terminkalender eingetragene Termine.
+Resources of this type are events entered in the calendar by the user.
 
 
-#### Attribute
+#### Attributes
 
-Attribut    | Beschreibung
---------    | ------------
-title       | der Titel des Eintrags
-description | die Beschreibung des Eintrags
-start       | der Beginn des Eintrags (ISO 8601)
-end         | das Ende des Eintrag (ISO 8601)
-categories  | die Kategorie des Eintrags (als String)
-location    | der Ort des Eintrags
-mkdate      | das Erstellungsdatum des Eintrags
-chdate      | das Datum der letzten Änderung des Eintrags
-recurrence  | Informationen über Wiederholungen des Eintrags
-
-#### Relationen
-
-Relation | Beschreibung
+Attribute | Description
 -------- | ------------
-owner    | der Nutzer, der den Eintrag erstellt hat
+title | the title of the entry
+description | the description of the entry
+start | the start of the entry (ISO 8601)
+end | the end of the entry (ISO 8601)
+categories | the category of the entry (as a string)
+location | the location of the entry
+mkdate | the creation date of the entry
+chdate | the date of the last change to the entry
+recurrence | information about repetitions of the entry
+
+#### Relations
+
+Relation | Description
+-------- | ------------
+owner | the user who created the entry
 
 ### Schema "course-events"
 
-Ressourcen dieses Typs repräsentieren einmalige Termine von belegten Veranstaltungen.
+Resources of this type represent one-off dates of booked courses.
 
-#### Attribute
+#### Attributes
 
-Attribut    | Beschreibung
---------    | ------------
-title       | der Titel des Eintrags
-description | die Beschreibung des Eintrags
-start       | der Beginn des Eintrags (ISO 8601)
-end         | das Ende des Eintrag (ISO 8601)
-categories  | die Kategorie des Eintrags (als String)
-location    | der Ort des Eintrags
-mkdate      | das Erstellungsdatum des Eintrags
-chdate      | das Datum der letzten Änderung des Eintrags
-recurrence  | Informationen über Wiederholungen des Eintrags
-
-
-#### Relationen
-
-Relation | Beschreibung
+Attribute | Description
 -------- | ------------
-owner    | die **Veranstaltung**, zu der der Eintrag gehört
+title | the title of the entry
+description | the description of the entry
+start | the start of the entry (ISO 8601)
+end | the end of the entry (ISO 8601)
+categories | the category of the entry (as a string)
+location | the location of the entry
+mkdate | the creation date of the entry
+chdate | the date of the last change to the entry
+recurrence | information about repetitions of the entry
+
+
+#### Relations
+
+Relation | Description
+-------- | ------------
+owner | the **event** to which the entry belongs
 
 
 ### Schema "schedule-entries"
 
-Ressourcen dieses Typs stellen Einträge in den Stundenplan dar, die
-ein Nutzer selbst eingetragen hat.
+Resources of this type represent entries in the timetable that a user has
+a user has entered themselves.
 
-#### Attribute
+#### Attributes
 
-Attribut    | Beschreibung
---------    | ------------
-title       | der Titel des Eintrags
-description | die Beschreibung des Eintrags
-start       | die Uhrzeit des Beginns des Eintrags ("hh:mm")
-end         | die Uhrzeit des Endes des Eintrags ("hh:mm")
-weekday     | der Wochentag des Eintrags (0-6)
-color       | die Farbe des Eintrags ("#rrggbb")
-
-#### Relationen
-
-Relation | Beschreibung
+Attribute | Description
 -------- | ------------
-owner    | der Nutzer, der den Eintrag erstellt hat
+title | the title of the entry
+description | the description of the entry
+start | the time of the start of the entry ("hh:mm")
+end | the time at which the entry ends ("hh:mm")
+weekday | the day of the week of the entry (0-6)
+color | the color of the entry ("#rrggbb")
+
+#### Relations
+
+Relation | description
+-------- | ------------
+owner | the user who created the entry
 
 
 ### Schema "seminar-cycle-dates"
 
-Ressourcen dieses Typs stellen Einträge in den Stundenplan dar, die
-sich aus den regelmäßigen Terminen einer Veranstaltung zusammensetzen.
+Resources of this type represent entries in the timetable that consist of the regular
+are made up of the regular dates of a course.
 
-#### Attribute
+#### Attributes
 
-Attribut    | Beschreibung
---------    | ------------
-title       | der Titel des Eintrags
-description | die Beschreibung des Eintrags
-start       | die Uhrzeit des Beginns des Eintrags ("hh:mm")
-end         | die Uhrzeit des Endes des Eintrags ("hh:mm")
-weekday     | der Wochentag des Eintrags (0-6)
-recurrence  | Informationen über Wiederholungen des Eintrags
-locations   | alle Orte, an denen dieser Eintrag stattfindet
-
-#### Relationen
-
-Relation | Beschreibung
+Attribute | Description
 -------- | ------------
-owner    | die **Veranstaltung**, zu der der Eintrag gehört
+title | the title of the entry
+description | the description of the entry
+start | the time of the start of the entry ("hh:mm")
+end | the time at which the entry ends ("hh:mm")
+weekday | the day of the week of the entry (0-6)
+recurrence | information about recurrences of the entry
+locations | all locations where this entry takes place
 
-## Alle Kalendereinträge auslesen
+#### relations
+
+relation | description
+-------- | ------------
+owner | the **event** to which the entry belongs
+
+## Read all calendar entries
 
 ```shell
 curl --request GET \
     --url https://example.com/users/<ID>/events \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Mit dieser Route kann der Kalender des Nutzer abgefragt werden. Ohne
-weitere Parameter werden alle Einträge der nächsten zwei Wochen zurück
-geliefert.
+This route can be used to query the user's calendar. Without
+parameters, all entries for the next two weeks are returned.
+are returned.
 
-### HTTP Request
+### HTTP request
 
-`GET /users/{id}/events`
+GET /users/{id}/events
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Nutzers
+id | the ID of the user
 
-### URL-Parameter
+### URL parameter
 
-Parameter         | Beschreibung
----------         | ------------
-filter[timestamp] | Startzeitpunkt der gelieferten Kalendereinträge (als Sekunden seit dem 01.01.1970)
+Parameter | Description
+--------- | ------------
+filter[timestamp] | Start time of the calendar entries supplied (as seconds since 01.01.1970)
 
-Wenn "filter[timestamp]" nicht gesetzt ist, werden alle
-Kalendereinträge der nächsten zwei Wochen zurück geliefert.
+If "filter[timestamp]" is not set, all calendar entries from the next
+calendar entries for the next two weeks are returned.
 
-Mittels "filter[timestamp]" kann dieser Startzeitpunkt verändert
-werden. Es werden jedoch immer Kalendereinträge der nächsten zwei
-Wochen ausgeliefert.
+This start time can be changed using "filter[timestamp]".
+can be changed. However, calendar entries from the next two weeks are always
+weeks are always delivered.
 
-### Autorisierung
+### Authorization
 
-Jeder Nutzer darf diese Route für sich selbst verwenden. Andere Nutzer
-haben nur Zugriff auf ihre eigenen Kalender.
+Each user may use this route for themselves. Other users
+only have access to their own calendars.
 
 
-## Alle Kalendereinträge (iCalendar)
+## All calendar entries (iCalendar)
 
 :::danger
-Diese Route ist keine JSON-API-konforme Route.
+This route is not a JSON API compliant route.
 :::
 
 ```shell
 curl --request GET \
     --url https://example.com/users/<ID>/events.ics \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Mit dieser Route kann der Kalender des Nutzer abgefragt werden. Die
-Daten werden im iCalendar-Datenformat ausgeliefert. Es werden **alle**
-Kalendereinträge zurück gegeben.
+This route can be used to query the user's calendar. The
+data is delivered in iCalendar data format. All**
+calendar entries are returned.
 
-### HTTP Request
+### HTTP request
 
 `GET /users/{id}/events.ics`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Nutzers
+id | the ID of the user
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Jeder Nutzer darf diese Route für sich selbst verwenden. Andere Nutzer
-haben nur Zugriff auf ihre eigenen Kalender.
+Each user may use this route for themselves. Other users
+only have access to their own calendars.
 
 
-## Alle Termine einer Veranstaltung
+## All dates of an event
 
 ```shell
 curl --request GET \
     --url https://example.com/courses/<ID>/events \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Mit dieser Route können alle Termine einer Veranstaltung abgefragt werden.
+With this route all dates of an event can be queried.
 
 ### HTTP Request
 
 `GET /courses/{id}/events`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID der Veranstaltung
+id | the ID of the event
 
-### URL-Parameter
+### URL parameter
 
-Parameter    | Default | Beschreibung
----------    | ------- | ------------
-page[offset] | 0       | der Offset (siehe Paginierung)
-page[limit]  | 30      | das Limit (siehe Paginierung)
-
-
-### Autorisierung
-
-Die Termine einer Veranstaltung sind für alle Teilnehmenden sichtbar.
+Parameter | Default | Description
+--------- | ------- | ------------
+page[offset] | 0 | the offset (see pagination)
+page[limit] | 30 | the limit (see pagination)
 
 
-## Stundenplan auslesen
+### Authorization
+
+The dates of an event are visible to all participants.
+
+
+## Read timetable
 ```shell
 curl --request GET \
     --url https://example.com/users/<ID>/schedule \
     --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
 ```
 
-Mit dieser Route kann man seinen Stundenplan abfragen. Wird kein
-filter-Parameter angegeben, wird der Stundenplan des aktuellen
-Semesters ausgeliefert.
+With this route you can query your timetable. If no
+filter parameter is specified, the timetable for the current semester is
+semester will be delivered.
 
 ### HTTP Request
 
 `GET /users/{id}/schedule`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Nutzers
+id | the ID of the user
 
-### URL-Parameter
+### URL parameter
 
-Parameter         | Default                        |  Beschreibung
----------         | -------                        |  ------------
-filter[timestamp] | Beginn des aktuellen Semesters |  Startzeitpunkt des gewünschten Semesters (in Sekunden seit 01.01.1970)
+Parameter | Default | Description
+--------- | ------- | ------------
+filter[timestamp] | start of the current semester | start time of the desired semester (in seconds since 01.01.1970)
 
-### Autorisierung
+### Authorization
 
-Nur der eigene Stundenplan kann ausgelesen werden.
+Only your own timetable can be read.
 
 
-## Eigene Stundenplaneinträge
+## Own timetable entries
 ```shell
 curl --request GET \
     --url https://example.com/schedule-entries/<ID> \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Mit dieser Route kann man einen einzelnen, selbst verfassten Eintrag
-in den Stundenplan auslesen.
+With this route you can read a single, self-written entry
+in the timetable.
 
 ### HTTP Request
 
 `GET /schedule-entries/{id}`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Eintrags
+id | the ID of the entry
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Nur der Nutzer, der den Eintrag verfasst hat, darf den Eintrag auch auslesen.
+Only the user who created the entry is authorized to read the entry.
 
-## Regelmäßige Veranstaltungstermine auslesen
+## Read out regular event dates
 ```shell
 curl --request GET \
     --url https://example.com/seminar-cycle-dates/<ID> \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Beschreibung
+Description
 
 ### HTTP Request
 
 `GET /seminar-cycle-dates/{id}`
 
-Parameter | Beschreibung
+Parameter | Description
 --------- | ------------
-id        | die ID des Termins
+id | the ID of the event
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Alle Teilnehmenden einer Veranstaltung können den Termin sehen.
+All participants of an event can see the event.

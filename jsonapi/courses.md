@@ -1,135 +1,135 @@
 ---
-title: Veranstaltungen
+title: Events
 ---
 
 :::info
-Veranstaltungen sind Gruppen für Seminare, Vorlesungen,
-Übungen etc. Innerhalb von Veranstaltungen werden Materialien geteilt,
-Plugins verwendet, Termine festgelegt uvm. Viele Funktionen von
-Stud.IP sind nur für eine bestimmte Veranstaltung sichtbar.
+Events are groups for seminars, lectures,
+exercises etc. Materials are shared within events,
+plugins are used, dates are set and much more. Many functions of
+Stud.IP are only visible for a specific course.
 :::
 
 ## Schema "courses"
 
-### Attribute
+### Attributes
 
-Attribut      | Beschreibung
+Attribute | Description
 ------------- | ------------
-course-number | ID des Kurses
-title         | Titel des Kurses
-subtitle      | Untertitel des Kurses
-course-type   | Art des Kurses (Seminar, Vorlesung...)
-description   | Beschreibung des Kurses
-location      | Ort der Veranstaltung
-miscellaneous | sonstiges
+course-number | ID of the course
+title | title of the course
+subtitle | subtitle of the course
+course-type | Type of course (seminar, lecture...)
+description | Description of the course
+location | location of the course
+miscellaneous | other
 
 
-### Relationen
+### Relations
 
- Relation        | Beschreibung
+ relation | description
 ---------------- | ------------
-institute        | Die zugewiesene Institution
-start-semester   | Anfangs-Semester der Veranstaltung
-end-semester     | End-Semester der Veranstaltung
-files            | Referenz auf Files innerhalb der Veranstaltung
-documents        | Referenz auf Dokumente innerhalb der Veranstaltung
-document-folders | Ordner für Dateien innerhalb der Veranstaltung
+institute | The assigned institution
+start-semester | Start semester of the course
+end-semester | End semester of the course
+files | Reference to files within the course
+documents | Reference to documents within the course
+document-folders | Folder for files within the course
 
 ## Schema "course-memberships"
 
-Zeigt die Teilnahme an einer Veranstaltung mit Ihrer Rolle an.
+Indicates participation in a course with your role.
 
-### Attribute
+### Attributes
 
-Attribut      | Beschreibung
+Attribute | Description
 ------------- | ------------
-permission    | Rolle des Nutzers (Autor, Dozent, etc...)
-position      | Anordnung in der Teilnehmer-Liste
-group         | Anordnung in der Teilnehmer-Liste
-mkdate        | Erstellungsdatum
-label         | die "Funktion" des Teilnehmers (s. Weboberfläche)
-notification  | Bekomme ich einmal am Tag eine E-Mail-Benachrichtigung über neue Inhalte in dieser Veranstaltung?
-comment       | Teilnehmerkommentar für Lehrende
-visible       | Sichtbarkeit im Kurs
+permission | Role of the user (author, lecturer, etc...)
+position | Position in the list of participants
+group | order in the list of participants
+mkdate | creation date
+label | the "function" of the participant (see web interface)
+notification | Do I receive an e-mail notification about new content in this event once a day?
+comment | Participant comment for teachers
+visible | Visibility in the course
 
-Das Feld "visible" ist nur für einen selbst bzw. die Lehrenden der
-Veranstaltung zu sehen.
+The "visible" field is only visible to you or the teachers of the course.
+the course.
 
-### Relationen
+### Relations
 
- Relation        | Beschreibung
+ Relation | Description
 ---------------- | ------------
-course           | Die Veranstaltung für die Teilnehmer
-user             | Nutzer der Veranstaltung
+course | The course for the participants
+user | User of the event
 
-### URL-Parameter
+### URL parameters
 
-Parameter        | Default | Beschreibung
----------        | ------- | ------------
-page[offset]     | 0       | der Offset (siehe Paginierung)
-page[limit]      | 30      | das Limit (siehe Paginierung)
-filter[q]        | -       | ein Suchbegriff (mind. 3 Zeichen)
-filter[fields]   | all     | in welchen Feldern gesucht werden soll
-filter[semester] | all     | in welchem Semester gesucht werden soll
+Parameter | Default | Description
+--------- | ------- | ------------
+page[offset] | 0 | the offset (see pagination)
+page[limit] | 30 | the limit (see pagination)
+filter[q] | - | a search term (at least 3 characters)
+filter[fields] | all | in which fields to search
+filter[semester] | all | in which semester to search
 
-Der Parameter "filter[fields]" darf folgende Werte annehmen: 'all', 'title_lecturer_number', 'title', 'sub_title', 'lecturer', 'number', 'comment', 'scope'.
+The parameter "filter[fields]" can have the following values: 'all', 'title_lecturer_number', 'title', 'sub_title', 'lecturer', 'number', 'comment', 'scope'.
 
-## Alle Veranstaltungen
-Mit dieser Route können alle Veranstaltungen ausgelesen werden.
+## All events
+This route can be used to read all events.
 
 ### HTTP Request
   `GET /courses`
 
+### Parameters
+
+This route does not require any parameters
+
+
+### Authorization
+
+Any logged in user can use this route.
+
 ### Parameter
 
-Diese Route benötigt keine Parameter
-
-
-### Autorisierung
-
-Jeder eingeloggte Nutzer kann diese Route verwenden.
-
-### Parameter
-
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID des Kurses
+id | ID of the course
 
-### Autorisierung
+### Authorization
 
-Jeder Teilnehmer des Kurses kann diese Route nutzen.
+Every participant of the course can use this route.
 
 ```shell
 curl --request GET \
     --url https://example.com/courses \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-## Eine Veranstaltung
+## An event
 
-Gibt eine Veranstaltung wieder.
+Returns an event.
 
 ### HTTP Request
    `GET /courses/{id}`
 
 ### Parameter
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID des Kurses
+id | ID of the course
 
-### Autorisierung
+### Authorization
 
-Jeder Teilnehmer des Kurses oder Root kann diese Route nutzen.
+Any participant in the course or root can use this route.
 
    ```shell
    curl --request GET \
        --url https://example.com/courses/<course-id> \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-## Alle Veranstaltungen eines Nutzers
-Gibt alle Veranstaltungen eines Nutzers zurück.
+## All events of a user
+Returns all courses of a user.
 
 ### HTTP Request
 
@@ -137,122 +137,122 @@ Gibt alle Veranstaltungen eines Nutzers zurück.
 
 ### Parameter
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID des Nutzers
+id | ID of the user
 
-### Autorisierung
+### Authorization
 
-Jeder eingeloggte Nutzer kann diese Route nutzen.
+Every logged in user can use this route.
 
    ```shell
    curl --request GET \
        --url https://example.com/users/<user-id>/courses \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-## Teilnahmen einer Veranstaltung
+## Participations of an event
 
-Gibt alle Kurse mit dem jeweiligen Teilnehmerstatus eines Nutzers zurück.
+Returns all courses with the respective participant status of a user.
 
 ### HTTP Request
    `GET /courses/{id}/memberships`
 
 ### Parameter
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID des Kurses
+id | ID of the course
 
-### URL-Parameter
+### URL parameter
 
-Parameter          | Default | Beschreibung
----------          | ------- | ------------
-filter[permission] | -       | Rolle des Nutzers in der Veranstaltung
+Parameter | Default | Description
+--------- | ------- | ------------
+filter[permission] | - | Role of the user in the course
 
-### Autorisierung
+### Authorization
 
-Nutzer mit mindestens Adminstatus oder Teilnehmer des Kurses können diese Route benutzen.
+Users with at least admin status or participants of the course can use this route.
 
    ```shell
    curl --request GET \
        --url https://example.com/courses/<course-id>/memberships \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-## IDs der Teilnahmen
+## IDs of the participations
 
-Gibt die Referenzen auf die Teilnehmer eines Kurses zurück.
+Returns the references to the participants of a course.
 
-### HTTP-Request
+### HTTP request
    `GET /courses/{id}/relationships/memberships`
 
-### Parameter
+### Parameters
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID des Kurses
+id | ID of the course
 
-### Autorisierung
+### Authorization
 
-Nutzer mit mindestens Adminstatus oder Teilnehmer des Kurses können diese Route benutzen.
+Users with at least admin status or participants of the course can use this route.
 
    ```shell
    curl --request GET \
        --url https://example.com/courses/<course-id>/relationships/memberships \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-## Eine Teilnahme auslesen
+## Read out a participation
 
    ```shell
    curl --request GET \
        --url https://example.com/course-memberships/<ID> \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-Gibt eine Teilnahme wieder.
+Returns a participation.
 
 ### HTTP Request
    `GET /course-memberships/{id}`
 
 ### Parameter
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID der Teilnahme
+id | ID of participation
 
-### Autorisierung
+### Authorization
 
-Nur der Teilnehmer selbst kann die Teilnahme auslesen
+Only the participant himself can read the participation
 
 
-## Eine Teilnahme ändern
+## Change a participation
 
 ```shell
    curl --request PATCH \
        --url https://example.com/course-memberships/<ID> \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
        --header "Content-Type: application/vnd.api+json" \
        --data '{"data": {
            "type": "course-memberships",
            "id": "<ID>",
-           "attributes": {"group":2,"visible":"no"}
+           "attributes": {"group":2, "visible": "no"}
        }}'
 ```
 
-Mit dieser Route kann man die Attribute einer Teilnahme an einer
-Veranstaltung ändern.
+This route can be used to change the attributes of a participation in an
+change the attributes of an event.
 
 ### HTTP Request
    `PATCH /course-memberships/{id}`
 
 ### Parameter
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID der Teilnahme
+id | ID of participation
 
-### Autorisierung
+### Authorization
 
-Nur der Teilnehmer selbst kann die Teilnahme ändern.
+Only the participant himself can change the participation.

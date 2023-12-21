@@ -3,44 +3,44 @@ title: Blubber
 ---
 
 :::info
-Blubber ermöglicht innerhalb von Veranstaltungen mit anderen Stud.IP-Teilnehmern zu chatten.
-Wir unterscheiden in öffentliche-, private- und veranstaltungsbezogene Blubber.
+Blubber allows you to chat with other Stud.IP participants within courses.
+We differentiate between public, private and event-related Blubber.
 :::
 
 ## Schema 'blubber-postings'
-Der Inhalt wird als plain-text und html gespeichert. Meta-Daten geben Informationen über den Zeitpunkt und
-das Thema einer Nachricht.
+The content is saved as plain text and html. Meta data provides information about the time and
+the topic of a message.
 
-### Attribute
+### Attributes
 
-Attribut        | Beschreibung
+Attribute | Description
 --------------- | ------------
-context-type    | die Art des Kontexts; Veranstaltung ("course"), Öffentlich ("global") oder Nutzer ("user")
-content         | der Text des Blubber-Beitrags; kann Stud.IP-Markup enthalten
-content-html    | der Text des Blubber-Beitrags; als HTML formatiert
-mkdate          | Anlegedatum
-chdate          | Datum der letzten Änderung
-discussion-time | Datum der letzten Aktivität
-tags            | eine Liste von Tags
+context-type | the type of context; course ("course"), public ("global") or user ("user")
+content | the text of the Blubber contribution; may contain Stud.IP markup
+content-html | the text of the Blubber contribution; formatted as HTML
+mkdate | creation date
+chdate | date of the last change
+discussion-time | date of the last activity
+tags | a list of tags
 
-### Relationen
+### relations
 
- Relation | Beschreibung
+ relation | description
 --------- | ------------
-author    | Verfasser der Nachricht
-comments  | Untergeordnete Blubber
-context   | Wem wird der Blubber angezeigt: users, courses, public
-mentions  | Thema eines Blubber-Eintrags
-parent    | Übergeordneter Blubber-Eintrag
+author | author of the message
+comments | subordinate blubber
+context | Who the blubber is displayed to: users, courses, public
+mentions | Topic of a Blubber entry
+parent | Parent blubber entry
 resharers |
 
 
-## Alle Beiträge
+## All entries
 
 ```shell
 curl --request GET \
     --url https://example.com/blubber-postings \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
 ```javascript
@@ -48,116 +48,116 @@ fetch('https://example.com/blubber-postings', {
     method: 'GET',
     mode: 'cors',
     headers: new Headers({
-        'Authorization': `Basic ${btoa('test_autor:testing')}`
+        'Authorization': `Basic ${btoa('test_author:testing')}`
     })
 }).then(response => console.log(response))
 ```
 
-Es werden alle Blubber-Beiträge, die man im Stud.IP sehen könnte, angezeigt.
+All Blubber contributions that could be seen in Stud.IP are displayed.
 
 ### HTTP Request
 
 `GET /blubber-postings`
 
-### URL-Parameter
+### URL parameters
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-filter    | Filtermöglichkeit der anzuzeigenden Blubber-Beiträge
-include   | abhängige Ressourcen, die auch zurückgeliefert werden ([JSON:API-Spezifikation](http://jsonapi.org/format/#fetching-includes))
-page      | Einstellmöglichkeiten [zur Paginierung](#paginierung)
+filter | filter option for the blubber postings to be displayed
+include | dependent resources that are also returned ([JSON:API specification](http://jsonapi.org/format/#fetching-includes))
+page | setting options [for pagination](#pagination)
 
-#### URL-Parameter 'filter'
+#### URL parameter 'filter'
 
-Mit diesem URL-Parameter kann nach Typ und Datum der Aktivitäten
-gefiltert werden. Möglich sind folgende Filter:
+This URL parameter can be used to filter by type and date of the activities.
+can be filtered. The following filters are possible:
 
-Beispiel-Url: "https://example.com/blubber-postings?filter[user]=205f3efb7997a0fc9755da2b535038da"
+Example URL: "https://example.com/blubber-postings?filter[user]=205f3efb7997a0fc9755da2b535038da"
 
-Filter          | Beschreibung
+Filter | Description
 --------------- | ------------
-filter[course]  | Filtert Blubber-Einträge für eine Veranstaltung
-filter[user]    | Filter Blubber-Einträge für einen Nutzer
+filter[course] | Filters blubber entries for an event
+filter[user] | Filter Blubber entries for a user
 
-#### URL-Parameter 'include'
+#### URL parameter 'include'
 
-Fügt folgende Attribute in die Ausgabe hinzu.
+Adds the following attributes to the output.
 
-Wert      | Beschreibung
+value | description
 --------- | ------------
-author    | Den Verfasser eines Blubbers
-comments  | Angehangene Blubber
-context   | Wem wird der post angezeigt (users, courses, public)
-mentions  |
+author | The author of a blubber
+comments | Attached blubber
+context | Who the post is displayed to (users, courses, public)
+mentions |
 resharers |
 
 
-## Beitrag auslesen
-Einen gezielten Blubber-Eintrag auslesen.
-### HTTP Request
+## Read out post
+Read a specific Blubber entry.
+### HTTP request
 
 `GET /blubber-postings/{id}`
 
 ### Parameter
 
-Parameter |  Beschreibung
+Parameter | Description
 --------- | -------
-id        | ID des Blubber-Posts
+id | ID of the blubber post
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id> \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-## Beitrag anlegen
+## Create post
 
    ```shell
    curl --request POST \
        --url https://example.com/blubber-postings \
        --header "Content-Type: application/vnd.api+json" \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
        --data \
-       '{"data":{"type":"blubber-postings","attributes":{"context-type":"course","content":"Ein neuer blubberpost"},"relationships":{"context":{"data":{"type":"courses","id":"<CID>"}}}}}'
+       '{"data":{"type": "blubber-postings", "attributes":{"context-type": "course", "content": "A new blubber post"}, "relationships":{"context":{"data":{"type": "courses", "id":"<CID>"}}}}}'
    ```
 
-Mit dieser Route kann ein Blubber-Beitrag angelegt werden. Dies kann
-ein öffentlicher oder privater Beitrag sein, aber auch Blubber in
-Veranstaltungen können darüber angelegt werden.
+This route can be used to create a bubble post. This can be
+be a public or private post, but blubbers can also be created in
+events can also be created via this route.
 
 ### HTTP Request
 
-   `POST /blubber-postings`
+   POST /blubber-postings
 
 ### HTTP Request Body
 
-Im Request-Body muss der neue Beitrag als ``resource object``  vom Typ
-"blubber-postings" sein.
+In the request body, the new post must be specified as a ``resource object`` of type
+"blubber-postings" type.
 
-Notwendig sind die Attribute "content" und "context-type".
+The attributes "content" and "context-type" are required.
 
-Abhängig vom Wert des Attributs "context-type", muss außerdem eine
-"context"-Relation angegeben werden.
+Depending on the value of the "context-type" attribute, a "context" relation must also be specified.
+"context" relation must also be specified.
 
-Hat dieses Attribut den Wert "course", muss als "context"-Relation
-eine Veranstaltung als ``resource identifiert`` angegeben werden.
+If this attribute has the value "course", the "context" relation must be
+a course must be specified as ``resource identified``.
 
-### Parameter
+### Parameters
 
-   Bei diesem Request sind keine Parameter notwendig.
+   No parameters are required for this request.
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
 
-## Beitrag editieren
+## Edit post
 
-  Aktualisiert einen Blubber-Beitrag.
+  Updates a Blubber post.
 
 ### HTTP Request
 
@@ -165,13 +165,13 @@ Diese Route kann von allen Nutzern verwendet werden.
 
 ### Parameter
 
-   Parameter |  Beschreibung
+   Parameter | Description
    --------- | -------
-   id        | ID des Blubber-Posts
+   id | ID of the blubber post
 
-### Authorisierung
+### Authorization
 
-Der Sender des Requests muss Besitzer  des Blubber-Beitrags oder Root sein.
+The sender of the request must be the owner of the Blubber post or root.
 
    ```shell
    curl --request PATCH \
@@ -179,12 +179,12 @@ Der Sender des Requests muss Besitzer  des Blubber-Beitrags oder Root sein.
        --header "Content-Type: application/vnd.api+json" \
        --header "Authorization: Basic `echo -ne "root@studip:testing" | base64`" \
        --data
-       '{"data":{"type":"blubber-postings","attributes":{"context-type":"course","content":"Ein veränderter blubberpost"}, "relationships":{"context":{"data":{"type":"courses","id":"a07535cf2f8a72df33c12ddfa4b53dde"}}}}}'
+       '{"data":{"type": "blubber-postings", "attributes":{"context-type": "course", "content": "A modified blubber post"}, "relationships":{"context":{"data":{"type": "courses", "id": "a07535cf2f8a72df33c12ddfa4b53dde"}}}}}'
    ```
 
-## Beitrag löschen
+## Delete entry
 
-  Löscht einen Blubber-Eintrag.
+  Deletes a blubber entry.
 
 ### HTTP Request
 
@@ -192,49 +192,49 @@ Der Sender des Requests muss Besitzer  des Blubber-Beitrags oder Root sein.
 
 ### Parameter
 
-  Parameter |  Beschreibung
+  Parameter | Description
   --------- | -------
-  id        | ID des Blubber-Posts
+  id | ID of the blubber post
 
-### Authorisierung
+### Authorization
 
-Der Sender des Requests muss Besitzer des Blubber-Beitrags oder Root sein.
+The sender of the request must be the owner of the Blubber post or root.
 
    ```shell
    curl --request DELETE \
        --url https://example.com/blubber-postings/<blubber-id> \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`" \
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`" \
    ```
 
 ## Relation 'author'
 
-Gibt den Author eines Blubber-Posts zurück.
+Returns the author of a Blubber post.
 
-### HTTP Request
+### HTTP request
 
    `GET /blubber-postings/{id}/relationships/author`
 
 ### Parameter
 
-  Parameter |  Beschreibung
+  Parameter | Description
   --------- | -------
-  id        | ID des Blubber-Posts
+  id | ID of the blubber post
 
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id>/relationships/author \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
 
-## Kommentare eines Blubber-Beitrags
+## Comments of a Blubber post
 
-Gibt alle Kommentare eines Blubber-Beitrags zurück.
+Returns all comments of a Blubber post.
 
 ### HTTP Request
 
@@ -242,23 +242,23 @@ Gibt alle Kommentare eines Blubber-Beitrags zurück.
 
 ### Parameter
 
-  Parameter |  Beschreibung
+  Parameter | Description
   --------- | -------
-  id        | ID des Blubber-Posts
+  id | ID of the blubber post
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id>/comments \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-## Beitrag kommentieren
+## Comment post
 
-Erstellt einen Kommentar zu einem Blubber-Beitrag.
+Creates a comment on a Blubber post.
 
 ### HTTP Request
 
@@ -266,13 +266,13 @@ Erstellt einen Kommentar zu einem Blubber-Beitrag.
 
 ### Parameter
 
- Parameter |  Beschreibung
+ Parameter | Description
  --------- | -------
- id        | ID des Blubber-Posts
+ id | ID of the blubber post
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
    ```shell
    curl --request POST \
@@ -280,7 +280,7 @@ Diese Route kann von allen Nutzern verwendet werden.
        --header "Content-Type: application/vnd.api+json" \
        --header "Authorization: Basic `echo -ne "root@studip:testing" | base64`" \
        --data
-       '{"data": {"type": "blubber-postings","attributes": {"content": "Ein neuer blubberkommentar"}}}'
+       '{"data": {"type": "blubber-postings", "attributes": {"content": "A new blubber comment"}}}'
    ```
 
 ## Relation 'comments'
@@ -290,23 +290,23 @@ Diese Route kann von allen Nutzern verwendet werden.
 
 ### Parameter
 
- Parameter |  Beschreibung
+ Parameter | Description
  --------- | -------
- id        | ID des Blubber-Posts
+ id | ID of the blubber post
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id>/relationships/comments \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
 ## Relation 'context'
 
-Gibt den Scope (Sichtbarkeit) eines Blubber-Beitrags zurück.
+Returns the scope (visibility) of a Blubber post.
 
 ### HTTP Request
 
@@ -314,45 +314,45 @@ Gibt den Scope (Sichtbarkeit) eines Blubber-Beitrags zurück.
 
 ### Parameter
 
-    Parameter |  Beschreibung
+    Parameter | Description
     --------- | -------
-    id        | ID des Blubber-Posts
+    id | ID of the blubber post
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id>/relationships/context \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-## Erwähnungen eines Beitrags
-Gibt an, ob und in welchen Beiträgen eine Referenz zu diesem Beitrag gibt.
+## Mentions of a contribution
+Specifies whether and in which contributions there is a reference to this contribution.
 
-### HTTP Request
+### HTTP request
 
    `GET /blubber-postings/{id}/mentions`
 
 ### Parameter
 
-    Parameter |  Beschreibung
+    Parameter | Description
     --------- | -------
-    id        | ID des Blubber-Posts
+    id | ID of the blubber post
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id>/mentions \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
 ## Relation 'mentions'
-Gibt die Referenz der Beiträge zurück, in denen dieser Beitrag erwähnt wird.
+Returns the reference of the posts in which this post is mentioned.
 
 ### HTTP Request
 
@@ -360,23 +360,23 @@ Gibt die Referenz der Beiträge zurück, in denen dieser Beitrag erwähnt wird.
 
 ### Parameter
 
-    Parameter |  Beschreibung
+    Parameter | Description
     --------- | -------
-    id        | ID des Blubber-Posts
+    id | ID of the blubber post
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id>/relationships/mentions \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
 ## Relation 'resharers'
 
-Gibt die Referenz von Usern zurück, die diesen Beitrag geteilt haben.
+Returns the reference of users who shared this post.
 
 ### HTTP Request
 
@@ -384,38 +384,38 @@ Gibt die Referenz von Usern zurück, die diesen Beitrag geteilt haben.
 
 ### Parameter
 
-    Parameter |  Beschreibung
+    Parameter | Description
     --------- | -------
-    id        | ID des Blubber-Posts
+    id | ID of the blubber post
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id>/relationships/resharers \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```
 
-## Blubber-Stream auslesen
+## Read blubber stream
 
-Gibt eine Folge von Blubber-Einträgen zurück.
+Returns a sequence of blubber entries.
 
    `GET /blubber-streams/{id}`
 
 ### Parameter
 
-  Parameter |  Beschreibung
+  Parameter | Description
   --------- | -------
-  id        | ID des Blubber-Streams
+  id | ID of the blubber stream
 
-### Authorisierung
+### Authorization
 
-Diese Route kann von allen Nutzern verwendet werden.
+This route can be used by all users.
 
    ```shell
    curl --request GET \
        --url https://example.com/blubber-postings/<posting-id>/blubber-streams/<stream-id> \
-       --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+       --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
    ```

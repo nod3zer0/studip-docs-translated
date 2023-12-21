@@ -1,17 +1,17 @@
 ---
-title: Fehler
+title: Error
 ---
 
 
-Die Stud.IP-JSON:API verwendet die Fehler-Codes, die auch in der <a
-href="http://jsonapi.org/format">JSON-API-Spezifikation</a> verwendet
-werden.
+The Stud.IP-JSON:API uses the error codes that are also used in the <a
+href="http://jsonapi.org/format">JSON API specification</a>.
+are used.
 
 
-Fehler Code | Bedeutung
+Error code | Meaning
 ---------- | -------
-401 | Unauthorized – Sie haben nicht die erforderliche Berechtigung.
-403 | Forbidden – Die gewünschte Operation steht nicht zur Verfügung.
-404 | Not Found – Die gewünschte Ressource oder Relation konnte nicht gefunden werden.
-409 | Conflict  – Beim Anlegen oder Ändern von Ressourcen oder Relationen werden Beschränkungen im Stud.IP verletzt. Beispiel: Eine Ressource falschen Typs soll einer Relation hinzugefügt werden.
-500 | Internal Server Error – Es gibt ein Problem auf dem Server. Versuchen Sie es später erneut!
+401 | Unauthorized - You do not have the required authorization.
+403 | Forbidden - The requested operation is not available.
+404 | Not Found - The desired resource or relation could not be found.
+409 | Conflict - Restrictions in Stud.IP are violated when creating or changing resources or relations. Example: A resource of the wrong type is to be added to a relation.
+500 | Internal Server Error - There is a problem on the server. Try again later!

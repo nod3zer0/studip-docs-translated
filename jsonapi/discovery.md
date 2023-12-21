@@ -3,46 +3,46 @@ title: Discovery
 ---
 
 
-Auch wenn JSON:APIs von Haus aus einiges mehr "discoverable" als
-herkömmliche REST-APIs sind, schadet es nicht, eine spezielle Route
-anzubieten, um alle verfügbaren Routen anzuzeigen.
+Even though JSON:APIs are inherently a lot more discoverable than
+conventional REST APIs, there is no harm in offering a special route to
+to display all available routes.
 
-## Schemata
+## Schemas
 
 
 ### Schema "slim-routes"
 
-Ressourcen vom Typ "slim-routes" repräsentieren die aktiven Routen der Stud.IP-JSON:API.
+Resources of type "slim-routes" represent the active routes of the Stud.IP-JSON:API.
 
-### Attribute
+### Attributes
 
-Attribut    | Beschreibung
---------    | ------------
-methods     | ein Vektor von HTTP-Verben wie GET, POST, PATCH und DELETE
-pattern     | ein URI-Pattern wie "/file-refs/{id}"
+Attribute | Description
+-------- | ------------
+methods | a vector of HTTP verbs such as GET, POST, PATCH and DELETE
+pattern | a URI pattern such as "/file-refs/{id}"
 
-### Relationen
+### relations
 
-keine Relationen vorhanden
+no relations available
 
 
-## Alle Routen anzeigen
+## Show all routes
 ```shell
 curl --request GET \
     --url https://example.com/discovery \
-    --header "Authorization: Basic `echo -ne "test_autor:testing" | base64`"
+    --header "Authorization: Basic `echo -ne "test_author:testing" | base64`"
 ```
 
-Mit dieser Route erhält man eine Liste aller aktiven Routen der Stud.IP-JSON:API.
+With this route you get a list of all active routes of the Stud.IP-JSON:API.
 
 ### HTTP Request
 
 `GET /discovery`
 
-### URL-Parameter
+### URL parameters
 
-keine URL-Parameter
+no URL parameters
 
-### Autorisierung
+### Authorization
 
-Jeder eingeloggte Nutzer darf diese Route aufrufen.
+Any logged-in user may access this route.
