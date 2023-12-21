@@ -4,17 +4,17 @@ title: Notifications
 sidebar_label: Notifications
 ---
 
-## Notifications - ein Eventsystem für Stud.IP
+## Notifications - an event system for Stud.IP
 
-Plugins können in Stud.IP schon eine Menge. Sie können für jede Veranstaltung als Reiter eingefügt werden, sie können sich in die Homepage eines Nutzers mogeln und dort eine eigene Rubrik darstellen, sie können die Navigation umstellen und auf diese Weise komplette Fuktionen von Stud.IP wie das Forum ersetzen. Aber manchmal braucht man auch kleine Plugins, die nicht ganze Seiten verändern, sondern nur etwas tun, wenn etwas ganz bestimmtes passiert.
+Plugins can already do a lot in Stud.IP. They can be inserted as tabs for each course, they can cheat their way into the homepage of a user and display a separate section there, they can change the navigation and in this way replace complete functions of Stud.IP such as the forum. But sometimes you also need small plugins that do not change entire pages, but only do something when something very specific happens.
 
-Zum Beispiel: Wenn ein Nutzer eine Veranstaltung abonniert und mindestens auf der Warteliste steht, soll eine Person in der Buchhaltung, die Stud.IP fremd ist, eine automatische E-Mail bekommen. So eine Funktionalität ist in Stud.IP nicht integriert bisher, und der Entwickler, der sich damit befasst, will möglichst wenig im Quellcode von Stud.IP verändern. Er muss nun nur die betreffende Codezeile finden und setzt dort ein Event mit einem beliebigen Namen. Das geschieht so:
+For example: If a user subscribes to an event and is at least on the waiting list, a person in the accounting department who is not familiar with Stud.IP should receive an automatic e-mail. This kind of functionality has not yet been integrated into Stud.IP, and the developer working on it wants to change as little as possible in the Stud.IP source code. All he has to do is find the relevant line of code and set an event with any name. This is done like this:
 
 `NotificationCenter::postNotification("user_accepted_to_seminar", $username);`
 
-Das Event heißt nun "user_accepted_to_seminar" und wird an dieser Stelle immer aufgerufen. $username ist einfach eine Variable, die in dem Kontext verfügbar ist. In diesem Fall ist das natürlich der Nutzername und der ist einfach wichtig, damit in der später verschickten Email auch drin steht, welcher Nutzer sich angemeldet hat. Aber theoretisch könnte man diese Variable auch weg lassen.
+The event is now called "user_accepted_to_seminar" and is always called at this point. $username is simply a variable that is available in the context. In this case, this is of course the user name and this is simply important so that the email sent later also contains which user has registered. But theoretically you could also leave this variable out.
 
-Jetzt muss noch das Plugin geschrieben werden. Das Plugin muss vorher auf der Seite initialisiert sein, damit es eine Funktion für dieses Event registrieren kann. Ich schlage da natürlich ein SystemPlugin vor, das im Konstruktor sich selbst registriert:
+Now the plugin still needs to be written. The plugin must first be initialized on the page so that it can register a function for this event. I suggest a SystemPlugin that registers itself in the constructor:
 
 ```php
 class MyPlugin extends StudIPPlugin implements SystemPlugin {
@@ -23,14 +23,14 @@ class MyPlugin extends StudIPPlugin implements SystemPlugin {
     }
 
     public function send_mail_to_accepted_user($username) {
-        /* hier das, was getan werden soll, wenn der Nutzer registriert ist */
+        /* here is what should be done if the user is registered */
     }
 }
 ```
 
-An dieser Stelle wird klar, dass die übergebene Funktion nicht einfach eine Funktion sein sollte, sondern eine Methode eines Objektes. Zuerst wird also das spezifische Objekt übergeben und als zweiter Parameter der Name der Methode. Erst der dritte Parameter ist der Name des Events. In diesem Fall ist das Plugin faul und registriert sich selbst für das Event durch $this. Aber es kann auch ein anderes Objekt registriert werden als ein Plugin.
+At this point it becomes clear that the passed function should not simply be a function, but a method of an object. The specific object is therefore passed first and the name of the method is passed as the second parameter. Only the third parameter is the name of the event. In this case, the plugin is lazy and registers itself for the event using $this. However, another object can also be registered as a plugin.
 
-Ab Stud.IP 4.2 ist es auch möglich, [Closures](php.net/manual/class.closure.php) als Event-Handler über die Funktion `on()` zu registrieren. Die Syntax folgt dabei der jQuery-Notation:
+As of Stud.IP 4.2 it is also possible to register [Closures](php.net/manual/class.closure.php) as an event handler via the function `on()`. The syntax follows the jQuery notation:
 
 ```php
 NoticationCenter::on('UserDidDelete', function ($event, $user) {
@@ -38,19 +38,19 @@ NoticationCenter::on('UserDidDelete', function ($event, $user) {
 });
 ```
 
-In Stud.IP 4.2 und 4.3 war hier nur die Übergabe von Closures möglich. Ab Stud.IP 4.4 können nahezu alle Callable-Typen übergeben werden. Lediglich Strings können nicht vernünftig abgebildet werden und sind deshalb zu vermeiden.
+In Stud.IP 4.2 and 4.3 only the transfer of closures was possible here. As of Stud.IP 4.4, almost all callable types can be passed. Only strings cannot be mapped properly and should therefore be avoided.
 
-### Rückgabewerte von Notifications
+### Return values of notifications
 
-Leider sind Notofications nicht dazu gedacht, etwas zurückzugeben. Aber wenn man Plugins baut, die etwas tun, möchte man vielleicht eine visuelle Rückmeldung geben wie eine Fehler- oder Erfolgsmeldung.
+Unfortunately, notifications are not intended to return anything. But if you build plugins that do something, you might want to give a visual feedback like an error or success message.
 
-Man kann von einem Observer keine Arrays oder andere Datenobjekte zurück bekommen. Aber es steht dem Observer natürlich frei, für sich die print oder echo-Anweisung zu verwenden, um Text an den Nutzer zu schreiben. Dies ist die einzige derzeit mögliche Art der Rückmeldung vom Observer; der eventuelle Rückgabewert der übergebenen Methode wird zurzeit komplett ignoriert.
+You can't get arrays or other data objects back from an observer. But the observer is of course free to use the print or echo statement for itself to write text to the user. This is currently the only possible type of feedback from the observer; the possible return value of the transferred method is currently completely ignored.
 
-Jetzt kann also der Observer seiner Erfolgsmeldung schreiben a'la
+So now the observer can write its success message a'la
 
-`echo '<div class="messagebox messagebox_success">Hurra! Daten erfolgreich übernommen.</div>';`
+`echo '<div class="messagebox messagebox_success">Hurray! Data successfully transferred.</div>';`
 
-Beachten muss man allerdings, dass dieses Echo vielleicht zur falschen Zeit kommt, wenn das Skript, das die Notification postet, mit Templates arbeitet oder gar ein Trails-Skript ist. Das ist natürlich nicht schlecht, führt nur dazu, dass die Fehlermeldung unter Umständen noch vor dem einleitenden `<html>`, also ganz ganz oben auf der Seite steht. Um das zu umgehen, kann das ausführende Skript schreiben:
+Note, however, that this echo may come at the wrong time if the script that posts the notification works with templates or is even a trails script. This is not a bad thing, of course, but it can lead to the error message appearing before the introductory `<html>`, i.e. at the top of the page. To avoid this, the executing script can write
 
 ```php
 ob_start();
@@ -59,296 +59,296 @@ $message = ob_get_contents();
 ob_end_clean();
 ```
 
-Dank der Gnädigkeit von PHP funktioniert das auch, wenn im Hintergrund noch ein anderer Outputbuffer (für das das "ob_" steht) aktiv ist. Auf diese Weise kann man also zumindest einen String von den Observern zum ausführenden Skript bringen.
+Thanks to the graciousness of PHP, this also works if another output buffer (for which the "ob_" stands) is active in the background. This way you can at least get a string from the observers to the executing script.
 
-**WARNUNG:** Jeder Gedanke, über diesen String serialisierte Arrays oder PHP-Objekte durchzuschleusen, ist naheliegend aber schmutzig, weil es ja immer sein kann, dass noch ein zweiter oder dritter Observer etwas sendet. Und zwei oder drei serialisierte Objekte in einem String lassen sich zumindest nicht so einfach mit einem `unserialize()` herausfischen. Also lasst sowas lieber gleich bleiben.
+**WARNING:** Any thought of passing serialized arrays or PHP objects via this string is obvious but dirty, because it is always possible that a second or third observer is sending something. And two or three serialized objects in a string are at least not so easy to fish out with an `unserialize()`. So don't do that at all.
 
-Tipp: Man kann über Plugins nicht nur Observer für Notifications definieren, sondern natürlich auch Notifications selbst posten. Damit kann man quasi Plugins für das eigene Plugin ermöglichen. Dadurch können ganz konkret zwei Plugins miteinander kommunizieren, wenn beide installiert sind. Und wenn nur eines installiert ist, passiert nichts. Das kann unter Umständen ziemlich nützlich sein.
+Tip: You can not only define observers for notifications via plugins, but of course also post notifications yourself. This allows you to enable plugins for your own plugin. This allows two plugins to communicate with each other if both are installed. And if only one is installed, nothing happens. This can be quite useful under certain circumstances.
 
 
-### Notifications selber erzeugen
+### Create notifications yourself
 
-#### Wie benenne ich eine Notification?
+#### How do I name a notification?
 
-Dazu gibt es bisher keine gültige Richtlinie. Offenbar scheint sich aber abzuzeichnen, dass der Name in CamelCase geschrieben und eine Handlung beschreibt. Da das NotificationCenter an die Originalimplementation aus NextStep angelehnt ist, macht es vermutlich Sinn, ähnliche Konventionen wie dort zu verwenden. So beschreibt der Artikel [NSNotfication Not Working, But Looks Right? :: Find That Bug!](http://www.goodbyehelicopter.com/?p=259) ein BestPractice, wonach die Notifications:
+There is no valid guideline for this yet. However, it appears that the name is written in CamelCase and describes an action. As the NotificationCenter is based on the original implementation from NextStep, it probably makes sense to use similar conventions as there. The article [NSNotfication Not Working, But Looks Right? :: Find That Bug!](http://www.goodbyehelicopter.com/?p=259) describes a BestPractice, according to which the Notifications:
 
 `JJColorChange`
 
-und:
+and:
 
 `JJColorChanged`
 
-nur schwer im Code zu unterscheiden sind, da sie sich lediglich um einen Buchstaben unterscheiden. Die Empfehlung lautet statt:
+are difficult to distinguish in the code, as they only differ by one letter. The recommendation is instead of:
 
 * CamelCase
 * CamelCased
 
-lieber:
+rather:
 
 * CamelCase
 * CamelDidCase
 * CamelWillCase
 * CamelByCase
 
-zu verwenden. Aus diesen Gründen wurden bei den Notifications für Dateien, Wikiseiten und Forumsbeiträgen die Namen entsprechend gewählt.
+should be used. For these reasons, the names of the notifications for files, wiki pages and forum posts have been chosen accordingly.
 
 
 
-### Liste der in Stud.IP eingebauten Notifications
+### List of notifications built into Stud.IP
 
-Hier folgt nun eine Liste der verfügbaren Notifications, sortiert nach Bereichen. Bei der Parameterliste ist zu beachten, dass bei der durch die Notification aufgerufene Funktion oder Methode der erste Parameter den Namen der Notification beinhaltet.
+Here is a list of the available notifications, sorted by area. In the parameter list, please note that the first parameter of the function or method called by the notification contains the name of the notification.
 
-#### Veranstaltungen
+#### Events
 
 ##### UserDidEnterCourse
 
-**Zusätzliche Parameter für Observer-Methode:** 
-* Veranstaltungs-ID
-* Nutzer-ID
+**Additional parameters for observer method:**
+* Event ID
+* User ID
 
-**Sendebedingung:** Ein Nutzer trägt sich in eine Veranstaltung ein.
+**Sending condition:** A user registers for an event.
 
 ##### UserDidLeaveCourse
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**Sending condition:** ?
 
 ##### CourseDidChangeSchedule
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**Send condition:** ?
 
 ##### CourseDidGetMember
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**Send condition:** ?
 
 
 
 
-#### Dateien
+#### Files
 
 ##### DocumentWillCreate
 
-**Zusätzliche Parameter für Observer-Methode:**
-* StudipDocument-Instanz
+**Additional parameters for observer method:**
+* StudipDocument instance
 
-**Sendebedingung**: Eine Datei wird hochgeladen und wurde noch nicht angelegt.
+**Send condition**: A file is uploaded and has not yet been created.
 
 ##### DocumentDidCreate
 
-**Zusätzliche Parameter für Observer-Methode:**
-* StudipDocument-Instanz
+**Additional parameters for observer method:**
+* StudipDocument instance
 
-**Sendebedingung**: Eine Datei wurde hochgeladen und angelegt.
+**Sending condition**: A file has been uploaded and created.
 
 ##### DocumentWillUpdate
 
-**Zusätzliche Parameter für Observer-Methode:**
-* StudipDocument-Instanz
+**Additional parameters for observer method:**
+* StudipDocument instance
 
-**Sendebedingung**: Eine Datei wird aktualisiert.
+**Send condition**: A file is updated.
 
 ##### DocumentDidUpdate
 
-**Zusätzliche Parameter für Observer-Methode:**
-* StudipDocument-Instanz
+**Additional parameters for observer method:**
+* StudipDocument instance
 
-**Sendebedingung**: Eine Datei wurde aktualisiert.
+**Send condition**: A file has been updated.
 
 ##### DocumentWillDelete
 
-**Zusätzliche Parameter für Observer-Methode:**
-* StudipDocument-Instanz
+**Additional parameters for observer method:**
+* StudipDocument instance
 
-**Sendebedingung**: Eine Datei wird gelöscht.
+**Send condition**: A file is deleted.
 
 ##### DocumentDidDelete
 
-**Zusätzliche Parameter für Observer-Methode:**
-* StudipDocument-Instanz
+**Additional parameters for observer method:**
+* StudipDocument instance
 
-**Sendebedingung**: Eine Datei wurde gelöscht.
+**Send condition**: A file has been deleted.
 
 
 #### Forum
 
 ##### PostingWillCreate
 
-**Zusätzliche Parameter für Observer-Methode:**
-* ID des Forenbeitrags
+**Additional parameters for observer method:**
+* ID of the forum post
 
-**Sendebedingung**: Ein Forenbeitrag wurde verfasst, aber noch nicht gespeichert.
+**Sending condition**: A forum post has been created but not yet saved.
 
 ##### PostingDidCreate
 
-**Zusätzliche Parameter für Observer-Methode:**
-* ID des Forenbeitrags
+**Additional parameters for observer method:**
+* ID of the forum post
 
-**Sendebedingung**: Ein Forenbeitrag wurde verfasst und gespeichert.
+**Sending condition**: A forum post has been created and saved.
 
 ##### PostingWillUpdate
 
-**Zusätzliche Parameter für Observer-Methode:**
-* ID des Forenbeitrags
+**Additional parameters for observer method:**
+* ID of the forum post
 
-**Sendebedingung**: Ein Forenbeitrag wurde geändert, die Änderung aber noch nicht gespeichert.
+**Sending condition**: A forum post has been changed, but the change has not yet been saved.
 
 ##### PostingDidUpdate
 
-**Zusätzliche Parameter für Observer-Methode:**
-* ID des Forenbeitrags
+**Additional parameters for observer method:**
+* ID of the forum post
 
-**Sendebedingung**: Ein Forenbeitrag wurde geändert und die Änderung gespeichert.
+**Sending condition**: A forum post has been changed and the change has been saved.
 
 ##### PostingWillDelete
 
-**Zusätzliche Parameter für Observer-Methode:**
-* ID des Forenbeitrags
+**Additional parameters for observer method:**
+* ID of the forum post
 
-**Sendebedingung**: Ein Forenbeitrag wird gelöscht, der Löschvorgang hat jedoch noch nicht begonnen.
+**Sending condition**: A forum post is deleted, but the deletion process has not yet started.
 
 ##### PostingDidDelete
 
-**Zusätzliche Parameter für Observer-Methode:**
-* ID des Forenbeitrags
+**Additional parameters for observer method:**
+* ID of the forum post
 
-**Sendebedingung**: Ein Forenbeitrag wurde gelöscht.
+**Sending condition**: A forum post has been deleted.
 
-#### Literaturverwaltung
+#### Literature management
 
 ##### LitListDidInsert
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**Sending condition:** ?
 
 ##### LitListDidUpdate
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**Send condition:** ?
 
 ##### LitListDidDelete
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**Send condition:** ?
 
 ##### LitListElementDidInsert
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**Send condition:** ?
 
 ##### LitListElementDidUpdate
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**Send condition:** ?
 
 ##### LitListElementDidDelete
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**SendCondition:** ?
 
 
 #### Blubber
 
 ##### PostingHasSaved
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for Observer method:**
 * ?
 
-**Sendebedingung:** ?
+**SendCondition:** ?
 
 
-#### Nachrichten
+#### Messages
 
 ##### MessageDidSend
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**Send condition:** ?
 
 
-#### Nutzermigration
+#### User migration
 
-Beim Migrieren von einem Nutzeraccount in einen anderen wird vor der Aktion die Notification `UserWillMigrate` und nach der Aktion die Notification `UserDidMigrate` gesendet. Beide Notifications erhalten die Id des Accounts, {+aus+} dem migriert werden soll als `subject`, während die Id des Accounts, {+in+} den migriert werden soll, als `$userdata` übergeben wird.
+When migrating from one user account to another, the notification `UserWillMigrate` is sent before the action and the notification `UserDidMigrate` is sent after the action. Both notifications receive the ID of the account {+from+} to be migrated as `subject`, while the ID of the account {+in+} to be migrated is transferred as `$userdata`.
 
 
 #### Wiki
 
-Wenn eine Wikiseite verfasst wurde, wird vor dem tatsächlichen Speichern die Notification `PostingWillCreate` und nach dem Speichern `PostingDidCreate` versendet. Das `subject` ist ein Array mit `range_id` und `keyword` der Wikiseite.
+If a wiki page has been created, the notification `PostingWillCreate` is sent before it is actually saved and `PostingDidCreate` is sent after it has been saved. The `subject` is an array with `range_id` and `keyword` of the wiki page.
 
-Wenn eine Wikiseite verändert wurde, wird vor dem tatsächlichen Speichern die Notification `PostingWillUpdate` und nach dem Speichern `PostingDidUpdate` versendet. Das `subject` ist ein Array mit `range_id` und `keyword` der Wikiseite.
+If a wiki page has been changed, the notification `PostingWillUpdate` is sent before it is actually saved and `PostingDidUpdate` is sent after it has been saved. The `subject` is an array with `range_id` and `keyword` of the wiki page.
 
-Auch wenn eine Wikiseite gelöscht wird, gibt es Notifications: `PostingWillDelete` und `PostingDidDelete`. Auch dort wird der Vollständigkeit halber ein Array mit `range_id` und `keyword` der Wikiseite übergeben.
-
-
-#### Veranstaltungsübersicht
-
-Beim Klick auf den Link "Alles als gelesen markieren" auf der Veranstaltungsübersicht wird vor der Aktion die Notification `OverviewWillClear` und danach die Notification `OverviewDidClear` gesendet. Beide Notifications erhalten die Id des Nutzers als `subject`.
+There are also notifications when a wiki page is deleted: `PostingWillDelete` and `PostingDidDelete`. An array with `range_id` and `keyword` of the wiki page is also passed there for the sake of completeness.
 
 
-#### Modulverwaltung
+#### Event overview
 
-**Notifications: `CourseRemovedFromModule` und `CourseAddedToModule`**
+When clicking on the link "Mark all as read" on the event overview, the notification `OverviewWillClear` is sent before the action and the notification `OverviewDidClear` is sent afterwards. Both notifications receive the user's ID as `subject`.
+
+
+#### Module management
+
+**Notifications: `CourseRemovedFromModule` and `CourseAddedToModule`**
 ```php
 NotificationCenter::postNotification(
-    'CourseRemovedFromModule', 
-    $studyarea, 
+    'CourseRemovedFromModule',
+    $studyarea,
     ['module_id' => $sem_tree_id, 'course_id' => $seminar_id]
 );
 
 NotificationCenter::postNotification(
-    'CourseAddedToModule', 
-    $studyarea, 
+    'CourseAddedToModule',
+    $studyarea,
     ['module_id' => $sem_tree_id, 'course_id' => $seminar_id]
 );
 ```
 
-<TODO: elmar oder anoack>
+<TODO: elmar or anoack>
 
 
 #### Sidebar
 
 ##### SidebarWillRender
 
-**Zusätzliche Parameter für Observer-Methode:**
+**Additional parameters for observer method:**
 * ?
 
-**Sendebedingung:** ?
+**Sending condition:** ?
 
 
-#### Systemkonfiguration
+#### System configuration
 
 **Notification: `ConfigValueChanged`**
 
-Dies Notification wird versendet, wenn sich ein in der Klasse `Config` enthaltener Parameter geändert hat. Als `subject` wird die Config-Instanz mitgegeben und als `userdata` der neue und alte Wert.
+This notification is sent if a parameter contained in the `Config` class has changed. The Config instance is given as `subject` and the new and old value as `userdata`.
 
-<TODO: elmar oder anoack>
- 
+<TODO: elmar or anoack>
+
 ```php
-NotificationCenter::postNotification('ConfigValueChanged', 
-    $this, 
+NotificationCenter::postNotification('ConfigValueChanged',
+    $this,
     [
-        'field' => $field, 
-        'old_value' => $old_value, 
+        'field' => $field,
+        'old_value' => $old_value,
         'new_value' => $value_entry->value
     ]
 );

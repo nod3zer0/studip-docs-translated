@@ -5,67 +5,67 @@ sidebar_label: Less
 ---
 
 
-Ab Version 2.3 ([#2602](https://develop.studip.de/trac/ticket/2602)) von Stud.IP werden Stylesheets in LESSCss (http://lesscss.org) geschrieben und in normales CSS kompiliert.
+As of version 2.3 ([#2602](https://develop.studip.de/trac/ticket/2602)) of Stud.IP, stylesheets are written in LESSCss (http://lesscss.org) and compiled into normal CSS.
 
-Das Kompilieren der .less-Dateien ist nun Teil des Buildprozesses bzw. kann auch separat mittels `make` auf der Kommandozeile angestossen werden.
+Compiling the .less files is now part of the build process or can also be triggered separately using `make` on the command line.
 
-## Spezielle Variablen und Mixins für Stud.IP
+## Special variables and mixins for Stud.IP
 
-### Pfade
+### Paths
 
-| Variable | Beschreibung |
+| Variable | Description |
 | ---- | ---- |
-| `@image-path` | Pfad zu den Bildern von Stud.IP, entspricht im Standardfall `public/assets/images`|
+| `@image-path` | path to the images of Stud.IP, corresponds to `public/assets/images`| by default
 
-### Bilder
+### Images
 
-| Variable | Beschreibung |
+| variable | description |
 | ---- | ---- |
-| `.retina-background-image(@normal, @retina)` | Bindet ein Hintergrundbild für Retina-Displays in zwei Größen ein. Die Bilder werden hierbei im Image-Pfad von Stud.IP erwartet. |
-Für Retina-Bilder stehen die beiden folgenden Funktionen zur Verfügung:
+| `.retina-background-image(@normal, @retina)` | Includes a background image for Retina displays in two sizes. The images are expected in the image path of Stud.IP. |
+The following two functions are available for Retina images:
 
 
 ### Icons
 
-Ab v3.4 können Stud.IP-Icons in LESS/CSS über folgenden Mixins eingebunden werden:
+From v3.4 Stud.IP icons can be integrated in LESS/CSS via the following mixins:
 
-| **Zweck**                             | **Signatur**                                | **Beispiel**|
+| **purpose** | **signature** | **example**|
 | ---- | ---- | ---- |
-|**Icon im Hintergrund**                |`.background-icon(shape, role);`             |`.background-icon('seminar', 'clickable');` |
-|**Button mit Icon inkl. Hover-Effekt** |`.button-with-icon(shape, role, role_hover)` |`.button-with-icon("accept", "clickable", "info_alt")` |
-|**Icon als BG in ::before**            |`.icon("before", shape, role)`               |`.icon("before", "arr_1right", "clickable")`|
-|**Icon als BG in ::after**             |`.icon("after", shape, role)`                |`.icon("after", "arr_1right", "clickable")` |
+|**Icon in the background** |`.background-icon(shape, role);` |`.background-icon('seminar', 'clickable');` |
+|**Button with icon incl. hover effect** |`.button-with-icon(shape, role, role_hover)` |`.button-with-icon("accept", "clickable", "info_alt")` |
+|**Icon as BG in ::before** |`.icon("before", shape, role)` |`.icon("before", "arr_1right", "clickable")`|
+|**Icon as BG in ::after** |`.icon("after", shape, role)` |`.icon("after", "arr_1right", "clickable")` |
 
-### Farben
+### Colors
 
-// TODO: Tatsächliches Farbschema als Screenshot anzeigen
-// TODO: Namensräume besser beschreiben
+// TODO: Show actual color scheme as screenshot
+// TODO: Describe namespaces better
 
-Seit Version 3.0 gibt es für Stud.IP ein eigenes Farbschema, auf welches - soweit möglich - immer zurückgegriffen werden sollte.
+Since version 3.0, Stud.IP has its own color scheme, which should always be used as far as possible.
 
-| Farbe | Beschreibung |
+| color | description |
 | ---- | ---- |
-| `@red` | Ein Rot-Ton |
-| `@orange` | Ein Orange-Ton |
-| `@activity-color` | Kennzeichnet Aktivitätsmöglichkeiten |
-| `@dark-gray-color` | Dunkles Grau |
-| `@light-gray-color` | Helles Grau |
-| `@content-color` | Farbe für Inhalte |
-| `@base-color` | Grundfarbe |
+| `@red` | A shade of red |
+| `@orange` | A shade of orange |
+| `@activity-color` | Indicates activity options |
+| `@dark-gray-color` | Dark gray |
+| `@light-gray-color` | Light gray |
+| `@content-color` | Color for content |
+| `@base-color` | Base color |
 
 
-Alle Farben gibt es jeweils in vier weiteren Abstufungen, bei denen jeweils 80%, 60%, 40% bzw. 20% der Originalfarbe gemischt wurden. Diese Farben spricht man indem, man der Farbvariable den jeweiligen Prozentsatz mit einem - getrennt anhängt, bspw. `red-60`.
+All colors are available in four further shades, in which 80%, 60%, 40% and 20% of the original color have been mixed. These colors are spoken by appending the respective percentage to the color variable separated by a -, e.g. `red-60`.
 
-## Deprecated: LESS in Plugins
+## Deprecated: LESS in plugins
 
-Die folgenden Vorschläge werden sich in Zukunft (vermutlich Stud.IP v5) ändern und sind damit nicht zukunftssicher.
+The following suggestions will change in the future (probably Stud.IP v5) and are therefore not future-proof.
 
-Die Klasse `StudipPlugin` stellt die Methode `addStylesheet()` zur Verfügung, über welche LESS auch in Plugins verwendet werden kann. Dazu muss dieser Funktion der Name der LESS-Datei **relativ** zum Pluginpfad angegeben werden. Dadurch wird die LESS-Datei kompiliert und gleichfalls in der Seite zur Verfügung gestellt. Alle Mixins, die im Kern zur Verfügung stehen, stehen auch dem Plugin zur Verfügung.
+The class `StudipPlugin` provides the method `addStylesheet()`, via which LESS can also be used in plugins. To do this, the name of the LESS file **relative** to the plugin path must be specified to this function. This compiles the LESS file and also makes it available in the page. All mixins that are available in the core are also available to the plugin.
 
-Darüber hinaus steht seit Stud.IP 3.4 den Plugins im LESS die Variable `@plugin-path` zur Verfügung, um auf Dateien innerhalb des Pluginverzeichnisses zu referenzieren.
+In addition, since Stud.IP 3.4 the variable `@plugin-path` is available to the plugins in LESS to reference files within the plugin directory.
 
-#### Deprecated: Eigene Implementierungen zum Speichern der kompilierten Dateien
+#### Deprecated: Own implementations for saving the compiled files
 
-Falls die Speicherung der kompilierten Dateien geändert werden soll, kann der `Assets\Storage` über die Methode `setFactory()` eine Instanz einer eigenen Implementierung von `Assets\AssetFactory` übergeben, welche spezialisierte `Assets\Asset`-Objekte erzeugt, die die Speicherung anders verwalten können. Auch der Downloadpfad für den Zugriff auf die Dateien kann dabei entsprechend abgeändert werden. Für nähere Informationen wird auf die Interfaces [AssetFactory](https://develop.studip.de/trac/browser/trunk/lib/classes/assets/AssetFactory.php) und [Asset](https://develop.studip.de/trac/browser/trunk/lib/classes/assets/Asset.php) bzw. deren konkreten Kern-Implementierungen [PluginAssetFactory](https://develop.studip.de/trac/browser/trunk/lib/classes/assets/PluginAssetFactory.php) und [PluginAsset](https://develop.studip.de/trac/browser/trunk/lib/classes/assets/PluginAsset.php) verwiesen.
+If the storage of the compiled files is to be changed, the `Assets\Storage` can be passed an instance of its own implementation of `Assets\AssetFactory` via the `setFactory()` method, which creates specialized `Assets\Asset` objects that can manage the storage differently. The download path for accessing the files can also be changed accordingly. For more information, please refer to the interfaces [AssetFactory](https://develop.studip.de/trac/browser/trunk/lib/classes/assets/AssetFactory.php) and [Asset](https://develop.studip.de/trac/browser/trunk/lib/classes/assets/Asset.php) or their specific core implementations [PluginAssetFactory](https://develop.studip.de/trac/browser/trunk/lib/classes/assets/PluginAssetFactory.php) and [PluginAsset](https://develop.studip.de/trac/browser/trunk/lib/classes/assets/PluginAsset.php).
 
-Eine solche Änderung kann über ein SystemPlugin eingespielt werden, sofern dieses als erstes Plugin geladen wird (kleinste "Position" in der Pluginverwaltung des Systems).
+Such a change can be imported via a SystemPlugin, provided that this is loaded as the first plugin (smallest "position" in the plugin administration of the system).

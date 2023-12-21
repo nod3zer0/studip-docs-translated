@@ -4,13 +4,13 @@ title: Log
 sidebar_label: Log
 ---
 
-Häufig muss man während der Programmierung, u.U. aber auch nachträglich auf dem Produktiv/Staging System debugging durchführen. Dazu werden dann meist Ausgaben erzeugt. Das ist unübersichtlich und auf dem Produktivsystem auch für alle sichtbar, wenn man nicht aufpasst. Es gibt auch Bereiche, wo man nur sehr schwierig mit debugging Ausgaben arbeiten kann, z.B. Loginvorgang, SSO Varianten, Webservices etc. Für solche Fälle steht eine Log-Klasse zur Verfügung stehen, mit der man flexibel eines oder mehrere Logs erzeugen kann, und die Ausgabe des Logs nach belieben steuern kann.
+It is often necessary to perform debugging on the production/staging system during programming, but possibly also afterwards. Output is then usually generated for this purpose. This is confusing and visible to everyone on the production system if you are not careful. There are also areas where it is very difficult to work with debugging outputs, e.g. login process, SSO variants, web services etc. For such cases, a log class is available with which you can flexibly create one or more logs and control the output of the log as desired.
 
-Die Klasse [Log](https://gitlab.studip.de/studip/studip/-/blob/main/lib/classes/Log.php) steht ab Version 2.4 zur Verfügung. Es wird automatisch ein standard log initialisiert, welches in die Datei studip.log im temporären Stud.IP Verzeichnis geschrieben wird. Im Modus `development` wird der Log Level auf DEBUG gesetzt, ansonsten auf ERROR.
+The [Log](https://gitlab.studip.de/studip/studip/-/blob/main/lib/classes/Log.php) class is available from version 2.4. A standard log is automatically initialized, which is written to the studip.log file in the temporary Stud.IP directory. In `development` mode, the log level is set to DEBUG, otherwise to ERROR.
 
-# Allgemeines
+# General
 
-Über die Klasse `Log` können verschiedene benannte Logger gesteuert werden. Der standard Logger hat keinen speziellen Namen. Die logger können im einfachsten Fall einfach der Name einer Datei sein, in die die Meldungen geschrieben werden. Alternativ kann ein callback übergeben werden, der die Meldungen entgegen nimmt. Die Klasse definiert folgende Logging Level:
+Various named loggers can be controlled via the class `Log`. The standard logger has no special name. In the simplest case, the logger can simply be the name of a file in which the messages are written. Alternatively, a callback can be passed which receives the messages. The class defines the following logging levels:
 
 * `FATAL`
 * `ALERT`
@@ -21,65 +21,65 @@ Die Klasse [Log](https://gitlab.studip.de/studip/studip/-/blob/main/lib/classes/
 * `INFO`
 * `DEBUG`
 
-Es stehen gleichnamige Methode zur Verfügung, um eine Meldung auf dem entsprechenden Level abzusetzen.
+Methods with the same name are available to send a message at the corresponding level.
 
-Statischer Aufruf:
+Static call:
 
 ```php
-Log::warning('Dies könnte problematisch sein');
+Log::warning('This could be problematic');
 ```
 
-Aufruf über Instanz Methode:
+Call via instance method:
 
 ```php
-Log::get()->warning('Dies könnte problematisch sein');
+Log::get()->warning('This could be problematic');
 ```
 
-Groß- und Kleinschreibung spielen keine Rolle, es reicht auch eine eindeutige Abkürzung, z.B. warn() statt warning().
+Upper and lower case are not important, a unique abbreviation is also sufficient, e.g. warn() instead of warning().
 
-## Andere Logger erzeugen
+## Create other loggers
 
-### Dateibasiert
+### File-based
 
 ```php
-//neuen benannten logger erzeugen
-Log::set('meinlogger', '/tmp/meinlog.log');
+//create a new named logger
+Log::set('mylogger', '/tmp/mylog.log');
 
-//Aufruf
-Log::info_meinlogger('Dies nur zu meiner Information');
-oder
-Log::get('meinlogger')->info('Dies nur zu meiner Information');
+//Call
+Log::info_meinlogger('This is for my information only');
+or
+Log::get('mylogger')->info('This is for my information only');
 ```
 
-### Mit callback
+### With callback
 
 ```php
-//logging per mail 
+//logging by mail
 $logtomail = function($l)
 {
     return mail('noack@data-quest.de', 'Log ' . ' ['.$l['level_name'].'] ', $l['formatted']);
 };
-//benannten logger ändern
-Log::get('meinlogger')->setHandler($logtomail);
+//change named logger
+Log::get('mylogger')->setHandler($logtomail);
 ```
 
-### kombinierte Logger mit verschiedenen Stufen
+### combined logger with different levels
 
 ```php
 $defaultlog = Log::get();
 $defaultlog->setLogLevel(Log::DEBUG);
-$maillog = Log::get('meinlogger');
+$maillog = Log::get('mylogger');
 $maillog->setLogLevel(Log::ALERT);
 $combi_handler = function($m) use ($defaultlog, $maillog)
 {
     $maillog->log($m['message'], $m['level']);
     $defaultlog->log($m['message'], $m['level']);
 };
-//als neuen standard logger setzen
+//set as new default logger
 Log::set(*, $combi_handler );
 
-//das geht nur in die Datei
-Log::debug('eigentlich egal was hier passiert');
-//in Datei und per mail
-Log::fatal('jetzt krachts aber richtig');
+//this only goes into the file
+Log::debug('doesn't really matter what happens here');
+//in file and by mail
+Log::fatal('now it's really cracking');
 ```

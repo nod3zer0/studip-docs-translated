@@ -3,93 +3,93 @@ id: page-layout
 title: PageLayout
 sidebar_label: PageLayout
 ---
-Über die Klasse PageLayout steht eine API in Stud.IP zur Verfügung, die verschiedene Anpassungen an der HTML-Grundstruktur der Ausgabe ermöglicht. Diess umfaßt einfache Dinge wie das Setzen des Seitentitels, ermöglicht aber auch das Hinzufügen oder Entfernen von HTML-Elementen im `<head>`-Bereich der Seite, um beispielsweise eigene Style-Sheets oder JavaScipt-Dateien einbinden zu können.
+The PageLayout class provides an API in Stud.IP that allows various adjustments to the basic HTML structure of the output. This includes simple things such as setting the page title, but also allows you to add or remove HTML elements in the `<head>` area of the page, for example to integrate your own style sheets or JavaScipt files.
 
-Die Anpassung der HTML-Grundstruktur passiert über die neue Klasse `PageLayout`. Dazu bietet die Klasse eine Reihe statischer Methoden, die die verschiedenen Möglichkeiten abdecken.
+The basic HTML structure is adapted via the new class `PageLayout`. The class offers a range of static methods that cover the various options.
 
-### Seitentitel
+### Page title
 
-| Funktion | Beschreibung |
+| Function | Description |
 | ---- | ---- |
-| **setTitle($title)** | Setzt den aktuellen Seitentitel, sowohl für die Anzeige im Browserfester als auch in Stud.IP. |
+| **setTitle($title)** | Sets the current page title, both for display in the browser window and in Stud.IP. |
 
-Beispiel:
+Example:
 ```php
-PageLayout::setTitle(_('Startseite'));
+PageLayout::setTitle(_('Homepage'));
 ```
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-| **getTitle()** | Liefert den aktuellen Seitentitel zurück. |
-| **hasTitle()** | Fragt ab, ob für die aktuelle Seite ein Seitentitel gesetzt wurde. |
+| **getTitle()** | Returns the current page title. |
+| **hasTitle()** | Queries whether a page title has been set for the current page. |
 
 
-### Hilfe
+### Help
 
-| Funktion | Beschreibung |
+| Function | Description |
 | ---- | ---- |
-| **setHelpKeyword($help_keyword)** | Setzt das Hilfe-Thema für die angezeigte Seite. Dieses wird dann beim Aufruf der Hilfe-Funktion an den Hilfe-Server übermittelt. |
+| **setHelpKeyword($help_keyword)** | Sets the help topic for the displayed page. This is then transmitted to the help server when the help function is called. |
 
 
-Beispiel:
+Example:
 ```php
 PageLayout::setHelpKeyword('Basis.Startseite');
 ```
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-| **getHelpKeyword()** | Liefert das eingestellte Hilfe-Thema zurück. |
+| **getHelpKeyword()** | Returns the set help topic. |
 
 
-#### Reiternavigation
-| Funktion | Beschreibung |
+#### Tab navigation
+| Function | Description |
 | ---- | ---- |
-| **setTabNavigation($path)** | Setzt den Pfad im Navigationsbaum, an dem die Reiternavigation startet. Es werden dann die beiden Ebenen unterhalb des angegebenen Navigationspunkts als Reiter (1. und 2. Ebene) angezeigt. Die Voreinstellung ist das jeweils aktive Element der Hauptnavigation. Ein explizites Setzen ist nur für Navigationskontexte mit Reiteranzeige notwendig, die an anderer Stelle als der Hauptnavigation eingebunden sind (wie z.B. das Impressum). Man kann auch die Anzeige der Reiternavigation ganz ausschalten, wenn man `NULL` als *$path* übergibt. |
+| **setTabNavigation($path)** | Sets the path in the navigation tree where the tab navigation starts. The two levels below the specified navigation point are then displayed as tabs (1st and 2nd level). The default setting is the active element of the main navigation. An explicit setting is only necessary for navigation contexts with tab display that are integrated at a location other than the main navigation (e.g. the imprint). You can also switch off the display of the tab navigation completely by passing `NULL` as *$path*. |
 
-Beispiel:
+Example:
 ```php
 PageLayout::setTabNavigation('/links/siteinfo');
 ```
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-| **getTabNavigation()** | Liefert die Reiternavigation zurück. |
+| **getTabNavigation()** | Returns the tab navigation. |
 
-### Hinzufügen von Inhalten
+### Add content
 
 
-| Funktion | Beschreibung |
+| Function | Description |
 | ---- | ---- |
-| **addStyle($content)** | Fügt eine neues CSS Style Element in den Seitenkopf ein. |
+| **addStyle($content)** | Adds a new CSS style element to the page header. |
 
-Beispiel:
+Example:
 ```php
 PageLayout::addStyle('#highlight { background-color: red; }');
 ```
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-|**addStylesheet($source, $attributes = [])** | Fügt einen Verweis auf ein Style-Sheet in den Seitenkopf ein. *$source* kann entweder eine komplette URL oder ein Dateiname sein, der relativ zum Assets-Verzeichnis aufgelöst wird. Optional können weitere Attribute für das LINK-Element übergeben werden. |
+|**addStylesheet($source, $attributes = [])** | Inserts a reference to a style sheet in the page header. *$source* can either be a complete URL or a file name that is resolved relative to the assets directory. Optionally, further attributes can be passed for the LINK element. |
 
-Beispiel:
+Example:
 ```php
 PageLayout::addStylesheet('print.css', ['media' => 'print']);
 ```
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-|**addScript($source)** | Bindet eine weitere JavaScript-Datei in den Seitenkopf ein. *$source* kann entweder eine komplette URL oder ein Dateiname sein, der relativ zum Assets-Verzeichnis aufgelöst wird. |
+|**addScript($source)** | Includes another JavaScript file in the page header. *$source* can either be a complete URL or a file name that is resolved relative to the assets directory. |
 
-Beispiel:
+Example:
 ```php
 PageLayout::addScript($this->getPluginURL() . '/vote.js');
 ```
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-|**addHeadElement($name, $attributes = [], $content = NULL)** | Fügt eine beliebiges HTML-Element in den Seitenkopf ein. *$name*, *$attributes* und *$content* entsprechen den Namen, der Attributliste und dem Inhalt des erzeugten Elements. Ist *$content* `NULL`, so wird das Element nicht abgeschlossen (wie META oder LINK), andernfalls wird automatisch auch ein schließendes Tag hinter dem Inhalt ausgegeben (z.B. bei SCRIPT). |
+|**addHeadElement($name, $attributes = [], $content = NULL)** | Inserts any HTML element into the page header. *$name*, *$attributes* and *$content* correspond to the name, the attribute list and the content of the created element. If *$content* is `NULL`, the element is not closed (like META or LINK), otherwise a closing tag is automatically output after the content (e.g. for SCRIPT). |
 
-Beispiel:
+Example:
 ```php
 PageLayout::addHeadElement('link', [
     'rel' => 'alternate',
@@ -99,91 +99,91 @@ PageLayout::addHeadElement('link', [
 ]);
 ```
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-|**addBodyElements($html)** | Fügt ein beliebiges HTML-Fragment direkt zu Beginn des BODY in die Seitenausgabe ein. Das ist vor allem in Plugins verwendbar, die Inhalte auf beliebigen Stud.IP-Seiten ausgeben wollen. |
+|**addBodyElements($html)** | Inserts any HTML fragment directly at the beginning of the BODY in the page output. This is particularly useful in plugins that want to output content on any Stud.IP pages. |
 
-### Entfernen von Inhalten
+### Remove content
 
-| Funktion | Beschreibung |
+| Function | Description |
 | ---- | ---- |
-|**removeStylesheet($source, $attributes = [])** | Entfernt einen Verweis auf ein Style-Sheet wieder aus dem Seitenkopf. *$source* kann wie bei **addStylesheet** entweder eine komplette URL oder ein Dateiname sein, der relativ zum Assets-Verzeichnis aufgelöst wird. |
+|**removeStylesheet($source, $attributes = [])** | Removes a reference to a style sheet from the page header. As with **addStylesheet**, *$source* can be either a complete URL or a file name that is resolved relative to the assets directory. |
 
-Beispiel:
+Example:
 ```php
 PageLayout::removeStylesheet('style.css');
 ```
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-|**removeScript($source)** | Entfernt eine eingebundene JavaScript-Datei wieder aus dem Seitenkopf. *$source* kann wie bei **addScript** entweder eine komplette URL oder ein Dateiname sein, der relativ zum Assets-Verzeichnis aufgelöst wird. |
-|**removeHeadElement($name, $attributes = [])** | Entfernt alle Elemente mit dem angegebenen Namen und den Attributen wieder aus dem Seitenkopf. |
+|**removeScript($source)** | Removes an integrated JavaScript file from the page header. As with **addScript**, *$source* can be either a complete URL or a file name that is resolved relative to the assets directory. |
+|**removeHeadElement($name, $attributes = [])** | Removes all elements with the specified name and attributes from the page header. |
 
-Beispiel:
+Example:
 ```php
-PageLayout::removeHeadElement('link', ['rel' => 'stylesheet']);  // remove all style sheets
+PageLayout::removeHeadElement('link', ['rel' => 'stylesheet']); // remove all style sheets
 ```
 
-### Darstellung von Meldungen
+### Display of messages
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-|**postMessage(MessageBox $message)** | Veranlaßt das System, das angegebene [`MessageBox`-Objekt](MessageBox) bei nächster Gelegenheit anzuzeigen, d.h. bei der nächsten Ausgabe eines Layouts. Die Meldung bleibt so lange gespeichert, bis sie angezeigt wurde, auch über (ggf. mehrere) Redirects hinweg.  |
+|**postMessage(MessageBox $message)** | Causes the system to display the specified [`MessageBox` object](MessageBox) at the next opportunity, i.e. the next time a layout is output. The message remains stored until it has been displayed, even across (possibly multiple) redirects.  |
 
-Für jeden Typen der `MessageBox` gibt es auch eine eigene `post<type>`-Methoden am `PageLayout`-Objekt, wie beispielsweise `PageLayout::postSuccess()` oder `PageLayout::postError()`.
+For each type of `MessageBox` there is also a separate `post<type>` method on the `PageLayout` object, such as `PageLayout::postSuccess()` or `PageLayout::postError()`.
 
-Beispiel:
+Example:
 ```php
-PageLayout::postMessage(MessageBox::success('Eintrag gelöscht'));
-// Äquivalent:
-PageLayout::postSuccess('Eintrag gelöscht');
+PageLayout::postMessage(MessageBox::success('Entry deleted'));
+// Equivalent:
+PageLayout::postSuccess('Entry deleted');
 ```
 
-| Funktion | Beschreibung |
+| Function | Description |
 | ---- | ---- |
-|**clearMessages()** | Löscht alle Meldungen, die zur Anzeige hinterlegt und noch nicht ausgegeben wurden. |
+|**clearMessages()** | Deletes all messages that have been stored for display and have not yet been output. |
 
-### Bestätigen von Aktionen
+### Confirm actions
 
-| Funktion | Beschreibung |
+| Function | Description |
 | ---- | ---- |
-|**postQuestion($question, $accept_url = "", $decline_url = "")** | Holt eine Bestätigung des Nutzers zu einer bestimmten Aktion ein. Wird die Ausführung der Aktion bestätigt, so wird ein POST-Request auf die angegebene `$accept_url` abgesetzt, im anderen Fall wird die `$decline_url` über GET aufgerufen. Weitere Details finden sich im ersten Abschnitt unter  [Modaler Dialog](ModalerDialog#server). Der Mechanismus funktioniert analog wie `postMessage()`, so dass die Bestätigung bei der nächsten Gelegenheit dargestellt wird. |
+|**postQuestion($question, $accept_url = "", $decline_url = "")** | Obtains a confirmation from the user for a specific action. If the execution of the action is confirmed, a POST request is sent to the specified `$accept_url`, otherwise the `$decline_url` is called via GET. Further details can be found in the first section under [Modal dialog](ModalDialog#server). The mechanism works in the same way as `postMessage()`, so that the confirmation is displayed at the next opportunity. |
 
-Beispiel:
+Example:
 ```php
 PageLayout::postQuestion(
-    'Wollen Sie diese Aktion wirklich ausführen?', 
+    'Are you sure you want to perform this action?
     URLHelper::getURL('dispatch.php/foo/confimed')
 );
 ```
 
-### Anzeige des Seitenkopfs
+### Display of the page header
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-|**disableHeader()** | Unterdrückt die Anzeige des Seitenkopfs mit dem Navigationsbereich, z.B. für eine Druckansicht (die sollte aber besser mit einem Print-Style-Sheet gelöst werden) oder ein Popup-Fenster. |
+|**disableHeader()** | Suppresses the display of the page header with the navigation area, e.g. for a print view (but this should be better solved with a print style sheet) or a pop-up window. |
 
-### Setzen des Id-Attributs des Elements `<body>`
+### Set the Id attribute of the `<body>` element
 
-| Funktion | Beschreibung |
+| function | description |
 | ---- | ---- |
-|**setBodyElementId($id)** | Setzt die Id des `<body>`-Elements, um über dieses beispielsweise in CSS oder Javascript gezielter Elemente ansprechen zu können.
-| **getBodyElementId()** | Liefert die gesetzte Id des `<body>`-Elements zurück. Wurde keine Id gesetzt, wird `false` zurückgeliefert. |
+|**setBodyElementId($id)** | Sets the Id of the `<body>` element in order to be able to address elements more specifically in CSS or Javascript, for example.
+| **getBodyElementId()** | Returns the set Id of the `<body>` element. If no Id was set, `false` is returned. |
 
-### Ersetzen der Schnellsuche
+### Replace the quick search
 
-| Funktion | Beschreibung |
+| Function | Description |
 | ---- | ---- |
-|**addCustomQuicksearch($html)** | Ersetzt die Schnellsuche (oben rechts) durch beliebiges HTML.
-| **hasCustomQuicksearch()** | Fragt ab, ob die Schnellsuche ersetzt wurde.
-| **getCustomQuicksearch()** | Liefert den HTML-Code zurück, der die Schnellsuche ersetzen soll. Wurde kein HTML durch `addCustomQuicksearch()` gesetzt, liefert diese Methode `null` zurück. |
+|**addCustomQuicksearch($html)** | Replaces the quick search (top right) with any HTML.
+| **hasCustomQuicksearch()** | Queries whether the quick search has been replaced.
+| **getCustomQuicksearch()** | Returns the HTML code that is to replace the quick search. If no HTML was set by `addCustomQuicksearch()`, this method returns `null`. |
 
-## Beispiel
+## Example
 
-Zum Abschluß noch ein kleines Beispiel aus einem Plugin, das (u.a.) eine eigene CSS-Datei mitbringt:
+Finally, a small example from a plugin that (among other things) comes with its own CSS file:
 
 ```php
-PageLayout::setTitle('Neueste Aktivitäten');
+PageLayout::setTitle('Latest activities');
 PageLayout::setHelpKeyword('Plugins.Activities');
 PageLayout::addStylesheet($this->getPluginURL() . '/css/activities.css');
 ```

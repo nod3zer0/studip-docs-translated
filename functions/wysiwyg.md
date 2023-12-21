@@ -4,67 +4,67 @@ title: Wysiwyg-Editor
 sidebar_label: Wysiwyg-Editor
 ---
 
-## Der Wysiwyg-Editor in Stud.IP
+## The Wysiwyg editor in Stud.IP
 
-### Allgemeines
+### General
 
 %rfloat margin-left=1ex% Attach:wysiwyg-demo.png
-In Stud.IP gibt es auch einen Wysiwyg-Editor, der zur Eingabe von formatierten Inhalten (Text, Bilder, Links, Tabellen usw.) verwendet werden kann. Dieser Editor ersetzt HTML-Textfelder durch eine grafische Oberfläche, die gängigen Textverarbeitungssystemen ähnelt (z.B. [LibreOffice](http://www.libreoffice.org/)). Das Akronym WYSIWYG steht für "*What You See Is What You Get*", auf Deutsch: "*Was Du siehst, ist das, was Du bekommst*". Die von uns verwendete Komponente ist der [**ckeditor**](http://ckeditor.com) und kann als Alternative zur Eingabe von Stud.IP-Formatierung verwendet werden. Inhalte im System sind entweder klassische Stud.IP-Formatierung oder HTML-Inhalte aus dem Wysiwyg-Editor. Es gibt keine Vermischung: Stud.IP-Formatierung wird in mit dem Editor erstellten Inhalten nicht ausgewertet (mit Ausnahme spezieller Markup-Plugins) und HTML-Inhalte werden in Stud.IP-Formatierung nicht ausgewertet. 
+In Stud.IP there is also a Wysiwyg editor that can be used to enter formatted content (text, images, links, tables etc.). This editor replaces HTML text fields with a graphical interface that is similar to common word processing systems (e.g. [LibreOffice](http://www.libreoffice.org/)). The acronym WYSIWYG stands for "*What You See Is What You Get*". The component we use is the [**ckeditor**](http://ckeditor.com) and can be used as an alternative to entering Stud.IP formatting. Content in the system is either classic Stud.IP formatting or HTML content from the Wysiwyg editor. There is no mixing: Stud.IP formatting is not evaluated in content created with the editor (with the exception of special markup plugins) and HTML content is not evaluated in Stud.IP formatting.
 
-### Konfiguration
+### Configuration
 
 %rfloat margin-left=1ex% Attach:wysiwyg-konfig.png
-Der Editor kann systemweit über die Einstellung `WYSIWYG` in der globalen Konfiguration eingeschaltet werden. Dabei ist zu beachten, daß mit dem Editor erstellte Inhalte als HTML in der Datenbank landen, die beim Ausschalten des Editors zurückbleiben. Wenn der Editor systemweit eingeschaltet ist, wird er standardmäßig für alle Nutzer angeboten - diese können ihn aber für sich individuell wieder deaktivieren. Es gibt also aus Entwicklersicht keine Garantie, daß bei systemweit aktiviertem Editor auch tatsächlich alle neu erstellten Inhalte in HTML vorliegen. Daher ist die PHP-API so konstruiert, daß sie mit den verschiedenen Konstellationen weitgehend transparent umgehen kann.
+The editor can be activated system-wide via the setting `WYSIWYG` in the global configuration. Please note that content created with the editor is saved as HTML in the database, which remains behind when the editor is switched off. If the editor is activated system-wide, it is offered to all users by default - but they can deactivate it for themselves individually. From the developer's point of view, there is therefore no guarantee that all newly created content will actually be available in HTML if the editor is activated system-wide. For this reason, the PHP API is designed in such a way that it can deal with the various constellations in a largely transparent manner.
 
-### Verwendung
+### Usage
 
-Wenn ein Eingabefeld den Editor verwenden soll, ist dieses mit der CSS-Klasse "`wysiwyg`" auszuzeichnen (ggf. zusätzlich zu "`add_toolbar`" für die klassische Formatierungs-Toolbar). Der Inhalt muß für das *textarea*-Element mit der Funktion `wysiwygReady()` aufbereitet werden, die analog zu `htmlReady()` funktioniert, aber ggf. Stud.IP-Formatierung vor dem Bearbeiten in HTML übersetzt.
+If an input field is to use the editor, it must be marked with the CSS class "`wysiwyg`" (possibly in addition to "`add_toolbar`" for the classic formatting toolbar). The content must be prepared for the *textarea* element using the `wysiwygReady()` function, which works in the same way as `htmlReady()`, but translates Stud.IP formatting into HTML before editing if necessary.
 
-Beispiel:
+Example:
 ```php
 <textarea class="add_toolbar wysiwyg" name="content">
     <?= wysiwygReady($content) ?>
 </textarea>
 ```
 
-Der ensprechende Code im Controller, der die Eingabe entgegennimmt und weiterverarbeitet, sollte die Nutzereingabe durch den *HTMLPurifier* laufen lassen. Dazu gibt es die Funktion `Studip\Markup::purifyHtml()`, die eine entsprechende Filterung vornimmt, sofern die Eingabe tatsächlich HTML ist:
+The corresponding code in the controller, which receives and processes the input, should run the user input through the *HTMLPurifier*. For this purpose, there is the function `Studip\Markup::purifyHtml()`, which performs a corresponding filtering if the input is actually HTML:
 
-Beispiel:
+Example:
 ```php
 $content = Studip\Markup::purifyHtml(Request::get('content'));
 ```
 
-Die Verwendung des Editors für einzeilige Eingabefelder (d.h. `<input>`) wird derzeit allerdings nicht unterstützt.
+However, the use of the editor for single-line input fields (i.e. `<input>`) is currently not supported.
 
-#### Weitere Funktionen der Klasse `Studip\Markup`
+#### Further functions of the class `Studip\Markup`
 
-In den allermeisten Fällen sollte die oben beschriebene API ausreichend sein. Für spezielle Einsatzfälle gibt es aber noch weitere Funktionen in der `Markup`-Klasse, die hier kurz beschrieben sind:
+In the vast majority of cases, the API described above should be sufficient. For special use cases, however, there are further functions in the `Markup` class, which are briefly described here:
 
 * `Studip\Markup::editorEnabled()`\\
-  Diese Funktion liefert `true` zurück, wenn der Editor systemweit und auf Nutzerebene aktiviert ist.
+  This function returns `true` if the editor is enabled system-wide and at user level.
 
 * `Studip\Markup::isHtml($text)`\\
-  Diese Funktion liefert `true` zurück, wenn der übergebene Inhalt von Stud.IP als HTML interpretiert wird.
+  This function returns `true` if the transferred content is interpreted by Stud.IP as HTML.
 
 * `Studip\Markup::markAsHtml($text)`\\
-  Markiert einen Inhalt als HTML. Ist der Inhalt bereits entsprechend markiert, wird er nicht verändert.
+  Marks a content as HTML. If the content is already marked accordingly, it is not changed.
 
 * `Studip\Markup::purifyHtml($html)`\\
-  Falls der Inhalt als HTML markiert ist, wird er mit dem *HTMLPurifier* gefiltert. Andere Inhalte werden nicht verändert.
+  If the content is marked as HTML, it is filtered with the *HTMLPurifier*. Other content is not changed.
 
 * `Studip\Markup::markupToHtml($text, $trim = true, $mark = true)`\\
-  Konvertiert Inhalte aus Stud.IP-Formatierung in HTML, damit diese z.B. im Editor bearbeitet werden können. War der Inhalt bereits HTML, wird er nur durch den *HTMLPurifier* gefiltert. Normalerweise wird das Resultat auch gleich als HTML markiert, dieses Verhalten kann aber abgeschaltet werden.
+  Converts content from Stud.IP formatting to HTML so that it can be edited in the editor, for example. If the content was already HTML, it is only filtered by the *HTMLPurifier*. Normally the result is also immediately marked as HTML, but this behavior can be switched off.
 
 * `Studip\Markup::removeHtml($html)`\\
-  Entfernt alle HTML-Elemente aus dem Inhalt, z.B. um diesen anschließend wieder ohne Wysiwyg-Editor bearbeiten zu können. Ist der Inhalt kein HTML, wird er nicht verändert.
+  Removes all HTML elements from the content, e.g. so that it can then be edited again without the Wysiwyg editor. If the content is not HTML, it is not changed.
 
-Beispiel 1: Vordefinierte Inhalte als über den Editor bearbeitbares HTML generieren, z.B. als Vorbelegung für ein Eingabefeld mit Wysiwyg-Editor:
+Example 1: Generate predefined content as HTML that can be edited via the editor, e.g. as a default value for an input field with the Wysiwyg editor:
 
 ```php
 $html = Studip\Markup::markAsHtml('<h1>' . htmlReady($title) . '</h1>');
 ```
 
-Beispiel 2: Zusammenfügen von formatierten Inhalten, so daß das Resultat je nach Nutzereinstellung des Editors Text oder HTML ist (ein Beispiel dafür ist das Zusammenfügen einer in Editor erstellen Nachricht mit der Signatur des Nutzers):
+Example 2: Merging formatted content so that the result is text or HTML depending on the user settings of the editor (an example of this is merging a message created in the editor with the user's signature):
 
 ```php
 if (Studip\Markup::editorEnabled()) {
@@ -74,23 +74,23 @@ if (Studip\Markup::editorEnabled()) {
 }
 ```
 
-#### Javascript-API
+#### Javascript API
 
-Neben der regulären Javascript-API des ckeditor, die auch in Stud.IP verwendet werden kann (natürlich nur, sofern der Editor aktiviert ist), gibt es noch eine kleine Anzahl von Einstellungen und Hilfsfunktionen in Stud.IP:
+In addition to the regular Javascript API of the ckeditor, which can also be used in Stud.IP (of course only if the editor is activated), there are a small number of settings and auxiliary functions in Stud.IP:
 
 * `STUDIP.wysiwyg_enabled`\\
-  Diese Property ist `true`, wenn der Editor systemweit aktiviert ist.
+  This property is `true` if the editor is activated system-wide.
 
 * `STUDIP.editor_enabled`\\
-  Diese Property ist `true`, wenn der Editor im aktuellen Kontext aktiv ist - d.h. er ist systemweit aktiviert, der Nutzer hat ihn nicht ausgeschaltet und der Editor funktioniert auf dem Client (oder glaubt zumindest, daß er es tut).
+  This property is `true` if the editor is active in the current context - i.e. it is activated system-wide, the user has not switched it off and the editor works on the client (or at least thinks it does).
 
 * `STUDIP.wysiwyg.isHtml(text)`\\
-  Diese Funktion liefert `true` zurück, wenn der übergebene Inhalt von Stud.IP als HTML interpretiert wird.
+  This function returns `true` if the passed content is interpreted as HTML by Stud.IP.
 
-* `STUDIP.wysiwyg.markAsHtml(text)`\\
-  Markiert einen Inhalt als HTML. Ist der Inhalt bereits entsprechend markiert, wird er nicht verändert.
+* `STUDIP.wysiwyg.markAsHtml(text)`\\\
+  Marks content as HTML. If the content is already marked accordingly, it is not changed.
 
-Beispiel:
+Example:
 
 ```javascript
 posting = jQuery('textarea[name=content]').val();

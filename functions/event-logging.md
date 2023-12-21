@@ -5,115 +5,115 @@ sidebar_label: Event-Logging
 ---
 
 
-Ab Version 1.3. wurde ein zentraler Logging-Mechanismus implementiert, der bestimmte Aktionen mit Timestamp und Userkennung festhält.
+As of version 1.3, a central logging mechanism was implemented that records certain actions with a timestamp and user ID.
 
-Mit Version 3.0 wurde das Logging so erweitert, dass beliebige Objekte Log-Einträge generieren können.
+With version 3.0, logging has been extended so that any objects can generate log entries.
 
-## Beispiele:
+## Examples:
 
-* "Wir nutzen in einigen Fächern Stud.IP zur verbindlichen Anmeldung zu Veranstaltungen, von denen einige sehr hart umkämpft sind. Beim letzten Mal kam es rund ein halbes Dutzend mal vor, dass Studierende behauptet haben, sie hätten sich angemeldet und vor einer Woche noch einen Platz gehabt, aber jetzt sei der weg. Beim momentanen Stand der Dinge haben wir nichts in der Hand, das nachzuvollziehen."
-* "Die Zuordnung von Veranstaltungen zu Studienbereichen muss im Zweifelsfall von mehreren Kommissionen genehmigt werden. Stud.IP bietet hier (mit Absicht) keine vollständigen Kontrollmechanismen. Deshalb ist es im Zweifelsfall notwendig nachvollziehen zu können, wer eine Zuordnung vorgenommen hat."
-* "Im Zusammenhang mit Raumbuchungen kommt es häufiger zu Fragen, wer einen Raum gebucht hat, oder wann Anfragen geändert wurden."
-* "Wir haben ca. 80 Administratoren und es wäre sehr hilfreich nachvollziehen zu können, wer einen Benutzer angelegt, gelöscht, hochgestuft etc. hat."
+* "We use Stud.IP in some subjects for binding registration for courses, some of which are very competitive. Last time, there were about half a dozen times when students claimed that they had registered and had a place a week ago, but now it was gone. As things stand at the moment, we have no way of tracking this."
+* "In case of doubt, the assignment of courses to study areas must be approved by several committees. Stud.IP does not (intentionally) offer any complete control mechanisms here. Therefore, in case of doubt, it is necessary to be able to trace who has made an assignment."
+* "In connection with room bookings, there are often questions about who booked a room or when requests were changed."
+* "We have around 80 administrators and it would be very helpful to be able to track who created, deleted, upgraded etc. a user."
 
-## Grundlagen:
+## Basics:
 
-* Es gibt ein allgemeines Event-System, das von verschiedenen Stellen des Systems aufgerufen werden kann und für einen Event-Eintrag sorgt
-* Das Event-System ist datenbankbasiert
-* Es gibt eine für Root zugängliche Seite, auf der Log-Events nach verschiedenen Kriterien gesucht und angezeigt werden können
-* Die Anzeige erfolgt in gut lesbarer Weise, trotzdem soll die Speicherung ressourcenschonend geschehen und Informationen strukturiert abgelegt werden können.
-* Um Datenschutzaspekte angemessen berücksichtigen zu können, kann Root das Logging einzelner Events zentral an- und abschalten (seit Version 1.3. vorhanden) und es kann eine automatische Löschung einzelner Events nach einer bestimmten Zeit aktiviert werden.
+* There is a general event system that can be called from various places in the system and provides an event entry
+* The event system is database-based
+* There is a root-accessible page on which log events can be searched for and displayed according to various criteria
+* The display is easy to read, yet storage should be resource-efficient and information should be stored in a structured manner.
+* In order to take data protection aspects into account appropriately, Root can switch the logging of individual events on and off centrally (available since version 1.3.) and an automatic deletion of individual events can be activated after a certain time.
 
 ### Screenshot:
 
 ![image](../assets/d853edb1d90bc82e3dc0d69fcb2927b4/image.png)
 
-## Technische Umsetzung
+## Technical implementation
 
-Zugriff auf das Logging erfolgt über die API-Klasse StudipLog, die alle Methoden zur Nutzung des Loggings zur Verfügung stellt.
+Logging is accessed via the API class StudipLog, which provides all methods for using logging.
 
-Jedes beliebigen Objekt kann Ereignisse (die in der Regel das Objekt selbst betreffen) loggen, wenn es die Schnittstelle Loggable implementiert. In der Datenbank registrierte Log-Aktionen können aber prinzipiell an belibiger Stelle genutzt werden.
+Any object can log events (which usually concern the object itself) if it implements the Loggable interface. However, log actions registered in the database can in principle be used anywhere.
 
-StudipLog nutzt zwei Modell-Klassen:
-* LogAction: Zur Verwaltung der Beschreibung und Daten von Aktionen. Ein LogAction-Objekt ist also eine Vorlage für ein Ereignis, das geloggt werden kann. Z.B. "Austragen des Nutzers X aus Veranstaltung Y durch Nutzer Z".
-* LogEvent: Das geloggte oder zu loggende Ereignis. Es enthält die Daten eines konkreten Ereignisses und bezieht sich immer auf eine LogAction. Für die o.g. LogAction wäre das die Daten für X,Y und Z als IDs der jeweiligen Objekte.
+StudipLog uses two model classes:
+* LogAction: To manage the description and data of actions. A LogAction object is therefore a template for an event that can be logged. E.g. "Deregistration of user X from event Y by user Z".
+* LogEvent: The logged event or the event to be logged. It contains the data of a specific event and always refers to a LogAction. For the LogAction mentioned above, this would be the data for X, Y and Z as IDs of the respective objects.
 
-Die noch verfügbare globale Funktion log_event() sollte nicht mehr verwendet werden.
+The global function log_event(), which is still available, should no longer be used.
 
-### Benutzung der Klasse StudipLog
+### Using the StudipLog class
 
-#### Anlegen einer neuen LogAction
+#### Creating a new LogAction
 
-#### Implementierung der Schnittstelle Loggable
+#### Implementation of the Loggable interface
 
-Es gibt zwei neue Tabellen:
+There are two new tables:
 
 ### log_actions
 
-Entählt Beschreibungen und Daten von Aktionen, wie z.B. "Anlegen einer neuen Veranstaltung".
+This table contains descriptions and data of actions, e.g. "Create a new event".
 
 ```sql
 CREATE TABLE `log_actions` (
 `action_id` INT( 10 ) NOT NULL AUTO_INCREMENT , // ID
-`name` VARCHAR( 128 ) NOT NULL , // Bezeichner, wird auch im Code verwendet
-`description` VARCHAR(64),  // Kurzbeschreibung für Suchinterface
-`info_template` TEXT, // Template für Klartextausgabe
-`active` TINYINT( 1 ) DEFAULT '1' NOT NULL , // derzeit aktiv?
-`expires` INT( 20 ) , // Anzahl Sekunden bis automatischer Löschung
+`name` VARCHAR( 128 ) NOT NULL , // Identifier, is also used in the code
+`description` VARCHAR(64), // Short description for search interface
+`info_template` TEXT, // Template for plain text output
+`active` TINYINT( 1 ) DEFAULT '1' NOT NULL , // currently active?
+`expires` INT( 20 ) , // Number of seconds until automatic deletion
    PRIMARY KEY ( `action_id` )
   );
 ```
 
-Ein Eintrag sieht dann z.B. so aus:
+An entry then looks like this, for example:
 
 ```sql
 action_id=3,
 name=SEM_VISIBLE
-description="Veranstaltung sichtbar schalten"
-info_template="%user schaltet %sem(%affected) sichtbar."
+description="Make event visible"
+info_template="%user makes %sem(%affected) visible."
 active=1
 expires=NULL
 ```
 
-Der Info-Template-String kann ein paar Platzhalter enthalten, insgesamt wird daraus bei der Anzeige des Logs der Text generiert, der oben im Scrrenshot zu sehen ist.
+The info template string can contain a few placeholders; overall, the text shown in the screenshot above is generated when the log is displayed.
 
-expires kann genutzt werden, um Einträge nach einer bestimmten Zeit automatisch löschen zu lassen, z.B. aus datenschutzgründen oder zum Platz sparen. Über ein spezielles Interface (noch nich implementiert) kann das Logging bestimmter Aktionen einfach ein- und ausgeschaltet werden.
+expires can be used to automatically delete entries after a certain time, e.g. for data protection reasons or to save space. A special interface (not yet implemented) can be used to simply switch the logging of certain actions on and off.
 
-Die einzelnen Events werden in einer zweiten Tabelle gespeichert:
+The individual events are stored in a second table:
 
 ### log_events
 
 ```sql
 CREATE TABLE `log_events` (
 `event_id` INT( 20 ) UNSIGNED NOT NULL AUTO_INCREMENT , // ID
-`timestamp` INT( 20 ) NOT NULL , // Unix-Timestamp
-`user_id` VARCHAR( 32 ) NOT NULL , // Handelnder Nutzer (Subjekt)
-`action_id` INT( 10 ) NOT NULL , // Handlung (Verb)
-`affected_range_id` VARCHAR( 32 ) , // primär betroffenes Objekt (direktes Objekt)
-`coaffected_range_id` VARCHAR( 32 ) , // sekundär betroffenes Objekt (indirektes Objekt)
-`info` TEXT, // zusätzlicher Informationstext
-`dbg_info` TEXT, // zusätzliche technische Informationen
+`timestamp` INT( 20 ) NOT NULL , // Unix timestamp
+`user_id` VARCHAR( 32 ) NOT NULL , // Acting user (subject)
+`action_id` INT( 10 ) NOT NULL , // Action (verb)
+`affected_range_id` VARCHAR( 32 ) , // primary affected object (direct object)
+`coaffected_range_id` VARCHAR( 32 ) , // secondarily affected object (indirect object)
+`info` TEXT, // additional information text
+`dbg_info` TEXT, // additional technical information
    PRIMARY KEY ( `event_id` )
 );
 ```
 
-Durch den gewählten Ansatz leistet das Logging zweierlei:
+With the chosen approach, logging achieves two things:
 
-* Lesbare Ausgaben in natürlicher Sprache
-* Volle Durchsuchbarkeit nach betroffenen Objekte (Veranst., Räume, Einrichtungen)
+* Readable output in natural language
+* Full searchability for affected objects (events, rooms, facilities)
 
 
-## log_event() aufrufen
+## Call log_event()
 
-### Normaler Aufruf
+### Normal call
 
-Im Code müssen die Stellen identifiziert werden, an denen eine Aktion ausgelöst wird und meist eine Zeile wie:
+In the code, the places where an action is triggered must be identified and usually a line like:
 
 ```php
 log_event("SEM_CREATE",$sem_id);
 ```
 
-eingefügt werden. Sind mehr als zwei Objekte betroffen, kommen die Zusatzinformationen (nicht durchsuchbar) in den Infotext, z.B. die Angabe über die gebuchte Zeit beim Auflösen einer Raumanfrage. In die Debug-Infos können z.B. Details über die Stelle im Code eingebaut werden, von der aus die Aktion ausgeführt wurde, komplette Queries abegelegt werden etc.
+are inserted. If more than two objects are affected, the additional information (not searchable) is added to the info text, e.g. the information about the booked time when resolving a room request. The debug information can include details about the location in the code from which the action was executed, complete queries can be stored, etc.
 
 ```php
 function log_event($action, $affected=NULL, $coaffected=NULL, $info=NULL, $dbg_info=NULL, $user=NULL) {
@@ -121,67 +121,67 @@ function log_event($action, $affected=NULL, $coaffected=NULL, $info=NULL, $dbg_i
 }
 ```
 
-| Variable | Beschreibung|
+| Variable | Description|
 | ---- | ---- |
-|$action|Text-ID des Log-Events|
-|$affected|ID des Objektes, das im Datenbankfeld affected landet (kann je nach Event Veranstaltung, Institut, Nutzer, Ressource, ... sein - da wird nichts gecheckt, sondern einfach eingetragen)|
-|$coaffected|ID des Objektes, das im Datenbankfeld coaffected landet (kann je nach Event Veranstaltung, Institut, Nutzer, Ressource, ... sein - da wird nichts gecheckt, sondern einfach eingetragen)|
-|$info|Freier Text für Feld info|
-|$dgb_info|Freier Text für Debug-Info-Feld|
-|$user|Normalerweise wird die user_id des Handelnden aus der Session übernommen. Hier kann eine abweichende user_id angegeben werden, z.B. für Aktionen, die von "[=%%__SYSTEM__%%=]" ausgeführt werden.|
+|$action|Text ID of the log event|
+|$affected|ID of the object that ends up in the database field affected (can be event, institute, user, resource, ... depending on the event - nothing is checked but simply entered). depending on the event - nothing is checked, but simply entered)|
+|$coaffected|ID of the object that ends up in the coaffected database field (can vary depending on the event, institution, user, resource, ... depending on the event - nothing is checked, but simply entered)|
+|$info|Free text for info| field
+|$dgb_info|Free text for debug info field|
+|$user|Normally, the user_id of the actor is taken from the session. A different user_id can be specified here, e.g. for actions executed by "[=%%__SYSTEM__%%=]".
 
-Die Funktion überprüft, ob das Logging eingeschaltet und das gewünschte Event aktiv ist.
+The function checks whether logging is switched on and the desired event is active.
 
-TODO: Beispiele... Bis dahin: Im Code nach log_event(...) suchen ;-)
+TODO: Examples... Until then: Search for log_event(...) in the code ;-)
 
-### Fehler beim Logging
+### Error during logging
 
-Wird ein Event in der Tabelle log_actions nicht gefunden, wird der Event-Call nicht verworfen, sondern unter dem Event LOG_ERROR mit allen übergebenen Parametern im Info-Text gespeichert:
+If an event is not found in the log_actions table, the event call is not discarded, but saved under the LOG_ERROR event with all transferred parameters in the info text:
 
 ```php
-log_event("LOG_ERROR",NULL,NULL,NULL,"log_event($action,$affected,$coaffected,$info,$dbg_info) for user $user");
+log_event("LOG_ERROR",NULL,NULL,NULL, "log_event($action,$affected,$coaffected,$info,$dbg_info) for user $user");
 ```
 
-## Eine neue Action hinzufügen
+## Add a new action
 
-### Eintrag in log_actions
+### Entry in log_actions
 
-Event-Vorlagen (Actions) werden nicht über die Oberfläche angelegt (würde wenig bringen, da ohnehin Code angefasst werden muss), sondern mit einem SQL-Statement direkt in die Datenbank geschrieben. Die action_id (MD5-Key) kann frei gewählt werden, muss aber eindeutig sein. Es bietet sich an md5(name) zu verwenden.
+Event templates (actions) are not created via the interface (would be of little use, as code has to be touched anyway), but are written directly to the database with an SQL statement. The action_id (MD5 key) can be freely selected, but must be unique. It is advisable to use md5(name).
 
-### Auslösen von Events
+### Triggering events
 
-Events für die neue Action dann wie oben beschrieben mittels `log_event(<ACTION_NAME>, ...)` ausgelöst werden. Die Semantik der weiteren Parameter ergibt sich aus dem Template in log_actions.
+Events for the new action can then be triggered as described above using `log_event(<ACTION_NAME>, ...)`. The semantics of the other parameters result from the template in log_actions.
 
-### Abrufen der Events
+### Retrieving the events
 
-Die Events stehen anschließend automatisch über das Log-Tool allen Root-Nutzern zur Verfügung (Verwalten globaler Einstellungen -> Tools -> Log). Die neuen Actions sind in der der Auswahlbox links enthalten, angezeigt wird dort der description-Eintrag.
+The events are then automatically available to all root users via the log tool (Manage global settings -> Tools -> Log). The new actions are contained in the selection box on the left, where the description entry is displayed.
 
-### Beispiel: Action für "E-Mail-Adresse ändern"
+### Example: Action for "Change e-mail address"
 
-Es soll geloggt werden, wer wessen E-Mail-Adresse wann und auf welchen Wert geändert hat.
+You want to log who changed whose e-mail address, when and to which value.
 
-#### Idee
+#### Idea
 
-* WER ändert wird als user_id des Events abgelegt
-* FÜR WEN geändert wurde als affected_id
-* Der NEUE WERT ist kein Stud.IP-Objekt, muss also als Freitext in info abgelegt werden. Dann besser noch: Neuen UND alten Wert ablegen, also z.B. "von tobias.thelen@beispiel.test auf thelen@anderesbeispiel.test".
+* WHO changed is stored as the user_id of the event
+* FOR WHOM was changed as affected_id
+* The NEW VALUE is not a Stud.IP object, so must be stored as free text in info. Then even better: Store new AND old value, e.g. "from tobias.thelen@beispiel.test to thelen@anderesbeispiel.test".
 
-#### Der Datenbankeintrag für log_actions:
+#### The database entry for log_actions:
 
-| Tabelle | Wert |
+| table | value |
 | ---- | ---- |
 |action_id|21b0b3fc30605876686617a1aec92321|
 |name|CHANGE_EMAIL|
-|description|E-Mail-Adresse ändern|
-|info_template|`%user ändert/setzt E-Mail-Adresse für %user(%affected): %info.`
+|description|Change email address|
+|info_template|`%user changes/sets email address for %user(%affected): %info.`
 |active|1|
 |expires|0|
 
-#### Verwenden des Events:
+#### Use of the event:
 
-`log_event("CHANGE_EMAIL",$user_id,*,"von tobias.thelen@beispiel.test auf thelen@anderesbeispiel.test");`
+`log_event("CHANGE_EMAIL",$user_id,*, "from tobias.thelen@beispiel.test to thelen@anderesbeispiel.test");`
 
-## Standard-Events
+## Standard events
 
 ```sql
 CREATE TABLE `log_actions` (
@@ -191,26 +191,26 @@ CREATE TABLE `log_actions` (
   `info_template` text,
   `active` tinyint(1) NOT NULL default '1',
   `expires` int(20) default NULL,
-  PRIMARY KEY  (`action_id`)
+  PRIMARY KEY (`action_id`)
 );
 
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('0ee290df95f0547caafa163c4d533991', 'SEM_VISIBLE', 'Veranstaltung sichtbar schalten', '%user schaltet %sem(%affected) sichtbar.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('a94706b41493e32f8336194262418c01', 'SEM_INVISIBLE', 'Veranstaltung unsichtbar schalten', '%user versteckt %sem(%affected) (unsichtbar).', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('bd2103035a8021942390a78a431ba0c4', 'DUMMY', 'Dummy-Aktion', '%user tut etwas.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('4490aa3d29644e716440fada68f54032', 'LOG_ERROR', 'Allgemeiner Log-Fehler', 'Allgemeiner Logging-Fehler, Details siehe Debug-Info.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('f858b05c11f5faa2198a109a783087a8', 'SEM_CREATE', 'Veranstaltung anlegen', '%user legt %sem(%affected) an.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('5b96f2fe994637253ba0fe4a94ad1b98', 'SEM_ARCHIVE', 'Veranstaltung archivieren', '%user archiviert %info (ID: %affected).', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('bf192518a9c3587129ed2fdb9ea56f73', 'SEM_DELETE_FROM_ARCHIVE', 'Veranstaltung aus Archiv löschen', '%user löscht %info aus dem Archiv (ID: %affected).', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('4869cd69f20d4d7ed4207e027d763a73', 'INST_USER_STATUS', 'Einrichtungsnutzerstatus ändern', '%user ändert Status für %user(%coaffected) in Einrichtung %inst(%affected): %info.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('6be59dcd70197c59d7bf3bcd3fec616f', 'INST_USER_DEL', 'Benutzer aus Einrichtung löschen', '%user löscht %user(%coaffected) aus Einrichtung %inst(%affected).', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('cf8986a67e67ca273e15fd9230f6e872', 'USER_CHANGE_TITLE', 'Akademische Titel ändern', '%user ändert/setzt akademischen Titel für %user(%affected) - %info.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('ca216ccdf753f59ba7fd621f7b22f7bd', 'USER_CHANGE_NAME', 'Personennamen ändern', '%user ändert/setzt Name für %user(%affected) - %info.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('8aad296e52423452fc75cabaf2bee384', 'USER_CHANGE_USERNAME', 'Benutzernamen ändern', '%user ändert/setzt Benutzernamen für %user(%affected): %info.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('59f3f38c905fded82bbfdf4f04c16729', 'INST_CREATE', 'Einrichtung anlegen', '%user legt Einrichtung %inst(%affected) an.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('1a1e8c9c3125ea8d2c58c875a41226d6', 'INST_DEL', 'Einrichtung löschen', '%user löscht Einrichtung %info (%affected).', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('d18d750fb2c166e1c425976e8bca96e7', 'USER_CHANGE_EMAIL', 'E-Mail-Adresse ändern', '%user ändert/setzt E-Mail-Adresse für %user(%affected): %info.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('a92afa63584cc2a62d2dd2996727b2c5', 'USER_CREATE', 'Nutzer anlegen', '%user legt Nutzer %user(%affected) an.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('e406e407501c8418f752e977182cd782', 'USER_CHANGE_PERMS', 'Globalen Nutzerstatus ändern', '%user ändert/setzt globalen Status von %user(%affected): %info', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('63042706e5cd50924987b9515e1e6cae', 'INST_USER_ADD', 'Benutzer zu Einrichtung hinzufügen', '%user fügt %user(%coaffected) zu Einrichtung %inst(%affected) mit Status %info hinzu.', 1, NULL);
-INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('4dd6b4101f7bf3bd7fe8374042da95e9', 'USER_NEWPWD', 'Neues Passwort', '%user generiert neues Passwort für %user(%affected)', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('0ee290df95f0547caafa163c4d533991', 'SEM_VISIBLE', 'Make event visible', '%user switches %sem(%affected) visible.', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('a94706b41493e32f8336194262418c01', 'SEM_INVISIBLE', 'Make event invisible', '%user hides %sem(%affected) (invisible).', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('bd2103035a8021942390a78a431ba0c4', 'DUMMY', 'Dummy action', '%user does something.', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('4490aa3d29644e716440fada68f54032', 'LOG_ERROR', 'General log error', 'General logging error, see debug info for details', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('f858b05c11f5faa2198a109a783087a8', 'SEM_CREATE', 'Create event', '%user creates %sem(%affected)', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('5b96f2fe994637253ba0fe4a94ad1b98', 'SEM_ARCHIVE', 'Archive event', '%user archives %info (ID: %affected).', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('bf192518a9c3587129ed2fdb9ea56f73', 'SEM_DELETE_FROM_ARCHIVE', 'Delete event from archive', '%user deletes %info from archive (ID: %affected).', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('4869cd69f20d4d7ed4207e027d763a73', 'INST_USER_STATUS', 'Change institution user status', '%user changes status for %user(%coaffected) to institution %inst(%affected): %info.', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('6be59dcd70197c59d7bf3bcd3fec616f', 'INST_USER_DEL', 'Delete user from institution', '%user deletes %user(%coaffected) from institution %inst(%affected).', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('cf8986a67e67ca273e15fd9230f6e872', 'USER_CHANGE_TITLE', 'Change academic title', '%user changes/set academic title for %user(%affected) - %info.', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('ca216ccdf753f59ba7fd621f7b22f7bd', 'USER_CHANGE_NAME', 'Change personal name', '%user changes/sets name for %user(%affected) - %info.', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('8aad296e52423452fc75cabaf2bee384', 'USER_CHANGE_USERNAME', 'Change user name', '%user changes/sets user name for %user(%affected): %info.', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('59f3f38c905fded82bbfdf4f04c16729', 'INST_CREATE', 'Create institution', '%user creates institution %inst(%affected).', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('1a1e8c9c3125ea8d2c58c875a41226d6', 'INST_DEL', 'Delete institution', '%user deletes institution %info (%affected).', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('d18d750fb2c166e1c425976e8bca96e7', 'USER_CHANGE_EMAIL', 'Change email address', '%user changes/set email address for %user(%affected): %info.', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('a92afa63584cc2a62d2dd2996727b2c5', 'USER_CREATE', 'Create user', '%user creates user %user(%affected).', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('e406e407501c8418f752e977182cd782', 'USER_CHANGE_PERMS', 'Change global user status', '%user changes/sets global status of %user(%affected): %info', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('63042706e5cd50924987b9515e1e6cae', 'INST_USER_ADD', 'Add user to facility', '%user adds %user(%coaffected) to facility %inst(%affected) with status %info', 1, NULL);
+INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, `active`, `expires`) VALUES ('4dd6b4101f7bf3bd7fe8374042da95e9', 'USER_NEWPWD', 'New password', '%user generates new password for %user(%affected)', 1, NULL);
 ```

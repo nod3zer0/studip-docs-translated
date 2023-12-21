@@ -5,20 +5,20 @@ sidebar_label: StudipFormat
 ---
 
 :::danger
-Die Funktion ist veraltet und sollte nicht mehr verwendet werden
+The function is obsolete and should no longer be used
 :::
 
-Zu der Stud.IP-Version 2.3 wurde die Formatierungsengine umgestellt auf einen eigenen Parser, der sich in den Klassen `StudipFormat` und `TextFormat` verbirgt. TextFormat ist dabei der grundsätzliche Parser und StudipFormat ein spezieller, der mit den typischen Studip-Syntax angereichert ist.
+In Stud.IP version 2.3 the formatting engine was changed to its own parser, which is hidden in the classes `StudipFormat` and `TextFormat`. TextFormat is the basic parser and StudipFormat a special one, which is enriched with the typical Studip syntax.
 
-Die Benutzung ist grundsätzlich einfach. Man instanziiert den Parser und schickt seinen zu formatierenden Text durch die Methode `format`. Etwa so:
+It is basically easy to use. You instantiate the parser and send the text to be formatted through the `format` method. Something like this:
 
 ```php
 $markup = new StudipFormat();
-echo $markup->format("Mein %%cooler%% formatierter Text ist **cool**.");
+echo $markup->format("My %%cooler%% formatted text is **cool**.");
 ```
 
 
-Man kann auch einen eigenen Parser definieren mit der Klasse `TextFormat`. Ein nacktes Objekt davon macht allerdings erst einmal gar nichts denn `TextFormat` bringt von sich aus keine Regeln mit. Eine Regel definiert man über den Konstruktor oder danach über die Methode `addMarkup`. Etwa so:
+You can also define your own parser with the class `TextFormat`. However, a naked object of this does nothing at first because `TextFormat` does not come with any rules of its own. A rule is defined via the constructor or then via the `addMarkup` method. Something like this:
 
 ```php
 function bbbold($text) {
@@ -35,28 +35,28 @@ $bbmarkup = new TextFormat(array(
      )
 ));
 $bbmarkup->addMarkup(
-    'italic-text', 
-    "\[i\]", 
-    "\[\/i\]", 
+    'italic-text',
+    "\[i\]",
+    "\[\/i\]",
     "bbitalic"
 );
 ```
 
 
-Innerhalb von Stud.IP werden immer die Funktionen `formatReady` `linkReady` und `wikiReady` verwendet, um Text zu formatieren. Mit dem neuen Parser kann man jetzt auch Plugins bauen, die dieses Markup jeweils erweitern bzw. verändern. `htmlReady` verwendet intern einfach `$markup->format($text)`, um den Text zu formatieren, die wiederum eine Reihe von Formatierungsregeln voreingestellt hat. Diese Formatierungsregeln stehen in der privaten Variable `StudipFormat->studip_rules`, die sich mit den statischen Methoden `getStudipMarkup($name)`, `addStudipMarkup($name, $start, $end, $callback, $before = null)` und `removeStudipMarkup($name)` manipulieren lässt. Am interessantesten ist da sicherlich die Methode `addStudipMarkup`.
+Within Stud.IP, the functions `formatReady` `linkReady` and `wikiReady` are always used to format text. With the new parser you can now also build plugins that extend or change this markup. Internally, `htmlReady` simply uses `$markup->format($text)` to format the text, which in turn has a number of formatting rules preset. These formatting rules are stored in the private variable `StudipFormat->studip_rules`, which can be manipulated with the static methods `getStudipMarkup($name)`, `addStudipMarkup($name, $start, $end, $callback, $before = null)` and `removeStudipMarkup($name)`. The most interesting method is certainly `addStudipMarkup`.
 
-Man könnte zum Beispiel ein Plugin bauen, das das Markup für Stud.IP erweitert. Ich stelle mal ein kleines Beispielplugin vor, das OpenstreetMaps überall einbinden, wo der Nutzer sowas schreibt wie `[osmap]latitude;longitude;zoomfactor[/osmap]` Das ist simpel und kann man immer gut gebrauchen.
+For example, you could build a plugin that extends the markup for Stud.IP. I will present a small example plugin that integrates OpenstreetMaps wherever the user writes something like `[osmap]latitude;longitude;zoomfactor[/osmap]` This is simple and can always be put to good use.
 
 ```php
 class OpenstreetmapEmbedder extends StudIPPlugin implements SystemPlugin {
-    
+
     public function __construct()
     {
         parent::__construct();
         StudipFormat::addStudipMarkup("osmap", "\[osmap\]", "\[\/osmap\]", "OpenstreetmapEmbedder::createMap");
         PageLayout::addHeadElement('script', array('type' => "text/javascript", 'src' => $this->getPluginURL()."/assets/khtml_all.js"), *);
     }
-    
+
     public static function createMap($markup, $matches, $adress)
     {
         $id = "map_".uniqid();
@@ -85,12 +85,12 @@ class OpenstreetmapEmbedder extends StudIPPlugin implements SystemPlugin {
 
 ```
 
-Wenn man mal von den Eigenheiten der zugrundeliegenden Javascript-Engine zur Darstellung der Karte absieht, ist das Plugin ganz simpel: Im Konstruktor wird das Markup über die Methode `StudipFormat::addStudipMarkup` an StudipFormat angegeben. Damit existiert das Markup schon mal. Der erste Parameter ist einfach ein Name, der frei gewählt werden kann. Der zweite Parameter ist der Startausdruck als regulärer Ausdruck. Hier könnten auch benannte Ausdrücke wie `(.*?)` drin vorkommen, die nachher per `$matches` Variable an die ausführende Markup-Funktion übergeben werden. Aber für unser Beispiel ist das egal, da wir nur einen Parameter brauchen.
-Das dritte Argument ist der Endausdruck. Alles zwischen Startausdruck und Endausdruck bekommt die Funktion später als `$contents` übergeben.
-Das vierte Argument ist der Name der Funktion, die später das Markup ausführen soll. Statische Funktionen eignen sich dafür am besten.
-Es könnte noch ein fünftes Argument geben, das `$before` heißt und angibt, vor welchen anderen Direktiven dieses Markup ausgeführt wird. Es könnte ja sein, dass zwei Markups Doppeldeutigkeiten hervorrufen. Und da 'gewinnt' immer das Markup, das weiter vorne in der Reihenfolge steht. Gibt man `$before = "links"` mit, so wird das eigene Markup immer der Linksyntax vorgezogen.
+Apart from the peculiarities of the underlying Javascript engine for displaying the map, the plugin is very simple: In the constructor, the markup is specified to StudipFormat via the method `StudipFormat::addStudipMarkup`. This means that the markup already exists. The first parameter is simply a name that can be freely chosen. The second parameter is the start expression as a regular expression. This could also contain named expressions such as `(.*?)`, which are subsequently passed to the executing markup function via `$matches` variables. But for our example it doesn't matter, as we only need one parameter.
+The third argument is the end expression. Everything between the start expression and the end expression is passed to the function later as `$contents`.
+The fourth argument is the name of the function that will later execute the markup. Static functions are best suited for this.
+There could be a fifth argument called `$before` which specifies before which other directives this markup is executed. It could be that two markups cause ambiguities. And the markup that is further ahead in the sequence always 'wins'. If you specify `$before = "left"`, your own markup is always preferred to the left syntax.
 
-In der Methode `OpenstreetmapEmbedder::createMap`, der Methode, die das Markup ausführt, bekommen wir drei Parameter, wovon der dritte nur existiert, wenn ein Endausdruck definiert wurde. Der erste Parameter ist immer ein `TextFormat`-Objekt, das gerade das Markup koordiniert. In den meisten fällen, braucht man dieses Objekt nicht zu beachten. `$matches` ist ein Array mit allen Parametern, die man aus dem regulären Ausdruck gewinnt. `$matches[0]` ist stets der ganze String, `$matches[1]` wäre schon der erste benannte Parameter im regulären Ausdruck wie `(.*?)`. `$contents`, das dritte Argument und bei unserem Beispiel gleich `$adress` genannt, gibt alles zwischen Startasudruck und Endausdruck an.
-Die Methode `createMap` muss jetzt nur noch etwas zurückgeben, das praktisch für `$matches[0]` eingesetzt wird, also für den betroffenen String. Der hier angefasste String wird überdies nie mehr von anderem Markup beeinflusst.
+In the method `OpenstreetmapEmbedder::createMap`, the method that executes the markup, we receive three parameters, the third of which only exists if a final expression has been defined. The first parameter is always a `TextFormat` object that coordinates the markup. In most cases, this object does not need to be considered. `$matches` is an array with all the parameters obtained from the regular expression. `$matches[0]` is always the whole string, `$matches[1]` would be the first named parameter in the regular expression like `(.*?)`. `$contents`, the third argument and called `$address` in our example, specifies everything between the start expression and the end expression.
+The `createMap` method now only has to return something that is practically used for `$matches[0]`, i.e. for the string concerned. The string touched here will never be affected by other markup.
 
-**WARNUNG** für Pluginentwickler: Seid euch bewusst, dass ihr zwar schnell ein Plugin bauen könnt, das die Leute vermutlich auch schnell verstehen. Aber die Syntax der Formatierung, die ihr wählt, ist von Anfang an für alle Zeiten fest, denn die Forumsbeiträge, die eure neue Syntax verwenden, werden auf Ewigkeiten die Syntax behalten, die ihr anfangs mal verwendet habt. Überlegt euch daher die Syntax gut, geht sparsam mit Formatierungsmöglichkeiten um, von denen absehbar ist, dass sie eines Tages veraltet sein werden (wie SWF-Datei-Integration), oder wo der Datenschutz mindestens strittig ist (wie eine Google-Maps-Integration).
+**WARNING** for plugin developers: Be aware that you can quickly build a plugin that people will probably understand quickly. But the syntax of the formatting you choose is fixed from the beginning for all time, because the forum posts that use your new syntax will keep the syntax you used in the beginning for eternity. Therefore, think carefully about the syntax, be sparing with formatting options that are likely to become obsolete one day (such as SWF file integration), or where data protection is at least controversial (such as Google Maps integration).

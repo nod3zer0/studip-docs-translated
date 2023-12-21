@@ -2,66 +2,66 @@
 title: OAuth2
 ---
 
-# Einrichtung
+# Setup
 
-Damit Stud.IP als Authorization Server im Rahmen von OAuth2 auftreten
-kann, müssen zuvor notwendig Schlüsseldateien erzeugt werden.
+In order for Stud.IP to act as an authorization server in the context of OAuth2
+key files must first be generated.
 
-Um zu überprüfen, ob eine Stud.IP-Installation bereits mit
-Schlüsseldateien versorgt ist, kann diese URL von
-`root`-berechtigten Nutzenden aufgerufen werden:
+In order to check whether a Stud.IP installation is already supplied with
+key files, this URL can be queried by
+`root` authorized users can call up this URL:
 `https://<STUD.IP-URL>/dispatch.php/admin/oauth2`
 
-Dort wird überprüft, ob diese Dateien vorhanden sind:
+The system checks whether these files are available:
 
 - `config/oauth2/private.key`
 - `config/oauth2/public.key`
 - `config/oauth2/encryption_key.php`
 
-Ist das nicht der Fall, können diese Dateien mit folgendem Aufruf im
-Verzeichnis der Stud.IP-Installation erzeugt werden.
+If this is not the case, these files can be created with the following call in the
+directory of the Stud.IP installation.
 
 ```shell
 cli/studip oauth2:keys
 ```
 
-Prüfen Sie hinterher unter obiger URL, dass alles ordnungsgemäß
-eingerichtet wurde.
+Check afterwards under the above URL that everything has been
+has been set up correctly.
 
-# Hinzufügen neuer OAuth2-Clients
+# Adding new OAuth2 clients
 
-Auf der OAuth2-Konfigurationsseite (`https://<STUD.IP-URL>/dispatch.php/admin/oauth2`) haben Sie die Möglichkeit,
-OAuth2-Clients einzurichten. Klicken Sie dazu in der Sidebar auf
-"OAuth2-Client hinzufügen". Füllen Sie nun das angezeigte Formular aus.
+On the OAuth2 configuration page (`https://<STUD.IP-URL>/dispatch.php/admin/oauth2`) you have the option of
+set up OAuth2 clients. To do this, click in the sidebar on
+"Add OAuth2 client" in the sidebar. Now fill out the form that appears.
 
-Wenn Sie erfolgreich einen Client hinzugefügt haben, erhalten Sie die
-`client_id` und ggf. das `client_secret`. **Beachten Sie bitte, dass
-das `client_secret` nur einmalig hier angezeigt wird.**
+If you have successfully added a client, you will receive the
+`client_id` and, if applicable, the `client_secret`. **Please note that
+the `client_secret` is only displayed here once **.
 
-# Verwalten von OAuth2-Clients
+# Manage OAuth2 clients
 
-Sie können auf der OAuth2-Konfigurationsseite
-(`https://<STUD.IP-URL>/dispatch.php/admin/oauth2`) vorhandene Clients einsehen und
-löschen. Ein Ändern der Konfiguration ist nicht vorgesehen. Wenn Sie
-die Details eines OAuth2-Clients ändern wollen, löschen Sie die
-vorhandene Konfiguration und legen eine neue an.
+On the OAuth2 configuration page
+(`https://<STUD.IP-URL>/dispatch.php/admin/oauth2`) to view and delete existing clients.
+delete them. Changing the configuration is not intended. If you
+want to change the details of an OAuth2 client, delete the existing
+existing configuration and create a new one.
 
-# Konfiguration von OAuth2-Clients
+# Configuration of OAuth2 clients
 
-Nachdem Sie einen OAuth2-Client in Ihrer Stud.IP-Installation
-eingerichtet haben, besitzen Sie nun die `client_id` und ggfs. das
+After you have set up an OAuth2 client in your Stud.IP installation
+installation, you now have the `client_id` and, if applicable, the
 `client_secret`.
 
-Außerdem benötigen Sie nun noch die notwendigen URLs:
+You also need the necessary URLs:
 
 - Authorization URL: `https://<STUD.IP-URL>/dispatch.php/api/oauth2/authorize`
 - Access Token URL: `https://<STUD.IP-URL>/dispatch.php/api/oauth2/token`
 
-# Was unterstützt der Stud.IP OAuth2 Authorization-Server?
+# What does the Stud.IP OAuth2 authorization server support?
 
 ## Grant Types
 
-Es werden folgende Grant Types laut Spezifikation unterstützt:
+The following grant types are supported according to the specification:
 
 - Authorization Code Grant
 - Authorization Code Grant with PKCE
@@ -69,21 +69,21 @@ Es werden folgende Grant Types laut Spezifikation unterstützt:
 
 
 ## Scopes
-Aktuell ist nur ein `scope` vorgesehen: `api`. Dieser Scope erlaubt
-vollen Zugriff auf alle Funktionen, die durch OAuth2 abgesichert werden.
+Currently only one scope is provided: `api`. This scope allows
+full access to all functions that are secured by OAuth2.
 
-## PKCE-Verfahren
-Wenn neue Clients angelegt werden, wird abgefragt, ob der Client in
-der Lage ist, kryptografische Geheimnisse zu bewahren. Darunter fallen
-ausdrücklich also alle Apps. In diesem Fall muss das PKCE-Verfahren
-verwendet werden: https://oauth.net/2/pkce/
+## PKCE procedure
+When new clients are created, a query is made as to whether the client is
+able to keep cryptographic secrets. This explicitly includes
+explicitly includes all apps. In this case, the PKCE procedure
+must be used: https://oauth.net/2/pkce/
 
-# Aufräumen
+# Clean up
 
-Mit der Zeit sammeln sich naturgemäß widerrufene oder abgelaufene
-Token in der Datenbank. Daher sollten regelmäßig folgendes Kommando
-im Verzeichnis der Stud.IP-Installation aufgerufen werden, um diese
-Token zu entfernen:
+Over time, revoked or expired tokens naturally accumulate in the database.
+tokens accumulate in the database. Therefore, the following command
+in the Stud.IP installation directory to remove these tokens.
+remove these tokens:
 
 ```shell
 cli/studip oauth2:purge

@@ -4,125 +4,125 @@ title: Icon
 sidebar_label: Icon
 ---
 
-## Benutzung der Klasse Icon
+## Using the Icon class
 
-Stud.IP stellt eine reichhaltige Auswahl an Icons zur Verfügung. Ab Stud.IP v3.4 werden diese Icons mit einer PHP-API angesprochen. In den früheren Versionen musste man dazu eine Pfad im Dateisystem kennen. Jetzt reicht es, die Form des Icons zu kennen, um dieses einzubinden.
+Stud.IP provides a rich selection of icons. As of Stud.IP v3.4, these icons are addressed with a PHP API. In the earlier versions, you had to know a path in the file system. Now it is sufficient to know the shape of the icon in order to integrate it.
 
-Zu diesem Zweck wurde die Klasse `Icon` geschaffen. Instanzen dieser Klasse haben 3 Eigenschaften:
+The class `Icon` was created for this purpose. Instances of this class have 3 properties:
 
-* die Form des Icons
-* die Rolle (und damit implizit die Farbe) des Icons
-* semantische Attribute wie `title`
+* the shape of the icon
+* the role (and thus implicitly the color) of the icon
+* semantic attributes such as `title`.
 
 ### Quick Start
 
-Wir wollen das "Startseite"-Icon (das man links oben auf jeder Stud.IP-Seite findet) einbinden. Dazu schreibt man einfach:
+We want to integrate the "start page" icon (which can be found at the top left of every Stud.IP page). To do this, simply write
 
 ```php
 <?= Icon::create('home', Icon::ROLE_NAVIGATION, ['title' => _("Zur Startseite")]) ?>`
 ```
 
-Und damit erhält man ein `img`-Element wie dieses:
+And this gives you an `img` element like this:
 
 https://develop.studip.de/studip/assets/images/icons/lightblue/home.svg
 
-Die Form des Icons ist "home". Die Rolle/Funktion des Icons ist "navigation". Das Icon soll ein semantisches Attribut, einen Titel, bekommen: _("Zur Startseite").
+The shape of the icon is "home". The role/function of the icon is "navigation". The icon should have a semantic attribute, a title: _("To home page").
 
-Die Signatur von `Icon::create` sieht daher so aus:
+The signature of `Icon::create` therefore looks like this:
 
 ```php
 public static function create($shape, $role = Icon::DEFAULT_ROLE, $attributes = array())
 ```
 
-Wenn man früher Icons verwenden wollte (`Assets::img("icons/16/lightblue/home.png")`), war dort die Farbe hartkodiert. 
-Wollte man in seiner Installation ein Redesign vornehmen, ist das mehr als unschön. 
-Aus diesem Grund wurden die Farben aus dem PHP-Code verbannt und auf Rollen umgestellt.
+In the past, if you wanted to use icons (`Assets::img("icons/16/lightblue/home.png")`), the color was hard-coded there.
+If you wanted to redesign your installation, this was more than unsightly.
+For this reason, the colors were banned from the PHP code and switched to roles.
 
-Derzeit befindet sich die Abbildung der Rollen auf Farben in der Variablen `Icon::$roles_to_colors`.
+Currently, the mapping of roles to colors is located in the variable `Icon::$roles_to_colors`.
 
-Will man eigene Icons verwenden, schreibt man einfach:
+If you want to use your own icons, simply write
 
 ```php
-Icon::create($eigeneURL)
+Icon::create($ownURL)
 ```
 
-### Icon-API im Detail
+### Icon API in detail
 
-Die Klasse `Icon` bietet nur wenige Methoden an.
+The `Icon` class only offers a few methods.
 
-#### Factory-Methoden
+#### Factory methods
 
 ```php
 Icon::create($shape, $role = Icon::DEFAULT_ROLE, $attributes = [])
 ```
 
-Das ist *die* Methode, um ein Icon zu instanziieren. Die `$shape` gibt die Form des Icons an, ohne weiter auf eine Färbung etc. einzugehen.
+This is *the* method to instantiate an icon. The `$shape` specifies the shape of the icon without going into further detail about coloring etc.
 
-Die Rolle `$role` definiert den Kontext, in dem das Icon verwendet werden soll. Der Stud.IP-Style-Guide gibt zB vor, dass alle Icons in Links einheitlich gefärbt sein sollen (in der Regel blau). Die Rolle hilft dabei, Farbwerte nicht hart zu kodieren und trotzdem im ganzen System einheitlich zu differenzieren.
+The role `$role` defines the context in which the icon is to be used. For example, the Stud.IP style guide specifies that all icons in links should be uniformly colored (usually blue). The role helps to avoid hard-coding color values and still differentiate them uniformly throughout the system.
 
-Die Eigenschaften `$attributes` enthalten **nur** semantische Attribute wie `title`. Nicht-semantische Werte wie CSS-Klassen, Größen, oder `data-`Attribute dürfen hier nicht eingetragen werden.
+The `$attributes` properties contain **only** semantic attributes such as `title`. Non-semantic values such as CSS classes, sizes or `data` attributes may not be entered here.
 
-#### Ausgabe-Methoden
+#### Output methods
 
 ```php
 $icon->asImg($size = null, $view_attributes = [])
 ```
 
-Diese Methode gibt das Icon als `img`-Element aus:
+This method outputs the icon as an `img` element:
 
 ```php
 Icon::create('vote', Icon::ROLE_CLICKABLE)->asImg(16)
 ```
 
-erzeugt:
+generated:
 
 ```html
 <img width="16" height="16" src="images/icons/blue/vote.svg" alt="vote" class="icon-role-clickable icon-shape-vote">
 ```
 
-Der erste Parameter `$size` legt die `width/height` des `img`-Elements fest. Die `$view_attributes` können mit beliebigen Attributen wie `class` usw. befüllt werden.
+The first parameter `$size` defines the `width/height` of the `img` element. The `$view_attributes` can be filled with any attributes such as `class` etc.
 
 ```php
 $icon->asInput($size = null, $view_attributes = [])
 ```
 
-Eine Variation von `Icon::asImg`, die das Icon als `input`-Element ausgibt:
+A variation of `Icon::asImg`, which outputs the icon as an `input` element:
 
 ```php
 Icon::create('upload', Icon::ROLE_CLICKABLE)->asInput(20, ['class' => 'text-bottom'])
 ```
 
-ergibt:
+results in:
 
 ```html
 <input type="image" class="text-bottom icon-role-clickable icon-shape-upload" width="20" height="20" src="images/icons/blue/upload.svg" alt="upload">
 ```
 
-Die Parameter funktionieren wie bei `Icon::asImg`.
-            
+The parameters work in the same way as for `Icon::asImg`.
+
 ```php
 $icon->asCSS($size = null)
 ```
 
-Diese (selten verwendete) Methode gibt das Icon als CSS-Style-Angabe via @background-image@@ aus:
+This (rarely used) method outputs the icon as a CSS style specification via @background-image@@:
 
 ```php
 Icon::create('vote+add')->asCSS(17)
 ```
 
-generiert:
+generated:
 
 ```css
 background-image:url(images/icons/17/blue/add/vote.png);background-image:none,url(images/icons/blue/add/vote.svg);background-size:17px 17px;
 ```
 
-Der Parameter `$size` legt die `background-size` fest.
+The parameter `$size` defines the `background-size`.
 
 ```php
 $icon->asImagePath()
 ```
 
-Mit dieser Methode erhält man einfach den Pfad zum SVG, dass für das gewünschte Icon steht:
+With this method you simply get the path to the SVG that stands for the desired icon:
 
 ```php
 Icon::create('vote+add')->asImagePath() === 'images/icons/blue/add/vote.svg'
@@ -132,19 +132,19 @@ Icon::create('vote+add')->asImagePath() === 'images/icons/blue/add/vote.svg'
 $icon->__toString()
 ```
 
-Die magische `__toString`-Methode ist nur ein Alias mit Default-Werten für `Icon::asImg`, sodass folgendes:
+The magic `__toString` method is just an alias with default values for `Icon::asImg`, so the following:
 
 ```php
 echo Icon::create('vote+add')
 ```
 
-einfach nur:
+just:
 
 ```html
 <img width="16" height="16" src="images/icons/blue/vote.svg" alt="vote" class="icon-role-clickable icon-shape-vote">
 ```
 
-ausgibt.
+outputs.
 
 #### Getter
 
@@ -152,7 +152,7 @@ ausgibt.
 * `$icon->getRole()`
 * `$icon->getAttributes()`
 
-Diese Methoden geben einfach die entsprechenden Werte zurück.
+These methods simply return the corresponding values.
 
 #### "Setter"
 
@@ -160,11 +160,11 @@ Diese Methoden geben einfach die entsprechenden Werte zurück.
 * `$anotherIcon = $icon->copyWithRole($role)`
 * `$anotherIcon = $icon->copyWithAttributes(array $attributes)`
 
-Diese Methoden ändern nicht das `$icon`, sondern geben ein neues Icon mit verändertem `Shape/Role/Attributes` zurück. Instanzen von `Icon` sind `immutable`, so dass unerwünschte Seiteneffekt nicht auftauchen können.
+These methods do not change the `$icon`, but return a new icon with changed `Shape/Role/Attributes`. Instances of `Icon` are `immutable`, so that unwanted side effects cannot occur.
 
-## Was fehlt noch?
+## What is still missing?
 
 * `$size === false`
 * Additions
-* CSS-Mixins
-* Rollen-zu-Farben-Abbildung
+* CSS mixins
+* Role-to-color mapping

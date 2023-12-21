@@ -5,106 +5,106 @@ sidebar_label: Responsive Navigation
 ---
 
 
-Ab Stud.IP 5.3 wurde die responsive Navigation komplett refaktorisiert und mir ihr auch ein Vollbildmodus für das gesamte System realisiert.
+As of Stud.IP 5.3 the responsive navigation has been completely refactored and a full screen mode for the entire system has been realized.
 
-# Benutzung
-In Stud.IP gibt es vier Stufen der auflösungsabhängigen Darstellung, diese sind in `resources/assets/stylesheets/scss/breakpoints.scss` (und analog in `resources/assets/stylesheets/less/breakpoints.less`) definiert und in `resources/assets/stylesheets/scss/visibility.scss` zur Steuerung von Sichtbarkeiten eingesetzt:
+# Use
+In Stud.IP there are four levels of resolution-dependent display, these are defined in `resources/assets/stylesheets/scss/breakpoints.scss` (and analogously in `resources/assets/stylesheets/less/breakpoints.less`) and used in `resources/assets/stylesheets/scss/visibility.scss` to control visibility:
 - 576px (small)
 - 768px (medium)
 - 1024px (large)
 - 1280px (xlarge)
 - 1600px (xxlarge)
 
-Unterhalb einer Auflösung von 768 Pixeln wird automatisch zur responsiven Ansicht gewechselt und entsprechend die responsive Navigation verwendet.
+Below a resolution of 768 pixels, the responsive view is automatically switched to and the responsive navigation is used accordingly.
 
-Darüber hinaus gibt es in der Desktopansicht (>= 768 Pixel) einen Button zum Wechsel in den Vollbildmodus. Hier wird ebenfalls die responsive Navigation und die angepasste Seitenansicht mit ausgeblendeter Sidebar und Contentbar über jeder Seite eingesetzt.
+There is also a button to switch to full screen mode in the desktop view (>= 768 pixels). The responsive navigation and the adapted page view with hidden sidebar and content bar above each page are also used here.
 
-# Technische Details
-Die responsive Navigation wurde mit VueJS implementiert. Alle neuen Komponenten liegen unter `resources/vue/components/responsive`.
+# Technical details
+The responsive navigation was implemented with VueJS. All new components are located under `resources/vue/components/responsive`.
 
-Die Komponente wird in `templates/header` eingebunden, aber nur bei Bedarf angezeigt. "Bei Bedarf" bedeutet hier:
-- Die Auflösung ist kleiner als 768 Pixel, damit bekommt das HTML-Tag automatisch die Klasse `responsive-display`
-- Der Vollbildmodus ist aktiv, damit bekommt das HTML-Tag automatisch die Klasse `fullscreen-mode`
+The component is integrated in `templates/header`, but is only displayed when required. "On demand" means here:
+- The resolution is smaller than 768 pixels, so the HTML tag automatically gets the class `responsive-display`
+- The full-screen mode is active, so the HTML tag is automatically assigned the class `fullscreen-mode`.
 
-Beim Einhängen der Komponente wird ads Hilfeicon in die obere blaue Leiste verschoben, ebenso wird eine Contentbar erzeugt (oder eine bestehende im DOM umgehängt), um den aktuellen Seitentitel und das Icon zum Ein-/Ausblenden der Sidebar aufzunehmen.
+When the component is mounted, the help icon is moved to the top blue bar, and a content bar is created (or an existing one in the DOM is reattached) to accommodate the current page title and the icon for showing/hiding the sidebar.
 
-Das Icon zum Aktivieren des Vollbildmodus wird via MountingPortal neben das Hilfeicon eingehängt und wandert im Vollbildmodus ebenso in die blaue Topleiste.
+The icon for activating the full screen mode is attached next to the help icon via MountingPortal and also moves to the blue top bar in full screen mode.
 
-Die Einträge der Navigation werden in der Klasse `lib/classes/ResponsiveHelper.php` erzeugt und als JSON vorgehalten. Neu ist hier, dass alle eigenen Veranstaltungen aus dem aktuellen Semester (sowie ggf. eine gerade geöffnete Veranstaltung bei Admins und Roots) ebenfalls direkt als Navigationseinträge inkl. Unternavigation verfügbar sind. 
+The navigation entries are created in the class `lib/classes/ResponsiveHelper.php` and stored as JSON. What is new here is that all your own courses from the current semester (as well as a currently open course for admins and roots) are also directly available as navigation entries including sub-navigation.
 
-Die Fußzeile ist ausgeblendet, deren Navigation ist als Unternavigation "Impressum & Information" im Menü aufrufbar.
+The footer is hidden, its navigation can be called up as sub-navigation "Imprint & Information" in the menu.
 
-Ebenso werden die Skiplinks der Seite umgebaut. Jeder Skiplink kann nun angeben, ob er im Vollbildmodus gültig ist (default `true`). Alle ungültigen Skiplinks werden beim Mounten der responsiven Navigation ausgeblendet und es werden neue eingebaut, die zur Navigation springen, den Vollbildmodus beenden oder das Icon zum Ein-/Ausblenden der Sidebar fokussieren.
+The site's ski links have also been reorganized. Each skiplink can now specify whether it is valid in full screen mode (default 'true'). All invalid skiplinks are hidden when mounting the responsive navigation and new ones are added that jump to the navigation, exit fullscreen mode or focus the icon to show/hide the sidebar.
 
-# Kompakte Navigatoin und Vollbildmodus
+# Compact navigation and full screen mode
 
-Stud.IP ist eine Software, die sowohl auf verschiedenen Endgeräten/Gerätegrößen möglichst den vollständigen Funktionsumfang anzubieten versucht als auch für unterschiedliche Zielgruppen auf diesen verschiedenen Geräten möglichst gut bedienbar sein soll.
+Stud.IP is a software that tries to offer the full range of functions on different end devices/device sizes and should also be as easy to use as possible for different target groups on these different devices.
 
-**Unterstützte Geräteklassen und deren Kennzeichen:**
+**Supported device classes and their characteristics:**
 
-Die Geräteklassen, auf die Stud.IP optimiert ist lassen sich wie folgt kategorisieren und entsprechend den Breakpoints im Resposiven Design.
+The device classes for which Stud.IP is optimized can be categorized as follows and according to the breakpoints in the responsive design.
 
-**A. Smartphone (medium)**: Diese Geräte sind dadurch gekennzeichnet, dass
-die maximale Breite sehr schmal ist (bis zu 767 Pixel bei regulärer Auflösung),
-üblicherweise das Scrollen leicht möglich ist, die Seiten also durchaus lang werden dürfen, die Geräte ausschließlich per Touch, also mit dem Finger bedient werden und auf diesen Geräten keine komplexen Inhalte erstellt werden. Die übliche Display-Ausrichtung ist hochkant.
+**A. Smartphone (medium)**: These devices are characterized by the fact that
+the maximum width is very narrow (up to 767 pixels at regular resolution),
+scrolling is usually easy, i.e. the pages can be quite long, the devices are operated exclusively by touch, i.e. with a finger, and no complex content is created on these devices. The usual display orientation is upright.
 
-**B. Tablet/kleine Desktopgeräte (large)**: Diese Geräte sind dadurch gekennzeichnet, dass die maximale Breite begrenzt ist (bis zu. 1024 Pixel bei regulärer Auflösung),
-diese in der Regel per Touch bedient werden (Mausbedienung sollte ebenfalls möglich sein), auf diesen Geräten selten komplexe Inhalte erstellt werden. Die überwiegende Display-Ausrichtung ist quer, hochkant in einigen Anwendungsfällen.
+**B. Tablet/small desktop devices (large)**: These devices are characterized by the fact that the maximum width is limited (up to. 1024 pixels at regular resolution),
+they are usually operated by touch (mouse operation should also be possible), complex content is rarely created on these devices. The predominant display orientation is landscape, portrait in some applications.
 
-**C. Desktop (xlarge)**: Diese Geräte sind dadurch gekennzeichnet, dass die Breite mehr als 1024 Pixel aufweist und diese ganz überwiegend per Maus bedient werden. Die übliche Display-Ausrichtung ist quer.
+**C. Desktop (xlarge)**: These devices are characterized by a width of more than 1024 pixels and are predominantly operated by mouse. The usual display orientation is landscape.
 
-**weitere Varianten** Es gibt weitere Varianten, die bisher jedoch nur minimale Optimierungen auf die jeweiligen Gerätegrößen enthalten und weniger auf spezifischen Geräteklassen gestaltet wurden. Diese Varianten haben bei kleineren (unter 576 Pixel/small) bzw. größeren (ab 1280 Pixel/xlarge und ab 1600 Pixel/xxlarge) Displays Breakpoints.
+**Other variants** There are other variants, but so far these have only been minimally optimized for the respective device sizes and have been designed less for specific device classes. These variants have breakpoints for smaller (under 576 pixels/small) and larger (from 1280 pixels/xlarge and from 1600 pixels/xxlarge) displays.
 
-Siehe hierzu auch die neuen Darstellungsstufen unter https://gitlab.studip.de/studip/studip/-/wikis/Responsive-Navigation.
+See also the new display levels at https://gitlab.studip.de/studip/studip/-/wikis/Responsive-Navigation.
 
-**Exemplarische UseCases und zugeordnete Nutzendengruppen:**
+**Exemplary use cases and assigned user groups:**
 
-Neben verschiedenen Geräteklassen gibt es zwei wichtige Nutzendengruppen mit unterschiedlichen UseCases. Zwischen den Gruppen gibt es teils fließende Übergänge und Schnittmengen. Letztlich stellen beide Gruppen daher unterschiedliche Pole dar, für die es jeweils nun einen eigen Darstellungsmodus gibt. Beide Modus bauen dabei aufeinander auf.
+In addition to different device classes, there are two important user groups with different use cases. There are sometimes fluid transitions and overlaps between the groups. Ultimately, both groups therefore represent different poles, for each of which there is now a separate presentation mode. Both modes build on each other.
 
-**1. Erstellung und Administration komplexer Inhalte**
-- Die üblichen Stud.IP-Gruppen für diesen UseCases sind **Admins** und (eingeschränkt) auch Lehrende
-- Der UseCase ist geprägt dadurch, dass umfangreich Inhalte erstellt oder komplexe Inhalte bearbeitet werden
-- typische genutzte Elemente sind große Tabellen (viele Elemente, viele Spalten, viele mögliche Aktionen) und umfangreiche Inhalte bestehend aus mehreren Medien-Objekten (Fließtext, Film, inaktive Elemente) die zudem in sich gegliedert sind (zB. durch ein Inhaltsverzeichnis oder Überschriften)
-- Die vollständige Bedienung (insbesondere Navigation) des Systems und Nutzung von Kommunikationsfunktionen wird weiterhin erwartet und bleibt möglich
-- Funktionen/Systembereiche können gewechselt, Aktionen der Sidebar ausgeführt und Kommunikationsfunktionen können aufgerufen werden
-- Wichtige Anforderungen: Möglichst viel Platz für die zu bearbeitenden Elemente bei gleichzeitig noch möglicher Navigation
+**1. creation and administration of complex content**
+- The usual Stud.IP groups for this UseCase are **Admins** and (to a limited extent) also lecturers
+- The UseCase is characterized by the fact that extensive content is created or complex content is edited
+- Typical elements used are large tables (many elements, many columns, many possible actions) and extensive content consisting of several media objects (continuous text, film, inactive elements) which are also structured in themselves (e.g. by a table of contents or headings)
+- Full operation (especially navigation) of the system and use of communication functions is still expected and remains possible
+- Functions/system areas can be changed, sidebar actions can be executed and communication functions can be called up
+- Important requirements: As much space as possible for the elements to be edited while still allowing navigation
 
-**2. Konsum und Interaktion mit Inhalten ohne diese zu verändern („Lernen“)**
-- Die üblichen Stud.IP-Rechtestufen dieser Gruppe sind **Studierende** und (eingeschränkt) auch Lehrende
-- Der UseCase ist geprägt dadurch, dass über einen längerer Zeitraum Inhalte rezipiert (Texte gelesen, Filme geschaut) werden
-- typische Elemente sind umfangreiche Fließtexte, Medienobjekte (Audio oder Video) und interaktive Elemente (Fragen, Quizzes, Prüfungen)
-- Die vollständige Bedienung tritt in den Hintergrund, üblicherweise wird über längere Zeit der gleiche Kontext dargestellt
-- Zentrales Ziel ist: Möglichst keine (optische) Ablenkung durch Elemente des Systems, die über eine längere Zeit nicht benötigt werden (dabei auch keine Ablenkung durch Interaktionselementen, die Aufmerksamkeit binden) bei gleichzeitig möglich viel Platz für die Interaktion
-- Es bleibt kein Platz für die gemeinsame Darstellung des Contents und der Bedienelemente/Navigation
-- Zentrale Anforderung: Ausblenden aller störenden oder ablenkende Elemente und möglichst viel Platz für den Content
-
-
-**Darstellungsmodus zur Unterstützung der beiden UsesCases**
+**2. consumption and interaction with content without changing it ("learning")**
+- The usual Stud.IP test levels of this group are **students** and (to a limited extent) also teachers
+- The use case is characterized by the fact that content is received over a longer period of time (texts are read, films are watched)
+- Typical elements are extensive continuous texts, media objects (audio or video) and interactive elements (questions, quizzes, exams)
+- Complete operation takes a back seat; the same context is usually presented over a longer period of time
+- The central goal is: As little (visual) distraction as possible from elements of the system that are not needed for a longer period of time (and also no distraction from interaction elements that bind attention) while at the same time leaving as much space as possible for interaction
+- There is no space left for the joint display of content and operating elements/navigation
+- Key requirement: Hide all disruptive or distracting elements and leave as much space as possible for the content
 
 
-**I. Kompakte Navigation**
+**Display mode to support the two use cases**
 
-Dieser Modus steht auf allen Seiten zur Verfügung, um die Nutzungsgruppe 1 (Admins/Lehrende) bei der Erstellung und Bearbeitung durchweg zu unterstützen. Der Modus ist auf alle Geräteklassen (A, B, C) optimiert.
 
-Kennzeichen der kompakten Navigation sind:
+**I. Compact navigation**
 
-- Die blaue Kopfzeile bleibt eingeblendet und ermöglicht Zugriff auf die vollständige Navigation („Hamburger-Menu“) in allen Geräteklassen
-- Der Browser selbst ist normal sichtbar (und damit auch alle anderen Fenster/Elemente des Betriebssystems)
-- Der Footer ist ausgeblendet, alle Navigationselemente des Footers sind Teil des Hamburgermenüs
-- Um möglichst viel Platz für die Bedienung zu schaffen, wird die Sidebar über ein Einblendicon sichtbar bzw. wieder unsichtbar, im Default ausgeblendet
+This mode is available on all pages to support usage group 1 (admins/teachers) throughout the creation and editing process. The mode is optimized for all device classes (A, B, C).
 
-Anzumerken ist, dass bei langen Seiten auf den Geräteklassen B und C beim Herunterscrollen im normalen Modus die Responsive Navigation durch das Einblenden des Hamburger Menüs ebenfalls verwendet wird, um ein schnelles Wechseln ohne Hochscrollen weiterhin zu ermöglichen.
+Characteristics of the compact navigation are:
 
-**II. Vollbildmodus**
+- The blue header remains displayed and allows access to the full navigation ("hamburger menu") in all device classes
+- The browser itself is visible as normal (as are all other windows/elements of the operating system)
+- The footer is hidden, all navigation elements of the footer are part of the hamburger menu
+- In order to create as much space as possible for operation, the sidebar is visible via a fade-in icon or invisible again, hidden by default
 
-Der UseCase 2 optimierte Fokusmodus kann in der Version 5.3 nur auf Seiten mit der neuen ContentBar (derzeit Courseware, Wiki und Material im OER-Campus) aktiviert werden, da davon ausgegangen werden kann, das dieser UseCase nur auf Seiten benutzt werden kann, auf denen aktiv Inhalte rezipiert werden. Der Vollbildmodus ist insbesondere auf die Klasse B (Tablets) optimiert, da davon ausgegangen wird, dass damit das Lernen und Lesen am besten funktioniert. Aber auch auf Desktop (C) ist der Modus nutzbar, wenn ggf. weniger sinnvoll.
+It should be noted that for long pages on device classes B and C, responsive navigation is also used by displaying the hamburger menu when scrolling down in normal mode in order to enable fast switching without scrolling up.
 
-Kennzeichen des aktivierten Vollbildmodus sind:
+**II. full screen mode**
 
-- Die blaue Kopfzeile wird ausgeblendet um sowohl maximalen Platz zu schaffen als auch die (versehentliche/aktive) Navigation zu unterbinden.
-- Der Browser-eigene Vollbildmodus wird ebenfalls aktiviert, da davon auszugehen ist, das auch keinerlei Ablenkungen anderer Tabs oder Bedienelemente bzw. versehentliches Antippen (auf Touchgeräten, Klasse A und B) zu verhindern. Alle anderen Fenster/Elemente des Betriebssystems werden damit (soweit wir möglich) ausgeblendet.
-- Die Sidebar wird ausgeblendet und kann nicht aktiviert werden
-- Der Footer ist nicht sichtbar
-- Die einzigen verbleibenden Bedienelemente außerhalb des Contents sind alle Elemente, die eine Bedienung innerhalb des Contents des gewählten Kontextes ermöglichen (zB. Inhaltsverzeichnis)
+The UseCase 2 optimized focus mode can only be activated in version 5.3 on pages with the new ContentBar (currently Courseware, Wiki and material in the OER Campus), as it can be assumed that this UseCase can only be used on pages on which content is actively received. The full-screen mode is particularly optimized for class B (tablets), as it is assumed that learning and reading works best in this mode. However, the mode can also be used on desktops (C), although it may be less useful.
 
-Die Aktivierung des Vollbildmodus ist entweder nach Aktivierung der Kompakten Navigation als Icon ob rechts in der blauen Zeilen zu sehen (und stellt so auch einen zweiten Level der reduzierten Darstellung dar) oder kann in den Seiten, die den Modus nutzen, auch aus dem Aktionsmenü aktiviert werden.
+Characteristics of the activated full screen mode are
+
+- The blue header is hidden to both maximize space and prevent (accidental/active) navigation.
+- The browser's own full-screen mode is also activated, as it can be assumed that no distractions from other tabs or control elements or accidental tapping (on touch devices, class A and B) can be prevented. All other windows/elements of the operating system are thus hidden (as far as possible).
+- The sidebar is hidden and cannot be activated
+- The footer is not visible
+- The only remaining control elements outside the content are all elements that allow operation within the content of the selected context (e.g. table of contents)
+
+The activation of the full screen mode is either visible after activating the compact navigation as an icon on the right in the blue lines (and thus also represents a second level of the reduced display) or can also be activated from the action menu in the pages that use the mode.

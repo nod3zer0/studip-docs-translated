@@ -1,57 +1,57 @@
 ---
-title: Aktionsmenü
-sidebar_label: Aktionsmenüs
+title: Action menu
+sidebar_label: Action menus
 ---
 # ActionMenu
 
-Am `ActionMenu` können Aktionsicons in ein ausklappbares Menü zusammengefasst werden.
+At `ActionMenu` action icons can be summarized in a fold-out menu.
 
 ## PHP
 
-Die Klasse kann direkt innerhalb einer View verwendet werden, weil sie den nötigen HTML-Code generiert und ausgibt.
+The class can be used directly within a view because it generates and outputs the necessary HTML code.
 
-Über `ActionMenu::get()` erhält man eine Instanz der Klasse, die mit Inhalten befüllt werden kann.
+Via `ActionMenu::get()` you get an instance of the class, which can be filled with content.
 
-Über die Methode `addLink` werden neue Aktionslinks hinzugefügt, die wie üblich mit den Parametern URL, Label, Icon und weiteren Optionen spezifiziert werden.
+The `addLink` method is used to add new action links, which are specified as usual with the parameters URL, label, icon and other options.
 
-Weiter gibt es die Methode `addMultiPersonSearch`, die als Parameter ein `MultiPersonSearch-Objekt` erhält und diese Suche als Aktion hinzufügt.
+There is also the `addMultiPersonSearch` method, which receives a `MultiPersonSearch object` as a parameter and adds this search as an action.
 
-Ein minimaler Aufruf mit einer einzigen Aktion könnte also so aussehen:
+A minimal call with a single action could therefore look like this:
 
 ```php
 <?php
 $menu = ActionMenu::get();
 $menu->addLink(
     $controller->url_for('controller/action'),
-    _('Hinzufügen'),
+    _('add'),
     Icon::create('add'),
     ['data-dialog' => 'size=auto']
 );
 $menu->addLink(
     $controller->url_for('controller/second_action'),
-    _('Bearbeiten'),
+    _('edit'),
     Icon::create('edit'),
     ['data-dialog' => 'size=auto']
 );
 $menu->addButton(
     'delete',
-    ('Löschen'),
+    ('delete'),
     Icon::create('trash'),
     [
-        'data-confirm' => _('Wollen Sie wirklich löschen?'),
-        'formaction'   => $controller->url_for('controller/delete')
+        'data-confirm' => _('Do you really want to delete?'),
+        'formaction' => $controller->url_for('controller/delete')
     ]
 );
 $menu->addMultiPersonSearch(
     MultiPersonSearch::get('add_users')
-        ->setTitle(_('Personen hinzufügen'))
-        ->setLinkText(_('Personen hinzufügen'))
+        ->setTitle(_('Add persons'))
+        ->setLinkText(_('add persons'))
         ->setSearchObject($array)
         ->setDefaultSelectedUser($array_selected_user)
         ->setDataDialogStatus(Request::isXhr())
         ->setJSFunctionOnSubmit(Request::isXhr() ? 'STUDIP.Dialog.close();' : false)
         ->setExecuteURL($controller->url_for('controller/add_member/'))
-        ->addQuickfilter(_('Titel'), $array)
+        ->addQuickfilter(_('Title'), $array)
 );
 echo $menu->render();
 ?>
@@ -59,32 +59,32 @@ echo $menu->render();
 
 ## Vue
 
-Die Vue-Komponente wird über das Tag `StudipActionMenu` eingebunden und hat die folgenden Properties:
+The Vue component is integrated via the `StudipActionMenu` tag and has the following properties:
 
 ```json
 {
-  "collapseAt": "Schwellwert, ab dem das Menü als tatsächliches Menü angezeigt wird [Number] (optional)",
-  "context": "Optional Kontext, der über den Einträgen angezeigt wird [String]",
+  "collapseAt": "Threshold value from which the menu is displayed as an actual menu [Number] (optional)",
+  "context": "Optional context that is displayed above the entries [String]",
   "items": [],
-  "title": "Titel des Aktionsmenüs [String] (optional, Default: 'Aktionsmenü')"
+  "title": "Title of the action menu [String] (optional, default: 'Action menu')"
 }
 ```
 
-Der Wert für `collapseAt` ist optional und wenn er nicht angegeben wird, wird auf den Stud.IP-Default zurückgegriffen.
+The value for `collapseAt` is optional and if it is not specified, the Stud.IP default is used.
 
-Das `items`-Array besteht dabei aus Einträgen des folgendes Formats:
+The `items` array consists of entries in the following format:
 
 ```json
 {
-  "label": "Text des Eintrags [String]",
-  "url": "URL, die aufgerufen werden soll, wenn der Eintrag ausgewählt wird [String] (optional, default: '#')",
-  "emit": "Event, der gefeuert werden soll, wenn der Eintrag ausgewählt wird [String] (optional)",
-  "emitArgument": "Argumente, die dem Event mitgegeben werden sollen, wenn dieser gefeuert wird [Array] (optional)",
-  "icon": "Icon, das für den Eintrag angezeigt werden soll [Objekt: {shape: String}] oder false, wenn kein Icon angegeben werden soll (optional, default: false)",
-  "type": "Möglicher Typ des Eintrags: 'link', 'button', 'separator' [String] (optional, default: 'link')", 
-  "name": "Name des Buttons; Eintrag wird hierdurch automatisch zu einem Button, wenn keine 'url' gesetzt ist [String] (optional)",
-  "classes": "CSS-Klassen, die bei dem Eintrag gesetzt sein sollen [String] (optional)",
-  "attributes": "Weitere HTML-Attribute, die bei dem Eintrag gesetzt sein sollen [Objekt] (optional)",
-  "disabled": "Gibt an, ob der Eintrag deaktiviert sein soll [Boolean] (optional)" 
+  "label": "Text of the entry [String]",
+  "url": "URL to be called when the entry is selected [String] (optional, default: '#')",
+  "emit": "Event to be fired when the entry is selected [String] (optional)",
+  "emitArgument": "Arguments to be given to the event when it is fired [Array] (optional)",
+  "icon": "Icon to be displayed for the entry [object: {shape: String}] or false if no icon is to be specified (optional, default: false)",
+  "type": "Possible type of entry: 'link', 'button', 'separator' [String] (optional, default: 'link')",
+  "name": "Name of the button; entry automatically becomes a button if no 'url' is set [String] (optional)",
+  "classes": "CSS classes that should be set for the entry [String] (optional)",
+  "attributes": "Other HTML attributes that should be set for the entry [object] (optional)",
+  "disabled": "Specifies whether the entry should be disabled [Boolean] (optional)"
 }
 ```

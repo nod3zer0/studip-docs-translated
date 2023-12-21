@@ -1,25 +1,25 @@
 ---
 id: studip-form
-title: Stud.IP-Formulare
-sidebar_label: Stud.IP-Formulare
+title: Stud.IP forms
+sidebar_label: Stud.IP forms
 ---
 
-In Stud.IP werden grundsätzlich HTML-Formulare verwendet. Das Stylesheet von Stud.IP bietet die Möglichkeit, dem Formular ein gewisses Standardaussehen aufzulegen. Dadurch fühlt sich ein Formular für die Nutzer immer irgendwie stimmig und optisch passend an.
+HTML forms are always used in Stud.IP. The Stud.IP stylesheet offers the possibility to give the form a certain standard appearance. This means that a form always feels somehow coherent and visually appropriate for the user.
 
-Uns ist dabei klar, dass Formulare nicht in ein starres Korsett gedrängt werden sollten. Was ist mit Drag&Drop Formularelementen? Was ist mit komplexen Multiselects, die Bilder enthalten sollen? Das sind Spezialfälle, die wir nicht vorhersehen können. Deshalb beschränkt sich das Stylesheet von Stud.IP auf die Grundelemente eines Formulars und versucht diese ansprechend zu gestalten. Für alles, was darüber hinaus geht, muss der Entwickler dann wieder selbst Hand anlegen.
+It is clear to us that forms should not be forced into a rigid corset. What about drag & drop form elements? What about complex multi-selects that should contain images? These are special cases that we cannot foresee. That's why the Stud.IP stylesheet is limited to the basic elements of a form and tries to make them appealing. For everything that goes beyond this, the developer has to do it himself.
 
-# Struktur
+# Structure
 
 ```XML
 <form class="default">
     <section>
-        <legend>Grunddaten</legend>
+        <legend>Basic data</legend>
         <label>
-            Name des Objektes
+            Name of the object
             <input type="text">
         </label>
         <label>
-            Typ des Objektes
+            Type of the object
             <select>
                 <option>Option 1</option>
                 <option>Option 2</option>
@@ -28,56 +28,56 @@ Uns ist dabei klar, dass Formulare nicht in ein starres Korsett gedrängt werden
         </label>
         <label>
             <input type="checkbox">
-            Objekt sichtbar schalten
+            Make object visible
         </label>
     </section>
 </form>
 ```
 
-Dies ist der grundlegende Aufbau eines HTML-Formulars in Stud.IP. Maßgeblich ist dabei vor allem die Klasse (class) des Formulars. Der Klassenname sollte dabei "default" sein. Diese Klassenname gibt dem Formular überhaupt erst das Aussehen, das es hat.
+This is the basic structure of an HTML form in Stud.IP. The class of the form is particularly important. The class name should be "default". This class name is what gives the form its appearance in the first place.
 
-Darunter kann man eine oder mehrere `fieldset`-Elemente definieren. Solche Sektionen sollen [laut HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset) verwendet werden, um mehrere Formularelemente zu gruppieren, die zusammen hängen. In Stud.IP bekommt so ein Fieldset einen blauen Rahmen und wird passend eingerückt.
+One or more `fieldset` elements can be defined below this. Such sections should [according to HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset) be used to group several form elements that are related. In Stud.IP, a fieldset is given a blue frame and is indented accordingly.
 
-Unterhalb des `fieldset`-Elementes kann es ein `legend`-Element geben, das soetwas wie eine Überschrift für die `fieldset` beinhaltet. Man kann es auch weglassen, aber es sieht meist hübscher aus mit einem `legend`-Element.
+Below the `fieldset` element there can be a `legend` element, which contains something like a heading for the `fieldset`. You can also leave it out, but it usually looks nicer with a `legend` element.
 
-Jetzt kommen meist die eigentlichen Formularelemente, die jeweils durch ein `label`-Element umschlossen werden. Diese Labels sind enorm wichtig, um das Formular **barrierearm** zu halten. Denken Sie dabei immer an die Menschen, die zum Beispiel einen Screenreader verwenden, weil sie halb- oder ganz blind sind! Auch diese Menschen können studieren und müssen Stud.IP fast vollumfänglich benutzen können. In der Praxis ist es nicht leicht, sich in einen solchen Menschen mit eingeschränktem Sehvermögen hineinzuversetzen. Aber das müssen Sie als Programmierer auch nicht. Sie müssen nur daran denken: jedes Formularelement wie `<input>` oder `<textarea>` muss ein Label haben. Auch ein placeholder-Attribut an einem `input`-Element ist kein Ersatz für ein Label.
+Now usually come the actual form elements, which are each enclosed by a `label` element. These labels are extremely important to keep the form **barrier-free**. Always remember people who use a screen reader, for example, because they are partially or completely blind! These people can also study and must be able to use Stud.IP almost completely. In practice, it is not easy to put yourself in the shoes of someone with impaired vision. But as a programmer, you don't have to. You just have to remember: every form element such as `<input>` or `<textarea>` must have a label. Even a placeholder attribute on an `input` element is no substitute for a label.
 
-Der Einfachheit halber schreiben Sie die `@<label>@s` wie oben angezeigt. Nur Radio-Buttons und Checkboxen sollten vor dem Label-Text stehen. Ansonsten steht der Labeltext vor dem Input-Element. Bei komplexen Eingabemöglichkeiten wie Komboboxen oder `<input>`s in einer Tabelle kann es sinnvoll sein, Label und Input-Element voneinander räumlich zu trennen. Das ist nicht verboten. Mit dem `for`-Attribut an dem Label können Sie dennoch Label-Text und `<input>` miteinander verbinden, sodass das Formular trotzdem barrierearm bleibt.
+For the sake of simplicity, write the `@<label>@s` as shown above. Only radio buttons and checkboxes should be placed before the label text. Otherwise, the label text comes before the input element. For complex input options such as comboboxes or `<input>`s in a table, it can be useful to separate the label and input element from each other. This is not forbidden. With the `for` attribute on the label, you can still connect the label text and `<input>` so that the form remains accessible.
 
-# Besonderheiten / Goodies
+# Special features / goodies
 
-In Stud.IP haben wir bisher einige besondere Funktionen eingebaut, die einfach nett sind und dem Nutzer die Verwendung des Formulars einfacher machen.
+In Stud.IP we have built in some special functions that are simply nice and make it easier for the user to use the form.
 
-## Dateiauswähler
+## File selector
 
-Es ist leider unmöglich, einen `<input type="file">`-Dateiauswähler komplett umzustylen, dass er auf allen Geräten gleich aussieht - es sei denn, man lässt ihn verschwinden. Daher haben wir das genau so gemacht! Allerdings braucht es eine weitere CSS-Klasse, um das zu erzeugen. Schreiben Sie dafür solch eine Struktur
+Unfortunately, it is impossible to completely restyle a `<input type="file">` file selector so that it looks the same on all devices - unless you make it disappear. That's exactly what we did! However, you need another CSS class to create this. To do this, write a structure like this
 
 ```XML
 <label class="file-upload">
     <input type="file">
-    <?= _('Neues Avatarbild hochladen') ?>
+    <?= _('Upload new avatar image') ?>
 </label>
 ```
 
-In den meisten Fällen sollte der Dateiwähler dann recht gut aussehen und zu Stud.IP passen. Es wird ein zusätzliches Icon angezeigt und die ausgewählte Datei wird grau daneben angezeigt, damit der Nutzer sieht, ob er/sie irrtümlich eine falsche Datei ausgewählt haben könnte.
+In most cases, the file selector should then look quite good and match Stud.IP. An additional icon is displayed and the selected file is shown in gray next to it so that the user can see whether he/she may have selected the wrong file by mistake.
 
-## Einklappbare Fieldsets
+## Collapsible fieldsets
 
-Nichts ist schlimmer als Unordnung. Gerade in sehr großen Formularen wird es manchmal hektisch. Die Fieldsets geben schon eine gute Ordnung vor. Aber eventuell will man ganze Fieldsets einklappen und erst zeigen, wenn das gewünscht ist. Das geht mit der zusätzlichen Klasse `collapsable`, die man entweder an das Fieldset hängen kann oder gleich an das ganze Formular, sodass es für alle Fieldsets darin gilt.
+Nothing is worse than clutter. Especially in very large forms it sometimes gets hectic. The fieldsets already provide a good order. But you may want to collapse entire fieldsets and only show them when you want to. This is possible with the additional class ``collapsable``, which you can either attach to the fieldset or to the entire form so that it applies to all fieldsets in it.
 
 ```XML
 <form class="default collapsable">
     <section>
-        <legend>Grunddaten</legend>
+        <legend>Basic data</legend>
         <label>
-            Name des Objektes
+            Name of the object
             <input type="text">
         </label>
     </section>
     <section>
-        <legend>Erweiterte Daten</legend>
+        <legend>Extended data</legend>
         <label>
-            Typ des Objektes
+            Type of the object
             <select>
                 <option>Option 1</option>
                 <option>Option 2</option>
@@ -86,255 +86,255 @@ Nichts ist schlimmer als Unordnung. Gerade in sehr großen Formularen wird es ma
         </label>
         <label>
             <input type="checkbox">
-            Objekt sichtbar schalten
+            Make object visible
         </label>
     </section>
 </form>
 ```
 
-## Maximale Textlänge
+## Maximum text length
 
-Sowohl an `<textarea>` als auch an einem `<input>` kann man das Attribut `maxlength` anhängen. Der Browser beschränkt dann die Zeichenanzahl automatisch auf den angegebenen Wert. Stud.IP zeigt rechts unten des Formularelements zudem automatisch die verbleibenden Zeichen an, die einem bei der Eingabe noch bleiben. Die Anzeige der verbleibenden Zeichen kann durch die Angabe der CSS-Klasse `no-hint` unterdrückt werden.
+The attribute `maxlength` can be appended to both `<textarea>` and `<input>`. The browser then automatically limits the number of characters to the specified value. Stud.IP also automatically displays the remaining characters at the bottom right of the form element. The display of the remaining characters can be suppressed by specifying the CSS class `no-hint`.
 
 ```XML
 <input type="text" maxlength="160">
 ```
 
-## Horizontale Anordnung
+## Horizontal arrangement
 
-Stud.IP zeig die `<label>` Elemente und generell fast alles im Formular untereinander an. Das hat den Vorteil, dass wenig Platz in der Breite verwendet wird und das Formular sich sogar auf Smartphones gut benutzbar ist. Der Nachteil ist allerdings, dass man jetzt viel mehr scrollen muss als zuvor. Besonders bei Radio-Buttons mit wenig Text kann das absurd aussehen und nicht gewünscht sein. Bisher bietet Stud.IP dazu lediglich die Möglichkeit, ein Container-Element wie ein `<div class="hgroup">` einzubauen. In so einer `hgroup` werden alle Kindelemente horizontal angeordnet und nicht vertikal wie sonst.
+Stud.IP displays the `<label>` elements and generally almost everything in the form below each other. This has the advantage that less space is used in the width and the form is easy to use even on smartphones. The disadvantage, however, is that you now have to scroll much more than before. Especially with radio buttons with little text, this can look absurd and is not desirable. So far, Stud.IP only offers the possibility to add a container element like a `<div class="hgroup">`. In such an `hgroup` all child elements are arranged horizontally and not vertically as usual.
 
-## Einfache Auswahl mehrerer Checkbox-Elemente [data-shiftcheck]
+## Simple selection of multiple checkbox elements [data-shiftcheck]
 
-Über das Attribut `data-shiftcheck` an dem Form-Element kann angegeben werden, dass es möglich sein soll, eine Menge von Checkboxen zu markieren, indem man die erste Checkbox aktiviert/deaktiviert, die Shift-Taste gedrückt hält und die letzte zu markierende Checkbox klickt. Alle Checkboxen zwischen der ersten und der letzten werden dann auf den Status gesetzt, den die letzte Checkbox erhält.
+The `data-shiftcheck` attribute on the form element can be used to specify that it should be possible to select a set of checkboxes by activating/deactivating the first checkbox, holding down the Shift key and clicking on the last checkbox to be selected. All checkboxes between the first and the last are then set to the status of the last checkbox.
 
-# Weitere Möglichkeiten
+# Other options
 
-Nicht mit der CSS-Klasse `form` verbunden sind folgende Möglichkeiten:
+The following options are not associated with the CSS class `form`:
 
-## Bestätigung einer Aktion [data-confirm]
+## Confirmation of an action [data-confirm]
 
-Über das Attribut `data-confirm` an einem Link, Button oder einem Formular können Sie sich eine Bestätigung der Aktion einholen. Der Wert des Attributes sollte die Frage sein, die dem Anwender gestellt wird.
+You can use the `data-confirm` attribute on a link, button or form to obtain confirmation of the action. The value of the attribute should be the question that the user is asked.
 
-Beachten Sie, dass dies nicht die serverseitige Validierung der Eingaben ersetzen sollte. Weiterhin ist zu beachten, dass sämtliche Variablen, die in `data-confirm` gesteckt werden, mit `htmlReady()` bearbeitet werden müssen.
+Please note that this should not replace the server-side validation of the input. Also note that all variables put into `data-confirm` must be processed with `htmlReady()`.
 
 ## Datepicker [data-date-picker, data-time-picker, data-datetime-picker]
 
-Sie können einem `<input type="text">` die Möglichkeit geben, einen Datepicker zu bekommen, um Datumsangaben besser eingeben zu können, indem Sie dem Element das Attribut `data-date-picker` mitgeben. Analoges gilt für Timepicker (`data-time-picker`) bzw. Datetimepicker (`data-datetime-picker`).
+You can give an `<input type="text">` the option of a date picker to make it easier to enter dates by giving the element the `data-date-picker` attribute. The same applies to time pickers (`data-time-picker`) and datetime pickers (`data-datetime-picker`).
 
-Bedenken Sie, dass HTML5 dafür eigentlich ein `<input type="date">` vorsieht. Dieses Element wäre normalerweise die bessere Alternative. Aber dabei gibt es leider Probleme, dass es in einigen Browsern nicht unterstützt wird. Daher kann man sich noch nicht darauf verlassen, dass die Eingabe auch immer gut funktioniert. Auf keinen Fall sollten Sie eine Kombination aus dem jQuery-Datepicker oben mit `<input type="date">` probieren. Bei Browsern, die `<input type="date">` verstehen, werden die Datepicker beide auftauchen und den Nutzer komplett verwirren.
+Bear in mind that HTML5 actually provides an `<input type="date">` for this. This element would normally be the better alternative. But unfortunately there are problems with the fact that it is not supported in some browsers. Therefore, you cannot rely on the fact that the input always works well. Under no circumstances should you try a combination of the jQuery datepicker above with `<input type="date">`. For browsers that understand `<input type="date">`, the datepickers will both appear and completely confuse the user.
 
-Der Wert des Attributs darf leer sein. Sie können aber auch für jedes der `date-...-picker`-Attribute ein JSON-Objekt als Wert angeben, in welcher Relation dieses Element zu einem anderen Objekt stehen soll. Es kann angegeben werden, ob der Wert des aktuellen Elements kleiner, kleiner gleich, größer gleich oder größer als der eines anderen Elements sein muss. Dies wird bei der Auswahl innerhalb des Pickers dann entsprechend berücksichtigt und die entsprechende Zeitspanne davor/danach ist nicht wählbar. Ebenso werden ungültige Werte in dem verbundenen Element angepasst.
+The value of the attribute may be empty. However, you can also specify a JSON object as the value for each of the `date-...-picker` attributes, specifying the relationship between this element and another object. You can specify whether the value of the current element must be less than, less than or equal to, greater than or equal to that of another element. This is then taken into account accordingly when selecting within the picker and the corresponding time period before/after cannot be selected. Invalid values in the linked element are also adjusted.
 
-Die entsprechenden Elemente werden durch einen CSS-Selector angegeben. Folgend ein Beispiel für den Beginn der Veranstaltungszeit, welcher zwischen Semesterstart und Semesterende liegen muss:
+The corresponding elements are indicated by a CSS selector. The following is an example of the start of the course period, which must lie between the start and end of the semester:
 
 ```XML
 <label>
-    <?= _('Semesterstart') ?>
+    <?= _('Semester start') ?>
     <input type="text" name="semester-start" id="semester-start"
-           data-datepicker='{"<":"#semester-end"}'>
+           data-datepicker='{"<": "#semester-end"}'>
 </label>
 
 <label>
-    <?= _('Semesterende') ?>
+    <?= _('semester-end') ?>
     <input type="text" name="semester-end" id="semester-end"
-           data-datepicker='{">":"#semester-start"}'>
+           data-datepicker='{">": "#semester-start"}'>
 </label>
 
 <label>
-    <?= _('Vorlesungsbeginn') ?>
+    <?= _('start of lecture') ?>
     <input type="text" name="lecture-start" id="lecture-start"
-           data-datepicker='{">="semester-start","<":"#semester-end"}'>
+           data-datepicker='{">="semester-start","<": "#semester-end"}'>
 </label>
 ```
 
-## Proxy-Elemente [data-proxyfor]
+## Proxy elements [data-proxyfor]
 
-Über das Attribut `data-proxyfor` an einer Checkbox kann ein CSS-Selector angegeben, der bestimmt, für welche anderen Checkboxen dieses Elements als "Proxy" dienen soll. So können mehrere Checkboxen über eine einzelne aktiviert oder deaktiviert werden.
+The attribute `data-proxyfor` on a checkbox can be used to specify a CSS selector that determines for which other checkboxes this element should serve as a "proxy". In this way, several checkboxes can be activated or deactivated via a single one.
 
-## Aktivieren/Deaktivieren von Elementen [data-activates, data-deactivates]
+## Activate/deactivate elements [data-activates, data-deactivates]
 
-Über das Attribut `data-activates` bzw. `data-deactivates` an einer Checkbox/Radiobox kann ein CSS-Selector angegeben werden, der bestimmt, welche anderen Element durch den Status dieses Elements aktiviert bzw. deaktiviert werden. `data-activates` kann auch an ein Select-Element gehängt werden und kann somit ein Element aktivieren sobald ein Wert ausgewählt wurde, der ungleich dem leeren String ist.
+The `data-activates` or `data-deactivates` attribute on a checkbox/radiobox can be used to specify a CSS selector that determines which other elements are activated or deactivated by the status of this element. `data-activates` can also be attached to a select element and can thus activate an element as soon as a value is selected that is not equal to the empty string.
 
-An den Elemente, die so aktiviert bzw. deaktiviert werden sollen, kann der Status noch feiner gesteuert werden über das Attribut `data-activates-condition` bzw. `data-deactivates-condition`, welche einen CSS-Selector erwarten und den Status nur dann setzen, wenn dieser Selector mindestens einen Treffer hat.
+On the elements that are to be activated or deactivated in this way, the status can be controlled even more finely via the attribute `data-activates-condition` or `data-deactivates-condition`, which expect a CSS selector and only set the status if this selector has at least one hit.
 
-## Vergleich zweier Werte [data-must-equal]
+## Comparison of two values [data-must-equal]
 
-Über das Attribut `data-must-equal` an einem Element kann sichergestellt werden, dass die Werte in zwei Elementen identisch sind (beispielsweise bei einer Passworteingabe). An das zweite Bestätigungsfeld setzt man das Attribut mit einem CSS-Selector als Wert, der das Element bestimmt, welches identisch sein muss:
+The attribute `data-must-equal` on an element can be used to ensure that the values in two elements are identical (for example when entering a password). The attribute is placed on the second confirmation field with a CSS selector as the value that determines the element that must be identical:
 
 ```XML
 <label>
-    <?= _('Passwort') ?>
+    <?= _('password') ?>
     <input type="password" name="password" id="password">
 </label>
 
 <label>
-   <?= _('Passwort bestätigen') ?>
+   <?= _('Confirm password') ?>
    <input type="password" name="password-confirm" data-must-equal="#password">
 </label>
 ```
 
 ## Formsaver (data-confirm)
 
-Mit dem Attribut "data-secure" können Formulare oder Formularelementen durch Anzeige einer Warnung beim Verlassen der Seite geschützt werden, wenn es ungespeicherte Änderungen gibt.
+The "data-secure" attribute can be used to protect forms or form elements by displaying a warning when leaving the page if there are unsaved changes.
 
-Fügen Sie das Datenattribut "data-secure" zu einem beliebigen "form"- oder "input"-Element hinzu und wenn die Seite neu geladen wird oder der umgebende Dialog geschlossen wird, erscheint ein Bestätigungsdialog.
+Add the data attribute "data-secure" to any "form" or "input" element and when the page is reloaded or the surrounding dialog is closed, a confirmation dialog will appear.
 
-Es gibt zwei Konfigurationsoptionen für dieses Attribut:
+There are two configuration options for this attribute:
 
-* always: Sichert das Element unabhängig von seinem Zustand. Wenn ein Formular immer gesichert werden soll, verwenden Sie diese Option. Wenn Sie ein Element von der Sicherheitsprüfung ausschließen möchten, setzen Sie dort den Attributwert auf "false" (aber Sie sollten die Kurzform `data-secure="false"` verwenden).
+* always: Saves the element regardless of its state. If a form should always be saved, use this option. If you want to exclude an element from the security check, set the attribute value to "false" (but you should use the short form `data-secure="false"`).
 
-* exists: Dynamisch hinzugefügte Knoten können nicht erkannt werden und werden daher niemals berücksichtigt, wenn sich deren Inhalt geändert hat. Geben Sie einen CSS-Selektor an, der präzise alle erforderlichen Elemente identifiziert.
+* exists: Dynamically added nodes cannot be recognized and are therefore never taken into account if their content has changed. Specify a CSS selector that precisely identifies all required elements.
 
-Diese Optionen können als json-kodiertes Array wie dieses übergeben werden:
+These options can be passed as a json encoded array like this:
 
 ```XML
-<form data-secure='{always: false, existiert: "#foo > .bar"}'>
+<form data-secure='{always: false, exists: "#foo > .bar"}'>
 ```
 
-Da Sie aber wahrscheinlich nie beide Optionen gleichzeitig benötigen werden, können Sie entweder nur einen booleschen Wert an das "data-secure" Attribut zum Setzen der Option "always" oder einen anderen Nicht-Objektwert für die Option "exists" verwenden:
+However, as you will probably never need both options at the same time, you can either just pass a Boolean value to the "data-secure" attribute to set the "always" option or use another non-object value for the "exists" option:
 
 ```XML
 <form data-secure="true">
 ```
 
- ist gleichwertig mit
+ is equivalent to
 
 ```XML
 <form data-secure='{always: true}'>
 ```
 
-und
+and
 
 ```XML
 <form data-secure="#foo .bar">
 ```
 
- ist gleichwertig mit
+ is equivalent to
 
 ```XML
 <form data-secure='{exists: "#foo .bar"}'>
 ```
 
-# Die Form-Klasse (ab 5.2)
+# The form class (from 5.2)
 
-In Stud-IP gibt es jetzt die Form-Klasse bzw. die Klasse heißt inklusive Namespaces `\Studip\Forms\Form`. Sie ist bestens geeignet, wenn man eines oder mehrere Objekte vom Typ `SimpleORMap` (SORM) hat, und diese bearbeiten bzw. speichern will. Aber die Form-Klasse kann auch Formulare darstellen und speichern, die nichts mit SORM-Objekten zu tun haben. In den meisten Fällen will man eine Mischung haben, auch das kann die Form-Klasse tun. Die Vorteile sind dabei auf einen Blick:
+In Stud-IP there is now the form class or the class is called `\Studip\Forms\Form` including namespaces. It is best suited if you have one or more objects of the type `SimpleORMap` (SORM) and want to edit or save them. However, the Form class can also display and save forms that have nothing to do with SORM objects. In most cases you want to have a mixture, the Form class can also do this. The advantages are at a glance:
 
-* Als Programmierer:in musst Du Dir dabei in den meisten Fällen keine Gedanken zur Formvalidierung und Barrierefreiheit machen.
-* Es sieht fast immer gut aus und fügt sich perfekt in das Design von Stud.IP ein.
-* Die Standardfälle von Inputs lassen sich einfach behandeln.
-* Und für die Spezialfälle und in Plugins kann man die Klasse entsprechend mit eigenen Input-Klassen erweitern.
+* As a programmer, you don't have to worry about form validation and accessibility in most cases.
+* It almost always looks good and fits perfectly into the design of Stud.IP.
+* The standard cases of inputs are easy to handle.
+* And for special cases and in plugins, you can extend the class with your own input classes.
 
-## Interner Aufbau des Formulars
+## Internal structure of the form
 
-Ein Formular besteht aus mehreren Input-Elementen und den Strukturelementen wie einem Fieldset (die blauen Kästen um die Eingabefelder) oder einer H-Group (ein `<div class="hgroup">`, in dem alle Inputs nebeneinander bzw. horizontal angeordnet werden). Solche Strukturelemente können auch beliebig verschachtelt werden. Sehr beliebt ist es zum Beispiel, eine H-Group in ein Fieldset einzubauen.
+A form consists of several input elements and structural elements such as a fieldset (the blue boxes around the input fields) or an H-group (a `<div class="hgroup">` in which all inputs are arranged next to each other or horizontally). Such structural elements can also be nested as desired. For example, it is very popular to integrate an H-group into a fieldset.
 
-Wenn das Form-Element dann irgendwann alle Inputs haben möchte, etwa um sie zu speichern, holt es sich das mit der Methode `getAllInputs`, mit der alle Parts rekursiv durchsucht werden nach Input-Elementen.
+If the form element then wants to have all inputs at some point, for example to save them, it retrieves them using the `getAllInputs` method, with which all parts are recursively searched for input elements.
 
-Jedes Input Element ist damit von einer von der abstrakten Klasse `\Studip\Forms\Input` abgeleiteten Klasse. Jedes Input Objekt kennt seinen Namen im Formular, hat eventuell sogar noch Funktionen, die aufgerufen werden beim Speichern oder für das Data-Mapping.
+Each input element is thus from a class derived from the abstract class `\Studip\Forms\Input`. Each input object knows its name in the form and may even have functions that are called when saving or for data mapping.
 
-## Beispiele
+## Examples
 ```php
     $form = \Studip\Forms\Form::fromSORM(
         User::findCurrent(),
         [
             'without' => ['password', 'chdate', 'user_id'],
             'types' => ['lock_comment' => 'datetimepicker'],
-            'legend' => _('Nutzerdaten von mir')
+            'legend' => _('user data from me')
         ]
     )->setURL($this->url_for('mycontroller/save'));
 ```
 
-Man könnte das auch anders schreiben:
+You could also write it differently:
 
 ```php
     $form = \Studip\Forms\Form::fromSORM(
         User::findCurrent(),
         [
             'fields' => [
-                'username' => _('Anmeldekennung'),
-                'vorname' => _('Vorname'),
-                'nachname' => _('Nachname'),
-                'email' => _('Emailadresse'),
+                'username' => _('Login ID'),
+                'firstname' => _('firstname'),
+                'lastname' => _('lastname'),
+                'email' => _('email address'),
                 'lock_comment' => [
-                    'label' => _('Sperrdatum'),
+                    'label' => _('lock date'),
                     'type' => 'datetimepicker'
                 ]
             ],
-            'legend' => _('Nutzerdaten von mir')
+            'legend' => _('user data from me')
         ]
     )->setURL($this->url_for('mycontroller/save'));
 ```
-In diesem Beispiel wird der angemeldete Nutzer bearbeitet. In dem Array gibt es den Eintrag `fields`, in dem die Felder, die im Formular dargestellt werden sollen, benannt werden. In diesem Fall ist der Index gleich dem Feldnamen im SORM-Objekt aber auch dem Input-Namen im Formular bzw. im Request. Und der Value ist entweder ein Array mit Attributen oder in Kurzschreibweise einfach nur ein String, der dann dem sichtbaren Label des Feldes entspricht.
+In this example, the logged-in user is edited. The array contains the entry `fields`, in which the fields to be displayed in the form are named. In this case, the index is the same as the field name in the SORM object but also the input name in the form or request. And the value is either an array with attributes or, in shorthand, simply a string, which then corresponds to the visible label of the field.
 
-Die Form-Klasse analysiert die Datenbank und versucht, die meisten Angaben zu vervollständigen, was den `type` angeht zum Beispiel. Die Idee ist, dass man als Programmierer möglichst wenige Angaben machen muss, um ein schickes Formular zu bekommen. Aber die Spezialfälle machen es aus.
+The form class analyzes the database and tries to complete most of the information, for example the `type`. The idea is that the programmer has to make as few specifications as possible to get a nice form. But the special cases make all the difference.
 
-Es gibt auch noch eine objektorientierte Variante, um die Angaben zu machen, die dann so aussehen würde:
+There is also an object-oriented variant for making the specifications, which would then look like this:
 
 ```php
         ...
-        'Vorname' => \Studip\Form\TextInput::create(
-            'Vorname',
-            _('Vorname'),
-            User::findCurrent()->vorname
+        'First name' => \Studip\Form\TextInput::create(
+            'First name',
+            _('First name'),
+            User::findCurrent()->firstname
         )->setRequired()
         ...
 ```
-Diese Variante hat den Vorteil, dass die IDE weiß, was der Typ (bzw. `type`) des Formularfeldes ist, und man wie mit setRequired weiter arbeiten kann. Die Array-Notation ist zwar schlanker und übersichtlicher, aber man muss wissen, was die Parameter bedeuten. Grundsätzlich wird aus dem beispiel `type` in der Array-Schreibweise ein Objekt vom Typ `\Studip\Form\BeispielInput` - dabei ist es egal, ob die Klasse `BeispielInput` im Kern von Stud.IP vorhanden ist oder von einem Plugin bereitgestellt wird. Auf diese Weise kann ein Plugin auch eigene Formularfeldtypen mitbringen und anzeigen. So eine Klasse `BeispielInput` wäre dann abgeleitet von der abstrakten Klasse `\Studip\Form\Input`.
+This variant has the advantage that the IDE knows what the type (or `type`) of the form field is and you can continue working as with setRequired. The array notation is leaner and clearer, but you have to know what the parameters mean. Basically, the example `type` in the array notation becomes an object of the type `\Studip\Form\ExampleInput` - it does not matter whether the class `ExampleInput` exists in the core of Stud.IP or is provided by a plugin. In this way, a plugin can also provide and display its own form field types. Such a class `ExampleInput` would then be derived from the abstract class `\Studip\Form\Input`.
 
-## Die Formularfeldtypen im Kern
+## The core form field types
 
-Die folgenden Klassen liegen alle unter `lib/classes/forms` bzw. im PHP-Namespace `\Studip\Form`.
+The following classes are all located under `lib/classes/forms` or in the PHP namespace `\Studip\Form`.
 
-**TextInput**: Dies ist der gängigste Input-Typ, der einfach einem `<input type='text'>` ohne große Schnörkel entspricht. Dennoch gibt es ein paar mögliche Angaben, die man bei allen Input-Klassen machen kann:
+**TextInput**: This is the most common input type, which simply corresponds to an `<input type='text'>` without much embellishment. Nevertheless, there are a few possible specifications that can be made for all input classes:
 
-1. Zu Erwähnen wäre da das obige setRequired (in der objektorientierten Version) bzw. `'required' => true` als Array-Parameter, um zu sagen, dass die Angabe dieses Feldes nicht leer sein darf. Eine Checkbox, die `required` ist, muss angehakt sein.
-2. Der Parameter `'permission' => $GLOBALS['perm']->have_perm('admin)`, mit dem man definiert, dass dieses Formularfeld nur angezeigt und ausgewertet werden darf, sofern hier ein `true` eingegeben wird, man also die Permission dazu hat.
-3. Der Parameter `if` bzw. die Methode `setIfCondition`, mit dem man definiert, dass dieses Formularfeld nur angezeigt werden soll, sofern eine Bedingung erfüllt ist. Diese Bedingung wird immer per Javascript überprüft, während das Formular ausgefüllt wird. So könnte man eine Checkbox anzeigen, und nur wenn diese Checkbox angehakt ist, tauchen weitere Formularelemente auf. Dieser Parameter `if` ist nicht dazu da, dass eine Validierung durchgeführt wird oder ein Sicherheitscheck, sondern ausschließlich zu Zwecken der Übersichtlichkeit des Formulars. In dieser Bedingung kann auch eine Javascript-Auswertung stehen wie `'if' => 'age > 18'`. Das Formular kennt im Javascript dann die Werte der anderen Formularfelder, wie sie gerade ausgefüllt worden sind, und zeigt dementsprechend die Felder an.
-4. Mit dem Parameter `value` bzw. dem Aufruf im Konstruktor der `\Studip\Form\Input`-Klasse setzt man den Wert des Formularfeldes. Normalerweise wird das der Wert des SORM-Objektes sein, aber es könnte auch ein ganz anderer Wert gesetzt werden. Falls das Formular gar nichts mit einem SORM-Objekt zu tun hat, wäre das natürlich sogar notwendig. meist wird das aber nur bei einzelnen Formularfeldern gesetzt.
-5. Mit dem Parameter `store` bzw. der Methode `setStoringFunction` kann man eine PHP-Funktion einsetzen, die sich dann um das Speichern der Formularwerte kümmert, wenn das Formular abgeschickt worden ist. Falls das Formular ein SORM-Element speichert, ist diese Funktion immer so gesetzt, dass der Wert der SORM-Klasse gespeichert wird. Hier müssen Sie also nichts weiter definieren. Man könnte aber hier auch eine Funktion definieren, die einen Wert zum Beispiel in die UserConfig schreibt.
-6. Mit dem Parameter `mapper` bzw. der Methode `setMapper` kann man eine Funktion definieren, die den Wert aus dem Formular umwandelt, bevor dieser gespeichert wird. So könnte man aus einer schriftlichen Datumsangabe '7.3.2012' zum Beispiel einen Unix-Timestamp (Anzahl der Sekunden seit 1970) umwandeln, als der er dann in der Datenbank gespeichert wird (aber dies ist ein schlechtes Beispiel, weil der Typ datetimepicker die Umwandlung schon in Javascript macht und nur der Unix-Timestamp übertragen wird und nicht die lesbare Entsprechung des Datums). Die angegebene Mapper-Funktion bekommt als Parameter zuerst den Wert aus dem Formular übergeben und als zweiten Parameter das SORM-Objekt, sofern denn eines existiert. Oft sieht man den `mapper` Parameter in Kombination mit dem `'type' => 'no'`, dem `NoInput`. Das ist ein Eingabefeld, das dem Benutzer gar nicht angezeigt wird, aber die Mapper-Funktion schreibt beim Speichern trotzdem den Wert der Mapper-Funktion in die Datenbank wie zum Beispiel den Namen der bearbeitenden Person.
+1. to mention would be the above setRequired (in the object-oriented version) or `'required' => true` as an array parameter to say that the specification of this field must not be empty. A checkbox that is `required` must be checked.
+2. the parameter `'permission' => $GLOBALS['perm']->have_perm('admin)`, with which you define that this form field may only be displayed and evaluated if a `true` is entered here, i.e. you have permission to do so.
+3. the parameter `if` or the method `setIfCondition`, with which you define that this form field should only be displayed if a condition is fulfilled. This condition is always checked by Javascript while the form is being filled out. For example, you could display a checkbox, and only if this checkbox is ticked will other form elements appear. This parameter `if` is not there to perform a validation or a security check, but solely for the purpose of clarity of the form. This condition can also contain a Javascript evaluation such as `'if' => 'age > 18'`. The form then knows the values of the other form fields in the JavaScript, as they have just been filled in, and displays the fields accordingly.
+4. the `value` parameter or the call in the constructor of the `\Studip\Form\Input` class is used to set the value of the form field. Normally this will be the value of the SORM object, but a completely different value could also be set. If the form has nothing to do with a SORM object, this would of course be necessary, but this is usually only set for individual form fields.
+5. with the `store` parameter or the `setStoringFunction` method, you can use a PHP function that takes care of saving the form values once the form has been submitted. If the form saves a SORM element, this function is always set so that the value of the SORM class is saved. You therefore do not need to define anything else here. However, you could also define a function here that writes a value to the UserConfig, for example.
+6. with the parameter `mapper` or the method `setMapper` you can define a function that converts the value from the form before it is saved. For example, a written date '7.3.2012' could be converted into a Unix timestamp (number of seconds since 1970), which is then stored in the database (but this is a bad example, because the datetimepicker type already does the conversion in Javascript and only the Unix timestamp is transferred and not the readable equivalent of the date). The specified mapper function is first passed the value from the form as a parameter and the SORM object as a second parameter, if one exists. You often see the `mapper` parameter in combination with the `'type' => 'no'`, the `NoInput`. This is an input field that is not displayed to the user at all, but the mapper function still writes the value of the mapper function to the database when saving, such as the name of the person processing the data.
 
-So, nun aber wirklich zu der Liste der Input-Klasse, die es im Kern so gibt (in alphabetischer Reihenfolge):
+Now, let's get down to the list of input classes that exist in the core (in alphabetical order):
 
-**CalculatorInput**: Dies ist streng genommen kein Eingabefeld, sondern nur ein Ausgabefeld. Hier wird eine Berechnung von Werten angegeben. Beim Bearbeiten der Ankündigung gibt dieses Feld per Javascript dem Nutzer aus, wieviele Tage zwischen Beginn der Ankündigung und deren Ende liegen, sodass man sich bei der Eingabe sicher sein kann, zum Beispiel mindestens 14 Tage dazwischen zu haben. In dem Parameter `'value' => "Math.floor((expire - date) / 86400)"` steht dann eine Javascript-Formel, die vom Formular permanent während des Ausfüllens ausgewertet wird. Hier sind einfache Angaben in Javascript machbar aber keine Steuerungsangaben wie While-Schleifen.
+**CalculatorInput**: Strictly speaking, this is not an input field, but only an output field. A calculation of values is specified here. When editing the announcement, this field uses Javascript to tell the user how many days lie between the start of the announcement and its end, so that you can be sure that there are at least 14 days in between, for example. The parameter `'value' => "Math.floor((expire - date) / 86400)"` then contains a Javascript formula that is permanently evaluated by the form while it is being filled out. Simple entries in Javascript are possible here, but no control entries such as while loops.
 
-**CheckboxInput**: Hier wird ein `<input type='checkbox'>` dargestellt. Der `value` lautet 1 oder 0, wie er auch in der Datenbank eingetragen wird.
+**CheckboxInput**: An `<input type='checkbox'>` is displayed here. The `value` is 1 or 0, as it is also entered in the database.
 
-**DatetimepickerInput**: Dieses Feld ist eine Datums- und Zeitangabe und entspricht einem Unix-Timestamp. In Stud.IP nutzen wir fast überall Unix-Timestamps, die Anzahl der Sekunden vom 1.1.1970 Greenwich Zeit), um ein Datum in der Datenbank zu speichern. Falls in der Datenbank ein anderes Datumsformat wie ISO-Datum speichern will, sollte man die Parameter folgendermaßen setzen: `'value' => strtotime($obj['zeitfuermich'])` und  `'mapper' => function ($val) { return date('c', $val); }`.
+**DatetimepickerInput**: This field is a date and time specification and corresponds to a Unix timestamp. In Stud.IP we use Unix timestamps almost everywhere (the number of seconds from 1.1.1970 Greenwich Mean Time) to save a date in the database. If you want to save a different date format such as ISO date in the database, you should set the parameters as follows: `'value' => strtotime($obj['zeitfuermich'])` and `'mapper' => function ($val) { return date('c', $val); }`.
 
-**HiddenInput**: In diesem Feld ist zwar ein Wert im Formular vorhanden, aber man sieht nichts und kann auch nichts eingeben. Vermutlich will man den Wert lediglich nutzen, damit man ihn in anderen Formularelementen in der `if` Klausel oder mit dem CalculatorInput auswerten kann.
+**HiddenInput**: There is a value in this field in the form, but nothing is visible and nothing can be entered. Presumably you only want to use the value so that you can evaluate it in other form elements in the `if` clause or with the CalculatorInput.
 
-**I18n_formattedInput**: Mit dieser Input-Klasse wird ein WYSIWYG-Editor angezeigt - allerdings in mehreren Sprachen, sofern in der `config_local.inc.php` Datei entsprechend weitere `$CONTENT_LANGUAGES` eingetragen worden sind. Diese Klasse kümmert sich dabei um die `$CONTENT_LANGUAGES` und die Frage, ob sie eingetragen worden sind und wie viele. Falls nämlich keine weiteren `$CONTENT_LANGUAGES` eingetragen wurden, wird auch gar kein Sprachwähler angezeigt, wie es in Stud.IP üblich ist. Und wenn der WYSIWYG-Editor in dem Stud.IP ausgeschaltet ist, wird auch nur ein normales Textfeld mit Toolbar abgezeigt. Das macht diese Klasse alles automatisch. Das entsprechende Feld der SORM-Klasse **muss** ebenfalls als i18n Feld deklariert werden in der configure-Methode in dieser Form `$config['i18n_fields']['feldname'] = true;`.
+**I18n_formattedInput**: This input class is used to display a WYSIWYG editor - but in several languages, provided that additional `$CONTENT_LANGUAGES` have been entered in the `config_local.inc.php` file. This class takes care of the `$CONTENT_LANGUAGES` and the question of whether they have been entered and how many. If no further `$CONTENT_LANGUAGES` have been entered, no language selector is displayed, as is usual in Stud.IP. And if the WYSIWYG editor is switched off in Stud.IP, only a normal text field with toolbar is displayed. This class does everything automatically. The corresponding field of the SORM class **must** also be declared as an i18n field in the configure method in this form `$config['i18n_fields']['feldname'] = true;`.
 
-**I18n_textareaInput**: Diese Klasse stellt ein `<textarea>` dar, das wie gerade eben auch eventuell einen Sprachwähler hat, sodass man den Wert in mehreren Sprachen eingeben kann. Wenn man eine SORM-Klasse bearbeitet, wird diese Klasse automatisch als `type` ausgewählt, wenn in der Datenbank das Feld den Typ `TEXT` und die SORM-Klasse in der configure-Methode sowas stehen hat wie: `$config['i18n_fields']['feldname'] = true;`
+**I18n_textareaInput**: This class represents a `<textarea>` which, as just now, may also have a language selector so that you can enter the value in several languages. If you edit a SORM class, this class is automatically selected as `type` if the field in the database has the type `TEXT` and the SORM class in the configure method has something like: `$config['i18n_fields']['feldname'] = true;`
 
-**I18n_textInput**: Diese Klasse stellt ein `<input type='text'>` dar, das wie gerade eben auch eventuell einen Sprachwähler hat, sodass man den Wert in mehreren Sprachen eingeben kann. Wenn man eine SORM-Klasse bearbeitet, wird diese Klasse automatisch als `type` ausgewählt, wenn in der Datenbank das Feld den Typ `VARCHAR` und die SORM-Klasse in der configure-Methode sowas stehen hat wie: `$config['i18n_fields']['feldname'] = true;`
+**I18n_textInput**: This class represents an `<input type='text'>` which, as just now, may also have a language selector so that you can enter the value in several languages. If you edit a SORM class, this class is automatically selected as `type` if the field in the database has the type `VARCHAR` and the SORM class in the configure method has something like: `$config['i18n_fields']['feldname'] = true;`
 
-**InputRow**: Dies ist eigentlich keine Input-Klasse, sondern eine Erweiterung der Klasse `\Studip\Form\Part`. Wie dem auch sei, man kann mit dieser Klasse mehrere Eingabefelder horizontal gruppieren. Die Angabe dazu würde in etwa so aussehen:
+**InputRow**: This is not actually an input class, but an extension of the class `\Studip\Form\Part`. However, you can use this class to group several input fields horizontally. The specification would look something like this:
 
     'row' => new \Studip\Forms\InputRow(
         [
-            'name' => 'feld1',
-            'label' => _('Feld 1')
+            'name' => 'field1',
+            'label' => _('field 1')
         ],
         [
-            'name' => 'feld2',
-            'label' => _('Feld 2')
+            'name' => 'field2',
+            'label' => _('field 2')
         ],
         [
-            'name' => 'feld3',
-            'label' => _('Feld 3')
+            'name' => 'field3',
+            'label' => _('field 3')
         ]
     )
-Man sieht, man muss hier bei den Eingabefeldern noch den Parameter `name` mit angeben, der ansonsten der Index ist. Ansonsten kann man an den Konstruktor von `InputRow` eine beliebige Anzahl von Eingabefeldern bzw. Input-Objekten übergeben, die dann nebeneinander angezeigt werden.
+As you can see, you still have to specify the parameter `name` for the input fields, which is otherwise the index. Otherwise, you can pass any number of input fields or input objects to the constructor of `InputRow`, which are then displayed next to each other.
 
-**MultiselectInput**: Dies ist ein Input, mit dem man üblicherweise eine Relation eines SORM-Objektes anlegt. Besonders ist hier eigentlich nur, dass im Request an PHP bzw. im $value der Mapper-Methode und der Store-Methode ein Array drin steht anstatt eines Strings, wie es sonst üblich ist. Falls man eine SORM-Relation damit bearbeiten will, sollte man die Parameter `value` und `mapper` (oder `store`) mit setzen, damit das auch funktioniert. In SORM selbst braucht man eigentlich nur eine SimpleORMapCollection als den neuen Wert des SORM-Objektes zu setzen. Die SimpleORMap-Klasse weiß dann schon selbst, welche Objekte hinzugefügt und welche gelöscht werden müssen. Ein Beispiel aus dem Bearbeiten der Ankündigung ist folgender:
+**MultiselectInput**: This is an input that is usually used to create a relation of a SORM object. The only special thing here is that the request to PHP or the $value of the mapper method and the store method contains an array instead of a string, as is usually the case. If you want to process a SORM relation with this, you should also set the parameters `value` and `mapper` (or `store`) so that this also works. In SORM itself, you only need to set a SimpleORMapCollection as the new value of the SORM object. The SimpleORMap class then already knows which objects need to be added and which need to be deleted. An example from editing the announcement is as follows:
 
 ```php
     'newsroles' => [
         'permission' => $GLOBALS['perm']->have_perm('admin'),
-        'label' => _('Sichtbarkeit'),
+        'label' => _('visibility'),
         'value' => $news->news_roles->pluck('roleid'),
         'type' => 'multiselect',
         'options' => array_map(function ($r) {
@@ -347,31 +347,31 @@ Man sieht, man muss hier bei den Eingabefeldern noch den Parameter `name` mit an
     ]
 ```
 
-Über den Parameter `options` wird gesteuert, welche Auswahlmöglichkeiten der Benutzende hat.
+The `options` parameter is used to control which options the user has.
 
-**NewsRangesInput**: Diese Input-Klasse ist sehr spezifisch für die Ankündigungen und weist die Ankündigung den Bereichen in Stud.IP zu wie der Startseite, den Einrichtungen, Veranstaltungen und persönlichen Homepages. Vermutlich wird niemand jemals diese Klasse für etwas anderes als zum Bearbeiten von Ankündigungen verwenden können. Aber das zeigt auch, dass der Formularbaukasten auch mit sehr speziellen Formularelementen umgehen kann. Und innerhalb der NewsRangesInput gibt es immerhin eine Vue-Komponente `EditableList`, die man wiederverwenden kann.
+**NewsRangesInput**: This input class is very specific to the announcements and assigns the announcement to areas in Stud.IP such as the start page, facilities, events and personal homepages. Presumably no one will ever be able to use this class for anything other than editing announcements. But this also shows that the form builder can also handle very special form elements. And within the NewsRangesInput there is a Vue component `EditableList` that can be reused.
 
-**NoInput**: Hier gibt es nichts zu sehen! Stimmt, es wird eigentlich nur ein `<input type='hidden'>` in dem Formular platziert. Man kann dieses nutzen, um Auswertungen in Javascript für `if`-Bedingungen oder für den CalculatorInput zu ermöglichen. Und wer weiß, was man noch damit so anstellen kann?
+**NoInput**: There is nothing to see here! That's right, only an `<input type='hidden'>` is actually placed in the form. You can use this to enable evaluations in Javascript for `if` conditions or for the CalculatorInput. And who knows what else you can do with it?
 
-**NumberInput**: Hiermit wird einfach eine Ganzzahl angegeben. Sinnvoll ist hier auch oft die Angabe von anderen HTML-Attributen wie min oder max, wobei da auch der RangeInput zum Einsatz kommen könnte. Aber wenn nicht, würde man diese Attribute als weitere Parameter angeben wie `'max' => 20'`.
+**NumberInput**: This simply specifies an integer. It is also often useful to specify other HTML attributes such as min or max, whereby the RangeInput could also be used. But if not, you would specify these attributes as additional parameters such as `'max' => 20'`.
 
-**QuicksearchInput**: Mit diesem Eingabefeld hat man eine Quicksearch wie die PHP-Klasse Quicksearch. Der Zweck ist, dass zwar in der Datenbank (meist) eine ID eingetragen werden soll, aber die Benutzer wollen keine ID schreiben. Stattdessen geben Sie den Namen einer Veranstaltung oder einer Person oder sonstwas ein und die Quicksearch setzt dann die ID als Wert in das Formular. Damit das Ganze funktionieren kann, muss man zusätzlich den Parameter `'searchtype' => new SQLSearch(...)` oder ähnlich angeben. Also ohne den Searchtype gibt es keine Suche und damit keine Quicksearch.
+**QuicksearchInput**: With this input field you have a quicksearch like the PHP class Quicksearch. The purpose is that although an ID should (usually) be entered in the database, users do not want to write an ID. Instead, they enter the name of an event or a person or something else and the quicksearch then sets the ID as a value in the form. For the whole thing to work, you also have to specify the parameter `'searchtype' => new SQLSearch(...)` or similar. So without the searchtype there is no search and therefore no quicksearch.
 
-**RangeInput**: Hiermit können Ganzzahlen zwischen `max` und eventuell `min` (Standard sind zwischen 1 und 10) eingegeben werden. Die Eingabe erfolgt mittels eines Schiebereglers und der aktuelle Wert steht dann daneben.
+**RangeInput**: This can be used to enter integers between `max` and possibly `min` (default is between 1 and 10). The input is made using a slider and the current value is then displayed next to it.
 
-**SelectInput**: Mit dieser Klasse wird ein `<select>` im HTML verwendet. Die darin liegenden Optionen werden wie schon im MultiselectInput über den Parameter `'options' => ['value1' => _('Der erste Wert'), 'value2' => _('Der zweite Wert')]` gesteuert. Wenn in der Datenbank ein `ENUM`-Feld steht, so wird ohne weitere Angaben von `type` oder `options` ein SelectInput mit den Werten des ENUMs erzeugt.
+**SelectInput**: With this class, a `<select>` is used in the HTML. As in MultiselectInput, the options in it are controlled via the parameter `'options' => ['value1' => _('The first value'), 'value2' => _('The second value')]`. If there is an `ENUM` field in the database, a SelectInput with the values of the ENUM is generated without further specifications of `type` or `options`.
 
-**TextInput**: Siehe oben.
+**TextInput**: See above.
 
-**TextareaInput**: Eine einfache Klasse zum Erzeugen einer `<textarea>`. Diese funktioniert ganz analog zu TextInput.
+**TextareaInput**: A simple class for creating a `<textarea>`. This works in the same way as TextInput.
 
-## Bauen einer eigenen Input-Klasse
+## Building your own input class
 
-Wenn selbst ein Formular baut, stellt man schnell fest, dass die bisherigen Input-Klassen viel abdecken, aber recht oft dann doch notwendig ist, dass man hier und da mal ein Spezialeingabefeld hat. Für diesen Fall lassen sich auch neue Input-Klassen programmieren - entweder für ein Plugin oder für den Kern von Stud.IP. Folgende Dinge sollte man dabei beachten:
+When building a form yourself, you quickly realize that the existing input classes cover a lot, but quite often it is necessary to have a special input field here and there. In this case, new input classes can also be programmed - either for a plugin or for the core of Stud.IP. The following points should be noted:
 
-- Im Wesentlichen muss die eigene Input-Klasse von der abstrakten Klasse `\Studip\Form\Input` abgeleitet sein und zumindest die Methode `render` überschreiben. Mit der Methode `render` wird die HTML-Struktur ausgegeben, die am schlussendlich im Formular stehen soll.
-- Das Element wird dann eingebettet in einer Vue-Instanz. Das bedeutet, das HTML des Eingabeelementes kann Vue-Tags wie v-model verwenden und sollte das auch tun. **Es sollte der Wert des Eingabefeldes immer sowohl im HTML (per `<input type='hidden'>` oder ähnlich) stehen als auch per v-model oder anderen mechanismen an die Vue-Instanz übergeben werden.** Immer ist beides notwendig, damit das Eingabefeld der eigenen Input-Klasse voll nutzbar ist - zum Beispiel indem man mit dem `if`-Parameter anderer Eingabefelder arbeiten kann, mit dem CalvulatorInput und mit der Formular-Validierung.
-- Man kann in dem HTML des Eingabefeldes daher natürlich auch Vue-Komponenten verwenden. PHP-Klassen wie Quicksearch in PHP oder jQuery sollte man hingegen meiden, wie der Teufel das Weihwasser, weil Vue im Zweifelsfall zum falschen Zeitpunkt neu gerendered wird und dann das schöne PHP oder jQuery kaputt machen. Falls man Vue-Komponenten verwendert, muss man natürlich sicher stellen, dass diese auch korrekt geladen sind.
-- Wenn im Request andere Dinge als ein String (oder sowas ähnliches wie ein String wie eine Ganzzahl) drin steht, sollte man die Methode `getRequestValue` überschreiben, die dann meist sowas wie `return \Request::getArray($this->name);` ausführt. Das bedeutet, die Klasse weiß, dass sie ein Array (oder etwas ähnliches) aus dem Request erwartet. Die `mapper`-Methode kann dann danach noch verwendet werden, um die Ausgabe der Methode `getRequestValue` zu verändern. Dadurch bleibt die Input-Klasse flexibel im Einsatzzweck.
+- Essentially, your own input class must be derived from the abstract class `\Studip\Form\Input` and at least overwrite the `render` method. The `render` method is used to output the HTML structure that should ultimately appear in the form.
+- The element is then embedded in a Vue instance. This means that the HTML of the input element can and should use Vue tags such as v-model. **The value of the input field should always be both in the HTML (via `<input type='hidden'>` or similar) and passed to the Vue instance via v-model or other mechanisms.** Both are always necessary so that the input field of your own input class is fully usable - for example by being able to work with the `if` parameter of other input fields, with the CalvulatorInput and with form validation.
+- You can of course also use Vue components in the HTML of the input field. PHP classes such as Quicksearch in PHP or jQuery, on the other hand, should be avoided like the devil avoids holy water, because in case of doubt Vue will be re-rendered at the wrong time and then break the beautiful PHP or jQuery. If you use Vue components, you must of course make sure that they are loaded correctly.
+- If the request contains something other than a string (or something similar to a string like an integer), you should override the `getRequestValue` method, which then usually executes something like `return \Request::getArray($this->name);`. This means that the class knows that it expects an array (or something similar) from the request. The `mapper` method can then be used to change the output of the `getRequestValue` method. This keeps the input class flexible in its intended use.
 
-Mehr ist dazu gar nicht zu sagen. Vermutlich muss man einfach ein bisschen was ausprobieren und aus den Beispielen im Kern abschreiben.
+There is nothing more to say. You probably just have to try things out a bit and copy the core from the examples.

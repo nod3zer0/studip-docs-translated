@@ -1,11 +1,11 @@
 ---
 id: new-html-structure
-title: HTML-Struktur
-sidebar_label: HTML-Struktur
+title: HTML structure
+sidebar_label: HTML structure
 ---
-Über die Jahre ist die grundlegende HTML-Struktur einer Stud.IP-Seite quasi organisch gewachsen und ist an vielen Stellen nicht gut zur Unterstützung der Barrierefreiheit geeignet. Ab Stud.IP 5.3 bekommt Stud.IP eine neue Struktur seiner Seiten, die semantischer daran orientiert ist, wofür jeder Bereich gedacht ist.
+Over the years, the basic HTML structure of a Stud.IP page has grown organically, so to speak, and in many places is not well suited to supporting accessibility. As of Stud.IP 5.3, Stud.IP will have a new structure for its pages that is more semantically oriented towards what each area is intended for.
 
-# Grundlegende Struktur einer Stud.IP-Seite
+# Basic structure of a Stud.IP page
 ````html
 <html>
     <head>
@@ -14,31 +14,31 @@ sidebar_label: HTML-Struktur
         <div id="skip_link_navigation">Skiplinks</div>
         <header id="main-header">
             <div id="top-bar" role="banner">
-                <div id="responsive-menu">Hamburgermenü</div>
-                <div id="site-title">Globaler Titel der Installation ("Stud.IP")</div>
-                <div id="header-links">Dynamische Links (z.B. zum Entwicklerchat), Schnellsuche, Notifications, Avatarmenü</div>
+                <div id="responsive-menu">Hamburger menu</div>
+                <div id="site-title">Global title of the installation ("Stud.IP")</div>
+                <div id="header-links">Dynamic links (e.g. to the developer chat), quick search, notifications, avatar menu</div>
             </div>
-            <nav id="navigation-level-1">Hauptnavigation</nav>
+            <nav id="navigation-level-1">Main navigation</nav>
             <div id="current-page-structure">
-                <nav id="navigation-level-2">Navigation der aktuellen Seite</nav>
-                <div id="page-title-container">Titel der aktuellen Seite</div>
+                <nav id="navigation-level-2">Navigation of the current page</nav>
+                <div id="page-title-container">Title of the current page</div>
             </div>
         </header>
         <aside id="sidebar">
-            Sidebar mit Navigation (#navigation-level-3) und sonstigen Widgets
+            Sidebar with navigation (#navigation-level-3) and other widgets
         </aside>
         <main id="content-wrapper">
-            Der eigentliche Seiteninhalt
+            The actual page content
         </main>
         <a id="scroll-to-top">
-            Kurzlink zum Springen an den Seitenanfang
+            Short link to jump to the top of the page
         </a>
         <footer id="main-footer">
             <div id="footer-info">
-                Informativer Inhalt ("Angemeldet als...", ggf. Debuginfos)
+                Informative content ("Logged in as...", debug information if applicable)
             </div>
             <nav id="footer-navigation">
-                Navigationspunkte im Footer (Impressum, Datenschutzerklärung etc.)
+                Navigation points in the footer (legal notice, privacy policy, etc.)
             </nav>
         </footer>
     <body>
@@ -46,34 +46,34 @@ sidebar_label: HTML-Struktur
 ````
 
 # Layout
-Zur Darstellung der Seitenelemente wird ein Gridlayout verwendet, das aktuell aus 2 Spalten und 3 Zeilen besteht.
-- Der gesamte Header bildet Zeile 1, diese erstreckt sich über die ganze Seitenbreite.
-- Die Sidebar liegt in Spalte 1, Zeile 2.
-- Der Inhalt bildet Spalte 2, Zeile 2.
-- Der Footer erstreckt sich ebenfalls über die gesamte Seitenbreite und beansprucht Zeile 3.
+A grid layout is used to display the page elements, which currently consists of 2 columns and 3 rows.
+- The entire header forms row 1, which extends across the entire width of the page.
+- The sidebar is in column 1, row 2.
+- The content forms column 2, row 2.
+- The footer also extends across the entire width of the page and takes up line 3.
 
-# Überführung der alten Struktur in die neue
-Der alte Seitenaufbau wurde wie folgt in die neue Struktur überführt:
+# Transferring the old structure to the new one
+The old page structure was transferred to the new structure as follows:
 
-| Altes Element           | Neues Element            |
+| Old element | New element |
 |-------------------------|--------------------------|
-| #layout_wrapper         | *gibt es nicht mehr*     |
-| #barBottomContainer     | #top-bar                 |
-| #barBottomLeft          | #responsive-menu         |
-| #barTopFont             | #site-title              |
-| #barBottomright         | #header-links            |
-| #barTopAvatar           | #avatar-menu-container   |
-| #notification_container | #notification-container  |
-| #header_avatar_menu     | #avatar-menu             |
-| #flex-header            | #navigation-level-1      |
-| #barTopMenu             | #navigation-level1-items |
-| #barTopStudip           | #top-logo                |
-| #layout_page            | #current-page-structure  |
-| #layout_context_title   | #context-title           |
-| .secondary-navigation   | #navigation-level-2      |
-| #page_title_container   | #page-title-container    |
-| #current_page_title     | #page-title              |
-| #layout_container       | *gibt es nicht mehr*     |
-| #layout-sidebar         | #sidebar                 |
-| section.sidebar         | *gibt es nicht mehr*     |
-| #layout_footer          | #main-footer             |
+| #layout_wrapper | *no longer exists* |
+| #barBottomContainer | #top-bar |
+| #barBottomLeft | #responsive-menu |
+| #barTopFont | #site-title |
+| #barBottomright | #header-links |
+| #barTopAvatar | #avatar-menu-container |
+| #notification_container | #notification-container |
+| #header_avatar_menu | #avatar-menu |
+| #flex-header | #navigation-level-1 |
+| #barTopMenu | #navigation-level1-items |
+| #barTopStudip | #top-logo |
+| #layout_page | #current-page-structure |
+| #layout_context_title | #context-title |
+| .secondary-navigation | #navigation-level-2 |
+| #page_title_container | #page-title-container |
+| #current_page_title | #page-title |
+| #layout_container | *no longer exists* |
+| #layout-sidebar | #sidebar |
+| section.sidebar | *no longer exists* |
+| #layout_footer | #main-footer |

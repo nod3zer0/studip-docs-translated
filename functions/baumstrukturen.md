@@ -1,58 +1,58 @@
 ---
-id: baumstrukturen
-title: Baumstrukturen
-sidebar_label: Baumstrukturen
+id: tree structures
+title: Tree structures
+sidebar_label: Tree structures
 ---
 
-Mit Stud.IP 5.4 wurden die alten Implementierungen für die Darstellung und Verwaltung der Studienbereiche und Einrichtungshierarchie neu implementiert und eine generische Lösung für die Abbildung von Baumstrukturen geschaffen.
+With Stud.IP 5.4, the old implementations for the display and management of study areas and institution hierarchies were re-implemented and a generic solution for the mapping of tree structures was created.
 
 ## PHP
-Grundlage ist das neue Interface `StudipTreeNode`. Dieses bietet generische Methoden zum Zugriff auf Bäume:
-- `static getNode($id)` liefert den Knoten mit der angegebenen ID
-- `hasChildNodes()` zeigt an, ob der aktuelle Knoten Kindknoten hat
-- `getChildNodes()` liefert die Kindknoten des aktuellen Knotens
-- `static getCourseNodes($course_id)` liefert die Knoten, denen die angegebene Veranstaltung zugeordnet ist.
-- getter-Methoden für ID, Name, Beschreibung, Bild/Icon
-- `countCourses($semester_id, $semclass, $withChildren)` zählt die Veranstaltungen, die diesem Knoten (oder je nach der Einstellung `withChildren` auch den Unterknoten) zugeordnet sind, gefiltert nach Semester und Kategorie
-- `getCourses($semester_id, $semclass, $searchterm, $withChildren)` liefert die Veranstaltungen, die diesem Knoten (oder je nach der Einstellung `withChildren` auch den Unterknoten) zugeordnet sind, gefiltert nach Semester, Kategorie und/oder Suchbegriff
-- `getAncestors` liefert eine Liste aller "Vorfahren" in der Hierarchie, in der Form `{ id, name }`
+The basis is the new interface `StudipTreeNode`. This provides generic methods for accessing trees:
+- `static getNode($id)` returns the node with the specified ID
+- `hasChildNodes()` shows whether the current node has child nodes
+- `getChildNodes()` returns the child nodes of the current node
+- `static getCourseNodes($course_id)` returns the nodes to which the specified course is assigned.
+- getter methods for ID, name, description, image/icon
+- `countCourses($semester_id, $semclass, $withChildren)` counts the courses that are assigned to this node (or, depending on the setting `withChildren`, also to the subnodes), filtered by semester and category
+- `getCourses($semester_id, $semclass, $searchterm, $withChildren)` returns the courses assigned to this node (or, depending on the setting `withChildren`, also to the sub-nodes), filtered by semester, category and/or search term
+- `getAncestors` returns a list of all "ancestors" in the hierarchy, in the form `{ id, name }`
 
-Implementierende Klassen sind aktuell `StudipStudyArea` und `RangeTreeNode`.
+Implementing classes are currently `StudipStudyArea` and `RangeTreeNode`.
 
 ## Vue
-Zentrale Komponente ist hier `StudipTree`. Ein Baum kann auf verschiedene Arten dargestellt werden, dafür gibt es weitere Vue-Komponenten:
-- `StudipTreeTable` zeigt die Ebenen des Baums analog zum Dateibereich als Tabelle an
-- `StudipTreeList` zeigt die Ebenen des Baums analog zur alten Veranstaltungssuche als Liste von Kacheln an
-- `StudipTreeNode` zeigt den Baum als aufklappbare Hierarchie
+The central component here is `StudipTree`. A tree can be displayed in various ways, for which there are further Vue components:
+- `StudipTreeTable` displays the levels of the tree as a table, analogous to the file area
+- `StudipTreeList` displays the levels of the tree as a list of tiles, analogous to the old event search
+- `StudipTreeNode` shows the tree as an expandable hierarchy
 
-`StudipTree` ist vielfältig konfigurierbar, um die Ausgabe zu steuern:
-- `viewType` definiert die Art der Darstellung, entweder 'table', 'list' oder 'tree'
-- `startId` ID des Startknotens zur Anzeige (die IDs sind von der Form 'Klassenname_ID')
-- `title` Anzuzeigender Titel für den Baum
-- `openNodes` Liste bereits offener Knoten (nur sinnvoll für Anzeige als Baum)
-- `openLevels` Allgemeine Zahl geöffneter Ebenen (nur sinnvoll für Anzeige als Baum)
-- `withChildren` Unterebenen anzeigen?
-- `withCourses` Zugeordnete Veranstaltungen anzeigen?
-- `semester` Voreingestelltes Semester im Sidebarfilter
-- `semClass` Voreingestellte Kategorie im Sidebarfilter
-- `breadcrumbIcon` Icon für die Brotkrumennavigation
-- `itemIcon` Icon für die Unterebenenen in der Tabellenanzeige (aktuell fest auf "Ordner" verdrahtet)
-- `withSearch` Zeige eine Veranstaltungssuche an?
-- `withExport` Zeige einen Exportlink für vorhandene Veranstaltungen/Suchergebnisse?
-- `editUrl` URL zum Bearbeitungsformular eines existierenden Knotens
-- `createUrl` URL zum Anlegedialog eines neuen Knotens
-- `deleteUrl` URL zum Löschen eines existierenden Knotens
-- `showStructureAsNavigation` Zeige zusätzlich zur regulären Darstellung noch eine Baumstruktur als Inhaltsverzeichnis? (Nur sinnvoll bei Tabellen- oder Listendarstellung)
-- `assignable` Sind die Knoten zuweisbar?
+`StudipTree` can be configured in many ways to control the output:
+- `viewType` defines the type of view, either 'table', 'list' or 'tree'
+- `startId` ID of the start node for display (the IDs are of the form 'ClassName_ID')
+- `title` Title to be displayed for the tree
+- `openNodes` List of already open nodes (only useful for display as a tree)
+- `openLevels` General number of open levels (only useful for display as a tree)
+- `withChildren` Show sublevels?
+- `withCourses` Display assigned courses?
+- `semester` Preset semester in the sidebar filter
+- `semClass` Preset category in the sidebar filter
+- `breadcrumbIcon` Icon for the breadcrumb navigation
+- `itemIcon` Icon for the sublevels in the table display (currently hardwired to "Folder")
+- `withSearch` Display an event search?
+- `withExport` Show an export link for existing events/search results?
+- `editUrl` URL to the edit form of an existing node
+- `createUrl` URL to the creation dialog of a new node
+- `deleteUrl` URL for deleting an existing node
+- `showStructureAsNavigation` Show a tree structure as a table of contents in addition to the regular display? (Only useful for table or list display)
+- `assignable` Are the nodes assignable?
 
 ## JSON-API
-Es wurden neue Routen zum Konstruieren der Baumstruktur bereitgestellt:
-- `/tree-node/{id}` Hole den Knoten mit der angegebenen ID
-- `/tree-node/{id}/children` Hole die Kindknoten der angegebenen ID
-- `/tree-node/{id}/courseinfo` Hole Informationen über die Anzahl der zugeordneten Veranstaltungen
-- `/tree-node/{id}/courses` Hole die zugeordneten Veranstaltungen
-- `/tree-node/course/pathinfo/{classname}/{id}` Hole die Pfade im Baum, denen die angegebene Veranstaltung zugeordnet ist
-- `/tree-node/course/details/{id}` Hole Informationen der angegebenen Veranstaltung, die einem Baumknoten zugeordnet ist (Lehrende, Semester, Termine)
+New routes for constructing the tree structure have been provided:
+- `/tree-node/{id}` Get the node with the specified ID
+- `/tree-node/{id}/children` Get the child nodes of the specified ID
+- `/tree-node/{id}/courseinfo` Get information about the number of assigned events
+- `/tree-node/{id}/courses` Get the assigned courses
+- `/tree-node/course/pathinfo/{classname}/{id}` Get the paths in the tree to which the specified course is assigned
+- `/tree-node/course/details/{id}` Get information about the specified course that is assigned to a tree node (lecturers, semester, dates)
 
-## Verwendung
-An jedem Element mit dem Attribut `data-studip-tree` wird automatisch eine Baumanzeige erzeugt, wenn dort entsprechend die Vue-Komponente `StudipTree` vorhanden ist.
+## Usage
+A tree display is automatically generated for each element with the attribute `data-studip-tree` if the Vue component `StudipTree` is available there.

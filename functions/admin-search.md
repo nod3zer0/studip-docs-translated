@@ -1,37 +1,37 @@
 ---
 id: admin-search
-title: Wie erweitere ich die Admin-Suche?
-sidebar_label: Admin-Suche
+title: How do I extend the admin search?
+sidebar_label: Admin-Search
 ---
 
-Ab der 3.1 gibt es einen neuen Admin-Bereich, der auch gerne Admin-MeineVeranstaltungen genannt wird. Ab der 3.2 und 3.3 gibt es darin neue Möglichkeiten, die Admin-Suche mit Plugins zu erweitern. Das soll den Administratoren für alle Speziallplugins Möglichkeiten bieten, ohne dass sie dabei ihren gewohnten Arbeitsplatz (den Admin-Bereich in Stud.IP) verlassen müssen.
+From 3.1 there is a new admin area, which is also called Admin-MyEvents. From 3.2 and 3.3 there are new possibilities to extend the admin search with plugins. This should offer administrators options for all special plugins without having to leave their usual workplace (the admin area in Stud.IP).
 
 
 
-## Neue Filter in der Sidebar
+## New filters in the sidebar
 
-Dies ist der einfache Teil. Man muss einen Filter in die Sidebar bekommen und die Sidebar kennen wir ja gut. Nur den Zeitpunkt sollte man beachten. Der Konstruktor des Plugins ist der falsche Zeitpunkt. Stattdessen muss sich das Plugin registrieren für eine Notification (des NotificationCenters). Aber immerhin das Registrieren kann es im Konstruktor machen. Und zwar in etwa so:
+This is the easy part. You have to get a filter in the sidebar and we know the sidebar well. Only the timing should be considered. The constructor of the plugin is the wrong time. Instead, the plugin has to register for a notification (of the NotificationCenter). But at least it can register in the constructor. And this is something like this:
 
 ```php
 if ((stripos($_SERVER['REQUEST_URI'], 'dispatch.php/admin/courses') !== false)) {
     NotificationCenter::addObserver(
-        $this, 
-        'addLectureshipFilterToSidebar', 
+        $this,
+        'addLectureshipFilterToSidebar',
         'SidebarWillRender'
     );
 }
 ```
 
 
-Und dazu gehört noch eine Methode des Plugins, die "addLectureshipFilterToSidebar" heißt. Sie kann so aussehen:
+And there is also a method of the plugin called "addLectureshipFilterToSidebar". It can look like this:
 
 ```php
-public function addLectureshipFilterToSidebar() 
+public function addLectureshipFilterToSidebar()
 {
     $widget = new OptionsWidget();
-    $widget->setTitle(_('Lehrauftragsfilter'));
+    $widget->setTitle(_('LectureshipFilter'));
     $widget->addCheckbox(
-        _('Nur mit Lehrauftrag'),
+        _('Only with teaching assignment'),
         $GLOBALS['user']->cfg->getValue('LECTURESHIP_FILTER'),
         PluginEngine::getURL($this, [], 'toggle_lectureship_filter')
     );
@@ -39,9 +39,9 @@ public function addLectureshipFilterToSidebar()
 }
 ```
 
-Letztlich kann man die Sidebar zu dem Zeitpunkt beliebig manipulieren. Für die Filter der Sidebar ist es üblich, je ein eigenes Formular zu definieren, das auf eine besondere Action verweist, in der dann ein globaler Parameter (hier `$GLOBALS['user']->cfg->getValue("LECTURESHIP_FILTER")` ) der UserConfig verändert wird.
+Finally, you can manipulate the sidebar at any time. It is usual to define a separate form for each of the sidebar filters, which refers to a special action in which a global parameter (here `$GLOBALS['user']->cfg->getValue("LECTURESHIP_FILTER")` ) of the UserConfig is then changed.
 
-Mein Beispiel-Plugin hat also folgerichtig noch eine Action:
+Consequently, my example plugin still has an action:
 
 ```php
 public function toggle_lectureship_filter_action()
@@ -52,19 +52,19 @@ public function toggle_lectureship_filter_action()
     }
 ```
 
-Diese Action ändert nur den UserConfig-Eintrag und schickt den Nutzer gleich zurück zur Admin-Seite.
+This action only changes the UserConfig entry and sends the user straight back to the admin page.
 
-Dies ist jetzt ein Beispiel mit einer Checkbox, die nur zwei Zustände hat. Aber auf dieselbe Weise könnte man Freitextfelder oder Select-Boxen oder jedes andere komplexe Formular unter bringen. Wichtig ist der Ablauf: Sidebar-Formular einbauen, Nutzer klickt drin rum, Seite lädt sich neu und in einer speziellen Action wird der globale Parameter verändert.
+This is now an example with a checkbox that only has two states. But you could accommodate free text fields or select boxes or any other complex form in the same way. The important thing is the sequence: Insert sidebar form, user clicks on it, page reloads and the global parameter is changed in a special action.
 
-## Die AdminCourseFilter-Klasse
+## The AdminCourseFilter class
 
-Jetzt muss dieser Filter noch angewendet werden. Klicken kann man ihn schon, aber er muss noch tatsächlich die Ergebnisse verändern können. Dazu wird die Klasse AdminCourseFilter wichtig. Sie regelt den gesamten Query, mit dem die Veranstaltungen zusammen gesucht werden. Kurz bevor der Query ausgeführt wird, wird eine Notification des NotificationCenters angeschmissen, die "AdminCourseFilterWillQuery" heißt. Ein Plugin, das einen Filter anwenden möchte, sollte sich im Konstruktor (Achtung, es sollte ein SystemPlugin sein) entsprechend registrieren. Das geht so:
+Now this filter still needs to be applied. It can already be clicked, but it must still be able to actually change the results. The AdminCourseFilter class is important for this. It controls the entire query with which the courses are searched for. Shortly before the query is executed, a NotificationCenter notification called "AdminCourseFilterWillQuery" is triggered. A plugin that wants to apply a filter should register itself accordingly in the constructor (note, it should be a SystemPlugin). It works like this:
 
 ```php
 NotificationCenter::addObserver($this, "addMyFilter", "AdminCourseFilterWillQuery");
 ```
 
-Zudem sollte das Plugin eine Methode besitzen, die "addMyFilter" heißt. Das ist natürlich nur ein Beispielname und sollte abgeändert werden. So könnte diese Methode aussehen:
+The plugin should also have a method called "addMyFilter". This is of course only an example name and should be changed. This method could look like this:
 
 ```php
 public function addLectureshipFilter($event, $filter)
@@ -73,17 +73,17 @@ public function addLectureshipFilter($event, $filter)
         $filter->settings['query']['joins']['lehrauftrag'] = [
             'join' => "INNER JOIN",
             'table' => "lectureship",
-            'on' => "seminare.Seminar_id = lehrauftrag.seminar_id"
+            'on' => "seminare.seminar_id = lehrauftrag.seminar_id"
         ]
     }
 }
 ```
 
-Auf die Details gehen wir gleich ein. Wichtig ist erst einmal, die Methode bekommt als zweiten Parameter ein $filter Objekt vom Typ "AdminCourseFilter" und kann dieses Objekt beliebig modifizieren. Die hier angegebene Methode modifiziert nur, wenn ein bestimmter UserConfig-Parameter gesetzt ist. Das ist der Parameter, der in der Sidebar gesetzt wird.
+We will go into the details in a moment. First of all, it is important that the method receives a $filter object of the type "AdminCourseFilter" as the second parameter and can modify this object as required. The method specified here only modifies if a specific UserConfig parameter is set. This is the parameter that is set in the sidebar.
 
-### Modifizieren des AdminCourseFilter Objektes
+### Modifying the AdminCourseFilter object
 
-Wie modifiziert man dieses AdminCourseFilter Objekt jetzt eigentlich? Am Ende kommt eine SQL-Query heraus. Dass man das Objekt modifizieren möchte, bedeutet im Grunde, dass man alle Teile des Queries modifizieren will, jeden JOIN und jedes SELECT und natürlich auch das WHERE. Dazu hat das $filter Objekt ein öffentliches Attribut $filter->settings, in dem der ganze Query in einem Array gespeichert wird. Alle Einträge des Arrays sind assoziative Einträge von wiederum assoziativen Arrays. Auf diese Weise kann man neue Einträge hinzufügen, etwa um eine WHERE-Klausel einzubauen, aber man kann auch bestehende Einträge löschen oder ändern.
+How do you actually modify this AdminCourseFilter object? The result is an SQL query. The fact that you want to modify the object basically means that you want to modify all parts of the query, every JOIN and every SELECT and, of course, the WHERE. For this purpose, the $filter object has a public attribute $filter->settings, in which the entire query is stored in an array. All entries of the array are associative entries of associative arrays. In this way, you can add new entries, for example to include a WHERE clause, but you can also delete or change existing entries.
 
 ```php
 $filter->settings = [
@@ -92,35 +92,35 @@ $filter->settings = [
 ];
 ```
 
-In dem Query-teil steht alles drin, um ein Prepared-SQL-Statement zu erzeugen. Im Parameter-Teil stehen dann die notwendigen Parameter drin, die per `execute` eingesetzt werden.
+The query part contains everything needed to generate a prepared SQL statement. The parameter part then contains the necessary parameters, which are inserted via `execute`.
 
 ```php
 $filter->settings['query'] = array();
 ```
 
-## Weitere Administrationsmodi
+## Further administration modes
 
-In dem Admin-Bereich gibt es in der Sidebar eine Auswahlbox "Aktionsbereich-Auswahl", mit der man einstellen kann, was genau man mit den gefilterten Veranstaltungen machen möchte. Man kann sagen, man will die Grunddaten bearbeiten oder Veranstaltungen archivieren. Aber Plugins können sich hier auch einklinken und einen eigenen Aktionsbereich definieren.
+In the admin area, there is a selection box "Action area selection" in the sidebar, with which you can set what exactly you want to do with the filtered events. You can say that you want to edit the basic data or archive events. However, plugins can also be integrated here and define their own action area.
 
-Dazu muss ein Plugin das Interface AdminCourseAction implementieren ( `class LehrauftragPlugin extends StudIPPlugin implements SystemPlugin, **AdminCourseAction**` ).
+To do this, a plugin must implement the AdminCourseAction interface ( `class LehrauftragPlugin extends StudIPPlugin implements SystemPlugin, **AdminCourseAction**` ).
 
-Dieses Interface besteht aus drei Methoden, die implementiert werden müssen. Dazu muss man verstehen, was der Adminbereich im Aktionsbereich macht. Der Adminbereich ist ja erst einmal eine große Liste von Veranstaltungen mit einem Aktionsbereich rechts in der Zeile der Veranstaltung. Da kann ein Button drin stehen oder eine Checkbox.
+This interface consists of three methods that must be implemented. To do this, you need to understand what the admin area does in the action area. The admin area is first of all a large list of events with an action area on the right in the line of the event. It can contain a button or a checkbox.
 
-Im Falle der Checkboxen braucht es allerdings noch einen Button über und unter den Veranstaltungen, mit dem der ganze Bereich als ein Formular abgeschickt wird. Da stellt sich noch die Frage, wohin das Formular abgeschickt wird?
+In the case of checkboxes, however, a button is needed above and below the events to submit the entire area as a form. This raises the question of where the form is sent to.
 
-Also die erste Methode des Interface "AdminCourseAction" ist vermutlich "`public function useMultimode()`", die nur zurückgibt, ob man die Buttons oben und unten braucht. Falls sie nicht gebraucht werden, gibt die Methode `false` zurück, ansonsten `true`. Alternativ kann auch ein String übergeben werden, der gewissermaßen der Text des Buttons ist. Sowas wie "Veranstaltungen archivieren" oder so.
+So the first method of the "AdminCourseAction" interface is probably "`public function useMultimode()`", which only returns whether the buttons above and below are needed. If they are not needed, the method returns `false`, otherwise `true`. Alternatively, a string can be passed, which is the text of the button, so to speak. Something like "Archive events" or something like that.
 
-Die zweite Methode ist "`public function getAdminActionURL()`", mit der man definiert, an welche URL das Formular verschickt werden soll.
+The second method is "`public function getAdminActionURL()`", which defines the URL to which the form should be sent.
 
-Die dritte ist die interessanteste Methode, weil sie den Aktionsbereich am Ende tatsächlich definiert. Sie lautet "`public function getAdminCourseActionTemplate($course_id, $values = null)`". Die $course_id sollte klar sein. $values als Parameter gibt an, was die Klasse AdminCourseFilter für die Veranstaltung gefunden hat. Dieser Parameter ist also ein assoziatives Array mit verschiedenen Daten der Veranstaltung. Der Name sollte darin auftauchen, vielleicht auch die Lehrenden. Theoretisch ist dieses Array auch erweiterbar, wie oben zu sehen ist. Damit könnte man sich Einzelabfragen sparen.
+The third is the most interesting method because it actually defines the action area at the end. It is "`public function getAdminCourseActionTemplate($course_id, $values = null)`". The $course_id should be clear. $values as a parameter specifies what the AdminCourseFilter class has found for the course. This parameter is therefore an associative array with various data for the course. The name should appear in it, perhaps also the lecturers. Theoretically, this array can also be extended, as can be seen above. This would save individual queries.
 
-Die Methode `getAdminCourseActionTemplate` nimmt nun die Parameter und gibt ein Objekt vom Typ Flexi_Template (oder null) zurück. Dieses Template ist der Aktionsbereich, der als HTML-Schnipsel innerhalb einer Tabellenzelle dargestellt wird. Er kann einen Button ebenso beinhalten wie eine Checkbox oder sogar beides oder ganz andere komplexe Formularfelder.
+The method `getAdminCourseActionTemplate` now takes the parameters and returns an object of type Flexi_Template (or null). This template is the action area, which is displayed as an HTML snippet within a table cell. It can contain a button as well as a checkbox or even both or completely different complex form fields.
 
-Den Rest übernimmt die Schnittstelle. Sie speichert zum Beispiel selbst, welcher Aktionsbereich gewählt wurde, sodass ein Admin im richtigen Bereich bleibt.
+The interface takes care of the rest. For example, it saves which action area has been selected so that an admin remains in the correct area.
 
-## Hinzufügen von Spalten zu der Tabelle (ab 4.1)
+## Adding columns to the table (from 4.1)
 
-Plugins haben auch die Möglichkeit, die angezeigte Tabelle um weitere Spalten zu erweitern. Das kann nützlich sein, wenn ein Evaluationsbeauftragter zum Beispiel in einer Spalte sehen möchte, wer die Evaluationsdaten das letzte Mal bearbeitet hat. Dazu kann ein Plugin ein weiteres Plugin-Interface implementieren, das `AdminCourseContents` lautet. Dieses Interface erwartet vom Plugin zwei Methoden.
+Plugins also have the option of adding more columns to the displayed table. This can be useful if, for example, an evaluator wants to see in a column who last edited the evaluation data. For this purpose, a plugin can implement another plugin interface called `AdminCourseContents`. This interface expects two methods from the plugin.
 
-* `adminAvailableContents()`: Das Plugin liefert hier zurück, welche weiteren Spalten überhaupt möglich sind, in der Tabelle anzuzeigen. Rückgabewert ist ein assoziatives Array, wobei der Index ein interner Name ist und der Wert der sichtbare Name mit allen möglichen Umlauten.
-* `adminAreaGetCourseContent($course, $index)`: Dabei ist der `$index` exakt der Index, den `adminAvailableContents` zurückgeliefert hat. `$course` ist dabei ein Objekt der Klasse `Course` mit der betreffenden Veranstaltung. Rückgabe der Funktion ist entweder ein String oder ein Objekt vom Typ `Flexi_Template`. So ist man flexibel für alles. Wenn man möchte, dass die Spalte auch in der CSV-Datei beim Export sinnvoll auftaucht (was möglich ist), sollte man auf Schnickschnack wie klickbare Buttons im Template verzichtet.
+* `adminAvailableContents()`: The plugin returns here which other columns are actually possible to display in the table. The return value is an associative array, where the index is an internal name and the value is the visible name with all possible umlauts.
+* `adminAreaGetCourseContent($course, $index)`: The `$index` is exactly the index returned by `adminAvailableContents`. The `$course` is an object of the `Course` class with the event in question. The function returns either a string or an object of the type `Flexi_Template`. So you are flexible for everything. If you want the column to also appear in the CSV file when exporting (which is possible), you should do without bells and whistles such as clickable buttons in the template.

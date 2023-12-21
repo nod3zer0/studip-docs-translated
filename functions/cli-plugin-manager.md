@@ -1,78 +1,78 @@
 ---
 id: cli-plugin-manager
-title: Pluginmanager auf der Kommandozeile
-sidebar_label: Pluginmanager CLI
+title: Plugin manager on the command line
+sidebar_label: Plugin manager CLI
 ---
 
-# Pluginmanager auf der Kommandozeile
+# Plugin manager on the command line
 
-| 📌 **Achtung** |
+| 📌 **Attention** |
 |--|
-| Das Kommandozeilen-Tool `cli/plugin_manager` findet bis **Stud.IP v5.0** Verwendung und wird dann durch das allgemeinere Tool [`cli/studip`](CLI) abgelöst. |
+| The command line tool `cli/plugin_manager` is used up to **Stud.IP v5.0** and is then replaced by the more general tool [`cli/studip`](CLI). |
 
-Wenn man mal nicht die Möglichkeit die Plugins über die Oberfläche zu verwalten oder einfach mal ein bereits an der passenden Stelle abgelegtes Plugin Stud.IP unterzuschieben, dann kommt einem dieses Tool gerade recht. Es liegt im Ordner `cli` und kann von jeder Stelle aufgerufen unter dem Namen `plugin_manager` aufgerufen werden.
+If you don't have the possibility to manage the plugins via the user interface or simply want to add a plugin to Stud.IP that is already in the right place, then this tool is just what you need. It is located in the `cli` folder and can be called from any location under the name `plugin_manager`.
 
-Es bietet folgende Befehle:
+It offers the following commands:
 
-## Installieren einer Plugin-Datei
+## Install a plugin file
 
 ```shell
-./cli/plugin_manager install pfad/zur/plugin.zip
+./cli/plugin_manager install path/to/plugin.zip
 ```
 
-Installiert das Plugin in der angegebenen ZIP-Datei. Diese Aktion ist analog zu dem installieren eines Plugins über die Oberfläche.
+Installs the plugin in the specified ZIP file. This action is analogous to installing a plugin via the user interface.
 
-## Registrieren eines Plugins
+## Registering a plugin
 
 ```shell
 ./cli/plugin_manager register public/plugins_packages/origin/plugin
 ```
 
-Wenn das Plugin bereits an der korrekten Stellen im Verzeichnisbaum von Stud.IP liegt, so kann man es hiermit im System registrieren. Es werden dabei etwaige Installations-SQL Dateien ausgeführt und fehlende Migrationen nachgezogen
+If the plugin is already in the correct place in the Stud.IP directory tree, you can use this to register it in the system. Any installation SQL files are executed and missing migrations are carried out
 
-## Entfernen der Registrierung eines Plugins
+## Removing the registration of a plugin
 
 ```shell
 ./cli/plugin_manager unregister PluginName
 ```
 
-Entfernt das Plugin mit dem angegeben Namen aus dem System und führt alle "down"-Migrationen des Plugins aus.
+Removes the plugin with the specified name from the system and executes all "down" migrations of the plugin.
 
-## Pluginmigrationen ausführen
+## Execute plugin migrations
 
 ```shell
-./cli/plugin_manager migrate PluginName  [-l] [-v] [-t *zahl]
+./cli/plugin_manager migrate PluginName [-l] [-v] [-t *number]
 
--l Listet nur auf was getan werden soll, migriert aber nicht.
--v Schaltet den "verbose"-Modus ein. Es werden zusätzliche Informationen über die durchgeführten Migrationen angezeigt.
--t zahl - Erlaubt einem die Zielmigration. Eine 0 führt zum zurücknehmen aller Migrationen, ansonsten wird zu der entsprechenden Migration (hoch oder runter) hinmigriert. Gibt man diesen Parameter nicht an, so wird automatisch bis zur aktuellsten Migration hochmigriert.
+-l Only lists what should be done, but does not migrate.
+-v Activates the "verbose" mode. Additional information about the migrations performed is displayed.
+-t number - Allows the target migration. A 0 causes all migrations to be canceled, otherwise the system migrates to the corresponding migration (up or down). If this parameter is not specified, the system automatically migrates up to the most recent migration.
 ```
 
-Erlaubt es, Plugin-Migrationen auszuführen. Verhält sich dabei analog zum [Stud.IP-CLI-Migrator](Migrations#toc7).
+Allows plugin migrations to be carried out. Behaves analogously to the [Stud.IP-CLI-Migrator](Migrations#toc7).
 
-## Plugin einschalten
+## Activate plugin
 
 ```shell
 ./cli/plugin_manager activate PluginName
 ```
 
-Schaltet das angegebene Plugin ein
+Activates the specified plugin
 
-## Plugin ausschalten
+## Disable plugin
 
 ```shell
 ./cli/plugin_manager deactivate PluginName
 ```
 
-Schaltet das angegebene Plugin aus
+Switches the specified plugin off
 
-## Plugininfo anzeigen
+## Show plugin info
 
 ```shell
 ./cli/plugin_manager info PluginName
 ```
 
-Zeigt Informationen zu einem einzelnen oder allen installierten Plugins an. Die Informationen werden aus der Datenbank gelesen, wenn das Plugin im Dateisystem nicht gefunden wurde, ist \[class_exists\] => 0 gesetzt.
+Displays information about a single or all installed plugins. The information is read from the database, if the plugin was not found in the file system, \[class_exists\] => 0 is set.
 
 ```shell
 [id] => 142
@@ -87,13 +87,13 @@ Zeigt Informationen zu einem einzelnen oder allen installierten Plugins an. Die 
 [class_exists] => 1
 ```
 
-## Alle verfügbaren Plugins auflisten
+## List all available plugins
 
 ```shell
 ./cli/plugin_manager scan
 ```
 
-Listet alle Plugins auf, die im Dateisystem vorhanden sind, aber nicht in der Datenbank registriert sind.
+Lists all plugins that exist in the file system but are not registered in the database.
 
 ```shell
 [pluginclassname] => Achievements

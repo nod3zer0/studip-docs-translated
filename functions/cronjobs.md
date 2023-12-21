@@ -4,18 +4,18 @@ title: Cronjobs
 sidebar_label: Cronjobs
 ---
 
-Um Cronjobs nutzen zu können, müssen sie entsprechend installiert werden. Die Installationsanleitung gibt dazu [ausführlich Auskunft](http://docs.studip.de/admin/Admins/Installationsanleitung#toc23).
+To be able to use cronjobs, they must be installed accordingly. The installation instructions provide [detailed information](http://docs.studip.de/admin/Admins/Installationsanleitung#toc23).
 
-Zu beachten sind bei der Cronjob-Erstellung mindestens zwei Probleme:
+There are at least two problems to consider when creating cronjobs:
 
-* Das Cronjob-Skript auf CLI-Ebene wird ggf. unter einer anderen Nutzerkennung ausgeführt als die Skripte über die Weboberfläche. Dies kann zu Seiteneffekten bei bestimmten Operationen wie zum Beispiel bei Dateien führen.
-* Nicht jedes Cache-Modul ist auch auf CLI-Ebene verfügbar. Dies führt dazu, dass Klassen sich unterschiedlich verhalten können, wenn sie über die Weboberfläche oder über einen Cronjob ausgeführt werden. Sollten sich Inhalte scheinbar nicht ändern, prüfen Sie den Zustand in der Datenbank und falls dort Unterschiede zur Weboberfläche festzustellen sind, ist bestimmt ein Cache im Spiel. Prüfen Sie in diesem Zusammenhang auch die Einstellung `CACHING_ENABLE` in der Datei `cli/studip_cli_env.inc.php`. Eventuell kann der Cache auf CLI-Ebene aktiviert werden, aber das hängt von dem verwendeten Tool ab.
+* The cronjob script at CLI level may be executed under a different user ID than the scripts via the web interface. This can lead to side effects for certain operations such as files.
+* Not every cache module is also available at CLI level. This means that classes can behave differently when they are executed via the web interface or via a cronjob. If content does not appear to change, check the status in the database and if there are differences to the web interface, a cache is probably involved. In this context, also check the setting `CACHING_ENABLE` in the file `cli/studip_cli_env.inc.php`. It may be possible to activate the cache at CLI level, but this depends on the tool used.
 
-Seit Stud.IP Version 3.3 hat sich das im letzten Punkt angesprochene Verhalten verbessert, da das Caching über einen speziellen Cache-Proxy konsistenter im CLI-Modus und im Webmodus arbeitet. Es können aus dem CLI-Modus Werte gelöscht werden. Das Auslesen aus dem Cache ist allerdings immer noch nicht unbedingt gewährleistet.
+Since Stud.IP version 3.3, the behavior mentioned in the last point has improved, as caching via a special cache proxy works more consistently in CLI mode and in web mode. Values can be deleted from CLI mode. However, reading from the cache is still not necessarily guaranteed.
 
-### Anatomie
+### Anatomy
 
-#### Vollständiges Beispiel
+#### Complete example
 
 ```php
 <?php
@@ -23,22 +23,22 @@ class ExampleCronjob extends CronJob
 {
     public static function getName()
     {
-        return _('Beispiel');
+        return _('Example');
     }
 
     public static function getDescription()
     {
-        return _('Beispiel Cronjob, der nichts macht');
+        return _('Example cronjob that does nothing');
     }
 
     public static function getParameters()
     {
         return [
             'verbose' => [
-                'type'        => 'boolean',
-                'default'     => false,
-                'status'      => 'optional',
-                'description' => _('Sollen Ausgaben erzeugt werden'),
+                'type' => 'boolean',
+                'default' => false,
+                'status' => 'optional',
+                'description' => _('Should outputs be generated'),
             ],
         ];
     }
@@ -59,7 +59,7 @@ class ExampleCronjob extends CronJob
 ```
 
 
-#### Grundlagen
+#### Basics
 
 #### `setup() / teardown()`
 
@@ -67,21 +67,21 @@ class ExampleCronjob extends CronJob
 #### `execute()`
 
 
-#### Parameter
+#### Parameters
 
-Gültige Parameter-Typen sind die folgenden:
+Valid parameter types are the following:
 
-| Parameter | Beschreibung |
+| Parameter | Description |
 | ---- | ---- |
 | `boolean` | |
-| `string` | (1-zeiliger Text) |
-| `text` | (mehrzeiliger Text) |
-| `integer` | `select` (die gültigen Werte werden in dem separaten Feld `values` definiert|
+| `string` | (1-line text) |
+| `text` | (multiline text) |
+| `integer` | `select` (the valid values are defined in the separate `values` field|
 
 
-Über das Feld `default` kann ein Standardwert angegeben werden, während über das Feld `status` angegeben wird, ob der Parameter zwingend erforderlich (`mandatory`) oder optional (`optional`) ist. In dem Feld `description` kann eine Beschreibung für den Parameter mitgegeben werden, der bei der Konfiguration des Cronjobs angezeigt wird.
+The `default` field can be used to specify a default value, while the `status` field is used to specify whether the parameter is mandatory (`mandatory`) or optional (`optional`). The `description` field can be used to enter a description for the parameter that is displayed when the cronjob is configured.
 
-### Registrieren/Installation eines Cronjobs
+### Registering/installing a cronjob
 
 ```php
 <?php

@@ -1,81 +1,81 @@
 ---
 id: user-lookup
-title: Benutzung der Klasse UserLookup
-sidebar_label: Benutzung der Klasse UserLookup
+title: Use of the class UserLookup
+sidebar_label: Use of the UserLookup class
 ---
 
-## 
+##
 
-Die neue Klasse (ab Version 2.1) dient zur Filterung von Nutzern nach speziellen Kriterien.
+The new class (from version 2.1) is used to filter users according to special criteria.
 
 
-### Allgemeines
-Entwickelt wurde diese Klasse, um eine einheitliche, wiederverwendbare Lösung zum Filtern bzw. Suchen von Benutzern anhand bestimmter Kriterien zu schaffen.
+### General
+This class was developed to create a standardized, reusable solution for filtering or searching for users based on specific criteria.
 
-Es können verschiedene Kriterien (auch gleichen Typs mit unterschiedlichen Filterwerten) kombiniert werden. Intern wird schlussendlich die Schnittmenge aller einzelnen angewandten Filterkriterien gebildet.
+Different criteria (even of the same type with different filter values) can be combined. Finally, the intersection of all the individual filter criteria applied is formed internally.
 
-Nach folgende Kritieren kann standardmässig gefiltert werden:
+The following criteria can be filtered by default:
 
-* Studienfach (*fach*)
-* Studienabschluss (*abschluss*)
-* Studienfachsemester (*fachsemester*)
-* Einrichtungszugehörigkeit (*institut*)
-* Nutzerstatus (*status*)
+* Subject of study (*fach*)
+* Degree (*degree*)
+* Semester of study (*subject*)
+* Institution affiliation (*institute*)
+* User status (*status*)
 
-### Methoden der Klasse `UserLookup`
-An dieser Stelle sind die öffentlichen Operation der Klasse `UserLookup` dokumentiert. 
+### Methods of the 'UserLookup' class
+The public operations of the class `UserLookup` are documented here.
 
-#### Klassenmethoden
-* **UserLookup::getValuesForType($type)**
-Liefert alle möglichen Werte für einen gegebenen Typ zurück. Diese Werte werden mit den Standardeinstellungen für eine Stunde im Cache gehalten, um die Datenbank zu entlasten.
+#### Class methods
+**UserLookup::getValuesForType($type)**
+Returns all possible values for a given type. These values are kept in the cache for one hour with the default settings in order to reduce the load on the database.
 
-* **UserLookup::addType($name, $values_callback, $filter_callback)**
-Fügt ein neues Filterkriterium *type* hinzu. Sollte ein Kriterium mit dem gleichen Namen schon existieren, so wird es überschrieben.
+**UserLookup::addType($name, $values_callback, $filter_callback)**
+Adds a new filter criterion *type*. If a criterion with the same name already exists, it is overwritten.
 
-*$values_callback* gibt an, welche Methode genutzt wird, um alle möglichen Werte für dieses Kriterium zurückzuliefern. Diese Methode **sollte** nach Möglichkeit ein eindimensionales, assoziatives Array (Schlüssel = Id des Wertes) zurückgeben.
+*$values_callback* specifies which method is used to return all possible values for this criterion. If possible, this method **should** return a one-dimensional, associative array (key = Id of the value).
 
-*$filter_callback* gibt an, welche Methode genutzt wird, um das Filterkriterium anzuwenden. Diese Methode **muss zwingend** eine Liste von Benutzer-Ids zurückgeben, auf die das Filterkriterium zutrifft.
+*$filter_callback* specifies which method is used to apply the filter criterion. This method **must** return a list of user IDs to which the filter criterion applies.
 
-Die beiden Callback-Parameter müssen valide [PHP-Callbacks](http://php.net/manual/language.pseudo-types.php#language.types.callback) sein.
+The two callback parameters must be valid [PHP callbacks](http://php.net/manual/language.pseudo-types.php#language.types.callback).
 
-#### Instanzmethoden
-* **setFilter($type, $value)**
-Fügt der momentanen Auswahl an Filtern einen neuen Filter des Kriteriums *$type* hinzu. *$value* kann hierbei entweder ein atomarer Wert oder zur Vereinfachung auch ein Array von Werten sein.
+#### Instance methods
+**setFilter($type, $value)**
+Adds a new filter of the criterion *$type* to the current selection of filters. *$value* can either be an atomic value or, for simplification, an array of values.
 
 * **clearFilter**
-Löscht alle gesetzten Filterkriterien.
+Deletes all set filter criteria.
 
 * **execute($flags)**
-Wendet die aktuelle Auswahl an Filtern an. Zurückgegeben wird standardmässig ein Array, das alle passenden Benutzer-Ids enthält.
-Die Rückgabe kann über optionale Flags noch weiter gesteuert werden:
+Applies the current selection of filters. By default, an array containing all matching user IDs is returned.
+The return can be further controlled via optional flags:
 
-| Flag | Beschreibung |
+| Flag | Description |
 | ---- | ---- |
-|FLAG_SORT_NAME|Die zurückgegebenen Ids werden nach Namen der damit verbundenen Benutzern sortiert (aufsteigend nach Nachname und Vorname). |
-|FLAG_RETURN_FULL_INFO|Anstatt eines Array mit den reinen Benutzer-Ids wird ein assoziatives Array zurückgegeben, das die Benutzer-Id als Schlüssel enthält und als Wert ein Array mit den folgenden Angaben des jeweiligen Benutzers: *username*, *Vorname*, *Nachname*, *Email* und *perms* |
+|FLAG_SORT_NAME|The returned ids are sorted by the names of the associated users (ascending by surname and first name). |
+|FLAG_RETURN_FULL_INFO|Instead of an array with the pure user IDs, an associative array is returned that contains the user ID as the key and an array with the following details of the respective user as the value: *username*, *firstname*, *lastname*, *email* and *perms* |
 
 
-### Beispiele
+### Examples
 
-Hier sollten einige kleine Bespiele für die Verwendung des `UserLookup` aus dem praktischen Einsatz in Stud.IP gesammelt werden. 
+A few small examples of the use of the `UserLookup` from practical use in Stud.IP should be collected here.
 
 ```php
 # Create a new UserLookup object
 $user_lookup = new UserLookup;
 
-# Filter all users in their first to sixth fachsemester
+# Filter all users in their first to sixth semester
 $user_lookup->setFilter('fachsemester', range(1, 6));
 
-# Filter all users with the fach 'fach123' or 'fach456'
+# Filter all users with the subject 'fach123' or 'fach456'
 $user_lookup->setFilter('fach', array('fach123', 'fach456'));
-/* Equivalent: 
+/* Equivalent:
 $user_lookup->setFilter('fach', 'fach123');
 $user_lookup->setFilter('fach', 'fach456');
 */
 
-# Filter all users that have an 'autor' or 'tutor' permission
-$user_lookup->setFilter('status', array('autor', 'tutor'));
-   
+# Filter all users that have an 'author' or 'tutor' permission
+$user_lookup->setFilter('status', array('author', 'tutor'));
+
 # Get a list of all matching user ids (sorted by the user's names)
 $user_ids = $user_lookup->execute(UserLookup::FLAG_SORT_NAME);
 

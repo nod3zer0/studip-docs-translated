@@ -1,50 +1,50 @@
 ---
 id: multi-person-search
-title: MultiPersonSearch-Klasse
-sidebar_label: MultiPersonSearch-Klasse
+title: MultiPersonSearch class
+sidebar_label: MultiPersonSearch class
 ---
 
-`lib/classes/MultiPersonSearch.class.php` stellt eine Klasse bereit, mit der ein Dialog zum Hinzufügen von mehreren Personen erstellt werden kann. Ist JavaScript aktiviert, wird dazu ein [Modaler Dialog](ModalerDialog#toc5) geöffnet, anderenfalls wird ein Fallback angezeigt.
+`lib/classes/MultiPersonSearch.class.php` provides a class that can be used to create a dialog for adding multiple persons. If JavaScript is activated, a [Modal dialog](ModalDialog#toc5) is opened, otherwise a fallback is displayed.
 
 Attach:MultiPersonSearch.png
 
-## Einbau im View
+## Installation in the view
 
-Mit dem folgenden Quelltext wird ein MultiPersonSearch Objekt erzeugt und als Link ausgegeben. 
+The following source code is used to create a MultiPersonSearch object and output it as a link.
 
 ```php
-$mp = MultiPersonSearch::get('eindeutige_id')
-    ->setLinkText(_('Beispiellink'))
-    ->setTitle(_('Titel des Dialogs'))
+$mp = MultiPersonSearch::get('unique_id')
+    ->setLinkText(_('Example link'))
+    ->setTitle(_('Title of the dialog'))
     ->setDefaultSelectedUser($defaultSelectedUser)
     ->setExecuteURL($this->url_for('controller'))
     ->setSearchObject($searchObj)
-    ->addQuickfilter(_('Name des Quickfilters'), $userArray)
+    ->addQuickfilter(_('Name of the quick filter'), $userArray)
     ->render();
 
 print $mp;
 ```
 
 
-### Übersicht wichtiger Methoden
+### Overview of important methods
 
-* *setLinkText($text)* setzt den Name des Links, der den Dialog öffnet.
-* *setTitle($title)* setzt den Namen des Dialogtitels.
-* *setDescription($desc)* setzt die Beschreibung des Dialogs, die unter dem Titel angezeigt wird.
-* *setDefaultSelectedUser($userArray)* setzt alle User, die bereits hinzugefügt sind (z. B. alle TeilnehmerInnen, die bereits in einer Veranstaltung eingetragen sind). *$userArray* ist ein Array bestehend aus User-Ids.
-* *setDefaultSelectableUser($userArray)* setzt ein Menge von Personen, die standardmäßig auf der linken Seite des Dialogs angezeigt werden. *$userArray* ist ein Array bestehend aus User-Ids.
-* *setExecuteURL($action)* setzt den Link des Controllers, der die Auswahl verarbeitet.
-* *setSearchObject($searchType)* setzt ein *SearchType* Objekt (z. B: SQLSearch), dass zur Suche von Personen verwendet wird.
-* *addQuickfilter($title, $userArray)* fügt einen Quickfilter, bestehend aus einem Titel und einem Array von User-Ids, hinzu.
-* *setJSFunctionOnSubmit($function_name)* fügt eine JavaScript Funktion hinzu, die ausgeführt wird, sobald auf den Button zum Speichern geklickt wird.
-* *setLinkIconPath($path)* setz ein Link-Icon (Standard-Wert: icons/16/blue/add/community.png).
+* *setLinkText($text)* sets the name of the link that opens the dialog.
+* *setTitle($title)* sets the name of the dialog title.
+* *setDescription($desc)* sets the description of the dialog that is displayed under the title.
+* *setDefaultSelectedUser($userArray)* sets all users who have already been added (e.g. all participants who are already registered in an event). *$userArray* is an array consisting of user IDs.
+* *setDefaultSelectableUser($userArray)* sets a set of persons that are displayed on the left side of the dialog by default. *$userArray* is an array consisting of user IDs.
+*setExecuteURL($action)* sets the link of the controller that processes the selection.
+* *setSearchObject($searchType)* sets a *SearchType* object (e.g.: SQLSearch) that is used to search for persons.
+*addQuickfilter($title, $userArray)* adds a quick filter consisting of a title and an array of user IDs.
+* *setJSFunctionOnSubmit($function_name)* adds a JavaScript function that is executed as soon as the save button is clicked.
+* *setLinkIconPath($path)* sets a link icon (default value: icons/16/blue/add/community.png).
 
-## Verarbeitung
-Um die über den Dialog ausgewählten Personen zu speichern, muss mittels `setExecuteURL($action)` eine entsprechende URL (z. B. zu einem Controller) bereitgestellt werden.
+## Processing
+In order to save the persons selected via the dialog, a corresponding URL (e.g. to a controller) must be provided using `setExecuteURL($action)`.
 
-Im Controller kann nun mittels `load($name)` das `MultiPersonSearch` Objekt geladen werden. Die Funktion `getAddedUsers()` liefert ein Array mit allen neu ausgewählten User-Ids zurück.
+The `MultiPersonSearch` object can now be loaded in the controller using `load($name)`. The function `getAddedUsers()` returns an array with all newly selected user IDs.
 ```php
-$mp = MultiPersonSearch::load('eindeutige_id');
+$mp = MultiPersonSearch::load('unique_id');
 
 foreach ($mp->getAddedUsers() as $userId) {
     do_something($userId);

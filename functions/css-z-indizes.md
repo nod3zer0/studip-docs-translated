@@ -1,24 +1,24 @@
 ---
-id: css-z-indizes
-title: CSS-Z-Indizes
-sidebar_label: CSS-Z-Indizes
+id: css-z-indices
+title: CSS-Z-Indices
+sidebar_label: CSS-Z-Indices
 ---
 
 
-### Liste der verwendeten Z-Indizes (Stand: 09. Juli 2014)
+### List of the Z indices used (as of July 09, 2014)
 
-| Index | Beschreibung |
+| Index | Description |
 | ------ | ------ |
-| 1 | Zeile unterhalb des Headers (#barBottomContainer) |
-| 2 | Sidebar / Overdiv-Bibliothek (inzwischen obsolet?) |
-| 3 | Header-Navigation (#barTopMenu) |
-| 998 |  WYSIWYG Editor: "Dropzone"  |
-| 999 | WYSIWYG Editor: Toolbar   |
-| 1000 |  Helpbar / Widget-Hinzufügen-Lasche auf der Startseite  |
-| 1001 | Dialoge mittels studip-dialog.js   |
-| 1003 |  Stud.IP Tooltips  |
-| 9999 |  jQuery UI - Tooltips / Dialoge mittels createQuestion() |
-| 10000 | Fixierter Header (nach Scrollen) / Tour Overlay   |
-| 20000 |  Tour: Tooltips  |
-| 20001 | Tour: Kontroll-Box   |
-| 99999 |  Autocomplete - Ergebnisse  |
+| 1 | Line below the header (#barBottomContainer) |
+| 2 | Sidebar / Overdiv library (now obsolete?) |
+| 3 | Header navigation (#barTopMenu)
+| 998 | WYSIWYG Editor: "Dropzone" |
+| 999 | WYSIWYG Editor: Toolbar |
+| 1000 | Helpbar / Add widget tab on the start page |
+| 1001 | Dialogs via studip-dialog.js |
+| 1003 | Stud.IP Tooltips |
+| 9999 | jQuery UI - Tooltips / dialogs via createQuestion() |
+| 10000 | Fixed header (after scrolling) / Tour overlay |
+| 20000 | Tour: Tooltips |
+| 20001 | Tour: Control box |
+| 99999 | Autocomplete - Results |

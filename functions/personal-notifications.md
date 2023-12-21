@@ -1,21 +1,21 @@
 ---
 id: personal-notifications
-title: Persönliche Benachrichtigungen
-sidebar_label: Persönliche Benachrichtigungen
+title: Personal notifications
+sidebar_label: Personal notifications
 ---
 
-Ab der Version 2.4 ist es sehr einfach, den Nutzer in Echtzeit über neue Inhalte oder spannende Aktionen, die ihn betreffen, zu informieren. Gedacht ist das für den Fall, dass er eine persönliche Nachricht bekommt oder jemand auf einen von ihm eingestellten Inhalt antwortet. Auf jeden Fall soll stets ein direkter Bezug zum Nutzer vorhanden sein. 
-In diesen Fällen möchte man vielleicht sofort sehen, dass sich was getan hat und nicht erst beim nächsten Seitenneuladen. Gerade wenn Stud.IP in einem von 20 Browsertabs offen ist, kann das schon mal dauern. Da möchte man sofort reagieren können. Für Chat-artige Kommunikation zum Beispiel wäre das Gift. Die persönlichen Benachrichtigungen sind daher DAS Element, um Echtzeitereignisse zu ermöglichen.
+As of version 2.4, it is very easy to inform users in real time about new content or exciting actions that affect them. This is intended for cases where the user receives a personal message or someone responds to content they have posted. In any case, there should always be a direct link to the user.
+In these cases, you may want to see immediately that something has been done and not only when the next page is reloaded. Especially when Stud.IP is open in one of 20 browser tabs, this can take some time. You want to be able to react immediately. This would be poison for chat-like communication, for example. The personal notifications are therefore THE element to enable real-time events.
 
-Über das Feature, wie der Nutzer das sieht, und wie er/sie darauf reagieren und das Feature einstellen kann, steht mehr in der Anwenderdoku.
+You can read more about the feature, how the user sees it, and how he/she can react to it and set the feature in the user documentation.
 
-Hier soll es hauptsächlich um die Frage gehen: ich bin ein Entwickler und will da eine Benachrichtigung an den Nutzer abgeben. Was muss ich tun?
+This is mainly about the question: I am a developer and want to send a notification to the user. What do I have to do?
 
-Eigentlich nur eine Zeile einfügen. Nehmen wir an, Nutzer A würde gerne über alle Änderungen einer bestimmten Wiki-Seite benachrichtigt werden wollen. Und ein anderer Nutzer B ändert diese Seite. So muss man beispielsweise folgende eine Zeile in den Code einfügen:
+Actually, just insert a line. Let's assume that user A would like to be notified of all changes to a certain wiki page. And another user B changes this page. For example, you have to insert the following line into the code:
 
 ```php
 PersonalNotifications::add(
-      $user_A_user_id, //id of user A or array of ´multiple user_ids
+      $user_A_user_id, //id of user A or array of 'multiple user_ids
       $url_of_wiki_page, //when user A clicks this URL he/she should jump directly to the changed wiki-page
       "User B changed wiki-page xyz", //a small text that describes the notification
       "wiki_page_1234", //an (optional) html-id of the content of the wiki page. If the user is looking at the content already, the notification will disappear automatically
@@ -24,8 +24,8 @@ PersonalNotifications::add(
 ```
 
 
-Man braucht also nur die user_id von Nutzer A, die URL der Wikiseite, einen ganz kurzen Beschreibungstext (bitte nicht zu lang werden lassen, das sprengt sonst das Layout) und optional noch eine HTML-ID und ein Bild.
+So all you need is the user_id of user A, the URL of the wiki page, a very short description text (please don't make it too long, otherwise it will blow up the layout) and optionally an HTML ID and an image.
 
-Wozu die HTML-ID? Gerade bei einem Chat zum Beispiel will man nicht am Ende jeden eingegangenen Satz vom Gegenüber nochmal als Notification wegklicken. Da entstand der Gedanke, wenn man etwas schon gesehen hat auf der Seite, dann soll sich die Benachrichtigung auch von alleine erledigen. Wenn also Nutzer A per Zufall eh auf die Seite geht (durch ein rotes Icon in der meine_seminare-Übersicht) und die geänderte Wikieseite so sieht, dann muss er/sie nicht nochmal zusätzlich die Benachrichtigung wegklicken. Stattdessen wird automatisch ein AJAX-Request abgefeuert, der mitteilt, dass der Nutzer den Inhalt schon gesehen hat. 
+Why the HTML ID? Especially in a chat, for example, you don't want to click away every sentence received from the other person as a notification at the end. The idea arose that if you have already seen something on the page, then the notification should take care of itself. So if user A happens to go to the page anyway (via a red icon in the my_seminars overview) and sees the changed wiki page, then he/she does not have to click away the notification again. Instead, an AJAX request is automatically fired, informing the user that he/she has already seen the content.
 
-Um das alles muss der Programmierer nicht besonders kümmern. Es muss nur beim `add`-Aufruf entweder eine HTML-ID angegeben werden oder eben nicht. So einfach geht das.
+The programmer does not have to take special care of all this. All they have to do is either specify an HTML ID or not when calling `add`. It's as simple as that.

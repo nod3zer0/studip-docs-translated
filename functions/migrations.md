@@ -1,18 +1,18 @@
 ---
 id: migrations
-title: Migrationen
-sidebar_label: Migrationen
+title: Migrations
+sidebar_label: Migrations
 ---
 
-## Grundlegendes zu Migrationen
+## Basics of migrations
 
-Im Zusammenhang mit einem Update notwendige Änderungen (vor allem) am Datenbankschema oder Inhalten in der Datenbank werden in *Migrationen* verpackt - das sind kleine, isolierte Transformationen, die beim Update in einer definierten Reihenfolge ausgeführt werden können, um von einem Versionstand zu einem anderen zu gelangen. Falls die Migrationen das vorsehen, ist auf dem gleichen Weg ein Rollback bzw. Downgrade des Datenbankschemas möglich.
+Changes required in connection with an update (especially) to the database schema or content in the database are packaged in *migrations* - these are small, isolated transformations that can be executed in a defined sequence during the update in order to move from one version status to another. If the migrations provide for this, a rollback or downgrade of the database schema is possible in the same way.
 
-Für die Verwendung in Plugins (oder für standortbezogene Schemaerweiterungen) gibt es noch Migrationsdomänen: Jede Domäne enthält eine komplett eigenständige Sammlung von Migrationen, die unabhängig von Migrationen aus anderen Domänen ausgeführt werden können. Die aktuelle Schemaversion wird für jede Domäne separat gespeichert, damit besitzt insbesondere jedes Plugin einen eigenen Raum von Versionsnummern für seine Migrationen.
+There are also migration domains for use in plugins (or for site-specific schema extensions): each domain contains a completely independent collection of migrations that can be executed independently of migrations from other domains. The current schema version is saved separately for each domain, so each plugin in particular has its own space of version numbers for its migrations.
 
-### Struktur und Numerierung
+### Structure and numbering
 
-Im einfachsten Fall bilden die Migrationen eine lineare Abfolge, dies war bis zur Version 4.3 auch die einzig mögliche Anordnung:
+In the simplest case, the migrations form a linear sequence, which was the only possible arrangement up to version 4.3:
 
 ```mermaid
 graph LR
@@ -23,9 +23,9 @@ graph LR
   classDef dashed stroke-dasharray:2
 ```
 
-Genau eine Position ist als "aktuelle Schemaversion" (hier im blau) markiert. Die Stelle "0" darf dabei nicht als Nummer einer echten Migration vergeben werden: Sie steht nur für die Position "vor allen weiteren Migrationen" (z.B. wenn noch gar keine ausgeführt wurde).
+Exactly one position is marked as the "current schema version" (here in blue). The position "0" must not be assigned as the number of a real migration: It only stands for the position "before all further migrations" (e.g. if none have been carried out yet).
 
-Ab Stud.IP 5.1 kann es allerdings auch Abzeige geben - das ist beispielsweise sinnvoll, wenn man nachträglich zwischen Stand 2 und 3 noch weitere Migrationen unterbringen möchte:
+From Stud.IP 5.1 onwards, however, there can also be a "deduction" - this is useful, for example, if you want to add further migrations between status 2 and 3:
 
 ```mermaid
 graph LR
@@ -40,11 +40,11 @@ graph LR
   classDef dashed stroke-dasharray:2
 ```
 
-Ein Abzweig ("Branch") kann an jeder beliebigen Stelle aufgehängt werden, eine Migration an dem entsprechenden Knoten muß dazu auch nicht existieren. Ein Abzweig trägt immer den Namen des Knotens, bei dem er abzweigt (im obigen Beispiel "2"), den Versionen auf dem Abzweig wird dieser Name (gefolgt von einem ".") vorangestellt, also "2.1" usw. Auch hier ist die Stelle "2.0" reserviert und kann nicht als echte Migration verwendet werden.
+A branch can be attached at any point, a migration to the corresponding node does not have to exist. A branch always bears the name of the node at which it branches off (in the above example "2"), the versions on the branch are prefixed with this name (followed by a "."), i.e. "2.1" and so on. The position "2.0" is also reserved here and cannot be used as a real migration.
 
-Jeder Abzweig hat eine eigene Positionsmarkierung für die auf diesem Branch bereits ausgeführten Migrationen. In einer (gedanklichen) linearisierten Reihenfolge aller Migrationen sind alle Migrationen auf einem Branch zwischen dem Abzweigpunkt und seinem Folgeknoten auf dem übergeordneten Branch angeordnet. In diesem Fall wäre das also: 1, 2, 2.1, 2.2, 2.3, 3, 4, 5, 6.
+Each branch has its own position marker for the migrations already executed on this branch. In a (mental) linearized sequence of all migrations, all migrations on a branch are arranged between the branch point and its successor node on the parent branch. In this case, this would be: 1, 2, 2.1, 2.2, 2.3, 3, 4, 5, 6.
 
-Auch Abzeige können ihrerseits natürlich wieder Abzweige bekommen (so tief man möchte):
+Of course, branches can also be assigned to branches (as deep as you like):
 
 ```mermaid
 graph LR
@@ -68,9 +68,9 @@ graph LR
   classDef dashed stroke-dasharray:2
 ```
 
-### Struktur und Numerierung im Stud.IP-Kern
+### Structure and numbering in the Stud.IP core
 
-Die Struktur der Migrationen im Kern sieht derzeit (mit einem kleinen Vorgriff auf 5.2) so aus:
+The structure of the migrations in the core currently looks like this (with a small anticipation of 5.2):
 
 ```mermaid
 graph LR
@@ -96,83 +96,83 @@ graph LR
   classDef dashed stroke-dasharray:2
 ```
 
-Alle "alten" Migration bis einschließlich zur 5.0 liegen auf einem Branch "1", und für aktuelle Releases ≥ 5.1 gibt es jeweils einen eigenen Branch mit dem Names des Releases und den dazugehörigen Migrationen. Bei Service-Releases können diese Branches unabhängig voneinander mit zusätzlichen Migrationen bestückt werden.
+All "old" migrations up to and including 5.0 are on a branch "1", and for current releases ≥ 5.1 there is a separate branch with the name of the release and the associated migrations. For service releases, these branches can be populated with additional migrations independently of each other.
 
-### Aufbau von Migrations-Dateien (d.h. Klassen):
+### Structure of migration files (i.e. classes):
 
-Grundsätzlich müssen alle Migrationsklassen die Klasse `Migration` erweitern.
+Basically, all migration classes must extend the class `Migration`.
 
-Sie bestehen in der Grundlage aus mindestens zwei Funktionen `up()` und `down()`. In `up()` werden die Änderungen für diesem Schritt durchgeführt und entsprechend in `down()` die Änderungen der `up()` Methode wieder rückgängig gemacht, soweit das sinnvoll ist. (*->siehe Irreversible Migrationen*)
+They basically consist of at least two functions `up()` and `down()`. The changes for this step are made in `up()` and the changes of the `up()` method are undone in `down()`, if this makes sense. (*->see Irreversible migrations*)
 
-Die optionale Funktion `description()` liefert eine kurze Beschreibung der durchzuführenden Migration. 
+The optional function `description()` provides a short description of the migration to be carried out.
 
-In Kernmigrationen sollten keine APIs aus dem Kern verwendet werden (beispielsweise `Config`), da nicht gewährleistet ist, dass diese sich nicht ändern werden. Es sollten also z.B. immer die entsprechenden Datenbankeinträge manuell vorgenommen werden. Für Plugins gilt dies nicht: Pluginmigrationen sollten immer die entsprechende API verwenden. Falls Pluginmigrationen APIs des Plugins verwenden, kann es allerdings analoge Probleme zu Kern-APIs in Kernmigrationen geben - also hier auch vorsichtig sein.
+APIs from the core should not be used in core migrations (e.g. `Config`), as there is no guarantee that these will not change. For example, the corresponding database entries should always be made manually. This does not apply to plugins: plugin migrations should always use the corresponding API. However, if plugin migrations use APIs of the plugin, there may be analogous problems to core APIs in core migrations - so be careful here too.
 
-### Namensgebung für die Dateien
+### Naming for the files
 
-Die Migrationsdateien sollen fortlaufend nummeriert werden, beginnend bei 1 und haben immer ganzzahlige Versionsnummern (1, 2, 3, usw.). Es sollten keine (unnötigen) Löcher in der Nummerierung vorhanden sein, führende Nullen dürfen verwendet werden (z.B. "001" statt "1") - diese haben keine Auswirkung auf die Einsortierung. Zusätzlich zur Version kann es einen Branch geben, der der Versionsnummer vorangestellt wird, z.B. "5.1" - die komplette Bezeichnung ist dann *Branch*`.`*Version*`_klassenname.php`. Beispiele dafür wären 3.1 oder 289.5.2. Der Branch ist optional und kann verwendet werden, um nachträglich Migrationen "zwischen" vorherige Migrationen schieben zu können.
+The migration files should be numbered consecutively, starting with 1 and always have integer version numbers (1, 2, 3, etc.). There should be no (unnecessary) holes in the numbering, leading zeros may be used (e.g. "001" instead of "1") - these have no effect on the sorting. In addition to the version, there can be a branch that precedes the version number, e.g. "5.1" - the complete designation is then *Branch*`.`*Version*`_klassenname.php`. Examples of this would be 3.1 or 289.5.2. The branch is optional and can be used to subsequently move migrations "between" previous migrations.
 
-Als Analogie kann man sich die Kombination aus Branch und Versionsnummer wie eine Software-Versionsbezeichnung vorstellen. Daraus ergibt sich auch implizit eine Reihenfolge aller Migrationen.
+As an analogy, the combination of branch and version number can be thought of as a software version designation. This also implicitly results in a sequence of all migrations.
 
-Für das Stud.IP-Release wird ab der Version 5.1 folgendes Numerierungsschema verwendet (siehe auch das Diagramm oben):
+The following numbering scheme is used for the Stud.IP release from version 5.1 onwards (see also the diagram above):
 
-* Alte Migrationen (vor 5.1) haben Nummern auf dem 1.x Branch, also "1.1" usw. Neue Migrationen auf diesem Branch kann es nicht mehr geben.
-* Migrationen ab 5.1 bekommen Nummern gemäß der Version, ab der sie hinzugefügt wurden - z.B. "5.1.1", "5.2.3" usw.
-* Migrationen mit Fehlerkorrekturen bekommen Nummern gemäß der ältesten Version, in der sie landen sollen - allerdings keinesfalls vor 5.1 (denn vorher gab es das neue Schema ja nicht).
+* Old migrations (before 5.1) have numbers on the 1.x branch, i.e. "1.1" etc. New migrations on this branch can no longer exist.
+* Migrations from 5.1 onwards are given numbers according to the version from which they were added - e.g. "5.1.1", "5.2.3" etc.
+* Migrations with error corrections are given numbers according to the oldest version in which they are to land - but never before 5.1 (because the new schema did not exist before then).
 
-Jede Domäne (d.h. jedes Plugin) hat eine eigenständige Zählung der Migrationsschritte und Plugins müssen sich auch nicht an das o.g. Schema halten, d.h. sie können weiterhin einfach ihre Migrationen fortlauftend ab 1 numerieren. Plugin-Migrationen können aber natürlich auch in Branches aufgeteilt werden.
+Each domain (i.e. each plugin) has its own count of migration steps and plugins do not have to adhere to the above-mentioned scheme, i.e. they can simply continue to number their migrations consecutively from 1. Plugin migrations can of course also be divided into branches.
 
-### Rückportierung von Migrationen in alte Versionen
+### Backporting migrations to old versions
 
-Grundsätzlich ist die Idee, dass neue Migrationen, bei denen eine Rückportierung notwendig ist, direkt eine Versionsnummer auf dem frühesten Branch bekommen, in den sie portiert werden sollen (entspricht also der Versionsnummer am Ticket). D.h. die Migration hat auf allen Release-Branches die gleiche Bezeichnung.
+Basically, the idea is that new migrations that need to be backported are directly assigned a version number on the earliest branch to which they are to be ported (i.e. corresponds to the version number on the ticket). This means that the migration has the same name on all release branches.
 
-**Achtung**: Das funktioniert natürlich nicht für Stud.IP Versionen vor 5.1 - denn dort existieren ja gar keine in Branches aufgeteilte Migrationen. D.h. bei einer Rückportierung in eine Version vor 5.1 bekommt die Migration zwei unterschiedliche Nummern:
-- eine Nummer mit "5.1.x" für Stud.IP-Version 5.1 und größer
-- eine Nummer basierend auf dem Datum (altes Namensschema) für Stud.IP-Version 5.0 und darunter
+**Attention**: Of course, this does not work for Stud.IP versions prior to 5.1 - because there are no migrations divided into branches. This means that the migration will have two different numbers if it is ported back to a version prior to 5.1:
+- a number with "5.1.x" for Stud.IP version 5.1 and higher
+- a number based on the date (old naming scheme) for Stud.IP version 5.0 and below
 
-### Reversible und Irreversible Migrationen
+### Reversible and irreversible migrations
 
-Bei reversiblen Migrationen besteht die Möglichkeit über die `up()` und `down()` Methoden immer in eine andere Version zu springen. Bei irreversiblem Migrationen verändert die `up()` Funktion die vorhandenen Daten derart, dass ein Aufruf der `down()` Funktion diese nicht wieder herstellen kann. In solchen Fällen sollte eine Fehlerbehandlung in der `down()` Funktion des Migrationsschrittes erfolgen.
+With reversible migrations it is always possible to jump to another version using the `up()` and `down()` methods. In the case of irreversible migrations, the `up()` function changes the existing data in such a way that a call to the `down()` function cannot restore it. In such cases, error handling should take place in the `down()` function of the migration step.
 
-### Ausführung von Migrationen
+### Execution of migrations
 
-Für die Ausführung von Migrationen gibt es zwei Möglichkeiten:
+There are two options for executing migrations:
 
-#### Ausführung über die Kommandozeile
+#### Execution via the command line
 
-In dem Ordner `cli` befindet sich ein Skript, das die Migrationen über die Kommandozeile ausführt. Hier ist auch das Anstoßen von Migrationen in Plugins möglich, die vom Webinterface nicht direkt unterstützt werden.  
+The `cli` folder contains a script that executes the migrations via the command line. Here it is also possible to trigger migrations in plugins that are not directly supported by the web interface.
 
-##### Mögliche Parameter
+##### Possible parameters
 
-| Parameter | Beschreibung |
+| Parameter | Description |
 | ------ | ------ |
-| d | Domäne (default studip)  |
-| m | Dateipfad zum Ordner mit den Migrationsdateien |
-| l | Nur auflisten was getan werden soll nicht migrieren |
-| t | Zielmigration (0 für komplettes Reset, andernfalls Zielversionsnummer) |
-| b | Branch, auf dem die Migration passieren soll (optional) |
-| v | verbose (empfohlen) |
+| d | Domain (default studip) |
+| m | File path to the folder with the migration files |
+| l | Only list what is to be done, do not migrate |
+| t | Target migration (0 for complete reset, otherwise target version number) |
+| b | Branch on which the migration should take place (optional) |
+| v | verbose (recommended) |
 
-Beispiel: Stud.IP Migrationen von 6 rückgängig machen auf 5:
+Example: Revert Stud.IP migrations from 6 to 5:
 `cli/migrate.php -d studip -t 5 -v`
 
-Beispiel: Ausgabe mit l Parameter:
+Example: Output with l parameter:
 `cli/migrate.php -d studip -l -t 18`
 
-``` 
-  3 Step87ExternConfigurations Extends table extern_config and converts configurations for the external pages from 
-    INI-style files to serialised arrays stored in the database.
+```
+  3 Step87ExternConfigurations Extends table extern_config and converts configurations for the external pages from
+    INI-style files to serialized arrays stored in the database.
   4 Step116ParticipantView creates table necessary for StEP116
-  5 Step25RaumzeitMigrations modify db schema for StEP00025; see logfile in $TMP_PATH
-  6 Step25RaumzeitDbConversion convert dates for StEP00025; see logfile in $TMP_PATH
-  7 TableTokenClass      creates table for Token class
-  8 Step117StudienModule modify db schema StEP00117 Studienmodulstrukturen; 
-  9 StEP00111Admission   creates table admission groups
- 10 ImageProxy           creates table image_proxy_cache and config entry EXTERNAL_IMAGE_EMBEDDING
- 11 LockRules            creates table for lock rules
- 12 Step120Userpic       modify existing user pictures according to Step00120
+  5 Step25SpacetimeMigrations modify db schema for StEP00025; see logfile in $TMP_PATH
+  6 Step25SpacetimeDbConversion convert dates for StEP00025; see logfile in $TMP_PATH
+  7 TableTokenClass creates table for Token class
+  8 Step117StudyModule modify db schema StEP00117 study module structures;
+  9 StEP00111Admission creates table admission groups
+ 10 ImageProxy creates table image_proxy_cache and config entry EXTERNAL_IMAGE_EMBEDDING
+ 11 LockRules creates table for lock rules
+ 12 Step120Userpic modify existing user pictures according to Step00120
  13 RemoveFieldsFromExtermine removes expire|repeat|color|priority from table ex_termine
- 14 StEP00123Admission2  modifies table seminare, adds field `admission_enable_quota`
+ 14 StEP00123Admission2 modifies table seminare, adds field `admission_enable_quota`
  15 Step00129EmailRestriction Adds the new Value EMAIL_DOMAIN_RESTRICTION to table config.
  16 Step00126EmbeddingFlashMovies Adds the new values EXTERNAL_
     FLASH_MOVIE_EMBEDDING and DOCUMENTS_EMBEDD_FLASH_MOVIES to table config.
@@ -180,51 +180,51 @@ Beispiel: Ausgabe mit l Parameter:
  18 Step00139UploadFileReorg reorganize uploaded files into sub-folders@@
 ````
 
-#### Ausführung über die Web-Oberfläche
+#### Execution via the web interface
 
-Das *web_migrate* Skript unter `/public/web_migrate.php` hat die gleichen Funktionen wie die oben beschriebene Kommandozeiolenversion, kann aber interaktiv verwendet werden (siehe Screenshot).
+The *web_migrate* script under `/public/web_migrate.php` has the same functions as the command line version described above, but can be used interactively (see screenshot).
 
 ![Bildschirmfoto_2021-11-12_um_11.04.40](../assets/13c6d38bf74b403424e42c16f8308bfe/Bildschirmfoto_2021-11-12_um_11.04.40.png)
 
-Wählt man links einen anderen Branch als "default" aus, werden nur Migrationen auf bzw. unterhalb des gewählten Branches zur Ausführung angeboten. Liegen Migrationen direkt auf dem gewählten Branch, können diese auch direkt ausgewählt werden (analog zur Option `-t` in der cli-Version) - die Verarbeitung endet dann, wenn die markierte Migration erreicht ist.
+If you select a branch other than "default" on the left, only migrations on or below the selected branch are offered for execution. If there are migrations directly on the selected branch, these can also be selected directly (analogous to the `-t` option in the cli version) - processing then ends when the selected migration is reached.
 
-## Beispielplugin mit Migration
+## Example plugin with migration
 
-Elmar hat einfach mal ein kleines Beispiel fertiggemacht: das "DummyPlugin" (ein Plugin, da die Verwendung für die Plugin-Schnittstelle vorrangig von Interesse ist). Die Katalogstruktur des Plugins sieht folgendermaßen aus:
+Elmar has simply created a small example: the "DummyPlugin" (a plugin, as its use is primarily of interest for the plugin interface). The catalog structure of the plugin looks like this:
 ```
-  DummyPlugin.class.php 
-  plugin.manifest 
-  sql/ 
-    sql/dummy_install.sql 
-    sql/dummy_uninstall.sql 
-  migrations/ 
-    migrations/1_test.php 
-    migrations/2_foo.php 
+  DummyPlugin.class.php
+  plugin.manifest
+  sql/
+    sql/dummy_install.sql
+    sql/dummy_uninstall.sql
+  migrations/
+    migrations/1_test.php
+    migrations/2_foo.php
 ```
 
-Die SQL-Dateien unter sql definieren wie gehabt das "Grundlayout" für das Plugin und sind entsprechend als "dbscheme" (bzw. "uninstalldbscheme") im Manifest eingetragen, soweit also nichts neues. Neu hingekommen ist der Katalog migrations, der die einzelnen Deltas enthält, die von Plugin-Version zu Plugin-Version nachgezogen werden müssen (diese werden also nicht mehr in sql/dummy_install.sql abgebildet). Jeder Versionsschritt des Plugins kann beliebig viele solche Deltas ( = Migrations) besitzen. Alle Migrations sind aufsteigend numeriert, die Dateinamen folgen dabei der Konvention `nummer_klassenname.php`.
+As before, the SQL files under sql define the "basic layout" for the plugin and are entered accordingly as "dbscheme" (or "uninstalldbscheme") in the manifest, so nothing new so far. What is new is the catalog migrations, which contains the individual deltas that have to be updated from plugin version to plugin version (these are no longer mapped in sql/dummy_install.sql). Each version step of the plugin can have any number of such deltas ( = migrations). All migrations are numbered in ascending order, the file names follow the convention `number_class_name.php`.
 
-Jede Migration ist eine PHP-Klasse mit den Operationen up() und down(), die die jeweiligen Änderungen durchführen bzw. wieder zurücknehmen können. Als Beispiel hier der Inhalt von `migrations/1_test.php`:
+Each migration is a PHP class with the operations up() and down(), which can make or undo the respective changes. As an example, here is the content of `migrations/1_test.php`:
 
 ```php
-  <? 
-  class Test extends Migration { 
+  <?
+  class Test extends Migration {
       function up () {
           $db = DBManager::get();
-          $db->exec("INSERT INTO dummy VALUES (42, 'axel')"); 
-      } 
+          $db->exec("INSERT INTO dummy VALUES (42, 'axel')");
+      }
 
       function down () {
           $db = DBManager::get();
-          $db->exec("DELETE FROM dummy WHERE id = 42"); 
-      } 
-  } 
-  ?> 
+          $db->exec("DELETE FROM dummy WHERE id = 42");
+      }
+  }
+  ?>
 ```
-Anstatt Werte in eine Tabelle einzutragen könnte man natürlich ebenfalls neue Tabellen anlegen, Felder hinzufügen oder entfernen, Daten umwandeln oder in eine andere Tabelle kopieren, Dateien oder Kataloge anlegen, Rechte setzen usw. (es muß nichts mit der DB zu tun haben). Der Zugriff auf die Datenbank erfolgt dabei wie üblich über die [DBManager-Klasse](Howto/Datenbankzugriffe). Alles weitere passiert (bei Plugins) automatisch, d.h. beim Update eines Plugins werden - ausgehend vom aktuellen Versionsstand - alle notwendigen Änderungen (d.h. Migrations) durchgeführt bzw. bei einem Downgrade eines Plugins entsprechend wieder zurückgenommen.
+Instead of entering values in a table, you could of course also create new tables, add or remove fields, convert data or copy it to another table, create files or catalogs, set permissions, etc. (it doesn't have to have anything to do with the DB). (it does not have to have anything to do with the database). The database is accessed as usual via the [DBManager class](Howto/Database access). Everything else happens automatically (for plugins), i.e. when updating a plugin, all necessary changes (i.e. migrations) are carried out on the basis of the current version status or are reversed accordingly when a plugin is downgraded.
 
-PS: Wenn man möchte, kann man natürlich auch "dbscheme" und "uninstalldbscheme" im Manifest weglassen und das Anlegen der kompletten DB-Struktur für das Plugin über Migrations erledigen. 
+PS: If you wish, you can of course also omit "dbscheme" and "uninstalldbscheme" in the manifest and create the complete DB structure for the plugin via migrations.
 
-Für ein Beispiel für die Migration eines Plugins gibt es hier ein kleines Zip file:
+For an example of the migration of a plugin, here is a small zip file:
 
 [dummy_plugin-v0.3.zip](../assets/0ca19cdf7ae62c47c4a74b0110030059/dummy_plugin-v0.3.zip)

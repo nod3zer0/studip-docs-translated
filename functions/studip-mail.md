@@ -4,38 +4,38 @@ title: Stud.IP-Mail
 sidebar_label: Stud.IP-Mail
 ---
 
-Diese Klasse [StudipMail](https://gitlab.studip.de/studip/studip/-/blob/main/lib/classes/StudipMail.class.php) bietet Möglichkeiten eine Email zu erzeugen und zu versenden. Der Versand der Nachricht wird nicht direkt von der Klasse vorgenommen, sondern von einer Instanz einer weiteren Klasse für den Emailtransport. Die dazu benutzen Klassen befinden sich in `vendor/email_message`, hier gibt es verschiedene Möglichkeiten für den Transport z.B. über die php Funktion Mail oder über smtp.
+This class [StudipMail](https://gitlab.studip.de/studip/studip/-/blob/main/lib/classes/StudipMail.class.php) offers the possibility to create and send an email. The message is not sent directly by the class, but by an instance of another class for email transport. The classes used for this are located in `vendor/email_message`, here there are various options for the transport, e.g. via the php function Mail or via smtp.
 
 
-## schnelles Beispiel
+## quick example
 
 ```php
-$mail = new StudipMail(); 
-$mail->addRecipient('suchi@data-quest.de', 'Stefan Suchi') 
-     ->addRecipient('elmar.ludwig@uos.de', 'Elmar Ludwig', 'Cc') 
-     ->setSubject('Test der Mail Klasse') 
-     ->addStudipAttachment($dokument_id) 
-     ->setBodyText("Hallo,\nBlablubb") 
+$mail = new StudipMail();
+$mail->addRecipient('suchi@data-quest.de', 'Stefan Suchi')
+     ->addRecipient('elmar.ludwig@uos.de', 'Elmar Ludwig', 'Cc')
+     ->setSubject('Test of the mail class')
+     ->addStudipAttachment($document_id)
+     ->setBodyText("Hello,\nBlablubb")
      ->send();
 ```
 
-## Mail Transport
-Welcher Transport für die Mail benutzt wird, kann ich der `config/config_local.inc.php` bei den Mail-Einstellungen mit $MAIL_TRANSPORT konfiguriert werden. Hier stehen zur Auswahl:
+## Mail transport
+Which transport is used for the mail can be configured in `config/config_local.inc.php` in the mail settings with $MAIL_TRANSPORT. The following options are available here:
 
-| Art | Beschreibung |
+| type | description |
 | ---- | ---- |
-| `smtp` | direkte smtp Verbindung zu `$MAIL_HOST_NAME` |
-| `php` | php `mail()` Funktion wird genutzt |
-| `sendmail` | direktes Aufrufen des lokalen sendmail skriptes |
-| `qmail` | direktes Aufrufen des lokalen qmail skriptes |
-| `debug` | mails werden nicht verschickt sondern in eine Datei in `$TMP_PATH` geschrieben |
-| `blackhole` | mails werden nicht verschickt, sondern einfach verworfen |
+| `smtp` | direct smtp connection to `$MAIL_HOST_NAME` |
+| `php` | php `mail()` function is used |
+| `sendmail` | direct call to the local sendmail script |
+| `qmail` | direct call of the local qmail script |
+| `debug` | mails are not sent but written to a file in `$TMP_PATH` |
+| `blackhole` | mails are not sent, but simply discarded |
 
-Aufgrund dieser Einstellung wird automatisch in `lib/phplib_local.inc.php` eine Instanz der entsprechenden Transporterklasse erzeugt und mit `StudipMail::setDefaultTransporter($mail_transporter)` als Standardweg zum verschicken hinterlegt.
+Based on this setting, an instance of the corresponding transporter class is automatically created in `lib/phplib_local.inc.php` and stored with `StudipMail::setDefaultTransporter($mail_transporter)` as the default way to send.
 
-Es ist aber möglich dieses Objekt auszutauschen, entweder über den obigen Aufruf von `StudipMail::setDefaultTransporter()` oder aber beim Aufruf von StudipMail::send(), da die `send()` Methode als optionalen Parameter ein von `email_message_class` abgeleitetets Objekt akzeptiert. 
+However, it is possible to exchange this object, either via the above call to `StudipMail::setDefaultTransporter()` or when calling StudipMail::send(), as the `send()` method accepts an object derived from `email_message_class` as an optional parameter.
 
-Damit ist es auch möglich den automatischen Versand von Mails temporär zu verhindern, wie es z.B. die Klasse `UserManagement` bei Änderungen eines Nutzers macht:
+This also makes it possible to temporarily prevent the automatic sending of mails, e.g. as the class `UserManagement` does when a user changes:
 
 ```php
 require_once 'vendor/email_message/blackhole_message.php';
@@ -47,19 +47,19 @@ $umanager->createNewUser($data));
 StudipMail::setDefaultTransporter($default_mailer);
 ```
 
-## Mails erstellen
-Um eine Mail zu erstellen, erzeugt man ein neues `StudipMail` Objekt und füllt es über die diversen `add` und `set` Methoden mit Inhalt. Alle `add` und `set` Methoden liefern immer das aktuelle Objekt zurück, damit man mehrere Aufrufe hintereinandersetzen kann ("fluent interface"). Die wesentlichen Methoden sind:
+## Create mails
+To create a mail, you create a new `StudipMail` object and fill it with content using the various `add` and `set` methods. All `add` and `set` methods always return the current object so that several calls can be placed one after the other ("fluent interface"). The main methods are
 
-| Funktion | Beschreibung |
+| function | description |
 | ------ | ------ |
-| `setSenderEmail($mail)` | setzt die Mailadresse des Absenders. Die Absendeadresse wird im Konstruktor auf `$MAIL_ENV_FROM` vorbelegt. |
-| `setSenderName($name)` | setzt den Namen des Absenders, wird auf `$MAIL_FROM` vorbelegt |
-| `setReplyToEmail($mail)` | setzt die Mailadresse für das reply-to, wird mit `$MAIL_ABUSE` vorbelegt. |
-| `setSubject($subject)` | setzt den Titel der Mail |
-| `addRecipient($mail, $name = *, $type = 'To')` | fügt einen Empfänger hinzu. Der erste Parameter muss die Mailadresse enthalten, der nächste enthält optional den Namen. Mit dem dritten Parameter kann man einstellen ob es sich um einen Standardempfänger ('To'), einen Kopieempfänger ('Cc') oder einen Blindkopieempfänger ('Bcc') handelt. |
-| `addDataAttachment($data, $name, $type = 'automatic/name', $disposition = 'attachment')` | fügt einen Datenanhang der Mail hinzu. Über den $type Parameter sollte man eine korrekten mime-type mit angeben |
-| `addFileAttachment($file_name, $name = *, $type = 'automatic/name', $disposition = 'attachment')`| fügt einen Dateianhang der Mail hinzu. Über den `$type` Parameter kann man einen korrekten mime-type mit angeben, ansonsten wird versucht auf Basis des Dateinamens zu entscheiden. $file_name muss den kompletten Pfad zur Datei enthalten. |
-|`addStudipAttachment($dokument_id)` | fügt einen Dateianhang der Mail hinzu, es muss nur die Stud.IP Dokumenten ID übergeben werden, die anderen Parameter werden dann direkt aus der Datenbank befüllt.  |
-| `setBodyText($body)` | setzt den Textinhalt der Mail |
-| `setBodyHtml($body)` | setzt den HTML Inhalt der Mail. Es wird dann immer eine multipart Mail erzeugt, wenn der Textinhalt fehlt wird dafür ein Hilfstext eingefügt.|
-| `send(email_message_class $transporter = null)` | versendet die Mail, mit dem optionalem Parameter kann das transport Objekt vorgegeben werden. Die Methode liefert true zurück wenn die Mail verschickt werden konnte. |
+| `setSenderEmail($mail)` | sets the sender's mail address. The sender address is preset to `$MAIL_ENV_FROM` in the constructor. |
+| `setSenderName($name)` | sets the name of the sender, defaults to `$MAIL_FROM` |
+| `setReplyToEmail($mail)` | sets the mail address for the reply-to, defaults to `$MAIL_ABUSE`. |
+| `setSubject($subject)` | sets the title of the mail |
+| `addRecipient($mail, $name = *, $type = 'To')` | adds a recipient. The first parameter must contain the mail address, the next parameter optionally contains the name. The third parameter can be used to specify whether the recipient is a standard recipient ('To'), a copy recipient ('Cc') or a blind copy recipient ('Bcc'). |
+| `addDataAttachment($data, $name, $type = 'automatic/name', $disposition = 'attachment')` | adds a data attachment to the mail. The $type parameter should be used to specify a correct mime-type |
+| `addFileAttachment($file_name, $name = *, $type = 'automatic/name', $disposition = 'attachment')`| adds a file attachment to the mail. The `$type` parameter can be used to specify a correct mime-type, otherwise an attempt is made to decide on the basis of the file name. $file_name must contain the complete path to the file. |
+|`addStudipAttachment($document_id)` | adds a file attachment to the mail, only the Stud.IP document ID has to be passed, the other parameters are then filled directly from the database.  |
+| `setBodyText($body)` | sets the text content of the mail |
+| `setBodyHtml($body)` | sets the HTML content of the mail. A multipart mail is then always generated, if the text content is missing, a help text is inserted.
+| `send(email_message_class $transporter = null)` | sends the mail, with the optional parameter the transport object can be specified. The method returns true if the mail could be sent. |

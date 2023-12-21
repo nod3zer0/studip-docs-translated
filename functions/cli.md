@@ -1,26 +1,26 @@
 ---
-title: Stud.IP auf der Kommandozeile
+title: Stud.IP on the command line
 sidebar_label: CLI
 ---
-| :pushpin: **Achtung** |
+| :pushpin: **Attention** |
 |-----------------------|
-| Bis einschließlich **Stud.IP v5.0** finden sich alle Kommandozeilen-Tools als eigenständige Skripte im Ordner `/cli`. Das komplexeste, alte Tool hatte seine eigene Dokumentation: [cli/plugin_manager (alt)](CLIPluginManager) |
+| All command line tools up to and including **Stud.IP v5.0** can be found as independent scripts in the `/cli` folder. The most complex, old tool had its own documentation: [cli/plugin_manager (old)](CLIPluginManager) |
 
-Ab **Stud.IP v5.1** sind alle Kommandozeilen-Tools auf die Verwendung der Bibliothek [symfony/console](https://symfony.com/doc/current/components/console.html) umgestellt worden.
+As of **Stud.IP v5.1**, all command line tools have been switched to using the [symfony/console](https://symfony.com/doc/current/components/console.html) library.
 
-## Verwendung
+## Usage
 
-Die Liste aller vorhandenen (Sub-)Kommandos kann mit Hilfe dieses Kommandos angezeigt werden:
+The list of all available (sub)commands can be displayed using this command:
 
 ```shell
 $ cli/studip
 ```
 
-Daraufhin wird eine Liste ähnlich wie diese hier ausgegeben:
+A list similar to this one is then displayed:
 
 ![CLI Help](../assets/06e2031cec109992fa2df034e5c65642/CLIHelp.png)
 
-Die dort aufgeführten Kommandos können als erstes Argument zu `cli/studip` verwendet werden. Welche zusätzlichen Optionen zur Verfügung stehen, kann mit Hilfe von `--help` abgerufen werden.
+The commands listed there can be used as the first argument to `cli/studip`. The additional options available can be called up using `--help`.
 
 ```shell
 $ cli/studip migrate --help
@@ -29,15 +29,15 @@ $ cli/studip migrate --help
 
 ![CLIHelpOnCommands](../assets/c36105bd58464c5eb00e596123af30c8/CLIHelpOnCommands.png)
 
-Jedes der Kommandos bietet ausführlich genug Hilfe zu seiner
-Verwendung an.
+Each of the commands offers detailed enough help on its
+usage.
 
-## Neue Kommandos hinzufügen
+## Add new commands
 
-Um weitere Kommandos hinzuzufügen, sind drei Schritte notwendig:
+To add more commands, three steps are necessary:
 
-- [Dokumentation von `symfony/console`](https://symfony.com/doc/current/components/console.html) lesen
-- Neue Klasse in `/cli/commands/{Gruppe}` anlegen. Es gibt schon einige Gruppen. Wenn keine der vorhandenen Gruppen passt, kann eine neue angelegt werden. Gruppen sind gleichzeitig auch Bestandteil des Namespaces der Klasse.
-- Klasse in `cli/studip` registrieren. Die neu erstellte Klasse muss dem `$commands`-Array in der Datei `/cli/studip` hinzugefügt werden.
+- [Read the documentation of `symfony/console`](https://symfony.com/doc/current/components/console.html)
+- Create a new class in `/cli/commands/{group}`. There are already some groups. If none of the existing groups fit, a new one can be created. Groups are also part of the namespace of the class.
+- Register the class in `cli/studip`. The newly created class must be added to the `$commands` array in the `/cli/studip` file.
 
-Danach steht das neue Kommando bei Aufruf von `cli/studip` zur Verfügung.
+The new command is then available when `cli/studip` is called.

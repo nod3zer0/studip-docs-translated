@@ -1,158 +1,158 @@
 ---
 id: etask-tables
-title: Beschreibung der `etask_*`-Tabellen
-sidebar_label: etask_* - Tabellen
+title: Description of the `etask_*`-tables
+sidebar_label: etask_* - tables
 ---
 
-## etask_tasks - Aufgaben
-Ab Stud.IP 4.0 gibt es gemeinsame Tabellen für Aufgaben in Stud.IP, die von verschiedenen Tools (und auch Plugins) verwendet werden können. Da viele Tools spezifische Zusatzinformationen ablegen wollen, gibt es in vielen Tabellen ein zusätzliches Feld `options`, das (fast) beliebige weitere Daten im JSON-Format aufnehmen kann. Für darüber hinaus gehende Anforderungen können natürlich auch weiterhin eigene Tabellen angelegt werden.
+## etask_tasks - Tasks
+As of Stud.IP 4.0 there are common tables for tasks in Stud.IP, which can be used by various tools (and also plugins). Since many tools want to store specific additional information, there is an additional field `options` in many tables, which can hold (almost) any additional data in JSON format. Of course, separate tables can still be created for additional requirements.
 
-Die Tabelle `etask_tasks` enthält die einzelnen Aufgaben. Eine Aufgabe kann dabei in verschiedenen Kontexten verwendet werden, daher stehen z.B. die Informationen zur Bewertung (falls es so etwas gibt) nicht direkt bei der Aufgabe. Der Typ sollte eigentlich ein PHP-Klassenname sein, allerdings gibt es im Kern noch keine definierten Klassen für die Aufgabentypen, daher gibt es da aktuell nur den Typ "`multiple-choice`".
+The `task_tasks` table contains the individual tasks. A task can be used in different contexts, which is why, for example, the information on the evaluation (if there is such a thing) is not directly associated with the task. The type should actually be a PHP class name, but there are no defined classes for the task types in the core yet, so there is currently only the type "`multiple-choice`".
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **id** | ID der Aufgabe (Primärschlüssel, Auto-Increment) |
-| **type** | Aufgabentyp (Multiple-Choice, Text, Zuordnung o.ä.), geplant: PHP-Klassenname |
-| **title** | Aufgabentitel (ohne Formatierung) |
-| **description** | Aufgabentext (mit Formatierung) |
-| **task** | Aufgabeninhalte in einer typspezifischen JSON-Repräsentierung (siehe Beispiele unten) |
-| **user_id** | Ersteller der Aufgabe |
-| **mkdate** | Erstellungsdatum |
-| **chdate** | Änderungsdatum |
-| **options** | weitere, nicht typspezifische Daten im JSON-Format (nach Bedarf) |
+| **id** | ID of the task (primary key, auto-increment) |
+| **type** | Task type (multiple choice, text, assignment, etc.), planned: PHP class name |
+| **title** | task title (without formatting) |
+| **description** | task text (with formatting) |
+| **task** | task content in a type-specific JSON representation (see examples below) |
+| **user_id** | task creator |
+| **mkdate** | creation date |
+**chdate** | modification date |
+**options** | further, non-type-specific data in JSON format (as required) |
 
 
-## etask_task_tags - Schlüsselworte für Aufgaben
+## etask_task_tags - keywords for tasks
 
-Falls ein Tool Schlüsselworte zu Aufgaben zuweisen möchte, kann dazu die Tabelle `etask_task_tags` verwendet werden. Jeder Nutzer sieht dabei nur seine eigenen Schlüsselworte.
+If a tool wants to assign keywords to tasks, the `etask_task_tags` table can be used for this purpose. Each user only sees their own keywords.
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **task_id** | ID der Aufgabe |
-| **user_id** | Nutzer des Schlüsselworts |
-| **tag** | Schlüsselwort|
+| **task_id** | ID of the task |
+| **user_id** | User of the keyword |
+| **tag** | keyword|
 
 
-## etask_tests - Aufgabensammlungen
+## etask_tests - Task collections
 
-Aufgaben können zu Aufgabensammlungen zusammengefaßt werden (etwa so wie Dateien in Ordnern). Jede Aufgabensammlungen ist in der Tabelle `etask_test` abgelegt.
+Tasks can be grouped into task collections (like files in folders). Each task collection is stored in the `etask_test` table.
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **id** | ID der Aufgabensammlung (Primärschlüssel, Auto-Increment) |
-| **title** | Titel der Aufgabensammlung (ohne Formatierung) |
-| **description** | Beschreibung der Aufgabensammlung (mit Formatierung) |
-| **user_id** | Ersteller der Aufgabensammlung |
-| **mkdate** | Erstellungsdatum |
-| **chdate** | Änderungsdatum |
-| **options** | weitere Daten im JSON-Format (nach Bedarf) |
+| **id** | ID of the task collection (primary key, auto-increment) |
+| **title** | Title of the task collection (without formatting) |
+| **description** | Description of the task collection (with formatting) |
+| **user_id** | Creator of the task collection |
+| **mkdate** | creation date |
+| **chdate** | modification date |
+**options** | further data in JSON format (as required) |
 
-## etask_test_tags - Schlüsselworte für Aufgabensammlungen
+## etask_test_tags - keywords for task collections
 
-Falls ein Tool Schlüsselworte zu Aufgabensammlung zuweisen möchte, kann dazu die Tabelle `etask_test_tags` verwendet werden. Jeder Nutzer sieht dabei nur seine eigenen Schlüsselworte.
+If a tool wants to assign keywords to task collections, the `etask_test_tags` table can be used for this purpose. Each user only sees their own keywords.
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **test_id** | ID der Aufgabensammlung |
-| **user_id** | Nutzer des Schlüsselworts |
-| **tag** | Schlüsselwort |
+| **test_id** | ID of the task collection |
+| **user_id** | User of the keyword |
+| **tag** | keyword |
 
 
-## etask_test_tasks - Zuordnung der Aufgaben zu den Aufgabensammlungen
+## etask_test_tasks - Assignment of the tasks to the task collections
 
-Die Tabelle `etask_test_tasks` speichert die Zuordnung der einzelnen Aufgaben zu den Aufgabensammlungen sowie ggf. weitere an der Zuordnung hängende Informationen wie die Punktzahl.
+The `etask_test_tasks` table stores the assignment of the individual tasks to the task collections as well as any other information related to the assignment, such as the score.
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **test_id** | ID der Aufgabensammlung |
-| **task_id** | ID der Aufgabe |
-| **position** | Position in der Sammlung (numeriert ab 1) |
-| **points** | erreichbare Punkte (optional) |
-| **options** | weitere Daten im JSON-Format (nach Bedarf) |
- 
+| **test_id** | ID of the task collection |
+| **task_id** | ID of the task |
+| **position** | Position in the collection (numbered from 1) |
+| **points** | achievable points (optional) |
+| **options** | further data in JSON format (as required) |
 
-## etask_assignments - gestellte Aufgabensammlungen (Aufgabenblätter)
 
-Eine Aufgabensammlung ist zunächst mal nur eine Menge von Aufgaben ohne Zuordnung. Über ein `etask_assignments` wird die Aufgabensammlung einer Menge von Teilnehmern gestellt (z.B. in Form eines Aufgabenblatts oder eine Abstimmung). Bei einer Einfachzuordnung zu einem Kontext steht die Zuordnung direkt in dieser Tabelle, bei Mehrfachzuordnung in der Tabelle `etask_assignment_ranges`.
+## etask_assignments - set task collections (task sheets)
 
-| Attribut | Beschreibung |
+A task collection is initially just a set of tasks without an assignment. The task collection is presented to a set of participants via an `etask_assignments` (e.g. in the form of a task sheet or a vote). In the case of a single assignment to a context, the assignment is directly in this table, in the case of multiple assignments in the `etask_assignment_ranges` table.
+
+| Attribute | Description |
 | ---- | ---- |
-| **id** | ID des Aufgabenblatts (Primärschlüssel, Auto-Increment) |
-| **test_id** | ID der Aufgabensammlung |
-| **range_type** | Kontext-Typ, aktuell sind definiert: `course`, `global`, `group`, `institute`, `user` |
-| **range_id** | Kontext der Zuordnung, z.B. die ID einer Veranstaltung |
-| **type** | Präsentationsmodus als Text, vom Tool abhängig (nicht vordefiniert) |
-| **start** | Start des Bearbeitungszeitraums (optional) |
-| **end**| Ende des Bearbeitungszeitraums (optional) |
-| **active**| sichtbar/unsichtbar für Teilnehmer, kann z.B. für einen Entwurfsmodus verwendet werden |
-| **options**| weitere Daten im JSON-Format (nach Bedarf) |
+| **id** | ID of the task sheet (primary key, auto-increment) |
+| **test_id** | ID of the task collection |
+| **range_type** | Context type, currently defined are: `course`, `global`, `group`, `institute`, `user` |
+| **range_id** | Context of the assignment, e.g. the ID of an event |
+| **type** | Presentation mode as text, depending on the tool (not predefined) |
+| **start** | Start of the editing period (optional) |
+| **end**| End of the editing period (optional) |
+| **active**| visible/invisible for participants, can be used for a draft mode, for example |
+| **options**| further data in JSON format (as required) |
 
-## etask_assignment_ranges -Mehrfachzuordnung von Aufgabensammlungen zu Kontexten
+## etask_assignment_ranges -multiple assignment of task collections to contexts
 
-Wenn Aufgabensammlungen mehreren Kontexten zugewiesen werden sollen, sind diese in `etask_assignment_ranges` abgelegt.
+If task collections are to be assigned to multiple contexts, these are stored in `etask_assignment_ranges`.
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **id** | ID der Zuordnung (Primärschlüssel, Auto-Increment) |
-| **assignment_id** | ID des Aufgabenblatts |
-| **range_type** | Kontext-Typ, aktuell sind definiert: `course`, `global`, `group`, `institute`, `user` |
-| **range_id** | Kontext der Zuordnung, z.B. die ID einer Veranstaltung |
-| **options** | weitere Daten im JSON-Format (nach Bedarf) |
+| **id** | ID of the assignment (primary key, auto-increment) |
+| **assignment_id** | ID of the assignment sheet |
+| **range_type** | Context type, currently defined are: `course`, `global`, `group`, `institute`, `user` |
+| **range_id** | Context of the assignment, e.g. the ID of an event |
+| **options** | further data in JSON format (as required) |
 
-## etask_assignment_attempts - individueller Lösungsversuch zu einem Aufgabenblatt
+## etask_assignment_attempts - individual solution attempt for an assignment sheet
 
-In `etask_assignment_attempts` wird pro Teilnehmer abgelegt, ob ein Aufgabenblatt bereits angefangen wurde (und wann), und ggf. auch ein indivduelles Enddatum der Bearbeitung gespeichert. Zusätzlich können auch weitere Informationen je nach Tool gespeichert werden.
+In `etask_assignment_attempts`, it is stored for each participant whether a task sheet has already been started (and when) and, if applicable, an individual end date for processing. Additional information can also be saved depending on the tool.
 
-| Attribut | Beschreibung |
+| Attribute | Description |
 | ---- | ---- |
-| **id** | ID des Lösungsversuchs (Primärschlüssel, Auto-Increment) |
-| **assignment_id** | ID des Aufgabenblatts |
-| **user_id** | Teilnehmer |
-| **start** | individueller Start der Bearbeitung (optional) |
-| **end** | individuelles Ende der Bearbeitung (optional) |
-| **options** | weitere Daten im JSON-Format (nach Bedarf) |
+| **id** | ID of the attempted solution (primary key, auto-increment) |
+| **assignment_id** | ID of the assignment sheet |
+| **user_id** | participant |
+| **start** | individual start of processing (optional) |
+| **end** | individual end of processing (optional) |
+| **options** | further data in JSON format (as required) |
 
-## etask_responses - Antworten bzw. Lösungen zu einzelnen Aufgaben
+## etask_responses - Answers or solutions to individual tasks
 
-Die Antworten auf die einzelnen Aufgaben werden in der Tabelle `etask_responses` abgelegt. Die Antworten selbst sind natürlich typspezifisch und werden wie die Aufgabeninhalte in einem JSON-Fomat gespeichert.
+The responses to the individual tasks are stored in the `etask_responses` table. The responses themselves are of course type-specific and are stored in a JSON format like the task content.
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **id** | ID der Antwort (Primärschlüssel, Auto-Increment) |
-| **assignment_id** | ID des Aufgabenblatts |
-| **task_id** | ID der Aufgabe |
-| **user_id** | Teilnehmer |
-| **response** | Antwort im JSON-Format (abhängig vom Aufgabentyp) |
-| **state** | Status (numerisch, vom Tool zu definieren) |
-| **points** | Bewertung in Punkten (optional) |
-| **feedback** | Feedback zur Antwort (mit Formatierung) |
-| **grader_id** | Nutzer-ID des Feedback-Gebers |
-| **mkdate** | Erstellungsdatum |
-| **chdate** | Änderungsdatum |
-| **options** | weitere Daten im JSON-Format (nach Bedarf) |
+| **id** | ID of the response (primary key, auto-increment) |
+| **assignment_id** | ID of the task sheet |
+| **task_id** | ID of the task |
+| **user_id** | participant |
+| **response** | Response in JSON format (depending on task type) |
+| **state** | Status (numerical, to be defined by the tool) |
+| **points** | Rating in points (optional) |
+| **feedback** | Feedback on the answer (with formatting) |
+| **grader_id** | User ID of the feedback provider |
+| **mkdate** | creation date |
+| **chdate** | modification date |
+| **options** | further data in JSON format (as required) |
 
 
-## JSON-Formate für Aufgabentypen
+## JSON formats for task types
 
-In diesem Abschnitt ist das JSON-Format der wichtigsten Aufgabentypen definiert. Zu beachten ist, daß der Aufgabentext nicht Teil dieser JSON-Beschreibung ist, sondern direkt in der Spalte `description` in der Tabelle `etask_tasks` gespeichert ist. Für weitere Aufgabentypen müßte die Auflistung hier entsprechend ergänzt werden.
+This section defines the JSON format of the most important task types. Please note that the task text is not part of this JSON description, but is stored directly in the `description` column in the `task_tasks` table. For other task types, the listing here would have to be supplemented accordingly.
 
-#### Multiple-Choice
+#### Multiple choice
 
-Es gibt ein gemeinsames Schema für alle Arten von Aufgaben mit Antwortwahl (mit Ausnahme des Lückentexts).
+There is a common schema for all types of tasks with a choice of answers (with the exception of cloze text).
 
-Beispiel:
+Example:
 ```json
 {
-   "select":"multiple",
+   "select": "multiple",
    "optional":false,
    "answers":[
       {
-         "text":"Ist der Himmel blau?",
+         "text": "Is the sky blue?",
          "score":1,
          "feedback":"..."
       },
       {
-         "text":"Findet man am Ende des Regenbogens einen Topf voll Gold?",
+         "text": "Can you find a pot of gold at the end of the rainbow?",
          "score":0,
          "feedback":"..."
       }
@@ -160,34 +160,34 @@ Beispiel:
 }
 ```
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **select** | `single` oder `multiple` |
-| **optional** | `true` (Antwort ist optional) oder `false` (Antwort muß gegeben werden) |
-| **answers** | Liste der Antwortmöglichkeiten (ggf. inkl. automatischem Feedback) |
+| **select** | `single` or `multiple` |
+| **optional** | `true` (answer is optional) or `false` (answer must be given) |
+| **answers** | List of possible answers (including automatic feedback if applicable) |
 
-Antwort:
+Response:
 ```json
 [
     1, 0
 ]
 ```
 
-Wenn eine Frage unbeantwortet bleibt (optionale Antwort), wird ein Wert von `-1` eingetragen.
+If a question remains unanswered (optional answer), a value of `-1` is entered.
 
-#### Textaufgaben
+#### Text questions
 
-Für Textaufgaben gibt es ein Schema ähnlich wie bei den Multiple-Choice mit kleinen Erweiterungen. Die vordefinierten Antworten sind hier aber keine Antwortoptionen zur Auswahl, sondern die automatisch auswertbaren Antworten mit entsprechender Bewertung (die Liste kann leer sein, wenn es keine Auswertung gibt).
+For text tasks there is a scheme similar to multiple choice with small extensions. However, the predefined answers here are not answer options for selection, but the automatically evaluable answers with corresponding evaluation (the list can be empty if there is no evaluation).
 
-Beispiel:
+Example:
 ```json
 {
-   "layout":"textarea",
+   "layout": "textarea",
    "template":"...",
-   "compare":"ignorecase",
+   "compare": "ignorecase",
    "answers":[
       {
-         "text":"Paris",
+         "text": "Paris",
          "score":1,
          "feedback":"..."
       }
@@ -195,59 +195,59 @@ Beispiel:
 }
 ```
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **layout** | `input` (einzeilig) oder `textarea` (mehrzeilig) |
-| **template** | initiale Textvorgabe für die Lösung der Teilnehmer |
-| **compare** | Vergleichskriterum für die Auswertung, z.B. `ignorecase` oder `levenshtein` |
-| **answers** | Liste der automatisch ausgewerteten Antworten (ggf. inkl. automatischem Feedback) |
+| **layout** | `input` (single-line) or `textarea` (multi-line) |
+| **template** | initial text template for the participants' solution |
+| **compare** | comparison criterion for the evaluation, e.g. `ignorecase` or `levenshtein` |
+| **answers** | List of automatically evaluated answers (including automatic feedback, if applicable) |
 
 
-Antwort:
+Response:
 ```json
 [
 "foobar"
 ]
 ```
 
-#### Lückentexte
+#### Cloze texts
 
-Beim Lückentext sind die Antworten getrennt vom eigentlichen Lückentext abgelegt, in dem nur die Lücken ausgezeichnet sind. Eine Lücke mit dabei im Text mit `[=[]()=]` markiert. Der Lückentext kann dabei auch formatiert sein (Stud.IP-Formatierung bzw. WYSIWYG-Editor).
+In cloze text, the answers are stored separately from the actual cloze text, in which only the gaps are marked. A gap is marked in the text with `[=[]()=]`. The cloze text can also be formatted (Stud.IP formatting or WYSIWYG editor).
 
-Beispiel:
+Example:
 ```json
 {
-   "text":"Die Vase steht []() dem []().",
+   "text": "The vase is []() the []().",
    "select":true,
-   "compare":"ignorecase",
+   "compare": "ignorecase",
    "answers":[
       [
          {
-            "text":"auf",
+            "text": "on",
             "score":1
          },
          {
-            "text":"neben",
+            "text": "next to",
             "score":0,
             "feedback":"..."
          },
          {
-            "text":"unter",
+            }, { "text": "below",
             "score":0,
             "feedback":"..."
          }
       ],
       [
          {
-            "text":"Stuhl",
+            "text": "chair",
             "score":0
          },
          {
-            "text":"Tisch",
+            "text": "Table",
             "score":1
          },
          {
-            "text":"Teppich",
+            "text": "Carpet",
             "score":0
          }
       ]
@@ -256,42 +256,42 @@ Beispiel:
 ```
 
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **text** | Text des Lückentexts (mit Formatierung), Lücken sind mit `[=[]()=]` markiert |
-| **select** | `true` (Auswahl aus Liste) oder `false` (Eingabe als Text) |
-| **compare** | Vergleichskriterum für die Auswertung, z.B. `ignorecase` oder `levenshtein` |
-| **answers** | Liste der Antwortmöglichkeiten bzw. der automatisch ausgewerteten Antworten (ggf. inkl. automatischem Feedback) |
+| **text** | Text of the gap text (with formatting), gaps are marked with `[=[]()=]` |
+| **select** | `true` (selection from list) or `false` (input as text) |
+| **compare** | comparison criterion for the evaluation, e.g. `ignorecase` or `levenshtein` |
+| **answers** | List of answer options or automatically evaluated answers (including automatic feedback, if applicable) |
 
 
-Antwort;
+Answer;
 ```json
 [
-"auf", "Tisch"
+"on", "table"
 ]
 ```
 
-#### Zuordnungen
+#### Assignments
 
-Zuordnungen bestehen aus einer Liste von Gruppen (Kategorien) und einer Liste von Antworten, die diesen Gruppen zugeordnet werden können. Es kann Antworten geben, die unzugeordnet bleiben müssen - diese bekommen die Gruppe mit dem Index "`-1`" zugewiesen.
+Assignments consist of a list of groups (categories) and a list of answers that can be assigned to these groups. There may be answers that must remain unassigned - these are assigned the group with the index "`-1`".
 
-Beispiel:
+Example:
 ```json
 {
-    "select":"single",
+    "select": "single",
     "groups":[
-        "Instrument",
-        "Werkzeug"
+        "instrument",
+        "tool"
     ],
     "answers":[
         {
             "id":42,
-            "text":"Hammer",
+            "text": "Hammer",
             "group":1
         },
         {
             "id":7,
-            "text":"Geige",
+            "text": "Violin",
             "group":0
         }
     ]
@@ -299,17 +299,17 @@ Beispiel:
 ```
 
 
-| Attribut | Beschreibung |
+| attribute | description |
 | ---- | ---- |
-| **select** | (Einfachzuordnung) oder `multiple` (Mehrfachzuordnung in jeder Gruppe) |
-| **groups** | Liste der Gruppen für die Zuordnung (numeriert ab 0) |
-| **answers** | Liste der Antwortmöglichkeiten (ggf. inkl. automatischem Feedback) und Gruppenzuordnung |
+| **select** | (single assignment) or `multiple` (multiple assignment in each group) |
+| **groups** | List of groups for the assignment (numbered from 0) |
+| **answers** | List of answer options (possibly including automatic feedback) and group assignment |
 
-Antwort:
+Response:
 ```json
 {
 "42": 0, "7": 1
 }
 ```
 
-Wenn eine Antwort nicht zugeordnet bleibt, wird ein Wert von "`-1`" eingetragen.
+If a response remains unassigned, a value of "`-1`" is entered.

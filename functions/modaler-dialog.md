@@ -1,138 +1,138 @@
 ---
-id: modaler-dialog
-title: Modaler Dialog
-sidebar_label: Modaler Dialog
+id: modal-dialog
+title: Modal dialog
+sidebar_label: Modal dialog
 ---
 
-### Serverseitige erzeugte Abfragen
+### Server-side generated queries
 
-Um einen modalen Dialog zu erzeugen, kann man ganz einfach die Methode `PageLayout::postQuestion();` verwenden. Diese Methode kapselt in sich die Erzeugung eines entsprechenden `QuestionBox`-Objekts und setzt die entsprechenden Parameter. Die Abfrage wird dann analog zu den [`MessageBoxen`](MessageBox) bei nächstmöglicher Gelegenheit im System angezeigt.
+To create a modal dialog, you can simply use the method `PageLayout::postQuestion();`. This method encapsulates the creation of a corresponding `QuestionBox` object and sets the corresponding parameters. The query is then displayed in the system at the next possible opportunity, analogous to the [`MessageBoxes`](MessageBox).
 
-Die `QuestionBox` kann die Antwort sowohl als `GET` als auch als `POST`-Request absetzen. Im Standardfall bei `PageLayout::postQuestion()` wird ein `POST`-Request abgesetzt, wodurch eine einfache Unterscheidung zwischen Bestätigung und Ablehnung der Frage schon alleine durch die genutzte Request-Methode erreicht werden kann.
+The `QuestionBox` can send the response both as a `GET` and as a `POST` request. In the standard case with `PageLayout::postQuestion()`, a `POST` request is sent, whereby a simple differentiation between confirmation and rejection of the question can be achieved simply by the request method used.
 
-Die Funktion bzw. die Erzeugung einer `QuestionBox` benötigt mindestens 1, maximal 3 Parameter.
+The function or the creation of a `QuestionBox` requires at least 1, maximum 3 parameters.
 
-#### Parameter
-* `$question`: Der Frage bzw. die Aktion, die bestätigt werden soll
-* `[$approveParams]`: optional, Link Parameter für den URLHelper im Falle einer positiven Antwort, in der Form `['name' => wert, 'name2' => wert2]`.
-* `[$disapproveParams]`: optional, Link Parameter für den URLHelper im Falle einer negativen Antwort. 
+#### Parameters
+* `$question`: The question or action to be confirmed
+* `[$approveParams]`: optional, link parameter for the URLHelper in the event of a positive response, in the form `['name' => value, 'name2' => value2]`.
+* `[$disapproveParams]`: optional, link parameter for the URLHelper in the event of a negative response.
 
-Die Rückgabe der Methode ist ein `QuestionBox`-Objekt, welches noch weiter manipuliert werden kann.
+The method returns a `QuestionBox` object, which can be manipulated further.
 
-#### Weitere Methoden der QuestionBox
+#### Further methods of the QuestionBox
 
-Das `QuestionBox`-Objekt stellt darüber hinaus noch weitere Methoden zur Verfügung:
+The `QuestionBox` object also provides further methods:
 
-| Funktion | Beschreibung | 
+| Function | Description |
 | ---- | ---- |
-| `setApproveParameters(array $parameters)` |  Setzt die Link Parameter für die positive Bestätigung|
-| `setApproveURL($url)` | Setzt die URL, die bei einer positiven Bestätigung aufgerufen werden soll|
-| `setDisapproveParameters(array $parameters)` | Setzt die Link Parameter für die negative Bestätigung |
-| `setDisapproveURL($url)` | Setzt die URL, die bei einer negativen Bestätigung aufgerufen werden soll |
-| `setBaseURL($url)` | Setzt die URLs für die positive und die negative Bestätigung auf den gleichen Wert |
-| `setMethod($method)` | Setzt die zu nutzende Request-Methode (es ist anzuraten, immer `POST` zu nutzen; in dem Fall wird auch immer ein gültiges [CSRF-Token](CSRFProtection) in dem Request enthalten sein) |
-| `includeTicket()` | Weist die QuestionBox an, ein frisches Stud.IP-Ticket beim Rendern einzufügen |
+| `setApproveParameters(array $parameters)` | Sets the link parameters for the positive confirmation|
+| `setApproveURL($url)` | Sets the URL to be called in case of a positive confirmation|
+| `setDisapproveParameters(array $parameters)` | Sets the link parameters for the negative confirmation |
+| `setDisapproveURL($url)` | Sets the URL to be called for a negative confirmation |
+| `setBaseURL($url)` | Sets the URLs for the positive and negative confirmation to the same value |
+| `setMethod($method)` | Sets the request method to be used (it is advisable to always use `POST`; in this case, a valid [CSRF token](CSRFProtection) will always be included in the request) |
+| `includeTicket()` | Instructs the QuestionBox to insert a fresh Stud.IP ticket when rendering |
 
 
-#### Beispiel
+#### Example
 ```php
-PageLayout::postQuestion(_('Wollen Sie dies wirklich löschen?'), $accept_url = *, $decline_url = *);
+PageLayout::postQuestion(_('Do you really want to delete this?'), $accept_url = *, $decline_url = *);
 ```
 
 #### Screenshot
 ![image](../assets/fbce782c9fa1a8778926c5f6ade1d5d4/image.png)
 
 
-### Clientseitige Dialoge (*data-dialog"*)
+### Client-side dialogs (*data-dialog "*)
 
-Die Ziele dahinter sind sowohl ein einheitliches Verhalten von Dialogen innerhalb von Stud.IP als auch eine Erleichterung für den Entwickler. Im Idealfall muss kein JavaScript mehr angefasst werden, um Dialoge zu nutzen. Die einzige Anpassung auf Serverseite ist das Auszeichnen des HTML mit entsprechenden Attributen und das Entfernen des umgebenden Layouts, so dass nur der wirklich relevante Inhalt zurückgegeben wird.
+The goals behind this are both a uniform behavior of dialogs within Stud.IP and a simplification for the developer. Ideally, JavaScript no longer needs to be touched in order to use dialogs. The only adjustment on the server side is to mark up the HTML with appropriate attributes and remove the surrounding layout so that only the really relevant content is returned.
 
-#### Einbindung
+#### Integration
 
-Dialoge können im HTML an den Tags `<a>`, `<button>` und `<form>` über das Attribut **`data-dialog`** gesteuert werden. Derart ausgezeichnete Elemente werden bei aktiviertem Javascript ihre Inhalte in einem modalen Dialog anzeigen. Die Inhalte werden dabei per AJAX nachgeladen und mittels jQuery UI's Dialog-Widget angezeigt. Auf Serverseite kann ein Aufruf, der aus einem solchen Dialog erfolgte, an dem HTTP-Header `X-Dialog` erkannt werden.
+Dialogs can be controlled in the HTML at the tags `<a>`, `<button>` and `<form>` via the attribute **`data-dialog`**. Elements marked in this way will display their content in a modal dialog when JavaScript is activated. The content is loaded via AJAX and displayed using jQuery UI's dialog widget. On the server side, a call made from such a dialog can be recognized by the HTTP header 'X-Dialog'.
 
-Sollte bereits ein Dialog geöffnet sein und ein entsprechend ausgezeichnetes Element innerhalb des Dialogs aufgerufen werden, so wird der aktuelle Dialog aktualisiert, man verbleibt also im Dialog.
+If a dialog is already open and a correspondingly marked element within the dialog is called, the current dialog is updated, so you remain in the dialog.
 
-Zu beachten: In der Rückgabe enthaltene `<script>`-Tags werden gefiltert und ausgeführt. Dies ist kein Standardverhalten von jQuery UI's Dialog und sollte beachtet werden (auch wenn derartiges Inline-Javascript im Idealfall vermieden und stattdessen auf globale Handler zurückgegriffen werden sollte).
+Please note: `<script>` tags contained in the return are filtered and executed. This is not a standard behavior of jQuery UI's dialog and should be taken into account (even if such inline javascript should ideally be avoided and global handlers should be used instead).
 
-#### Parameter
+#### Parameters
 
-Der Dialog kann über verschiedene Attributangaben oder HTTP-Header gesteuert werden, welche im Folgenden erläutert werden. Dabei gilt, dass die Attributangaben auch beliebig miteinander kombiniert werden können, bspw. `data-dialog="title=foo;size=auto;buttons=false"`.
+The dialog can be controlled via various attribute specifications or HTTP headers, which are explained below. The attribute specifications can also be combined with each other as desired, e.g. `data-dialog="title=foo;size=auto;buttons=false"`.
 
-##### Titel
+##### Title
 
-Der Titel eines Dialogs ist standardmässig der Inhalt des title-Attributs  des zugrundeliegenden Elements (sofern vorhanden) und fällt bei den Tags `<a>` und `<button>` auf den Textinhalt des Elements zurück.  Der Titel kann über verschiedene Parameter gesteuert werden:
+By default, the title of a dialog is the content of the title attribute of the underlying element (if available) and falls back to the text content of the element for the tags `<a>` and `<button>`.  The title can be controlled via various parameters:
 
-| Parameter | Beschreibung | 
+| Parameter | Description |
 | ---- | ---- |
-|`data-dialog="title='Test Titel'"` |Setzt den Titel auf **Test Titel** |
-|HTTP-Header `X-Title: Test Titel 2` |Setzt den Titel auf **Test Titel 2** |
+|`data-dialog="title='Test Title'"` |Sets the title to **Test Title** |
+|HTTP-Header `X-Title: Test Title 2` |Sets the title to **Test Title 2** |
 
-##### Größe
+##### Size
 
-Die Größe des Dialogs ist standardmässig 2/3 der Breite und Höhe und des Browserfensters. Dieser Wert kann über optionale Parameter gesteuert werden, wobei die minimale Größe des Dialogs auf 320x200 Pixel festgesetzt wurde:
+The size of the dialog is 2/3 of the width and height and the browser window by default. This value can be controlled via optional parameters, whereby the minimum size of the dialog is set to 320x200 pixels:
 
-| Parameter | Beschreibung |
+| Parameter | Description |
 | ---- | ---- |
-|`data-dialog="width=X"` |Setzt die Breite des Dialogs auf **X** Pixel |
-|`data-dialog="height=Y"` |Setzt die Höhe des Dialogs auf **Y** Pixel | 
-|`data-dialog="size=XxY"` |Fasst die Angabe der Breite von **X** Pixeln und Höhe von **Y** Pixeln zusammen |
-|`data-dialog="size=X"` |Erzeugt einen quadratischen Dialog mit **X** Pixeln Breite und Höhe | 
-|`data-dialog="size=auto"` |Versucht, die Größe des Dialogs an den geladenen Inhalt anzupassen. |
-|`data-dialog="size=big"` |Erzeugt einen großen Dialog mit viel Platz. | 
-|`data-dialog="size=medium"` |Erzeugt einen Dialog mit moderat viel Platz. | 
-|`data-dialog="size=medium-43"` |Erzeugt einen Dialog im 4:3 Verhältnis von Lange zu Breite. | 
-|`data-dialog="size=big"` |Erzeugt einen kleinen Dialog der wenig Platz einnimmt. | 
+|`data-dialog="width=X"` |Sets the width of the dialog to **X** pixels |
+|`data-dialog="height=Y"` |Sets the height of the dialog to **Y** pixels |
+|`data-dialog="size=XxY"` |Sets the width of **X** pixels and height of **Y** pixels |
+|`data-dialog="size=X"` |Creates a square dialog with **X** pixels width and height |
+|`data-dialog="size=auto"` |Tries to adapt the size of the dialog to the loaded content. |
+|`data-dialog="size=big"` | Creates a large dialog with a lot of space. |
+|`data-dialog="size=medium"` |Creates a dialog with a moderate amount of space. |
+|`data-dialog="size=medium-43"` |Creates a dialog with a 4:3 ratio of length to width. |
+|`data-dialog="size=big"` |Creates a small dialog that takes up little space. |
 
 ##### Buttons
 
-Standardmässig enthält jeder Dialog einen Button *Abbrechen* am unteren Rande des Dialogs, welcher den Dialog schliesst.
+By default, each dialog contains a *Cancel* button at the bottom of the dialog, which closes the dialog.
 
-Es wird auch versucht, Buttons aus der Rückgabe zu extrahieren, damit diese sich ebenfalls in der Button-Leiste des Dialogs einreihen können. Dabei werden nur die Tags `<a>` und `<button>` berücksichtigt, welche entweder direkt mit dem Attribut `data-dialog-button` ausgezeichnet sind oder sich unterhalb eines Elements befinden, welche mit dem Attribut `data-dialog-button` ausgezeichnet wurde.
+An attempt is also made to extract buttons from the return so that they can also be placed in the button bar of the dialog. Only the tags `<a>` and `<button>` are considered, which are either directly marked with the attribute `data-dialog-button` or are located below an element which has been marked with the attribute `data-dialog-button`.
 
-Sowohl Links als auch Formulare können auf diese Weise aufgerufen werden. Dies bedeutet im Besonderen dass, sich auch ein Speichern-Button eines Formulars am unteren Rande des Dialogs befinden kann.
+Both links and forms can be called up in this way. In particular, this means that a save button of a form can also be located at the bottom of the dialog.
 
-Zu beachten ist, dass ein vorhandener Link/Button mit dem Inhalt *Abbrechen* mit dem Standardbutton überschrieben wird, welcher den Dialog schliesst. Dieses Verhalten ist gewollt und sollte beim Entwickeln berücksichtigt werden.
+Please note that an existing link/button with the content *Cancel* is overwritten with the standard button, which closes the dialog. This behavior is intentional and should be taken into account during development.
 
-Die Button-Leiste kann über die folgenden Mechanismen komplett ausgeschaltet werden, was auch bedeutet, dass die Buttons nicht aus dem zurückgegebenen Inhalt extrahiert werden:
+The button bar can be switched off completely using the following mechanisms, which also means that the buttons are not extracted from the returned content:
 
-| Parameter | Beschreibung | 
+| Parameter | Description |
 | ---- | ---- |
-| `data-dialog="buttons=false"` | HTTP-Header `X-No-Buttons` |
+| `data-dialog="buttons=false"` | HTTP header `X-No-Buttons` |
 
 
-##### Weitere Optionen
+##### Further options
 
-Ein Dialog kann über die folgenden Mechanismen geschlossen werden:
+A dialog can be closed using the following mechanisms:
 
-| Parameter | Beschreibung | 
+| Parameter | Description |
 | ---- | ---- |
 | `data-dialog="close"`| HTTP-Header `X-Dialog-Close |
-| HTTP-Header `X-Location: <url>` | Bei der Auswertung einer Rückgabe kann auch ein Verweis auf eine andere Seite angegeben werden, welche den Dialog verlässt. Dies geschieht über folgenden Mechanismus: |
-| `data-dialog="reload-on-close"` | Die den Dialog umgebende Seite kann beim Schliessen des Dialogs automatisch neu geladen werden |
-| `data-dialog="resize=false"` |Der Dialog kann starr eingestellt werden, er kann also in der Größe nicht vom Nutzer verändert werden |
-| HTTP-Header `X-WikiLink: <url>` | Über den HTTP-Header `X-WikiLink` kann eingestellt werden, zu welcher Seite das im Titel angezeigte Hilfe-Icon verweisen soll: |
-| `data-dialog="center-content"` | Der Inhalt des Dialogs kann sowohl horizontal als auch vertikal zentriert werden |
-| HTTP-Header `X-Dialog-Execute: <JS-Funktion, bspw. STUDIP.Foo.bar>` | Aus der Rückgabe heraus, kann  eine beliebige JavaScript-Funktion aufgerufen werden, welcher der Body des Requests übergeben wird (falls dieser JSON ist, wird er entsprechend umgewandelt). Ist die übegebene JavaScript-Funktion ungültig (nicht definiert oder keine Funktion), so wird ein entsprechender Fehler geworfen. |
-| HTTP-Header `X-Dialog-Execute: {func: <JS-Funktion, bspw. STUDIP.Foo.bar>, payload: []}`| Alternativ kann in diesem Header ein JSON-kodiertes Array mit dem verpflichtendem Eintrag `func` als Funktionsnamen und dem optionalen Eintrag `payload` übergeben werden. Dies ist in Situationen notwendig, wo zwar der Dialog aktualisiert werden soll (als HTTML über den Body der AJAX-Response) aber auch über die angegebene Funktion `func` mittels des gelieferten Payloads Änderungen stattfinden sollen. |
+| HTTP header `X-Location: <url>` | When evaluating a return, a reference to another page can also be specified, which exits the dialog. This is done using the following mechanism: |
+| `data-dialog="reload-on-close"` | The page surrounding the dialog can be automatically reloaded when the dialog is closed |
+| `data-dialog="resize=false"` | The dialog can be set rigidly, i.e. it cannot be resized by the user |
+| HTTP header `X-WikiLink: <url>` | The HTTP header `X-WikiLink` can be used to set the page to which the help icon displayed in the title should link: |
+| `data-dialog="center-content"` | The content of the dialog can be centered both horizontally and vertically |
+| HTTP header `X-Dialog-Execute: <JS function, e.g. STUDIP.Foo.bar>` | Any JavaScript function can be called from the return, to which the body of the request is passed (if this is JSON, it is converted accordingly). If the JavaScript function passed is invalid (not defined or not a function), a corresponding error is thrown. |
+| HTTP header `X-Dialog-Execute: {func: <JS function, e.g. STUDIP.Foo.bar>, payload: []}`| Alternatively, a JSON-encoded array with the mandatory entry `func` as the function name and the optional entry `payload` can be passed in this header. This is necessary in situations where the dialog is to be updated (as HTTML via the body of the AJAX response) but changes are also to be made via the specified function `func` using the supplied payload. |
 
 
-Über die **CSS-Klasse** `hide-in-dialog` können Inhalte gezielt in Dialogen versteckt werden.
+The **CSS class** `hide-in-dialog` can be used to hide content in dialogs.
 
-##### Unterstützte Events
+##### Supported events
 
-Beim Öffnen und Schliessen des Dialogs werden jeweils JavaScript-Events getriggert, um dem Entwickler die Möglichkeit zu geben, das Verhalten der Inhalte dynamisch zu erweitern/ändern.
+JavaScript events are triggered when the dialog is opened and closed to allow the developer to dynamically extend/change the behavior of the content.
 
-* Beim **Öffnen** wird der Event `dialog-open` getriggert
-* Beim **Öffnen** und beim **Ändern** des Inhalts des Dialogs via AJAX wird der Event `dialog-update` getriggert
-* Beim **Schliessen** wird der Event `dialog-close` getriggert
+* When **opening** the event `dialog-open` is triggered
+* When **opening** and **changing** the content of the dialog via AJAX, the event `dialog-update` is triggered
+* On **closing** the event `dialog-close` is triggered
 
-Beiden Events wird der aktuelle Dialog sowie die Optionen beim Aufruf übergeben. Exemplarischer Beispielcode:
+Both events are passed the current dialog and the options when called. Exemplary sample code:
 
 ```javascript
 (function ($) {
    $(document).on('dialog-open', function (event, parameters) {
-    var dialog  = parameters.dialog;
+    var dialog = parameters.dialog;
     var options = parameters.options;
 
     $(dialog).dialog('title', options.title + ' - adjusted');
@@ -140,20 +140,20 @@ Beiden Events wird der aktuelle Dialog sowie die Optionen beim Aufruf übergeben
 }(jQuery));
 ```
 
-Beim Laden der Daten über AJAX wird nach dem Laden der Event `dialog-load` getriggert, welchem die Optionen und das verwendete jQuery-XMLHttp-Request (als `xhr`) übergeben wird.
+When loading the data via AJAX, the event `dialog-load` is triggered after loading, to which the options and the jQuery-XMLHttp request used (as `xhr`) are transferred.
 
-Je nachdem, wie der Dialog aufgerufen wurde, erfolgen die Events an unterschiedlichen Stellen:
+Depending on how the dialog was called, the events occur at different points:
 
-Wurde der Dialog implizit über das `data-dialog`-Attribut an einem Element geöffnet, werden die Events an eben diesem Element getriggert, während sie im expliziten/programmatischen Fall am globalen *document*-Objekt getriggert werden. Eine Ausnahme bildet der Event `dialog-update`. Dieser wird immer global am *document*-Objekt getriggert, damit er immer aufgerufen wird - unabhängig davon, ob das auslösende Element vorhanden ist oder nicht.
+If the dialog was opened implicitly via the `data-dialog` attribute on an element, the events are triggered on this very element, while in the explicit/programmatic case they are triggered on the global *document* object. The `dialog-update` event is an exception. This is always triggered globally on the *document* object so that it is always called - regardless of whether the triggering element is present or not.
 
-### Clientseitige Dialoge zur Dateneingabe
+### Client-side dialogs for data input
 
-Dialoge, welche serverseitig zur Eingabe von Daten in Formularen geladen werden, sollen im Fehlerfall eine Fehlermeldung im Dialog anzeigen. Bei erfolgreicher Dateneingabe soll der Dialog geschlossen werden und die Seite, welche im Hintergrund des Dialoges sichtbar ist (und aus welcher der Dialog geladen wurde) neu geladen werden. Um dies zu ermöglichen, müssen folgende Dinge im Quellcode eingebaut werden:
+Dialogs that are loaded on the server side for entering data in forms should display an error message in the dialog in the event of an error. If the data entry is successful, the dialog should be closed and the page that is visible in the background of the dialog (and from which the dialog was loaded) should be reloaded. To make this possible, the following things must be built into the source code:
 
-* Das Formular, welches im Dialog angezeigt wird, muss das data-dialog Attribut besitzen, welches den Wert "reload-on-close" besitzt.
-* Der Dialog wird über einen Link aufgerufen, bei dem ebenfalls das data-dialog Attribut mit dem Wert "reload-on-close" gesetzt ist.
-* In der Aktion im Controller wird im Fehlerfall eine Fehlermeldung via PageLayout::postError (oder PageLayout::postMessage(MessageBox::error())) ausgegeben.
-* Im Erfolgsfall wird in der Aktion im Controller der Header X-Dialog-Close hinzugefügt und nichts gerendert:
+* The form that is displayed in the dialog must have the data-dialog attribute, which has the value "reload-on-close".
+* The dialog is called via a link that also has the data-dialog attribute set with the value "reload-on-close".
+* In the action in the controller, an error message is output via PageLayout::postError (or PageLayout::postMessage(MessageBox::error())) in the event of an error.
+* If successful, the X-Dialog-Close header is added to the action in the controller and nothing is rendered:
 
 ```php
 <?php
@@ -161,19 +161,19 @@ $this->response->add_header('X-Dialog-Close', '1');
 $this->render_nothing();
 ```
 
-Damit wird das oben beschriebene Verhalten des Dialoges erreicht.
+This achieves the behavior of the dialog described above.
 
-### Clientseitige Abfragen
+### Client-side queries
 
-Über die Methode `STUDIP.Dialog.confirm(question, yes_callback, no_callback);` kann eine Bestätigung einer Aktion abgefragt werden. Der Parameter `question` enthält den Text für die Bestätigung (wie bspw "Sind Sie sicher, dass Sie dieses Element löschen wollen?") und der `yes_callback` wird anschliessend aufgerufen, falls die Abfrage positiv bestätigt wurde. Der `no_callback` ist optional und würde in dem Fall aufgerufen werden, dass die Abfrage negativ bestätigt wird.
-Der Handler kann auch als [Deferred](http://api.jquery.com/category/deferred-object/) genutzt werden:
+The method `STUDIP.Dialog.confirm(question, yes_callback, no_callback);` can be used to request confirmation of an action. The parameter `question` contains the text for the confirmation (e.g. "Are you sure you want to delete this element?") and the `yes_callback` is then called if the query was confirmed positively. The `no_callback` is optional and would be called in the event that the query is confirmed negatively.
+The handler can also be used as [Deferred](http://api.jquery.com/category/deferred-object/):
 
 ```javascript
-STUDIP.Dialog.confirm('Sind Sie sicher?'.toLocaleString()).done(function () {
-    alert('Aktion wurde bestätigt');
+STUDIP.Dialog.confirm('Are you sure?'.toLocaleString()).done(function () {
+    alert('Action has been confirmed');
 }).fail(function () {
-    alert('Aktion wurde nicht bestätigt');
+    alert('Action was not confirmed');
 });
 ```
 
-Als Frage kann auch ein boole'scher Wert übergeben werden, was dazu führt, dass die Abfrage sofort als bestätigt bzw. abgelehnt gehandhabt wird.
+A Boolean value can also be passed as a question, which means that the query is immediately handled as confirmed or rejected.

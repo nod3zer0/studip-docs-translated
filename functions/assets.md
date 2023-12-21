@@ -4,49 +4,49 @@ title: Assets
 sidebar_label: Assets
 ---
 
-### Einleitung
+### Introduction
 
-Alle Bilder, JavaScript- und Stylesheet-Dateien von Stud.IP liegen in einem gemeinsamen Verzeichnis `public/assets` (siehe zum Beispiel: https://gitlab.studip.de/studip/studip/-/blob/main/public/assets)
+All images, JavaScript and stylesheet files of Stud.IP are located in a common directory `public/assets` (see for example: https://gitlab.studip.de/studip/studip/-/blob/main/public/assets)
 
-Ausserdem exisitiert die Konfigurationsvariable `$GLOBALS['ASSETS_URL']`, die eine URI zu diesem Verzeichnis enthält. Standardmässig verweist diese auf das relativ zur jeweiligen Stud.IP-URI gelegene Verzeichnis `assets`.
+In addition, the configuration variable `$GLOBALS['ASSETS_URL']` exists, which contains a URI to this directory. By default, this refers to the `assets` directory located relative to the respective Stud.IP URI.
 
-Beispiel: Ein Stud.IP liegt unter `https://www.meinstudip.de`, dann liegt das Assets-Verzeichnis standardmässig unter `https://www.meinstudip.de/assets`.
+Example: A Stud.IP is located at `https://www.meinstudip.de`, then the assets directory is located at `https://www.meinstudip.de/assets` by default.
 
-Zweck dieser Übung ist, statische Inhalte von anderen Servern ausliefern zu können, um so die eigentlichen Webserver zu entlasten. Ein speziell eingerichteter Assets-Webserver ist viel effizienter in der Auslieferung der statischen Inhalte, als das der normale Webserver könnte.
+The purpose of this exercise is to be able to deliver static content from other servers in order to relieve the actual web servers. A specially set up assets web server is much more efficient in delivering static content than the normal web server could be.
 
-### Einrichten eines speziellen Assets-Webservers
+### Setting up a special assets web server
 
-Vorraussetzung ist ein bereits vorhandener Webserver, der als Assets-Webserver dienen kann. In dieser Hinsicht ist [lighttpd](http://lighttpd.net) sehr zu empfehlen. Kopieren Sie nun einfach das komplette `assets`-Verzeichnis in Ihren Webbereich und notieren Sie sich die URI für dieses Verzeichnis. In Ihrer Stud.IP-Installation öffnen Sie die Konfigurationsdatei `config/config_local.inc.php` und suchen Sie dort nach dem Text `$ASSETS_URL = $ABSOLUTE_URI_STUDIP . 'assets/';`, den Sie dann in die oben notierte URI ändern müssen. **Achten Sie darauf, dass die `$ASSETS_URL` mit einemn Slash enden muss.
+The prerequisite is an existing web server that can serve as an assets web server. In this respect, [lighttpd](http://lighttpd.net) is highly recommended. Now simply copy the complete `assets` directory into your web area and make a note of the URI for this directory. In your Stud.IP installation, open the configuration file `config/config_local.inc.php` and search for the text `$ASSETS_URL = $ABSOLUTE_URI_STUDIP . 'assets/';`, which you must then change to the URI noted above. **Please note that the `$ASSETS_URL` must end with a slash.
 
-### Verwendung der Klasse Assets
+### Using the Assets class
 
-Um Bilder, JavaScripts usw., die sich im Assets-Verzeichnis befinden, im HTML-Markup ansprechen zu können, bestünde selbstverständlich die Möglichkeit, direkt die globale Variable `$ASSETS_URL` zu verwenden. Einfacher geht es aber mit der Klasse `Assets`, zudem bietet die Klasse einige Vorteile bei der dynamischen Auslieferung von Grafik-Assets zB. für Retina Displays. 
+To be able to address images, JavaScripts etc. located in the assets directory in the HTML markup, it would of course be possible to use the global variable `$ASSETS_URL` directly. However, it is easier with the class `Assets`, and the class also offers some advantages for the dynamic delivery of graphic assets, e.g. for Retina displays.
 
-**Für die Einbindung von Icons wird seit Stud.IP v3.4 nicht mehr die Klasse `Assets`, sondern die gesonderte Icon-API verwendet.**
+**Since Stud.IP v3.4 the class `Assets` is no longer used for the integration of icons, but the separate Icon API.
 
-Die Verwendung der Klasse soll hier kurz dargestellt werden. 
+The use of the class is briefly described here.
 
-`echo Assets::img('blank.gif');` gibt einen kompletten Image-Tag aus:
+`echo Assets::img('blank.gif');` outputs a complete image tag:
 
 ```php
 <img alt="Blank" src="assets/images/blank.gif" />
 ```
 
-Will man das `alt`-Attribut ändern oder weitere Attribute hinzufügen, kann man einfach als zweiten Parameter ein Array von Attribut => Attributwerten hinzufügen:
+If you want to change the `alt` attribute or add further attributes, you can simply add an array of attribute => attribute values as the second parameter:
 
 ```php
 echo Assets::img('blank.gif', array('alt' => 'nothing here', 'class' => 'some_class'));
 <img alt="nothing here" class="some_class" src="assets/images/blank.gif" />
 ```
 
-## Retina-Auflösungen
+## Retina resolutions
 
-Die Retina-Klasse kümmert sich automatisch  um das Einsetzen von Grafiken in Retina-Auflösung, wenn der Nutzer bei der Anmeldung an einem System mit einer entsprechende Auflösung arbeitet (dieses Verhalten ist ab der Version 2.5 vollständig implementiert). Bei allen Grafiken muss per Parameter darauf hingewiesen werden, dass die entsprechende Grafik auch in einer Retina-Version vorliegt.
+The Retina class automatically takes care of the insertion of graphics in Retina resolution if the user works with a corresponding resolution when logging on to a system (this behavior is fully implemented from version 2.5). For all graphics, a parameter must be used to indicate that the corresponding graphic is also available in a Retina version.
 
-Will man nun Grafiken auch in Retina-Auflösung bereitstellen und die Assets-Klasse automatisch die korrekte Größe bzw. Grafikdatei auswählen lassen, so sind folgende Vorraussetzungen zu erfüllen:
+If you now want to provide graphics in Retina resolution and have the assets class automatically select the correct size or graphics file, the following requirements must be met:
 
-- Zunächst muss eine Grafik in doppelter Auflösung (oder anders ausgedrückt in doppelter Größe in X und Y-Dimension) erstellt werden.
-- Die Grafik muss im gleichen Verzeichnis wie die Originaldatei mit dem Zusatz "@2x" (vor der Dateiendung und dem Punkt) abgelegt werden. Zu `header_logo.png` gesellt sich somit zB. `header_logo@2x.png`.
-- Beim Aufruf muss der Parameter "@2x" gesetzt sein. Erst dann sucht die Assets-Klasse nach einer entsprechend größeren Grafikdatei (es gibt keine automatische Suche nach einer Retina-Datei).
+- First, a graphic must be created in double resolution (or, in other words, in double size in X and Y dimensions).
+- The graphic must be stored in the same directory as the original file with the addition "@2x" (before the file extension and the dot). For example, `header_logo@2x.png` is added to `header_logo.png`.
+- The parameter "@2x" must be set when calling. Only then does the assets class search for a correspondingly larger graphics file (there is no automatic search for a Retina file).
 
-*Ein bisschen Hintergrund*: Retina-Grafiken werden auf vielen Smartphones oder Tablets mit hochauflösenden Displays verwendet. Auch die ersten Notebooks mit doppelter Auflösung sind erhältlich. Seit der Version 2.4 prüft Stud.IP beim Login die Pixel-Ratio des Ausgabegeräts und legt diese in der Session ab (der Wert heisst "'devicePixelRatio"). Wenn dieser Wert 2 ist, nimmt Stud.IP für die Dauer der Session eine Retina-Auflösung an. Die Grafiken werden - sofern "@2x" gesetzt ist, in der doppelten Auflösung geladen, aber weiterhin mit der Pixel-Ratio 1 angezeigt. Eine Grafik mit 44*44 wird also aus einer 88*88 Datei geladen, ihr aber die Größe 44*44 mitgegeben. Die aktuellen Browser entscheiden dann, wie sie mit der größeren Pixelanzahl umgehen. Damit aber diese Grafiken nicht auch auf nicht-Retina-Displays geladen und skaliert werden müssen, müssen oben genannte Bedingungen erfüllt werden. Auf Bildschirmen mit geringer Auflösung wird die Grafik dann trotzdem herunterskaliert, falls irrtümlich Retina angenommen wurde.
+*A little background*: Retina graphics are used on many smartphones or tablets with high-resolution displays. The first notebooks with double resolution are also available. Since version 2.4, Stud.IP checks the pixel ratio of the output device when logging in and stores this in the session (the value is called "'devicePixelRatio"). If this value is 2, Stud.IP assumes a retina resolution for the duration of the session. If "@2x" is set, the graphics are loaded in double the resolution, but are still displayed with a pixel ratio of 1. A graphic with 44*44 is therefore loaded from an 88*88 file, but is given the size 44*44. The current browsers then decide how to deal with the larger number of pixels. However, to ensure that these graphics do not have to be loaded and scaled on non-retina displays, the above conditions must be met. On screens with a lower resolution, the graphic will still be scaled down if Retina was assumed by mistake.

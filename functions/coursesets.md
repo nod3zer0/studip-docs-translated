@@ -1,23 +1,23 @@
 ---
 id: coursesets
-title: Anmeldesets und -regeln
-sidebar_label: Anmeldesets und -regeln
+title: Enrollment sets and rules
+sidebar_label: Enrollment sets and rules
 ---
 
-## Anmeldesets und -regeln
+## Enrollment sets and rules
 
-### Konzept
-Ein Anmeldeset stellt einen Rahmen für Veranstaltungen dar, die gemeinsame Regeln zur Anmeldung besitzen. Mit Stud.IP 3.0 werden initial schon einige verschiedene Regeln mitgeliefert, hier soll jedoch unter anderem beschrieben werden, wie man selbst eine solche Regel implementieren kann.
+### Concept
+A registration set is a framework for courses that have common rules for registration. Stud.IP 3.0 initially provides a number of different rules, but here we will describe how you can implement such a rule yourself.
 
 
 
-### Aufbau einer Anmelderegel
-Alle Anmelderegeln liegen im Ordner `lib/admissionrules`. Pro Regeltyp gibt es dort einen Ordner, in dem typischerweise die Klassendefinition der Regel liegt (`Regeltyp.class.php`, SQL-Anweisungen, die bei  (De-)Installation der Regel ausgeführt werden müssen und templates zur Konfiguration und zur Kurzanzeige der Regel.
+### Structure of a registration rule
+All submission rules are located in the `lib/admissionrules` folder. There is a folder for each rule type, which typically contains the class definition of the rule (`ruletype.class.php`, SQL statements that must be executed when the rule is (de)installed and templates for configuring and briefly displaying the rule.
 
-Im Folgenden soll das Beispiel `NightAdmission` entwickelt werden, eine Regel, die eine Anmeldung nur zwischen 22 und 6 Uhr zulässt.
+In the following, the example `NightAdmission` will be developed, a rule that only allows registration between 10 pm and 6 am.
 
-#### Speichern und Laden der Daten
-Die Regel vom Typ `NightAdmission` sollen alle in einer eigenen Tabelle `nightadmissions` in der Datenbank gespeichert werden. Da dieser Regeltyp neben dem standardmäßig vorhandenen Infotext keine weiteren Attribute besitzt, sieht diese Tabelle so aus:
+#### Saving and loading the data
+The rules of type `NightAdmission` should all be saved in a separate `nightadmissions` table in the database. As this rule type has no other attributes apart from the standard info text, this table looks like this:
 
 ```sql
 CREATE TABLE `nightadmissions` (
@@ -28,41 +28,41 @@ CREATE TABLE `nightadmissions` (
     PRIMARY KEY (`rule_id`);
 ```
 
-Wird dieser Regeltyp komplett aus dem System entfernt, so reicht folgende SQL-Anweisung zum Aufräumen:
+If this rule type is completely removed from the system, the following SQL statement is sufficient to clean it up:
 
 ```sql
 DROP TABLE `nightadmissions`;
 DELETE FROM `courseset_rule` WHERE `type`='NightAdmission';
 ```
 
-#### Regeldefinition
-Wir legen eine Datei `NightAdmission.class.php` an, die von der bereits vorhandenen Klasse `AdmissionRule` erbt. Da wir nur die aktuelle Uhrzeit berücksichtigen müssen, braucht diese Klasse keine eigenen, weiteren Attribute. Wir definieren nur, mit welchen anderen Anmelderegeltypen diese Regel kombinierbar ist (nämlich alle Standardregeln außer zeitgesteuerter und komplett gesperrter Anmeldung).
+#### Rule definition
+We create a file `NightAdmission.class.php`, which inherits from the already existing class `AdmissionRule`. As we only need to take the current time into account, this class does not need any additional attributes of its own. We only define with which other submission rule types this rule can be combined (namely all standard rules except time-controlled and completely blocked submission).
 
-Einige Standardmethoden müssen wir ebenfalls implementieren, um das Laden und Speichern in eigene Tabellen zu realisieren.
+We also have to implement some standard methods in order to realize loading and saving in our own tables.
 
 ```php
 <?php
 class NightAdmission extends AdmissionRule {
 
     /**
-     * Standardkonstruktor
+     * Standard constructor
      */
     public function __construct($ruleId=*, $courseSetId = *)
     {
         parent::__construct($ruleId, $courseSetId);
-        $this->default_message = _("Sie können sich nur nachts zwischen 22 und 6 Uhr anmelden.");
+        $this->default_message = _("You can only register at night between 10 p.m. and 6 a.m.");
         if ($ruleId) {
-            // Regel bereits vorhanden, lade Daten.
+            // Rule already exists, load data.
             $this->load();
         } else {
-            // Erzeuge neue ID.
+            // Create new ID.
             $this->id = $this->generateId('nightadmissions');
         }
         return $this;
     }
 
     /**
-     * Lösche aktuelle Regel aus der Datenbank.
+     * Delete current rule from the database.
      */
     public function delete() {
         parent::delete();
@@ -71,26 +71,26 @@ class NightAdmission extends AdmissionRule {
     }
 
     /**
-     * Beschreibungstext für diesen Regeltyp, wird angezeigt, wenn eine neue
-     * Regel zu einem Anmeldeset hinzugefügt werden soll.
+     * Description text for this rule type, is displayed when a new
+     * rule is to be added to a logon set.
      */
     public static function getDescription() {
-        return _("Diese Regel erlaubt die Anmeldung nur nachts zwischen 22 und 6 Uhr.");
+        return _("This rule only allows logins at night between 10 p.m. and 6 a.m.");
     }
 
     /**
-     * Name für diesen Regeltyp, wird angezeigt, wenn eine neue Regel zu einem
-     * Anmeldeset hinzugefügt werden soll.
+     * Name for this rule type, is displayed when a new rule is to be added to a
+     * Logon set is to be added.
      */
     public static function getName() {
-        return _("Nächtliche Anmeldung");
+        return _("Nightly login");
     }
 
     /**
-     * Holt das Template zur Anzeige der Konfiuration dieser Regel
-     * (configuration.php, hinterlegt im Unterordner templates). Für unser
-     * Beispiel brauchen wir nur das Standardtemplate, da es nichts eigenes*
-     * für diesen Regeltyp zu konfigurieren gibt.
+     * Fetches the template for displaying the configuration of this rule
+     * (configuration.php, stored in the templates subfolder). For our
+     * example, we only need the standard template, as there is nothing of our own *
+     * to configure for this rule type.
      */
     public function getTemplate() {
         $tpl = $GLOBALS['template_factory']->open('admission/rules/configure');
@@ -99,7 +99,7 @@ class NightAdmission extends AdmissionRule {
     }
 
     /**
-     * Lädt die Regel aus der Datenbank.
+     * Loads the rule from the database.
      */
     public function load() {
         $rule = DBManager::get()->fetch("SELECT * FROM `nightadmissions` WHERE `rule_id`=? LIMIT 1", array($this->id));
@@ -108,15 +108,15 @@ class NightAdmission extends AdmissionRule {
     }
 
     /**
-     * Diese Funktion überprüft, ob sich der gegebene Benutzer zur gegebenen
-     * Veranstaltung anmelden darf, ob die Regel also greift.
-     * Zurückgegeben wird eine Fehlermeldung, falls die Anmeldung nicht
-     * möglich ist.
+     * This function checks whether the given user is allowed to register for the given
+     * event, i.e. whether the rule applies.
+     * An error message is returned if registration is not possible.
+     * possible.
      */
     public function ruleApplies($userId, $courseId) {
         $failed = array();
         $now = mktime();
-        // Zeit zwischen 6 und 22 Uhr => keine Anmeldung erlaubt.
+        // Time between 6 am and 10 pm => no registration allowed.
         if (date('H', $now) < 22 && date('H', $now) >= 6) {
             $failed[] = $this->default_message;
         }
@@ -124,7 +124,7 @@ class NightAdmission extends AdmissionRule {
     }
 
     /**
-     * Speichert die aktuelle Regel in der Datenbank.
+     * Saves the current rule in the database.
      */
     public function store() {
         $stmt = DBManager::get()->prepare("INSERT INTO `nightadmissions`
@@ -140,20 +140,20 @@ class NightAdmission extends AdmissionRule {
 }
 ```
 
-Am wichtigsten sind die beiden Methoden `ruleApplies` und `getTemplate`.
+The two most important methods are `ruleApplies` and `getTemplate`.
 
-Erstere Methode spezifiert das Verhalten der Regel, also wann und unter welchen Voraussetzungen überhaupt eine Anmeldung erfolgreich sein kann. Hier können im Prinzip beliebige Datenbankabfragen oder sonstige anderen Funktionen aufgerufen werden.
+The first method specifies the behavior of the rule, i.e. when and under what conditions a login can be successful. In principle, any database queries or other functions can be called here.
 
-Das Template definiert die GUI zur Konfiguration der jeweiligen Regel. Standardmäßig wird nur ein Textfeld angeboten, das einen Text aufnehmen kann, der vor der Anmeldung auf der Veranstaltungsseite erscheint. Will man hier weitere Werte, Checkboxen oder anderes einstellbar machen, muss man selbst ein [Flexi-Template](FlexiTemplates) dafür schreiben.
+The template defines the GUI for configuring the respective rule. By default, only one text field is offered, which can contain a text that appears on the event page before registration. If you want to set additional values, checkboxes or other things here, you have to write a [Flexi-Template](FlexiTemplates) yourself.
 
-Daneben kann es noch ein Info-Template geben, das nur zur Anzeige der Regel in normalem Prosatext dient.
+There can also be an info template that is only used to display the rule in normal prose text.
 
-### Zusammenfassung
-Um diese Beispielregel in Stud.IP zu installieren, reicht es, in `lib/admissionrules` einen Ordner `nightadmissions` zu erstellen, dort die obige Klasse `Nightadmission.class.php` hineinzukopieren und die nötigen SQL-Anweisungen auszuführen. Da kein eigenes Template benötigt wird, ist hier auch kein Unterordner `templates` von Nöten. In der **globalen Konfiguration** unter **Anmelderegeln ** kann die Regel dann aktiviert werden. An gleicher Stelle muss dann unter **Regelkompatibilität** eingestellt werden, mit welchen vorhandenen Regelndie neue Regel kombinierbar ist.
+### Summary
+To install this example rule in Stud.IP, it is sufficient to create a folder `nightadmissions` in `lib/admissionrules`, copy the above class `Nightadmission.class.php` into it and execute the necessary SQL statements. As no separate template is required, no subfolder `templates` is necessary. The rule can then be activated in the **global configuration** under **Subscription rules**. The existing rules with which the new rule can be combined must then be set in the same place under **Rule compatibility**.
 
 
 
-## Verteilungsalgorithmus
-Der Algorithmus, der die Plätze der Veranstaltungen eines Anmeldesets verteilt, kann ebenfalls frei selbst implementiert werden. Standardmäßig wird bereits ein Algorithmus mitgeliefert.
+## Distribution algorithm
+The algorithm that distributes the places for the events in a registration set can also be freely implemented. An algorithm is already supplied as standard.
 
-Zum Anlegen eines neuen Algorithmus reicht es, das vorhandene Interface `AdmissionAlgorithm` zu implementieren, dabei handelt es sich im Prinzip nur um eine Methode `run()`, die den Algorithmus ausführt.
+To create a new algorithm, it is sufficient to implement the existing `AdmissionAlgorithm` interface, which is basically just a `run()` method that executes the algorithm.

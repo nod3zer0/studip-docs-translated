@@ -4,86 +4,86 @@ title: Stud.IP-Cache
 sidebar_label: Stud.IP-Cache
 ---
 
-## Stud.IP-Cache
+## Stud.IP cache
 
-Stud.IP enthält ein minimales Framework, um beliebige Daten zu cachen. In dem Verzeichnis [lib/classes](https://develop.studip.de/trac/browser/trunk/lib/classes) sind die folgenden Klassen und Interfaces enthalten:
+Stud.IP contains a minimal framework for caching any data. The following classes and interfaces are contained in the directory [lib/classes](https://develop.studip.de/trac/browser/trunk/lib/classes):
 
-* Klasse `StudipCacheFactory`
+* Class `StudipCacheFactory`
 * Interface `StudipCache`
-* Klasse `StudipDbCache`
-* Klasse `StudipFileCache`
-* Klasse `StudipNullCache`
-* Klasse `StudipCacheProxy`
+* Class `StudipDbCache`
+Class `StudipFileCache` * Class `StudipNull`
+Class `StudipNullCache` * Class `StudipCacheFactory
+* Class `StudipCacheProxy`
 
-Seit Version 1.11 ist das Caching fester Bestandteil (StudipFileCache) und standardmässig aktiviert. Ab der Version 4.1 ist `StudipDbCache` die Voreinstellung und es gibt kleine Erweiterungen an der Cache-API (s.u.).
+Since version 1.11, caching has been a fixed component (StudipFileCache) and is activated by default. As of version 4.1, `StudipDbCache` is the default setting and there are small extensions to the cache API (see below).
 
 ### StudipCacheFactory
 
-Die Aufgabe der `StudipCacheFactory` ist das zur Verfügung stellen eines Stud.IP-weiten Caches. Um die Singleton-Instanz zu erhalten, muss lediglich `StudipCacheFactory::getCache()` aufgerufen werden.
+The task of the `StudipCacheFactory` is to provide a Stud.IP-wide cache. To get the singleton instance, only `StudipCacheFactory::getCache()` has to be called.
 
 ### StudipCache
 
-Das Interface StudipCache definiert die Operationen einer Cache-Instanz:
+The StudipCache interface defines the operations of a cache instance:
 
-| Aktion | Beschreibung |
+| Action | Description |
 | ---- | ---- |
-| `expire($key)` | entfernt ein Schlüssel-Wert-Paar aus dem Cache |
-| `flush()` | leert den Cache, d.h. entfernt alle Werte aus dem Cache **[ab Stud.IP 4.1]** |
-| `read($key)` | liest den Wert zu einem Schlüssel aus dem Cache oder gibt im Falle eines cache miss `FALSE` zurück |
-| `write($key, $value, $expire = 43200)` | legt unter einem Schlüssel für eine gegebene Zeit (in Sekunden, Default: 12 Stunden) einen Wert ab. |
+| `expire($key)` | removes a key-value pair from the cache |
+| `flush()` | empties the cache, i.e. removes all values from the cache **[from Stud.IP 4.1]** |
+| `read($key)` | reads the value for a key from the cache or returns `FALSE` in the case of a cache miss |
+| `write($key, $value, $expire = 43200)` | stores a value under a key for a given time (in seconds, default: 12 hours). |
 
 
-Der Cache kann dazu verwendet werden, über mehrere HTTP-Requests hinweg einen möglicherweise aufwendig zu berechnenden Wert zu speichern. Der Cache garantiert nicht, dass ein Schlüssel-Wert-Paar für die gesamte `expire`-Dauer vorgehalten wird. Er garantiert lediglich, dass das Schlüssel-Wert-Paar nach Ablauf nicht mehr zurückgeliefert wird. Bis einschließlich der Stud.IP Version 4.0 müssen die Werte den Typ `string` haben, ab Version 4.1 können auch Werte beliebigen Typs im Cache abgelegt werden (solange die Werte serialisierbar sind). Der Schlüssel ist immer ein String (maximal 255 Zeichen) und sollte nur ASCII-Zeichen enthalten.
+The cache can be used to store a value over several HTTP requests, which may be complex to calculate. The cache does not guarantee that a key-value pair will be stored for the entire `expire` duration. It only guarantees that the key-value pair will not be returned after expiration. Up to and including Stud.IP version 4.0 the values must have the type `string`, from version 4.1 values of any type can also be stored in the cache (as long as the values can be serialized). The key is always a string (maximum 255 characters) and should only contain ASCII characters.
 
-Der Lebenszyklus eines Schlüssel-Wert-Eintrags in den Cache sieht so aus:
+The life cycle of a key-value entry in the cache looks like this:
 
-* Der Eintrag wird mit `#write` eingetragen.
-* Nun kann der Eintrag mit `#read` und dem Schlüssel ausgelesen werden.
-* Der Eintrag scheidet unter folgenden Bedingungen aus:
-** Die Lebensdauer ist überschritten worden.
-** Es wurde explizit `#expire` oder `#flush` aufgerufen.
-** Der Cache entfernt den Wert, z.B. aus Platzmangel.
+* The entry is entered with `#write`.
+* Now the entry can be read with `#read` and the key.
+* The entry is rejected under the following conditions:
+** The lifetime has been exceeded.
+** Explicit `#expire` or `#flush` was called.
+** The cache removes the value, e.g. due to lack of space.
 
-In der Regel sollte man nur Resultate referenziell transparenter Funktionen [cachen](http://de.wikipedia.org/wiki/Memoisierung), andernfalls muss man sich selbst um die Invalidierung des gespeicherten Wertes kümmern, wenn das alte Resultat ungültig wird. Dazu stehen drei Möglichkeiten zur Verfügung:
+As a rule, you should only [cache](http://de.wikipedia.org/wiki/Memoisierung) the results of referentially transparent functions, otherwise you will have to take care of invalidating the stored value yourself if the old result becomes invalid. There are three ways to do this:
 
-* Man verwendet die eingestellte Lebensdauer.
-* Man entfernt die Einträge per `#expire`.
-* Man wählt den Schlüssel geschickt.
+* Use the set lifetime.
+* Remove the entries using `#expire`.
+* Select the key skillfully.
 
-Beispiel: Es soll eine Liste der Geburststagskinder angezeigt werden. Da die Berechnung aufwendig ist, soll das Ergebnis gespeichert werden. Ab Mitternacht ist die Liste neu zu berechnen. Unter Berücksichtigung der obigen drei Punkte kann man also folgendermaßen vorgehen:
+Example: A list of birthdays is to be displayed. As the calculation is time-consuming, the result should be saved. The list is to be recalculated from midnight. Taking the above three points into account, you can proceed as follows:
 
-* Beim Eintragen in den Cache rechnet man aus, wieviele Sekunden noch bis Mitternacht vergehen und stellt die Lebensdauer entsprechend ein.
-* Man liest nicht nur die Liste aus dem Cache aus, sondern noch einen zweiten Wert, der angibt, für welchen Tag diese Liste ist. Falls man sich an einem anderen Tag befindet, berechnet man neu.
-* Man nimmt den aktuellen Tag im Monat in den Schlüssel des Cache-Eintrags auf: "birthdays/22". Am 22. wird die Liste ausgelesen; nach Mitternacht (der Schlüssel ist ja dann "birthdays/23") findet man keinen Eintrag und berechnet neu.
+* When entering into the cache, calculate how many seconds are left until midnight and set the lifetime accordingly.
+* You not only read the list from the cache, but also a second value that specifies the day for which this list is valid. If you are on a different day, you recalculate.
+* Include the current day of the month in the key of the cache entry: "birthdays/22". The list is read out on the 22nd; after midnight (the key is then "birthdays/23") no entry is found and a new calculation is performed.
 
-Ganz offensichtlich ist (in diesem Fall) die letzte Möglichkeit die eleganteste.
+Obviously (in this case) the last option is the most elegant.
 
-#### Konvention
-Der Schlüssel eines Cache-Eintrags wird durch Vorwärtsschrägstriche "/" in Namensräume aufgeteilt. Stud.IP-Kerndateien sollten "core/XYZ/argument1/argument2/usw" erzeugen. Stud.IP-Plugins sollten dementsprechend `<plugin>/birthday/22` verwenden. Auf diese Weise sollte es zu keinen Kollisionen kommen.
+#### Convention
+The key of a cache entry is divided into namespaces by forward slashes "/". Stud.IP core files should generate "core/XYZ/argument1/argument2/usw". Stud.IP plugins should use `<plugin>/birthday/22` accordingly. This way there should be no collisions.
 
-#### Achtung
-Bis zur Version 4.0 musste der Wert eines Cache-Eintrags ein String sein. Arrays oder Objekte müssen daher (de)serialisiert werden.
+#### Attention
+Up to version 4.0, the value of a cache entry had to be a string. Arrays or objects must therefore be (de)serialized.
 
-#### Funktionsbeispiele
+#### Function examples
 ```php
-//Beispiel beim schwarzenBrettPlugin
+//Example with the schwarzBrettPlugin
 
-// Konstante in der Klasse festlegen
-const ARTIKEL_CACHE_KEY = 'plugins/SchwarzesBrettPlugin/artikel/';
+// Set constant in the class
+const ARTIKEL_CACHE_KEY = 'plugins/BlackBoardPlugin/article/';
 
-//Beispielfunktion
-private function getArtikel($thema_id)
+//Example function
+private function getArticle($thema_id)
 {
-    // Cache-Objekt erzeugen
+    // create cache object
     $cache = StudipCacheFactory::getCache();
-    // Daten aus dem Cache holen
-    $ret = unserialize($cache->read(self::ARTIKEL_CACHE_KEY.$thema_id));
+    // Get data from the cache
+    $ret = unserialize($cache->read(self::ARTICLE_CACHE_KEY.$thema_id));
 
-    // Wenn der Cache leer ist, Daten aus der Datenbank holen
+    // If the cache is empty, retrieve data from the database
     if (empty($ret)) {
         $ret = DBManager::get()->query("SELECT ...")->fetchAll(PDO::FETCH_COLUMN);
-        // Daten in den Cache schreiben
-        $cache->write(self::ARTIKEL_CACHE_KEY.$thema_id, serialize($ret));
+        // Write data to the cache
+        $cache->write(self::ARTICLE_CACHE_KEY.$thema_id, serialize($ret));
     }
     return $ret;
 }
@@ -91,15 +91,15 @@ private function getArtikel($thema_id)
 
 ### StudipDbCache
 
-Da es sich bei StudipCache nur um ein Interface handelt, muss eine konkrete Implementation zur Verfügung gestellt werden. Die Standardimplementierung des Cache ist seit Stud.IP 4.1 die Klasse `StudipDbCache`, die alle Werte in der Tabelle `cache` der Stud.IP-Datenbank ablegt.
+As StudipCache is only an interface, a concrete implementation must be made available. The standard implementation of the cache since Stud.IP 4.1 is the class `StudipDbCache`, which stores all values in the `cache` table of the Stud.IP database.
 
 ### StudipFileCache
 
-Die Standardimplementierung des Cache war bis Stud.IP 4.0 die Klasse `StudipFileCache`, die alle Werte in Dateien im Stud.IP-Temp Verzeichnis ablegt.
+Until Stud.IP 4.0 the standard implementation of the cache was the class `StudipFileCache`, which stores all values in files in the Stud.IP-Temp directory.
 
 ### StudipNullCache
 
-Wird der Cache in der Konfiguration ausgeschaltet (oder wird die CLI-Umgebung verwendet), steht kein Cache zur Verfügung. In diesem Fall wird der StudipNullCache verwendet, der dann zwar von der Factory zurückgeliefert wird und auch entsprechend und gültig antwortet, aber tatsächlich nicht speichert. Ein geschriebener Wert wird also nie zurückgelesen.
+If the cache is switched off in the configuration (or if the CLI environment is used), no cache is available. In this case, the StudipNullCache is used, which is then returned by the factory and also responds accordingly and validly, but does not actually save. A written value is therefore never read back.
 
 ### StudipCacheProxy
 
@@ -107,12 +107,12 @@ TODO
 
 ### CachePlugins
 
-Weitere cachende Implementationen des Interfaces können über entsprechende Plugins nachträglich installiert werden. Es gibt spezielle PHP-Erweiterungen, die PHP damit nachrüsten bzw. externe Lösung verfügbar machen. Derzeit existieren mindestens folgende Plugins:
+Further caching implementations of the interface can be installed subsequently using corresponding plugins. There are special PHP extensions that retrofit PHP with this or make external solutions available. At least the following plugins currently exist:
 
-* [APCCache](https://plugin-dev.studip.de/index.php/Plugins/00030) : Nutzung der PHP-Erweiterung [APC](http://www.php.net/apc)
-* [EAcceleratorCache](https://plugin-dev.studip.de/index.php/Plugins/00031) : Nutzung der PHP-Erweiterung [eAccelerator](http://eaccelerator.net)
-* [XCacheCache](https://plugin-dev.studip.de/index.php/Plugins/00032) : Nutzung der PHP-Erweiterung [XCache](http://xcache.lighttpd.net)
-* [MemcachedCache](https://develop.studip.de/studip/plugins.php/pluginmarket/presenting/details/c511a822c4ab899e2a6d0b0ec3c05c67) : Nutzung eines [memcached Servers](http://memcached.org/) (libmemcached API)
-* [MemcacheCache](https://develop.studip.de/studip/plugins.php/pluginmarket/presenting/details/5c3b6e43090d96816ed6bb69864cf9f3) : Nutzung eines [memcached Servers](http://memcached.org/) (libmemcache API)
+* [APCCache](https://plugin-dev.studip.de/index.php/Plugins/00030) : Use of the PHP extension [APC](http://www.php.net/apc)
+* [EAcceleratorCache](https://plugin-dev.studip.de/index.php/Plugins/00031) : Use of the PHP extension [eAccelerator](http://eaccelerator.net)
+* [XCacheCache](https://plugin-dev.studip.de/index.php/Plugins/00032) : Use of the PHP extension [XCache](http://xcache.lighttpd.net)
+* [MemcachedCache](https://develop.studip.de/studip/plugins.php/pluginmarket/presenting/details/c511a822c4ab899e2a6d0b0ec3c05c67) : Use of a [memcached server](http://memcached.org/) (libmemcached API)
+* [MemcacheCache](https://develop.studip.de/studip/plugins.php/pluginmarket/presenting/details/5c3b6e43090d96816ed6bb69864cf9f3) : Use of a [memcached server](http://memcached.org/) (libmemcache API)
 
-Für die Konfiguration der Erweiterung muss die entsprechende Dokumentation befolgt werden, da der Cache sonst nicht funktionieren wird.
+For the configuration of the extension, the corresponding documentation must be followed, otherwise the cache will not work.

@@ -1,29 +1,37 @@
 ---
 id: deputy
-title: Vertretung
-sidebar_label: Vertretung
+title: deputy
+sidebar_label: deputy
 ---
 
-# Allgemeines
 
-Ab Stud.IP 2.0 steht Funktionalität zur Verfügung, mit der Vertretungen von Personen definiert werden können, die z.B. innerhalb von Veranstaltungen volle Rechte von DozentInnen haben, aber nicht nach außen sichtbar sind. Darüber hinaus können auch Standardvertretungen einer Person definiert werden, die dann automatisch als Vertretung zu Veranstaltungen hinzugefügt werden, wenn die jeweilige Person DozentIn ist. Weiter können solche Standardvertretungen das Recht erhalten, die Profilseite der Person in vollem Umfang zu bearbeiten, deren Standardvertretung sie sind.
+# General
 
-Zugehörige Funktionen sind in der Datei `lib/deputies_functions.inc.php` definiert.
 
-Damit die Vertretungsfunktionalität aktiv ist, muss in der globalen Konfiguration die Variable `DEPUTIES_ENABLE` gesetzt sein. Damit Personen ihre Standardvertretungen definieren können, muss zusätzlich `DEPUTIES_DEFAULTENTRY_ENABLE` aktiviert sein, um auch Rechte zur Bearbeitung des eigenen Profils an die Vertretung übergeben zu können, muss `DEPUTIES_EDIT_ABOUT_ENABLE` aktiviert sein.
+As of Stud.IP 2.0, functionality is available to define deputies of persons who, for example, have the full rights of lecturers within courses but are not visible to the outside world. In addition, standard substitutions of a person can also be defined, which are then automatically added to courses as substitutions if the person in question is a lecturer. Furthermore, such default substitutes can be given the right to fully edit the profile page of the person whose default substitute they are.
 
-# Abfrage und Verändern von Vertretungen
 
-### Frage bestehende Vertretungen ab
+Associated functions are defined in the file `lib/deputies_functions.inc.php`.
 
-Zur Abfrage der bestehenden Vertretungen zu einer Veranstaltung oder Person gibt es die Methode `getDeputies`, diese bekommt eine Veranstaltungs- oder Personen-ID sowie optional ein Namensformat (wie üblich etwas in der Art "full" oder "full_rev", Default ist "full_rev") und gibt dann ein Array der Vertretungen zurück:
+
+For the substitution functionality to be active, the variable `DEPUTIES_ENABLE` must be set in the global configuration. In order for people to be able to define their standard substitutions, `DEPUTIES_DEFAULTENTRY_ENABLE` must also be activated, and `DEPUTIES_EDIT_ABOUT_ENABLE` must be activated in order to be able to transfer rights to edit one's own profile to the substitution.
+
+
+# Query and change substitutions
+
+
+### Query existing substitutions
+
+
+To query the existing substitutions for an event or person, there is the method `getDeputies`, which receives an event or person ID and optionally a name format (as usual something like "full" or "full_rev", default is "full_rev") and then returns an array of the substitutions:
 ```php
-// Definiere hier eine Seminar-ID...
+// Define a seminar ID here...
 $seminar_id = '9a739ae7fffab0c2347a783cef0f69be';
-// ... und hole die Vertretungen in dieser Veranstaltung
+// ... and get the substitutions in this event
 $deputies = getDeputies($seminar_id);
 ```
-führt zu folgendem Ergebnis:
+leads to the following result:
+
 
 ```php
 $deputies = Array
@@ -32,81 +40,100 @@ $deputies = Array
         (
             [user_id] => a272fef013c2b9367d1525daeb307c95
             [username] => tester
-            [Vorname] => Toni
-            [Nachname] => Tester
+            [first name] => Toni
+            [last_name] => tester
             [edit_about] => 0
             [perms] => tutor
             [fullname] => Tester, Toni
         )
 
+
 )
 ```
-Wie ersichtlich ist, wird ein Array zurückgegeben mit den jeweiligen Nutzer-IDs als Schlüssel und folgenden Daten:
+As can be seen, an array is returned with the respective user IDs as keys and the following data:
 
-* User-ID
+
+* User ID
 * Username
-* Vorname
-* Nachname
-* Darf die Person die Profilseite des "Chefs" bearbeiten (bei Veranstaltungen natürlich immer 0)
-* globale Rechtestufe der Vertretung
-* Voller Name gemäß dem beim Aufruf angegebenen Format
+* First name
+* Last name
+* May the person edit the profile page of the "boss" (always 0 for events, of course)
+* Global permission level of the representative
+* Full name according to the format specified in the call
 
-## Frage ab, von welchen Personen ein User Vertretung ist
 
-Für den umgekehrten Fall, also zu ermitteln, vom wem eine bestimmte Person die Standardvertretung ist, gibt es die Funktion `getDeputyBosses`:
+## Query of which persons a user is a substitute
+
+
+For the reverse case, i.e. to determine who a particular person is the default substitute for, there is the `getDeputyBosses` function:
+
 
 ```php
-// Hole alle Personen, von denen User-ID #12345' Vertretung ist:
+// Get all persons of whom user ID #12345' is the deputy:
 $bosses = getDeputyBosses('12345');
 ```
-Hier wird (analog zu `getDeputies`) ein Array mit Nutzerdaten zurückgegeben.
+Here (analogous to `getDeputies`) an array with user data is returned.
 
-## Hinzufügen oder Entfernen von Vertretungen
 
-Zum Verändern der bestehenden Vertretungen existieren die Funktionen `addDeputy`, `deleteDeputy` und `deleteAllDeputies`.
+## Adding or removing deputies
 
-Hier Beispiele zur Verwendung:
+
+The functions `addDeputy`, `deleteDeputy` and `deleteAllDeputies` exist for changing existing deputies.
+
+
+Here are examples of their use:
+
 
 ```php
-// Füge Benutzer mit ID '12345' zur Veranstaltung mit der ID '67890' als Vertretung hinzu:
+// Add user with ID '12345' to the event with ID '67890' as a deputy:
 addDeputy('12345', '67890');
 
-// Entferne Benutzer mit ID '12345' als Vertretung aus der 
-// Veranstaltung '67890':
+
+// Remove user with ID '12345' as deputy from the event
+// event '67890':
 deleteDeputy('12345', '67890');
 
-// Lösche alle Vertretungen aus der Veranstaltung '67890':
+
+// Delete all deputies from the event '67890':
 deleteAllDeputies('67890');
 ```
 
-Um der Standardvertretung einer Person die Rechte zur Bearbeitung der Profilseite zu geben oder zu entziehen, gibt es die Funktion `setDeputyHomepageRights`:
+
+The function `setDeputyHomepageRights` is used to give or remove the rights to edit the profile page from a person's default deputy:
+
 
 ```php
-// Vertretung mit ID '12345' bekommt das Recht, die 
-// Profilseite von User-ID 'abcde' zu bearbeiten:
+// Substitute with ID '12345' gets the right to edit the
+// edit the profile page of user ID 'abcde':
 setDeputyHomepageRights('12345', 'abcde', 1);
 ```
 
-# Abfrage, ob Vertretung
-Über die Methode `isDeputy` kann abgefragt werden, ob eine Person Vertretung in einer Veranstaltung oder von einer bestimmten anderen Person ist. Als Parameter wird die User-ID der abzufragenden Person und die ID der Veranstaltung oder Person angegeben, wo Person 1 Vertretung sein soll. Optional kann noch mit abgefragt werden, ob es sich um eine Vertretung mit Profilbearbeitungsrechten handelt.
+
+# Query whether representation
+The `isDeputy` method can be used to query whether a person is a substitute in an event or for a specific other person. The user ID of the person to be queried and the ID of the event or person where person 1 is to be a substitute are specified as parameters. Optionally, you can also query whether the person is a substitute with profile editing rights.
+
 
 ```php
-// Ist Person 1 mit ID '12345'...
+// If person 1 with ID '12345'...
 $person1_id = '12345';
-// ... Vertretung von Person 2 mit ID 'abcde' ...
+// ... Substitute for person 2 with ID 'abcde' ...
 $person2_id = 'abcde';
-// ... , egal ob mit Profilbearbeitungsrechten oder ohne.
+// ... whether with profile editing rights or not.
 $result = isDeputy('12345', 'abcde');
 
-// Überprüfe zusätzlich, ob Person 1 die Profilseite von 
-// Person 2 bearbeiten darf:
+
+// Also check whether person 1 is allowed to edit the profile page of
+// Person 2 is allowed to edit:
 $result = isDeputy('12345', 'abcde', true);
 ```
-Analog wird für Veranstaltungen abgefragt, hier darf natürlich nur ohne die Profilbearbeitungsrechte abgefragt werden. 
+A similar query is made for events; here, of course, the query may only be made without the profile editing rights.
 
-# Sonstige Funktionen
-Über die Funktion `getValidDeputyPerms` kann abgefragt werden, welche Berechtigung eine Person mindestens haben muss, um überhaupt als Vertretung eintragbar zu sein (Höchstberechtigung ist immer 'dozent'). Momentan ist hier fest die Berechtigung 'tutor' implementiert, d.h. nur Personen mit der globalen Berechtigung 'tutor' oder 'dozent' sind erlaubt.
 
-Die Funktion `haveDeputyPerm` überprüft für eine anzugebene User-ID, ob diese Person die nötigen Rechte hat, um als Vertretung eingetragen werden zu können.
+# Other functions
+The `getValidDeputyPerms` function can be used to query the minimum authorization a person must have in order to be entered as a substitute (the maximum authorization is always 'lecturer'). At the moment, the authorization 'tutor' is permanently implemented here, i.e. only persons with the global authorization 'tutor' or 'dozent' are permitted.
 
-In `getMyDeputySeminarsQuery` sind Datenbankanfragen hinterlegt, die dazu dienen, die Veranstaltungen zu finden, in denen der aktuelle User Vertretung ist. Je nach Kontext ist dies für Meine Veranstaltungen, Gruppierungs- und Benachrichtigungseinstellungen sowie den Benachrichtungs-Cronjob von Bedeutung. Die resultierende Datenbankanfrage wird über "UNION" mit der normalen Anfrage der jeweiligen Daten verbunden.
+
+The function `haveDeputyPerm` checks for a specified user ID whether this person has the necessary rights to be entered as a substitute.
+
+
+Database queries are stored in `getMyDeputySeminarsQuery`, which are used to find the courses in which the current user is a substitute. Depending on the context, this is important for My Events, grouping and notification settings as well as the notification cronjob. The resulting database query is linked to the normal query for the respective data via "UNION".

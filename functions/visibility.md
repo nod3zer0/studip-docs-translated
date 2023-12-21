@@ -4,191 +4,191 @@ title: VisibilityAPI
 sidebar_label: VisibilityAPI
 ---
 
-Mit Hilfe der VisibilityAPI können Sichbarkeitseinstellungen für Benutzer von überall im System (Auch in Plugins) hinzugefügt werden, ohne das direkt in den Sichbarkeitscode eingegriffen werden muss. Die Verwaltung der Einstellungsmöglichkeiten ist ebenfalls ohne Eingriff in bestehenden Code möglich.
+With the help of the VisibilityAPI, visibility settings for users can be added from anywhere in the system (including in plugins) without having to intervene directly in the visibility code. It is also possible to manage the setting options without interfering with existing code.
 
-## Sichtbarkeitsstufen
+## Visibility levels
 
-Die VisibilityAPI bietet die Möglichkeit, direkt im Dateiensystem festzulegen, welche Sichtbarkeiten zur Verfügung stehen. Der Ordner dafür ist lib/classes/visibility/visibilitySettings.
-Dieser enthält standardmäßig folgende Sichtbarkeitseinstellungen:
+The VisibilityAPI offers the option of defining which visibility levels are available directly in the file system. The folder for this is lib/classes/visibility/visibilitySettings.
+This contains the following visibility settings by default:
 
 * Me
 * Buddies
 * Domain
 * Studip
-* Extern
+* External
 
-Beispiel
+Example
 ```php
 class Visibility_Buddies extends VisibilityAbstract{
-    
-    // Soll dieser Status benutzt werden können
+
+    // Should this status be able to be used
     protected $activated = true;
-    
-    // Welche int Repräsentation in der Datenbank
+
+    // Which int representation in the database
     protected $int_representation = 2;
-    
-    // Was wird in den Einstellungen angezeigt
+
+    // What is displayed in the settings
     protected $display_name = "Buddies";
-    
-    // Was wird bei Visibility::getStateDescription() angezeigt
-    protected $description = "nur für meine Buddies sichtbar";
-    
-    // Wann haben zwei Nutzer diesen Status
+
+    // What is displayed in Visibility::getStateDescription()
+    protected $description = "only visible to my buddies";
+
+    // When do two users have this status
     function verify($user_id, $other_id) {
         return CheckBuddy(get_username($other_id), $user_id) || $user_id == $other_id;
-    }   
+    }
 }
 ```
-Eine Sichtbarkeitseinstellung muss immer die Klasse Visibility_+"Name der Datei" enthalten, die VisibilityAbstract erweitert. Außerdem müssen folgende Attribute und Funktionen vorhanden sein:
-* **activated**: Definiert ob die Sichtbarkeitseinstellung verfügbar sein soll. Änderungen werden erst nach einem Relogg übernommen, da die Sichtbarkeitseinstellungen aus I/O Kostengründen in der Session gespeichert werden.
-* **int_representation**: Legt fest unter welchem Wert eine Sichtbarkeit in der Datenbank gespeichert wird. Dabei darf es keine Überschneidung geben.
-* **display_name**: Beschreibt den Namen unter dem der Punkt in den Einstellungen auftaucht.
-* **description**: Ist eine Beschreibung der Einstellung, die verwendet werden kann, um dem Nutzer die aktuelle Einstellung anzuzeigen
-* **function verify**: Die Hauptaufgabe einer Sichtbarkeitseinstellung ist die verify Funktion. Sie muss immer eine BenutzerID (Gibt den Besitzer des Sichtbarkeitsobjekts an) und eine AndereID (Gibt den Aufrufenden an) erhalten. Der Rückgabe Wert muss `true` sein, wenn der Aufrufer (other_id) in richtiger Relation zum Besitzer (user_id) steht.
+A visibility setting must always contain the class Visibility_+"Name of file", which extends VisibilityAbstract. The following attributes and functions must also be present:
+* **activated**: Defines whether the visibility setting should be available. Changes are only applied after a re-log, as the visibility settings are saved in the session for I/O cost reasons.
+**int_representation**: Defines the value under which a visibility is saved in the database. There must be no overlap.
+* **display_name**: Describes the name under which the item appears in the settings.
+* **description**: Is a description of the setting that can be used to display the current setting to the user
+** **function verify**: The main task of a visibility setting is the verify function. It must always receive a UserID (specifies the owner of the visibility object) and an OtherID (specifies the caller). The return value must be `true` if the caller (other_id) is in the correct relation to the owner (user_id).
 
-Auch eine Sichtbarkeit nobody steht zur Verfügung. Diese ist vor allem für Debugging von Vorteil.
+A nobody visibility is also available. This is particularly useful for debugging.
 
-## Sichtbarkeit der Homepage-Elemente
+## Visibility of the homepage elements
 
-Grundsätzlich kann eine Sichtbarkeitseinstellung durch zwei Möglichkeiten definiert sein:
-* **SichbarkeitsID**: Eine eindeutige ID, die bei der Erstellung generiert wird
-* **Identifier und BenutzerID**: Ein Identifikationsstring kann mit Hilfe einer BenutzerID zu einer SichtbarkeitsID aufgelöst werden. Dies erleichtert zwar die Programmierung kann aber unter Umständen zu Überschneidungen bei Identifikationsstrings führen. Deshalb sollte dabei darauf geachtet werden diesen so eindeutig wie möglich zu wählen.
+In principle, a visibility setting can be defined in two ways:
+* **VisibilityID**: A unique ID that is generated during creation
+**Identifier and UserID**: An identification string can be resolved to a visibility ID using a userID. Although this makes programming easier, it can lead to overlaps in identification strings under certain circumstances. Care should therefore be taken to ensure that this is as unique as possible.
 
-### Hinzufügen einer Sichtbarkeitseinstellung
-Soll für einen Nutzer eine Sichtbarkeitseinstellung hinzugefügt werden, so muss reicht folgender Aufruf:
+### Adding a visibility setting
+If a visibility setting is to be added for a user, the following call is sufficient:
 ```php
 Visibility::addPrivacySetting($name, $identifier = "", $parent = null, $category = 1, $user = null, $default = null, $pluginid = null)
 ```
-Dabei wird eine SichtbarkeitsID erzeugt und zurückgegeben, die gespeichert werden kann.
-* **name**: Der Name unter dem die Sichtbarkeitseinstellung beim Benutzer erscheint
-* **identifier**: Identifikationsstring
-* **parent**: Die Sichtbarkeitseinstellungen bieten an, einen Baum zu erschaffen. Ist das gewünscht muss hier die SichbarkeitsID oder der Identifikationsstring für den Elternknoten angegeben werden. Ansonsten muss hier null angegeben werden, um einen root Knoten zu erstellen. Achtung! Rootknoten sind immer eine Kategorie d.h. es gibt keine Einstellungsmöglichkeiten
-* **category**: Unterscheidet den Typ der Sichtbarkeitseinstellung. 0 steht für eine Kategorie, die keine Einstellungsmöglichkeiten enthält. 1 Für einen "normalen" Einstellungspunkt.
-* **user**: Gibt den Benutzer an, für den die Sichtbarkeit angelegt wird. Ist dieser Wert `null` so wird der aktuell angemeldete Benutzer verwendet.
-* **default**: Kann angeben auf welcher Sichtbarkeit der Wert zu Beginn steht. Ist dieser Wert `null` so wird der Standardwert des `user` verwendet
-* **pluginid**: Kann verwendet werden um der Sichbarkeit zwangsweiße eine PluginID zuzuweisen. Wird die Funktion aus einem Plugin aufgerufen, so ist es nicht nötig eine PluginID anzugeben, da die API diese selbständig herausfindet.
+A visibility ID is generated and returned, which can be saved.
+* **name**: The name under which the visibility setting appears to the user
+* **identifier**: Identification string
+* **parent**: The visibility settings offer to create a tree. If this is desired, the visibility ID or the identification string for the parent node must be specified here. Otherwise, zero must be entered here to create a root node. Attention! Root nodes are always a category, i.e. there are no setting options
+* **category**: Distinguishes the type of visibility setting. 0 stands for a category that contains no setting options. 1 For a "normal" settings item.
+* **user**: Specifies the user for whom the visibility is created. If this value is 'zero', the currently logged in user is used.
+**default**: Can specify which visibility the value is initially set to. If this value is `null`, the default value of `user` is used
+**pluginid**: Can be used to forcibly assign a pluginID to the visibility. If the function is called from a plugin, it is not necessary to specify a plugin ID, as the API finds this out automatically.
 
-### Ändern einer Sichtbarkeitseinstellung
-Die Funktion `updatePrivacySetting` erhält die selben Parameter, wie `addPrivacySetting` und wird verwendet um eine Sichtbarkeitseinstellung upzudaten. Dabei wird die alte Sichbarkeitseinstellung gelöscht und eine neue erzeugt. Dies erleichtert dem Programmierer die Arbeit um nicht prüfen zu müssen, ob eine Sichtbarkeit bereits existiert. Ist eine Sichtbarkeit an ein Eingabefeld gekoppelt kann die Funktion `updatePrivacySettingWithTest` verwendet werden die Zusätzlich noch als ersten Parameter einen String erhält. Ist dieser String leer so wird die Sichtbarkeitseinstellung nur gelöscht.
+### Changing a visibility setting
+The function `updatePrivacySetting` receives the same parameters as `addPrivacySetting` and is used to update a visibility setting. The old visibility setting is deleted and a new one is created. This makes it easier for the programmer not to have to check whether a visibility already exists. If a visibility is linked to an input field, the function `updatePrivacySettingWithTest` can be used, which also receives a string as the first parameter. If this string is empty, the visibility setting is only deleted.
 
-### Löschen einer Sichtbarkeitseinstellung
-Die Funktion
+### Deleting a visibility setting
+The function
 ```php
 Visibility::removePrivacySetting($id, $user = null)
 ```
-löscht eine Sichtbarkeitseinstellung anhand einer SichbarkeitsID ($id) oder anhand eines Identifikationsstring($id) und einer BenutzerID ($user)
+deletes a visibility setting based on a visibility ID ($id) or based on an identification string ($id) and a user ID ($user)
 
-### Bulkfunktionen
-Bei einer Migration kann es notwendig sein, allen Nutzern eine neue Sichbarkeitseinstellung hinzuzufügen. Dafür kann der Befehl
+### Bulk functions
+During a migration, it may be necessary to add a new visibility setting to all users. The command
 ```php
 Visibility::addPrivacySettingForAll($name, $identifier = "", $parent = null, $category = 1, $default = null, $pluginid = null)
 ```
-verwendet werden. Zum löschen aller Einträge eines Identifikationsstrings wird die Funktion
+can be used. To delete all entries of an identification string, the function
 ```php
 Visibility::removeAllPrivacySettingForIdentifier($ident)
 ```
-verwendet.
+is used.
 
-### Überprüfung
-Um dann im Code eine Sichtbarkeit zu überprüfen kann folgender Code verwendet werden:
+### Verification
+To check the visibility in the code, the following code can be used:
 ```php
-//Überprüfung mit ID
+//Verification with ID
 if (Visibility::verify(1234)) {
- echo 'Ich darf VisibilityID 1234 sehen';
+ echo 'I am allowed to see VisibilityID 1234';
 }
 
-//Überprüfung mit Identifier und Benutzername
-if (Visibility::verify('homepageelement', $aufgerufener_benutzer->md5) {
-  echo 'Ich darf das homepageelement von '.$aufgerufener_benutzer.' sehen';
+//verification with identifier and user name
+if (Visibility::verify('homepageelement', $called_user->md5) {
+  echo 'I am allowed to see the homepage element of '.$called_user.';
 }
 
-//Überprüfung für anderen Nutzer
-if (Visibility::verify('homepageelement', $aufgerufener_benutzer->md5, $test_benutzer->md5) {
-  echo $test_benutzer.' darf das homepageelement von '.$aufgerufener_benutzer.' sehen;
+//Verification for other users
+if (Visibility::verify('homepageelement', $called_user->md5, $test_user->md5) {
+  echo $test_user.' is allowed to see the homepage element of '.$called_user;
 }
 ```
 
-# Alte Version
+# Old version
 
-## Sichtbarkeitsstufen
-Erweiterte Möglichkeiten zur Festlegung der persönlichen Privatsphäre und Sichtbarkeiten stehen ab der Stud.IP-Version 2.0 zur Verfügung.
+## Visibility levels
+Extended options for defining personal privacy and visibility are available from Stud.IP version 2.0.
 
-Die Funktionen zum Abfragen der Sichtbarkeiten sind in lib/user_visible.inc.php definiert. Die vorhandenen Sichtbarkeitsstufen sind dort als Konstanten definiert:
+The functions for querying the visibility levels are defined in lib/user_visible.inc.php. The existing visibility levels are defined there as constants:
 
-* **VISIBILITY_ME**: Nur für den Nutzer selbst (und dessen evtl. Standardvertretungen mit Homepagebearbeitungsrecht)
-* **VISIBILITY_BUDDIES**: für Buddies aus dem Adressbuch
-* **VISIBILITY_DOMAIN**: für die eigene(n) Nutzerdomäne(n)
-* **VISIBILITY_STUDIP**: für alle in Stud.IP eingeloggten Nutzer
-* **VISIBILITY_EXTERN**: auf externen Seiten
+* **VISIBILITY_ME**: Only for the user themselves (and their possible standard representatives with homepage editing rights)
+**VISIBILITY_BUDDIES**: for buddies from the address book
+**VISIBILITY_DOMAIN**: for the user's own user domain(s)
+**VISIBILITY_STUDIP**: for all users logged into Stud.IP
+**VISIBILITY_EXTERN**: on external pages
 
-# allgemeine Sichtbarkeit einer Kennung
-Soll die Sichtbarkeit einer Kennung abgefragt werden, so gibt es dafür die Methoden `get_visibility_by_id` bzw. `get_visibility_by_username` bzw. `get_visibility_by_state`.
+# General visibility of an identifier
+If the visibility of an identifier is to be queried, the methods `get_visibility_by_id` or `get_visibility_by_username` or `get_visibility_by_state` are available.
 
 ```php
-// Liefert true oder false, je nach Sichtbarkeit der Kennung
+// Returns true or false, depending on the visibility of the identifier
 $visibility = get_visibility_by_username('tester');
 
 /*
- * Liegt die in der Datenbank hinterlegte Sichtbarkeit
- * bereits vor, so kann wie folgt abgefragt werden:
+ * If the visibility stored in the database
+ * already exists in the database, it can be queried as follows:
  */
-// Sei die Sichtbarkeit gleich 'yes'
+// If the visibility is 'yes'
 $db_vis = 'yes'
 
 $visibility = get_visibility_by_state($db_vis, get_userid('tester'));
 ```
-Hier kommt als Ergebnis also heraus: "Darf ich die Kennung sehen?", das hängt nicht nur von den Sichtbarkeitsinstellungen der Kennung ab, sondern auch von meinen eigenen Rechten (Root sieht alles).
+The result here is: "Can I see the identifier?", which depends not only on the visibility settings of the identifier, but also on my own rights (root sees everything).
 
-Um explizit die globale Sichtbarkeit, unabhängig von Root-Rechten o.ä. abfragen zu können, existieren die Methoden `get_global_visibility_by_id` und `get_global_visibililty_by_username`, die als Parameter die User-ID bzw. den Usernamen erhalten und die in der Datenbank hinterlegte Sichtbarkeit zurückgeben. Hier kommt also ein Wert aus der Menge `{'yes', 'no', 'always', 'never', 'unknown', 'global'}` heraus
+To be able to explicitly query the global visibility, regardless of root rights or similar, there are the methods `get_global_visibility_by_id` and `get_global_visibililty_by_username`, which receive the user ID or the user name as a parameter and return the visibility stored in the database. A value from the set `{'yes', 'no', 'always', 'never', 'unknown', 'global'}` is therefore returned here
 
-Zur Abfrage der Sichtbarkeit in einem bestimmten Bereich von Stud.IP gibt es die Methoden `get_local_visibility_by_id` bzw. `get_local_visibility_by_username`. Hiermit kann durch Angabe der User-ID bzw. des Usernamens und des gewünschten Bereichs die Sichtbarkeit in diesem Bereich abgefragt werden. Gültige Bereiche sind
+The methods `get_local_visibility_by_id` and `get_local_visibility_by_username` are available for querying the visibility in a specific area of Stud.IP. This can be used to query the visibility in this area by specifying the user ID or user name and the desired area. Valid areas are
 
-* **online** für die Wer ist online-Liste
-* **chat** für die Sichtbarkeit des eigenen Chatraums
-* **search** für die Auffindbarkeit in der Personensuche
-* **email** für die Anzeige der Emailadresse
-* **homepage** für die Sichtbarkeitseinstellungen der einzelnen Elemente der Profilseite
+**online** for the who is online list
+**chat** for the visibility of your own chat room
+**search** for the findability in the people search
+**email** for the display of the email address
+**homepage** for the visibility settings of the individual elements of the profile page
 
-Will man z.B. wissen, ob der User mit dem Usernamen 'tester' über die Personensuche auffindbar ist, so kann dies so abgefragt werden:
+For example, if you want to know whether the user with the username 'tester' can be found via the people search, you can query this as follows:
 
 ```php
 $search_visibility = get_local_visibility_by_username('tester', 'search');
 ```
-Besonders auf externen Seiten ist es noch nützlich, auch zu wissen, welche Berechtigung der abzufragende User im System hat. Daher kann optional auch angegeben werden, dass diese Berechtigung mit zurückgegeben werden soll:
+Particularly on external pages, it is also useful to know which authorization the user to be queried has in the system. For this reason, you can optionally specify that this authorization should also be returned:
 
 ```php
 $search_visibility = get_local_visibility_by_username('tester', 'search', true);
 ```
-führt dann zur Ausgabe
+then leads to the output
 
 ```php
 $search_visibility = Array(
-  'perms' => 'dozent', 
+  'perms' => 'tester',
   'search' => true
 );
 ```
 
-## Sichtbarkeit der Homepage-Elemente
-Auf der Profilseite einer Person werden am Anfang standardmäßig alle Sichtbarkeiten der einzelnen Elemente geladen. Damit wird die Anzahl der Datenbankanfragen minimiert, indem nur eine globale Anfrage für alle Elemente statt eines Queries pro Element ausgeführt werden muss.
+## Visibility of the homepage elements
+On a person's profile page, all visibilities of the individual elements are loaded by default at the beginning. This minimizes the number of database queries by only having to execute one global query for all elements instead of one query per element.
 
-Mittels der Funktionen `is_element_visibible_for_user` und `is_element_visible_externally` kann dann überprüft werden, ob ein einzelnes Element anhand seiner Sichtbarkeitseinstellungen für den aktuellen Nutzer angezeigt werden soll.
+The functions `is_element_visible_for_user` and `is_element_visible_externally` can then be used to check whether an individual element should be displayed for the current user based on its visibility settings.
 
-Hierzu ein Beispiel: Aus der Datenbank wurde geladen, dass das Element private_phone (also die private Telefonnummer) die Sichtbarkeit 1 (=VISIBILITY_ME) hat, also nur für den Besitzer der Homepage selbst angezeigt werden soll. Die Methode `is_element_visible_for_user` bekommt nun als Parameter die ID des aktuellen Users, die ID des Users, zu dem die gerade besuchte Homepage gehört und den Wert der Sichtbarkeit, also 1. Daraus wird nun ermittelt, ob die Telefonnummer angezeigt werden soll oder nicht.
+Here is an example: The element private_phone (i.e. the private telephone number) was loaded from the database with the visibility 1 (=VISIBILITY_ME), i.e. it should only be displayed for the owner of the homepage itself. The method `is_element_visible_for_user` now receives the ID of the current user, the ID of the user to whom the currently visited homepage belongs and the value of the visibility, i.e. 1, as parameters. This is now used to determine whether the telephone number should be displayed or not.
 
-Im Code sieht das so aus:
+In the code it looks like this:
 
 ```php
-// Der "Besitzer" der Homepage hat die ID '12345'
+// The "owner" of the homepage has the ID '12345'
 $visibilities = get_local_visibility_by_id('12345', 'homepage');
-// Der Besucher der Homepage hat die ID 'abcde'
+// The visitor of the homepage has the ID 'abcde'
 $private_phone = is_element_visible_for_user('abcde', '12345', $visibilities['private_phone']);
 ```
-Geht es nur um einzelne Elemente der Homepage, so kann man auch explizit deren Sichtbarkeit abfragen:
+If you are only interested in individual elements of the homepage, you can also explicitly query their visibility:
 
 ```php
-// Wieder Homepagebesitzer-ID '12345'
+// Homepage owner ID '12345' again
 $private_phone_visibility = get_homepage_element_visibility('12345', 'private_phone');
 ```
-Aus Performancegründen wird für eine gesamte Homepage nur die erste Variante ausgeführt, wo alle Sichtbarkeiten auf einmal geladen werden.
+For performance reasons, only the first variant is executed for an entire homepage, where all visibilities are loaded at once.
 
-Über die Methode `get_visible_email` kann die nach außen sichtbare Emailadresse ermittelt werden. Hat ein Nutzer eingestellt, dass die eigene Emailadresse nicht angezeigt werden soll, so wird stattdessen versucht, über die Einrichtungszuordnung dieser Kennung eine Emailadresse zu ermitteln (nur Zuordnungen mit mindestens Recht autor). Dabei wird zuerst die Emailadresse der ersten gefundenen Einrichtung verwendet, sollte es mehrere Einrichtungszuordnungen geben und eine davon als Standardeinrichtung definiert sein, so wird diese Email verwendet. Bei keiner gefundenen Zuordnung wird ein Leerstring als Emailadresse zurückgegeben.
+The method `get_visible_email` can be used to determine the externally visible email address. If a user has set that their own email address should not be displayed, an attempt is made instead to determine an email address via the device assignment of this identifier (only assignments with at least the right author). The email address of the first institution found is used first; if there are several institution assignments and one of them is defined as the default institution, this email is used. If no assignment is found, an empty string is returned as the email address.

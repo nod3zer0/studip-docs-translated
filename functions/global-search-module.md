@@ -1,38 +1,38 @@
 ---
 id: global-search-module
-title: Module für die globale Suche
-siebar_label: Globale Suche
+title: Modules for the global search
+siebar_label: Global search
 ---
 
-# Module für die globale Suche
-Die globale Suche (ab Stud.IP 4.1) hat für jede Suchkategorie eine eigene Klasse, die die nötigen Operationen ausführt, um passende Suchergebnisse zu finden.
+# Modules for the global search
+The global search (as of Stud.IP 4.1) has a separate class for each search category, which performs the necessary operations to find suitable search results.
 
-Jedes Modul stammt von der abstrakten Oberklasse `GlobalSearchModule` ab und implementiert folgende Methoden:
+Each module is derived from the abstract superclass `GlobalSearchModule` and implements the following methods:
 
-## Methoden
-* `getName()` liefert einen Anzeigenamen für das Modul zurück. Dieser erscheint in der Konfiguration der Suchmodule und in der kategorisierten Übersicht der Suchergebnisse.
-* `getSQL($search)` generiert die SQL-Anfrage, die ausgeführt werden soll, um die Suchergebnisse aus der Datenbank zu lesen. Hier muss vollständiger SQL-Code zurückgegeben werden, also kein Prepared Statement oder SQL mit Parametern. Um die Suchanfrage performant zu halten, sollte `LIMIT` verwendet werden, um die Anzahl der Ergebnisse zu beschränken. Über die Variable `GLOBALSEARCH_MAX_RESULT_OF_TYPE` aus der globalen Konfiguration wird gesteuert, wie viele Ergebnisse pro Kategorie in der Schnellsuche angezeigt werden. Da jede Kategorie klickbar ist und dann mehr Ergebnisse anzeigt, kann z.B. `LIMIT  (4 * Config::get()->GLOBALSEARCH_MAX_RESULT_OF_TYPE)` angegeben sein.
-* `filter($data, $search)` bereit ein einzelnes Suchergebnis zur Weiterverarbeitung vor. Hier wird eine einzelne Datenbankzeile übergeben, aus der dann die für die Darstellung benötigten Attribute erzeugt werden. Die Rückgabe ist ein Array von der Art
+## Methods
+* `getName()` returns a display name for the module. This appears in the configuration of the search modules and in the categorized overview of the search results.
+* `getSQL($search)` generates the SQL query to be executed to read the search results from the database. Complete SQL code must be returned here, i.e. no prepared statement or SQL with parameters. To keep the search query performant, `LIMIT` should be used to limit the number of results. The variable `GLOBALSEARCH_MAX_RESULT_OF_TYPE` from the global configuration is used to control how many results are displayed per category in the quick search. As each category is clickable and then displays more results, `LIMIT (4 * Config::get()->GLOBALSEARCH_MAX_RESULT_OF_TYPE)` can be specified, for example.
+* `filter($data, $search)` prepares a single search result for further processing. A single database row is passed here, from which the attributes required for the display are then generated. The return is an array of the type
 
 ```php
 [
-    'id' => <Stud.IP-ID des Objekts>,
-    'name' => <Titel/Name des Objekts, am besten über GlobalSearchModule::mark gekennzeichnet>,
-    'url'  => <URL zum Aufruf des Ergebnisses im System, z.B. Profil, Veranstaltungsseite etc.>,
-    'date' => <Erzeugungs-/Änderungsdatum/Semester>,
-    'description' => <Ausführlichere Information, Beschreibungstext, Textausschnitte etc, am besten über GlobalSearchModule::mark gekennzeichnet>,
-    'additional' => <Weitere Daten, wie z.B. Untertitel, Liste von Dozierenden etc.>,
-    'expand' => <URL zur weiterführenden Suche>,
-    'img' => <URL eines Bildes/Avatars für dieses Ergebnis>
+    'id' => <Stud.IP-ID of the object>,
+    'name' => <title/name of the object, best marked via GlobalSearchModule::mark>,
+    'url' => <URL to call up the result in the system, e.g. profile, event page, etc.>,
+    'date' => <creation/modification date/semester>,
+    'description' => <more detailed information, description text, text excerpts etc., best marked via GlobalSearchModule::mark>,
+    'additional' => <Further data, e.g. subtitle, list of lecturers, etc.>,
+    'expand' => <URL for further search>,
+    'img' => <URL of an image/avatar for this result>
 ]
 ```
-* `getSearchURL($searchterm)` liefert die URL einer weiterführenden Suche, z.B. Forensuche innerhalb einer Veranstaltung oder Stud.IP-weite Veranstaltungssuche
-## Markierung des Suchbegriffs
-Um zu kennzeichnen, warum ein Ergebnis überhaupt angezeigt wird, kann die statische Methode `GlobalSearchModule::mark($string, $query, $longtext = false, $filename = true)` verwendet werden, die in einem gegebenen String das Suchwort markiert und ihn ggf. kürzt. Hierfür wird das HTML-Tag `<mark>` verwendet.
+* `getSearchURL($searchterm)` returns the URL of a further search, e.g. forum search within a course or Stud.IP-wide course search
+## Marking of the search term
+To mark why a result is displayed at all, the static method `GlobalSearchModule::mark($string, $query, $longtext = false, $filename = true)` can be used, which marks the search word in a given string and shortens it if necessary. The HTML tag `<mark>` is used for this.
 # GlobalSearchFulltext
-Statt der "normalen" SQL-Suche über `LIKE` kann auch in bestimmten MySQL-Versionen die Volltextsuche via `MATCH AGAINST` verwendet werden. Hierfür muss das Interface `GlobalSearchFulltext` implementiert werden. Dieses besitzt drei Methoden:
-* `enable()`: Aktionen, die beim Aktivieren der Volltextsuche dieses Moduls ausgeführt werden sollen, z.B. Erzeugung von nötigen Tabellenindizes
-* `disable()`: Aktionen, die beim Abschalten der Volltextsuche dieses Moduls ausgeführt werden sollen. z.B. Entfernen von Tabellenindizes
-* `getFulltextSearc($search)` generiert analog zu `GlobalSearchModule->getSQL()` die SQL-Anfrage, um die Suchergebnisse aus Datenbank zu holen
-# Aktivierung und Sortierung von Suchmodulen
-Eine neue Suchmodulklasse muss noch unter Admin->Globale Suche aktiviert werden, dort kann auch per Drag & Drop sortiert werden, in welcher Reihenfolge die Module abgefragt bzw. die Suchergebnisse angezeigt werden.
+Instead of the "normal" SQL search via `LIKE`, the full text search via `MATCH AGAINST` can also be used in certain MySQL versions. The interface `GlobalSearchFulltext` must be implemented for this. This has three methods:
+* `enable()`: Actions that are to be executed when the full-text search of this module is activated, e.g. creation of necessary table indices
+* `disable()`: Actions to be executed when the full-text search of this module is deactivated, e.g. removing table indices
+* `getFulltextSearc($search)` generates the SQL query analogous to `GlobalSearchModule->getSQL()` to retrieve the search results from the database
+# Activation and sorting of search modules
+A new search module class must still be activated under Admin->Global Search, where you can also sort the order in which the modules are queried and the search results are displayed using drag & drop.

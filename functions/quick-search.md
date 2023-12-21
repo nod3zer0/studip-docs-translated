@@ -1,47 +1,47 @@
 ---
 id: quick-search
-title: QuickSearch-Klasse
-sidebar_label: QuickSearch-Klasse
+title: QuickSearch class
+sidebar_label: QuickSearch class
 ---
 
 
-In `lib/classes/QuickSearch.class.php` wird eine GUI-Klasse bereit gestellt, mit der man ein einzeiliges Suchfeld inklusive AJAX-Dropdown Menü schnell und einfach an jede Stelle einbauen kann. Vorteile:
+In `lib/classes/QuickSearch.class.php` a GUI class is provided with which you can quickly and easily add a single-line search field including an AJAX dropdown menu at any position. Advantages:
 
-* Wenig und übersichtlicher Quellcode nötig.
-* AJAX-Suche und Javascript-Dropdown Menü gibt es gratis.
-* Das Suchfeld ist auch ohne Javascript benutzbar und genügt damit den Bestimmungen zur Barrierefreiheit von Stud.IP.
-* Es kann nach praktisch allem gesucht werden - nicht nur in der Datenbank, sondern ganz beliebig.
-* Das Suchfeld ist konfigurierbar durch weitere Funktionen.
-* Bei zukünftigen Änderungen an diese Suchfelder durch die GUI-Kommission ist der Programmierer mit dieser Klasse auf der sicheren Seite, weil nur die Klasse verändert werden muss.
+* Little and clear source code required.
+* AJAX search and Javascript dropdown menu are free.
+* The search field can also be used without Javascript and therefore meets the Stud.IP accessibility requirements.
+* You can search for practically anything - not just in the database, but anywhere.
+* The search field can be configured with additional functions.
+* In the event of future changes to these search fields by the GUI commission, the programmer is on the safe side with this class, because only the class has to be changed.
 
-Im HTML gibt es dann das Input-Feld, das man erwartet und ein weiteres unsichtbares Input-Feld für die ID. Meistens sucht man nach etwas wie Personen, die einen klar lesbaren Namen haben. Aber der Programmierer will an der Stelle eigentlich nicht den Namen, sondern lieber eine user_id haben. Die user_id wird dann versteckt im Hintergrund gespeichert. Der Programmierer kann QuickSearch einbinden, wie ein Input-Feld, in das der Nutzer wie magisch nur die user_id eingegeben hätte - der Nutzer gibt aber den Klarnamen ein. QuickSearch bietet diese Architektur ganz automatisch.
+In the HTML there is then the input field that is expected and another invisible input field for the ID. Usually you are looking for something like persons, which have a clearly readable name. But the programmer doesn't actually want the name at this point, but rather a user_id. The user_id is then stored hidden in the background. The programmer can integrate QuickSearch, like an input field in which the user would have magically entered only the user_id - but the user enters the clear name. QuickSearch offers this architecture automatically.
 
-## Einbau eines QuickSearch Feldes
+## Installation of a QuickSearch field
 
-Üblicherweise besteht die Suche aus zwei Elementen, die zusammen arbeiten: erstens, das Suchelement, das quasi ein Model ist, das konkret nach etwas sucht, und zweitens die QuickSearch-Klasse, die diese Suche ausführt und sich um die Ausgabe kümmert.
+Usually, the search consists of two elements that work together: firstly, the search element, which is effectively a model that specifically searches for something, and secondly, the QuickSearch class that executes this search and takes care of the output.
 
 ```php
-$suche = new SQLSearch("SELECT username, Nachname " .
+$search = new SQLSearch("SELECT username, surname " .
     "FROM auth_user_md5 " .
-    "WHERE Nachname LIKE :input " .
-    "LIMIT 5", _("Nachname"), "username");
-print QuickSearch::get("username", $suche)
+    "WHERE lastname LIKE :input " .
+    "LIMIT 5", _("Lastname"), "username");
+print QuickSearch::get("username", $search)
     ->setInputStyle("width: 240px")
     ->render();
 ```
 
-Die Variable `$suche` ist also das Objekt, das die Suche durchführt. Dieses Objekt ist nicht notwendigerweise ein Objekt der Klasse SQLSearch, sondern ein Objekt der Klasse SearchType (wovon SQLSearch eine Unterklasse ist). SQLSearch ist nun eine spezielle Klasse, die beliebige SQL-Queries auf die Datenbank anwenden kann. In diesem Query bezeichnet `:input` stets den Suchstring, den ein Nutzer später eingibt.
+The variable `$search` is therefore the object that performs the search. This object is not necessarily an object of the SQLSearch class, but an object of the SearchType class (of which SQLSearch is a subclass). SQLSearch is now a special class that can apply any SQL queries to the database. In this query, `:input` always denotes the search string that a user enters later.
 
-Die Klasse QuickSearch kümmert sich danach dann um die Ausgabe. Der erste Wert des Konstruktors ist immer der Name des Suchfeldes im HTML, also zum Beispiel `<input name="username">`. Der zweite Parameter ist dann das Suchobjekt, das wir vorher definiert haben. Danach folgen einige Methoden, um die Ausgabe weiter zu konfigurieren wie `setInputStyle("width: 240px")` und die Methode `render()` veranlasst dann die Ausgabe des Ganzen.
+The QuickSearch class then takes care of the output. The first value of the constructor is always the name of the search field in the HTML, for example `<input name="username">`. The second parameter is then the search object that we have previously defined. This is followed by a few methods to further configure the output, such as `setInputStyle("width: 240px")` and the `render()` method then triggers the output of the whole thing.
 
-Und so wird es dann aussehen:
+And this is what it will look like:
 
-Attach:QuickSearch1.png      Attach:QuickSearch2.png
+Attach:QuickSearch1.png Attach:QuickSearch2.png
 
 
 ## Shortcut
 
-Für ganz einfache Suchen wie der Suche nach einem username oder einer user_id kann man als Suchobjektes auch einfach die Klasse "StandardSearch mit Parameter "username", "user_id", "Seminar_id", "Institut_id" oder "Arbeitsgruppe_id" schreiben. Also:
+For very simple searches such as searching for a username or a user_id, you can also simply write the class "StandardSearch with parameters "username", "user_id", "Seminar_id", "Institut_id" or "Arbeitsgruppe_id" as the search object. So:
 
 ```php
 print QuickSearch::get("seminar", new StandardSearch("Seminar_id"))
@@ -49,41 +49,41 @@ print QuickSearch::get("seminar", new StandardSearch("Seminar_id"))
     ->render();
 ```
 
-## Weitere Methoden der QuickSearch-Klasse
+## Further methods of the QuickSearch class
 
-* *withButton()* : Das Suchfeld bekommt auch gleich eine Lupe dazu; diese Lupe ist ein einfacher Submit-Button. Vorteil ist einfach, dass man zum Design keine drei verschachtelten DIVs selber schreiben muss. Aber bitte benutzt diese Methode nicht in Kombination mit anderen Methoden unten. Dies ist quasi nur für ein ganz einfaches Suchfeld ohne spezielles Styling. Insbesondere setInputStyle zerschießt anschließend das Styling eher, als dass es es besser macht. Man kann nur die Länge der Box ändern durch withButton(array('width' => "50")) mit Pixeln als Längenangabe.
-* *defaultValue($valueID, $valueName)* : falls schon etwas eingetragen sein soll in dem Suchfeld, kann man hier den Namen und die dazu gehörige ID angeben.
-* *setInputClass($class)* : Name einer CSS-Klasse, die dem Feld mitgegeben wird.
-* *setInputStyle($style)* : besondere Angaben für style="" das dem Input-Feld mitgegeben wird.
-* *setDescriptionColor($color)* : Farbe der Beschreibung des Textfeldes. Die Beschreibung des Textfeldes taucht nur auf, solange der Nutzer noch nichts geschrieben hat und kann abweichen von der normalen Schreibfarbe des Textfeldes.
-* *noSelectbox()* : erzwingt, dass auf keinen Fall eine Select-Box für die Suchergebnisse angezeigt wird. Sinnvoll füre Suchfelder, die auf jeder Seite auftauchen. Aber Achtung! Hiermit fällt die nicht-JS Funktionalität des Suchfeldes ebenfalls flach.
-* *fireJSFunctionOnSelect($function_name)* : Der Programmierer kann eine Javascript Funktion angeben, die das ausgewählte Objekt weiter verarbeiten kann. Nur den Namen angeben. Die Javascript-Funktion sollte als Parameter (item_id, item_name) erwarten. Diese Funktion sollte true zurückliefern, damit das Ergebnis nach dem Abfeuern der JS-Funktion noch im Input bestehen bleibt. Ansonsten wird es automatisch wieder gelöscht.
-* *setAttributes($attr_array)* : Weitere Attribute für das Textfeld wie zum Beispiel ein title-Attribut. Zum Setzen solch eines titles würde `$attr_array = array('title' => 'nur ein Suchfeld')` übergeben werden. Natürlich funktioniert das aber auch mit "style" oder "class" als Attribut.
-* *disableAutocomplete($disable = true)* : Hiermit kann man das AJAX-Autocomplete für dieses Suchfeld deaktivieren. Meistens will man das zur Verbesserung der Performance tun. Man erhält dann kein Auswahlfeld mehr, sondern muss regulär auf Enter drücken und bekommt dann eine stinknormale Select-Box. Diese Eigenschaft deaktiviert nebenbei natürlich auch alle Angaben aus fireJSFunctionOnSelect und lässt sich nur bedingt mit noSelectbox kombinieren. Falls man alle Autocompleter für QuickSearches im System deaktivieren will, um die Performance zu verbessern, eignet sich die Config-Einstellung global -> AJAX_AUTOCOMPLETE_DISABLED besser, die bewirkt dasselbe. Nur eben global für das ganze System und ohne den Quellcode anfassen zu müssen.
+* *withButton()* : The search field also gets a magnifying glass; this magnifying glass is a simple submit button. The advantage is simply that you don't have to write three nested DIVs for the design. But please do not use this method in combination with other methods below. This is only for a very simple search field without special styling. Especially setInputStyle will destroy the styling rather than make it better. You can only change the length of the box using withButton(array('width' => "50")) with pixels as the length specification.
+* *defaultValue($valueID, $valueName)* : if something should already be entered in the search field, you can enter the name and the corresponding ID here.
+* *setInputClass($class)* : Name of a CSS class that is added to the field.
+* *setInputStyle($style)* : special information for style="" which is given to the input field.
+* *setDescriptionColor($color)* : Color of the description of the text field. The description of the text field only appears as long as the user has not yet written anything and may differ from the normal writing color of the text field.
+* *noSelectbox()* : Forces a select box not to be displayed for the search results under any circumstances. Useful for search fields that appear on every page. But beware! This also eliminates the non-JS functionality of the search box.
+* *fireJSFunctionOnSelect($function_name)* : The programmer can specify a Javascript function that can further process the selected object. Only specify the name. The Javascript function should expect (item_id, item_name) as parameters. This function should return true so that the result remains in the input after the JS function has been fired. Otherwise it will be deleted automatically.
+* *setAttributes($attr_array)* : Additional attributes for the text field, such as a title attribute. To set such a title, `$attr_array = array('title' => 'only one search field')` would be passed. Of course, this also works with "style" or "class" as an attribute.
+* *disableAutocomplete($disable = true)* : This can be used to deactivate the AJAX autocomplete for this search field. This is usually done to improve performance. You then no longer get a selection field, but have to press Enter regularly and then get a normal select box. Of course, this property also deactivates all entries from fireJSFunctionOnSelect and can only be combined with noSelectbox to a limited extent. If you want to deactivate all autocompleters for QuickSearches in the system to improve performance, the config setting global -> AJAX_AUTOCOMPLETE_DISABLED is more suitable, as it has the same effect. Only globally for the entire system and without having to touch the source code.
 
-## Weitere Suchobjekte
+## Further search objects
 
-Man ist nicht auf SQLSearch beschränkt. Jeder Programmierer kann eigene Suchobjekte definieren und so zum Beispiel auch eine Lucene-Index-Suche implementieren, wenn ihm gerade danach ist. Die Suchklassen müssen alle von der Klasse SearchType abgeleitet werden und mindestens die Methoden `includePath()` und (sinnvollerweise) `getResults(...)` überschreiben. Falls die Suchklasse im Kern von Stud.IP benutzt wird, sollte sie auch im Verzeichnis `lib/classes/seachtypes/` hinterlegt werden. Aber Pluginbauer können ihre Suchklassen natürlich auch im Plugin hinterlegen.
+You are not limited to SQLSearch. Every programmer can define their own search objects and implement a Lucene index search, for example, if they feel like it. The search classes must all be derived from the SearchType class and at least overwrite the `includePath()` and (sensibly) `getResults(...)` methods. If the search class is used in the core of Stud.IP, it should also be stored in the directory `lib/classes/seachtypes/`. But plugin builders can of course also store their search classes in the plugin.
 
-Eine kleine Beispielsuchklasse könnte zum Beispiel so aussehen:
+A small example search class could look like this, for example:
 
 ```php
-class SeminarTypSuchen extends SearchType {
+class SeminarTypeSearch extends SearchType {
 
     public function getTitle() {
-        return _("Seminartyp suchen");
+        return _("Search seminar type");
     }
-    
+
     public function getResults($input, $contextual_data = array()) {
-        $typen = $GLOBALS['SEM_TYPE'];
-        foreach($typen as $key => $typ) {
-            if (strpos($typ['name'], $input) === false) {
-                unset($typen[$key]);
+        $types = $GLOBALS['SEM_TYPE'];
+        foreach($types as $key => $type) {
+            if (strpos($type['name'], $input) === false) {
+                unset($types[$key]);
             } else {
-                $typen[$key] = array($key, $typ['name']);
+                $types[$key] = array($key, $type['name']);
             }
         }
-        return $typen;
+        return $types;
     }
 
     public function includePath() {
@@ -92,10 +92,10 @@ class SeminarTypSuchen extends SearchType {
 }
 ```
 
-Diese Klasse ist für den Fall gedacht, dass es in Stud.IP unübersichtlich viele Semeinartypen gibt. Diese Typen sind in der config.inc.php definiert und finden sich also nicht in der Datenbank. Für diesen Zweck ist also die Klasse SQLSearch unpraktikabel. 
+This class is intended for the case that there are a confusing number of semester types in Stud.IP. These types are defined in config.inc.php and are therefore not found in the database. The SQLSearch class is therefore impractical for this purpose.
 
-Die Methode `getTitle` gibt nur den Schriftzug, der später im leeren Formularfeld stehen soll, wider. 
-Die Methode `getResults` erledigt gewissermaßen die ganze Arbeit, durchsucht das Array aller Seminartypen nach dem eingegeben String und gibt ein Ergebnisarray der Form `array(array(ID_des_Seminar_Typs, Name_des_Typs), ...)` zurück. 
-Die Methode `includePath` ist notwendig, damit diese Klasse gefunden wird (es gibt einen internen kleinen Autoloader), hat aber stets den gleichen Inhalt, kann also für alle Erweiterungsklassen von SearchType so übernommen werden.
+The `getTitle` method only returns the text that is to appear later in the empty form field.
+The method `getResults` does all the work so to speak, searches the array of all seminar types for the entered string and returns a result array of the form `array(array(ID_of_Seminar_Type, Name_of_Type), ...)`.
+The method `includePath` is necessary for this class to be found (there is a small internal autoloader), but always has the same content, so it can be used for all extension classes of SearchType.
 
-Und das sollte es auch gewesen sein. Man kann noch einen Avatar für seine Suchergebnisse angeben, was sich aber für Seminartypen nicht gerade anbietet. Dennoch würde man da tun, indem man die Methoden `getAvatar` und `getAvatarImageTag` überschreibt. Siehe dazu Dokumentation im Quellcode.
+And that should be it. You can still specify an avatar for your search results, but this is not really suitable for seminar types. Nevertheless, you would do this by overwriting the methods `getAvatar` and `getAvatarImageTag`. See the documentation in the source code.
