@@ -1,14 +1,14 @@
 ---
-title: Schrift
-sidebar_label: Schrift
+title: Font
+sidebar_label: Font
 ---
 
-### Vorbemerkung
+### Preliminary remark
 
-In Stud.IP wird eine einheitliche Schriftart verwendet. Im Gegensatz zu früheren Versionen, in dem Betriebssystem und Browser die Schriftart bestimmt haben (in der Regel Arial oder Helvetica, serifenlose Schriftarten), liegt die Festlegung nun in den Stylesheets von Stud.IP. Das bietet eine Reihe von Vorteilen (festgelegte Formatierung Größen, tendenziell mehr wie in Print-Designs) aber auch Nachteile (unterschiedliche Darstellung, Lesbarkeit, Probleme mit Webfonts in bestimmten Browsern).
+A standardized font is used in Stud.IP. In contrast to earlier versions, in which the operating system and browser determined the font (usually Arial or Helvetica, sans serif fonts), this is now determined by the Stud.IP stylesheets. This offers a number of advantages (fixed formatting sizes, tends to be more like in print designs) but also disadvantages (different display, readability, problems with web fonts in certain browsers).
 
-### Schriftart Lato
+### Lato font
 
-In Stud.IP kommt durchweg die Schriftart Lato zum Einsatz. Lato ist ein frei verfügbarer Google Font:
+The Lato font is used throughout Stud.IP. Lato is a freely available Google font:
 
 https://www.google.com/fonts/specimen/Lato

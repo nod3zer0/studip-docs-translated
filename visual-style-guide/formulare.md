@@ -1,10 +1,10 @@
 ---
-title: Formulare
-sidebar_label: Formulare
+title: Forms
+sidebar_label: Forms
 ---
 
 
-Formulare sollen in Stud.IP gemäß LifTers014 einheitlich gestaltet werden. Ein Standard Formular wird wie folgt definiert:
+Forms should be standardized in Stud.IP according to LifTers014. A standard form is defined as follows:
 
 ```php
 <form class="default" ...>
@@ -13,121 +13,121 @@ Formulare sollen in Stud.IP gemäß LifTers014 einheitlich gestaltet werden. Ein
 ```
 
 
-## Allgemein
-Lange Erklärungstexte am Anfang des Formulars sollten vermieden werden. Erklärungen können über Tooltips an den Elementen (siehe unten) oder ggf. Texte in der Hilfelasche realisiert werden.
+## General
+Long explanatory texts at the beginning of the form should be avoided. Explanations can be realized via tooltips on the elements (see below) or, if necessary, texts in the help tab.
 
-## Gruppierung der Formularfelder
-Formularfelder (oder auch Input-Elemente) sollen gruppiert werden, wenn sie inhaltlich oder funktional zusammenhängen, damit dieser Zusammenhang deutlich wird. Jede Gruppe sollte eine passende Überschrift haben.
+## Grouping of the form fields
+Form fields (or input elements) should be grouped together if they are related in terms of content or function so that this relationship is clear. Each group should have a suitable heading.
 
 ```php
 <form class="default" ...>
       <fieldset>
-          <legend>Gruppenüberschrift 1</legend>
+          <legend>Group heading 1</legend>
           ...
       </fieldset>
       <fieldset>
-          <legend>Gruppenüberschrift 2</legend>
+          <fieldset>Group heading 2</fieldset>
           ...
       </fieldset>
 </form>
 ```
 
-Auch Formulare mit lediglich einer Gruppierung sind zulässig. In Dialogen wird eine einzelne Gruppierung jedoch entfernt!
+Forms with only one grouping are also permitted. In dialogs, however, a single grouping is removed!
 
-#### Ein-/Ausblenden von Gruppen
+#### Show/hide groups
 
-Einzelne Gruppen können aus- bzw. eingeblendet werden, indem entweder dem `fieldset` (für eine spezielle Gruppe) oder dem gesamten Formular (für alle Gruppen innerhalb) die Klasse `collapsable` gegeben wird. Dadurch wird durch einen Klick auf die `legend` des `fieldset`s die Gruppe versteckt bzw. wieder angezeigt. Soll die Gruppe bei der initialen Darstellung ausgeblendet sein, muss das `fieldset` zusätzlich mit der Klasse `collapsed` ausgezeichnet werden.
+Individual groups can be hidden or shown by giving either the `fieldset` (for a specific group) or the entire form (for all groups within) the class `collapsable`. By clicking on the 'legend' of the 'fieldset', the group is hidden or displayed again. If the group is to be hidden in the initial display, the `fieldset` must also be marked with the class `collapsed`.
 
 ```php
 <form class="default" ...>
       <fieldset>
-          <legend>Gruppenüberschrift 1</legend>
+          <legend>Group heading 1</legend>
           ...
       </fieldset>
       <fieldset class="collapsable collapsed">
-          <legend>Gruppenüberschrift 2</legend>
+          <legend>Group heading 2</legend>
           ...
       </fieldset>
 </form>
 ```
 
 ### Labels
-Generell sollte analog zu LifTers010 das HTML-Markup `<label>` verwendet werden. Beispiel:
+In general, the HTML markup `<label>` should be used analogous to LifTers010. Example:
 
 ```html
 <form class="default">
        <fieldset>
-           <legend>Beschriftung</legend>
+           <legend>Label</legend>
            ...
-           <label>Eingabe A
-           <input name="eingabe_a" type="text" placeholder="Texteingabe A" required>
+           <label>Input A
+           <input name="input_a" type="text" placeholder="Text input A" required>
            </label>
            ...
        </fieldset>
  </form>
 ```
 
-* Das erste Wort des Labels sollte mit einem großen Anfangsbuchstaben geschrieben werden.
-* Das Label sollte nicht mit einem Doppelpunkt abgeschlossen werden.
+* The first word of the label should be written with a capital letter.
+* The label should not end with a colon.
 
 Wording:
-* Es sollen aussagekräftige Labels gewählt werden.
-* Fachbegriffe sollen vermieden werden.
-* Keine ganzen Sätze.
+* Meaningful labels should be chosen.
+* Technical terms should be avoided.
+* No complete sentences.
 
-### Nicht änderbare / deaktivierte Eingabefelder
+### Input fields that cannot be changed / deactivated
 
-Falls in einem Formular im aktuellen Kontext ein Feld nicht geändert werden darf, so muss das Attribut `disabled` an das Eingabefeld gehängt werden. Es ist nicht zulässig, einfach nur den Text OHNE Formularelement auszugeben!
+If a field in a form may not be changed in the current context, the attribute `disabled` must be attached to the input field. It is not permitted to simply output the text WITHOUT a form element!
 
-Beispiel aus lib/classes/StudipSemTreeViewAdmin.class.php
+Example from lib/classes/StudipSemTreeViewAdmin.class.php
 ```php
 <form class="default" ...>
     <fieldset>
-        <legend><?= _("Bereich editieren") ?></legend>
+        <legend><?= _("Edit area") ?></legend>
 
         <label>
-            <?= _("Name des Elements") ?>
+            <?= _("Name of the element") ?>
             <input type="text" name="edit_name"
                 <?= $this->tree->tree_data[$this->edit_item_id]['studip_object_id'])? 'disabled' : * ?>
-                   value="<?= htmlReady($this->tree->tree_data[$this->edit_item_id]['name']) ?>">
+                   value="<?= htmlReady($this->tree->tree_data[$this->edit_item_id]['name']) ?>">">
         </label>
     ...
     </fieldset>
 </form>
 ```
 
-### Ausrichtung der Formularfelder
+### Alignment of the form fields
 
-Schmale Formularfelder dürfen in mehreren Spalten angeordnet werden. Bei schmaleren Anzeigen brechen diese Felder bei korrekter Anwendung automatisch um.
+Narrow form fields may be arranged in several columns. With narrower displays, these fields automatically wrap when used correctly.
 
-Untereinander angeordnete Formularfelder sollten linksbündig angeordnet sein. Wenn mehrere Formularfelder eine logische Folge bilden oder aus anderen Gründen direkt zusammengehören, sollten Sie in einer Horizntalen Gruppierung (hgroup) angeordnet werden.
+Form fields arranged one below the other should be left-aligned. If several form fields form a logical sequence or belong directly together for other reasons, they should be arranged in a horizontal grouping (hgroup).
 
-#### Reguläre nebeneinader angeordnete Elemente
+#### Regular elements arranged next to each other
 
-Um Elemente bei passend großem Bildschirm nebeneinander anzuzeigen, werden diese in Spalten angeordnet. Es gibt insgesamt 6 Spalten und man Elementen eine Breite von 1 - 6 Spalten zuordnen. Dafür gibt es die Klassen col-1 bis col-5 - keine Angabe bedeutet dabei ganze Breite (enstpräche einem col-6).
+To display elements next to each other on a suitably large screen, they are arranged in columns. There are a total of 6 columns and you can assign elements a width of 1 - 6 columns. The classes col-1 to col-5 are available for this - no specification means full width (equivalent to col-6).
 
-Diese Elemente werden dann bei schmaleren Anzeigen automatisch unterienander angezeigt.
+These elements are then automatically displayed one below the other for narrower displays.
 
 ```php
 <form class="default" ...>
     <label class="col-3">
-        Vorname
+        First name
         <input type="text" name="first-name">
     </label>
 
     <label class="col-3">
-        Nachname
+        Last name
         <input type="text" name="last-name">
     </label>
 </form>
 ```
 
 
-#### Horizontale gruppiert angeordnete Elemente
+#### Horizontally grouped elements
 
-Um Elemente in einer Zeile horizontal zu gruppieren, benötigt es ein Wrapper-Element mit der Klasse `.hgroup`. Dieses Element nimmt die gleichen Größen wie die Elemente an und verteilt den Platz innerhalb von sich selbst erstmal gleich, aber die einzelnen Elemente können auch wiederum durch die bekannten Größenangaben beeinflusst werden.
+To group elements horizontally in a line, a wrapper element with the class `.hgroup` is required. This element assumes the same size as the elements and initially distributes the space within itself equally, but the individual elements can also be influenced by the known size specifications.
 
-Die hgroup ist lediglich zulässig für kombinierte Eingabefelder, wie Telefonnummern, Datumsangaben etc. sowie RadioButtons mit sehr  kurzen Labels (z.B. Geschlecht: m/w/kA, Schalter: ja/nein/kA, etc.). Es dürfen keine zu großen Felder und/oder zu lange Label-Texte bei der horizontalen Gruppierung verwendet werden!
+The hgroup is only permitted for combined input fields, such as telephone numbers, dates etc. and radio buttons with very short labels (e.g. gender: m/f/kA, switch: yes/no/kA, etc.). Do not use fields that are too large and/or label texts that are too long for horizontal grouping!
 
 ```php
 <form class="default" ...>
@@ -135,59 +135,59 @@ Die hgroup ist lediglich zulässig für kombinierte Eingabefelder, wie Telefonnu
      <!-- ... -->
 
         <div>
-            <?= _('Geschlecht') ?>
+            <?= _('gender') ?>
         </div>
 
         <section class="hgroup">
             <label>
-                <input type="radio" <? if (!$geschlecht) echo 'checked' ?> name="geschlecht" value="0">
-                <?= _("unbekannt") ?>
+                <input type="radio" <? if (!$gender) echo 'checked' ?> name="gender" value="0">
+                <?= _("unknown") ?>
             </label>
 
             <label>
-                <input type="radio" <? if ($geschlecht == 1) echo "checked" ?> name="geschlecht" value="1">
-                <?= _("männlich") ?>
+                <input type="radio" <? if ($gender == 1) echo "checked" ?> name="gender" value="1">
+                <?= _("male") ?>
             </label>
 
             <label>
-                <input type="radio" name="geschlecht" <? if ($geschlecht == 2) echo "checked" ?> value="2">
-                <?= _("weiblich") ?>
+                <input type="radio" name="gender" <? if ($gender == 2) echo "checked" ?> value="2">
+                <?= _("female") ?>
             </label>
         </section>
      <!-- ... -->
 </form>
 ```
 
-Es gibt noch eine zweite Variante, die eingesetzt werden darf, wenn es sich bei dem Titel tatsächlich um das Label eines nachfolgenden Form-Elementes handelt. Beispiel aus der Nutzerverwaltung:
+There is a second variant that can be used if the title is actually the label of a subsequent form element. Example from the user administration:
 
 ```php
-<label for="inaktiv">
-    <?= _('inaktiv') ?>
+<label for="inactive">
+    <?= _('inactive') ?>
 </label>
 
 <section class="hgroup">
-    <select name="inaktiv" class="size-s" id="inaktiv">
-    <? foreach(array('<=' => '>=', '=' => '=', '>' => '<', 'nie' =>_('nie')) as $i => $one): ?>
-        <option value="<?= htmlready($i) ?>" <?= ($request['inaktiv'][0] === $i) ? 'selected' : * ?>>
+    <select name="inactive" class="size-s" id="inactive">
+    <? foreach(array('<=' => '>=', '=' => '=', '>' => '<', 'never' =>_('never')) as $i => $one): ?>
+        <option value="<?= htmlready($i) ?>" <?= ($request['inactive'][0] === $i) ? 'selected' : * ?>>
             <?= htmlReady($one) ?>
         </option>
     <? endforeach; ?>
     </select>
 
     <label>
-        <input name="inaktiv_tage" type="number" id="inactive" value="0">
-        <?= _('Tage') ?>
+        <input name="inactive_days" type="number" id="inactive" value="0">
+        <?= _('days') ?>
     </label>
 </section>
 ```
 
-#### Kombinierte Variante mit col- und hgroup-Angaben
+#### Combined variant with col and hgroup specifications
 
-Es ist ebenfalls möglich und zulässig, horizontal gruppierte Element in Spalten einzuteilen:
+It is also possible and permissible to divide horizontally grouped elements into columns:
 
 ```php
 <label class="col-3">
-    Telefonnummer
+    phone number
     <section class="hgroup">
         + <input type="text" size="3">
         <input type="text" maxlength="5" class="no-hint" size="5"> /
@@ -205,38 +205,38 @@ Es ist ebenfalls möglich und zulässig, horizontal gruppierte Element in Spalte
 </label>
 ```
 
-### Ausrichtung der Labels
-Die Labels sollen linksbündig und oberhalb der Eingabefelder angebracht sein. Dies erleichtert die Lesbarkeit der Beschriftungen und verdeutlicht den Zusammenhang zwischen den Feldbeschriftungen und den Eingabefeldern.
+### Alignment of the labels
+The labels should be aligned to the left and above the input fields. This makes it easier to read the labels and clarifies the connection between the field labels and the input fields.
 
 Attach::formlabel2015.png
 
-Wenn der Platz in der Vertikalen beschränkt ist, sollen die Beschriftungen linksbündig und links neben den Formularfeldern angebracht sein. Dies erhält die Lesbarkeit und spart Platz in der Vertikalen. In diesem Fall sollten die Labels so gewählt werden, dass sie sich in ihrer Länge möglichst wenig unterscheiden, damit die Lücken zwischen den Labels und den Eingabefeldern nicht zu groß werden.
+If vertical space is limited, the labels should be left-aligned and placed to the left of the form fields. This maintains legibility and saves vertical space. In this case, the labels should be chosen so that they differ as little as possible in length so that the gaps between the labels and the input fields are not too large.
 
-Innerhalb eines Kontextes sollten die Beschriftungen einheitlich angeordnet werden.
+The labels should be arranged uniformly within a context.
 
-### Placeholder/Platzhalter
-Das placeholder-Attribut dient zum Befüllen von Eingabefeldern mit kurzen Hinweisen. Dieser Inhalt verschwindet, sobald ein Nutzer in das Eingabefeld klickt.
-* Placeholder sollten nicht als Alternative zum Label verwendet werden.
-* Placeholder sollten sparsam verwendet werden.
+### Placeholder
+The placeholder attribute is used to fill input fields with short notes. This content disappears as soon as a user clicks in the input field.
+* Placeholders should not be used as an alternative to the label.
+* Placeholders should be used sparingly.
 
-Beispiel für ein korrekt verwendetes placeholder-Attribut:
+Example of a correctly used placeholder attribute:
 TODO: Screenshot
 
 
-Beispiel für ein **falsches** placeholder-Attribut:
+Example of an **incorrect** placeholder attribute:
 Attach::wronglabel.png
 
 
-## Art der Formularfelder
-Die Art der Eingabefelder soll so gewählt werden, dass man an ihr erkennen kann, welche Eingaben möglich sind. Ein Textfeld dient zur freien Eingabe von Zeichen ohne Beschränkungen (außer in der Zeichenanzahl). [Checkboxen](Checkboxen), [Radio Buttons](Visual-Style-Guide#RadioButtons) oder [Drop-Down Listen](DropDown) werden verwendet, um die Anzahl der Optionen einzuschränken oder für Einträge, wo sich Nutzer leicht vertippen.
+## Type of form fields
+The type of input fields should be chosen in such a way that you can recognize which inputs are possible. A text field is used for the free input of characters without restrictions (except for the number of characters). [Checkboxes](Checkboxes), [Radio Buttons](Visual-Style-Guide#RadioButtons) or [Drop-Down Lists](DropDown) are used to limit the number of options or for entries where users easily make mistakes.
 
 
-## Größe der Formularfelder
-Eingabefelder sollen groß genug sein, um typische Eingaben entgegen zunehmen, ohne dass man "über den rechten Rand hinausschreibt". Die Größe der Formularfelder soll so gewählt werden, dass sie deutlich machen, welche Eingaben dort möglich sind. Beispiel: Das Eingabefeld für die Veranstaltungsnummer sollte kürzer sein als das für den Veranstaltungstitel.
+## Size of the form fields
+Input fields should be large enough to accept typical entries without "writing over the right edge". The size of the form fields should be chosen so that it is clear which entries are possible there. Example: The input field for the course number should be shorter than the one for the course title.
 
-Das Stud.IP-Stylesheet schlägt standardmäßig drei Größen vor (CSS-Klassen "size-s","size-m" und "size-l"):
+The Stud.IP stylesheet suggests three sizes by default (CSS classes "size-s", "size-m" and "size-l"):
 
-* size-s: 10em (gedacht für kurze Eingaben wie z.B. Zahlen)
+* size-s: 10em (intended for short entries such as numbers)
 * size-m: 48em
 * size-l: 100%
 
@@ -244,17 +244,17 @@ Das Stud.IP-Stylesheet schlägt standardmäßig drei Größen vor (CSS-Klassen "
 <form class="default" ...>
 ...
     <label>
-        Kurze Eingabe
+        Short input
         <input type="text" class="size-s">
     </label>
 
     <label>
-        Mittlere Eingabe
+        Medium input
         <input type="text" class="size-m">
     </label>
 
     <label>
-        Längere Eingabe
+        Longer input
         <input type="text" class="size-l">
     </label>
 ...
@@ -263,30 +263,30 @@ Das Stud.IP-Stylesheet schlägt standardmäßig drei Größen vor (CSS-Klassen "
 
 Attach::formsizes2015.png
 
-Die Voreinstellung ist "size-m". Ausnahme: Für die Input-Typen "number" und "date" ist die Voreinstellung "size-s".
+The default setting is "size-m". Exception: For the input types "number" and "date", the default setting is "size-s".
 ```php
 <form class="default narrow" ...>
     ...
 </form>
 ```
 
-### Schmale Formulare
+### Narrow forms
 
-Manchmal ist es notwendig, ein Formular standardmäßig besonders platzsparend anzubieten (siehe z.B. Admin > Standort > Veranstaltungshierarchie).
-Dafür kann dem Formular die Klasse "narrow" hinzugefügt werden. Dies sorgt dafür, dass die einzelnen Formularelemente etwas enger zusammenrücken, um ein frühzeitiges umbrechen zu vermeiden.
+Sometimes it is necessary to make a form particularly space-saving by default (see e.g. Admin > Location > Event hierarchy).
+The "narrow" class can be added to the form for this purpose. This ensures that the individual form elements are somewhat closer together in order to avoid premature wrapping.
 
 Attach::narrow_form.png
 
-## Kennzeichnung von Pflichtfeldern
+## Marking of mandatory fields
 
 ```php
 <form class="default" ...>
        <fieldset>
-           <legend>Beschriftung</legend>
+           <legend>Label</legend>
            ...
            <label>
-               <span class="required">Eingabe A</span>
-               <?= tooltipIcon(_('Bitte geben Sie hier nur eine Zahl ein')) ?>
+               <span class="required">Input A</span>
+               <?= tooltipIcon(_('Please enter only one number here')) ?>
                <input type="number">
            </label>
            ...
@@ -295,37 +295,37 @@ Attach::narrow_form.png
 ```
 
 
-Pflichtfelder müssen mit einem hochgestellten roten Stern rechts neben der Feldbeschriftung gekennzeichnet werden. Die kann in einem Label mittels `<span class="required">` im Quelltext umgesetzt werden.
+Mandatory fields must be marked with a superscript red asterisk to the right of the field label. This can be implemented in a label using `<span class="required">` in the source code.
 
-### Hinweistexte zu den Formularfeldern [#Hinweistexte](#Hinweistexte)
+### Note texts for the form fields [#Note texts](#Note texts)
 
-Da die Beschriftung eines Formularfelds möglichst kurz sein sollte, ist es möglich, dass weitere Informationen oder erläuternde Hinweise zum entsprechenden Feld nötig sind. Ein erforderlicher Hinweis- oder Beschreibungstext zu einem Formularfeld wird mittels Tooltip realisiert. Der Tooltip wird über die vorhandene Logik `<?= tooltipIcon(_('...'))?>` rechts neben dem Label und ggf. hinter der Kennzeichnung eines Pflichtfeld positioniert.
+As the labeling of a form field should be as short as possible, it is possible that further information or explanatory notes on the corresponding field are required. A required information or description text for a form field is implemented using a tooltip. The tooltip is positioned via the existing logic `<?= tooltipIcon(_('...'))?>` to the right of the label and, if necessary, behind the label of a mandatory field.
 
 Attach:formtooltip2015.png
 
 
-## Formatvorgaben und Eingabevalidierung
-Wenn Eingaben nur in einem bestimmten Format erfolgen dürfen, soll dies kenntlich gemacht werden, entweder durch
-* entsprechende Wahl bzw. Gestaltung der Formularfelder,
-* eine "intelligente" Interpretation der Eingaben (z.B. Erkennung von 15 oder 1500 als Uhrzeit 15:00 Uhr) oder
-* Hinweise beim Eingabefeld [siehe Hinweistexte](#Hinweistexte).
-* Verwendung entsprechender Input-Types (siehe [Eingabevalidierung](Howto/Eingabevalidierung))
+## Format specifications and input validation
+If entries may only be made in a certain format, this should be indicated, either by
+* appropriate selection or design of the form fields,
+* an "intelligent" interpretation of the entries (e.g. recognition of 15 or 1500 as the time 15:00) or
+* Notes in the input field [see Note texts](#Note texts).
+* Use of corresponding input types (see [Input validation](Howto/Input validation))
 
-Die Eingabevalidierung soll, wenn möglich, direkt nach Verlassen des jeweiligen Eingabefeldes erfolgen. Zu jedem nicht ausgefüllten Pflichtfeld bzw. zu jedem sonstwie falsch ausgefüllten Eingabefeld soll der Korrekturhinweis direkt bei dem jeweiligen Eingabefeld erfolgen, so dass die Aufmerksamkeit des Benutzers direkt auf die noch zu vorzunehmenden bzw. zu korrigierenden Eingaben gelenkt werden.
+Input validation should, if possible, take place directly after leaving the respective input field. For every mandatory field that is not filled in or for every input field that is otherwise filled in incorrectly, the correction note should be displayed directly next to the respective input field so that the user's attention is drawn directly to the entries that still need to be made or corrected.
 
-Weitere Informationen: [Eingabevalidierung](Howto/Eingabevalidierung)
+Further information: [Input validation](Howto/Input validation)
 
 ## Buttons
-Der Button zum Abschicken/Speichern/Übernehmen der eingegebenen Daten ("primäre Aktion") sollte linksbündig mit den Formularfeldern abschließen und sich direkt unterhalb des Formulars im `<footer>`-Element befinden. Damit wird deutlich, welche Daten durch einen Klick auf diesen Button übernommen werden.
+The button for submitting/saving/accepting the entered data ("primary action") should be left-aligned with the form fields and located directly below the form in the `<footer>` element. This makes it clear which data is accepted by clicking on this button.
 
-Ein Button zum Abbrechen oder Zurücksetzen ("sekundäre Aktion") soll vermieden werden. Wenn er erforderlich ist, soll er sich visuell von dem Button für die primäre Aktion unterscheiden.
+A button for canceling or resetting ("secondary action") should be avoided. If it is required, it should be visually different from the button for the primary action.
 
 ```php
 <form class="default" ...>
 ...
     <footer>
-        <?= \Studip\Button::createAccept(_("Speichern")) ?>
-        <?= \Studip\Button::createCancel(_("Abbrechen")) ?>
+        <?= \Studip\Button::createAccept(_("Save")) ?>
+        <?= \Studip\Button::createCancel(_("Cancel")) ?>
     </footer>
 </form>
 ```
@@ -337,23 +337,23 @@ Attach:formfooter2015.png
 
 
 
-* TODO: Genauere Vorgaben für die Gestaltung von Buttons für sekundäre Aktionen formulieren
+* TODO: Formulate more precise specifications for the design of buttons for secondary actions
 
-#### Ausnahme: Buttons bei Wizards
-* wo sollten die Buttons für "zurück" und "weiter" bei mehrseitigen Formularen platziert werden
-  ** zentriert ausgerichtet, wie groß der Abstand zwischen beiden Buttons?
+#### Exception: Buttons for wizards
+* Where should the buttons for "back" and "next" be placed on multi-page forms?
+  ** centered, what is the distance between the two buttons?
 
-Bei längeren Formularen (die über eine Bildschirmseite gehen): Buttons "verdoppeln", also oben und unten auf der 
-Seite anzeigen z. B. "zurück" und "weiter" Buttons
+For longer forms (which extend over one screen page): "Double" the buttons, i.e. display them at the top and bottom of the page
+page, e.g. "back" and "next" buttons
 
 * http://patternry.com/p=multiple-page-wizard/
-* weitere Recherche zu Buttons bei Wizards
+* Further research on buttons at Wizards
   ** Attach:labelsonform.pdf
-  ** Quelle: http://de.slideshare.net/cjforms/labels-and-buttons-on-forms/
+  ** Source: http://de.slideshare.net/cjforms/labels-and-buttons-on-forms/
 
-### Weiterführende Informationen
+### Further information
 
-#### Allgemein
+#### General
 
 * Cheat Sheet For Designing Web Forms http://uxdesign.smashingmagazine.com/2011/10/07/free-download-cheat-sheet-for-designing-web-forms/ Attach:formsheet.pdf
 * http://uxdesign.smashingmagazine.com/2011/11/08/extensive-guide-web-form-usability/
@@ -367,103 +367,103 @@ Seite anzeigen z. B. "zurück" und "weiter" Buttons
 * http://laurakalbag.com/labels-in-input-fields-arent-such-a-good-idea/
 
 
-## Checkboxen
+## Checkboxes
 
-### Verwendung
-Checkboxen werden verwendet, um Optionen zu aktivieren bzw. zu deaktivieren.
+### Usage
+Checkboxes are used to activate or deactivate options.
 
-### Aussehen
-* Checkboxen sollten möglichst untereinander angeordnet werden. Dadurch können Sie einfacher gelesen werden.
-* Die Bezeichnung ist rechts vom Kästchen zu platzieren.
-* Kästchen und Bezeichnung sind linksbündig untereinander anzuordnen.
+### Appearance
+* Checkboxes should be arranged one below the other if possible. This makes them easier to read.
+* The label should be placed to the right of the box.
+* Boxes and labels should be left-aligned below each other.
 
-### Beschriftung
-Negative Beschriftungen sollten vermeiden werden:
-* markierte Checkboxen aktivieren Einstellungen und deaktivieren diese nicht
+### Labeling
+Negative labels should be avoided:
+* marked checkboxes activate settings and do not deactivate them
 
 ```html
   <form ... >
         <fieldset>
-            <legend>Beschriftung</legend>
+            <legend>Label</legend>
 
             <fieldset>
-                <legend>Checkboxengruppe</legend>
+                <legend>Checkbox group</legend>
                 <input class="studip_checkbox" id="cb1" type="checkbox" name="cb" value="1">
-                <label for="cb1">Antwortmöglichkeit 1</label>
+                <label for="cb1">Answer option 1</label>
                 <input class="studip_checkbox" id="cb2" type="checkbox" name="cb" value="2">
-                <label for="cb2">Antwortmöglichkeit 2</label>
+                <label for="cb2">Answer option 2</label>
                 <input class="studip_checkbox" id="cb3" type="checkbox" name="cb" value="3">
-                <label for="cb3">Antwortmöglichkeit 3</label>
+                <label for="cb3">Answer option 3</label>
             </fieldset>
             ...
         </fieldset>
   </form>
 ```
-### Reihenfolge der Checkboxen
-Wenn mehrere Checkboxen auf einer Seite vorhanden sind, sollten diese in einer logischen Reihenfolge aufgelistet sein, z. B. die Optionen zuerst, die am häufigsten verwendet werden.
+### Order of the checkboxes
+If there are several checkboxes on a page, they should be listed in a logical order, e.g. the options that are used most frequently first.
 
 ## Radio Buttons [#RadioButton](#RadioButton)
 
-### Verwendung
-Mit Hilfe von Radio Buttons können Nutzer genau eine Option von sich gegenseitig ausschließenden Alternativen wählen, z. B. E-Mail als Text oder in HTML versenden.
+### Use
+Radio buttons allow users to select exactly one option from mutually exclusive alternatives, e.g. send email as text or in HTML.
 
-Wenn es mehr als vier/sechs Optionen gibt, ist eine [Drop-Down-Liste](Visual-Style-Guide#DropDown) die bessere Wahl.
+If there are more than four/six options, a [Drop-Down List](#Visual-Style-Guide#DropDown) is the better choice.
 
-### Verhalten
-Wenn möglich, sollte eine sinnvolle Default-Option vorausgewählt sein.
+### Behavior
+If possible, a sensible default option should be preselected.
 
 ```html
 <form class="default" ... >
         <fieldset>
-            <legend>Beschriftung</legend>
+            <fieldset>Label</fieldset>
 
             <fieldset>
-                <legend>Checkboxengruppe</legend>
+                <legend>Checkbox group</legend>
                 <input class="studip_checkbox" id="cb1" type="checkbox" name="cb" value="1">
-                <label for="cb1">Antwortmöglichkeit 1</label>
+                <label for="cb1">Answer option 1</label>
                 <input class="studip_checkbox" id="cb2" type="checkbox" name="cb" value="2">
-                <label for="cb2">Antwortmöglichkeit 2</label>
+                <label for="cb2">Answer option 2</label>
                 <input class="studip_checkbox" id="cb3" type="checkbox" name="cb" value="3">
-                <label for="cb3">Antwortmöglichkeit 3</label>
+                <label for="cb3">Answer option 3</label>
             </fieldset>
             ...
         </fieldset>
   </form>
 ```
 
-#### Aussehen
-Radio Buttons sollten möglichst untereinander angeordnet werden. Dadurch können Sie leichter überflogen werden.
-Die Bezeichnung sollte rechts daneben sein.
+#### Appearance
+Radio buttons should be arranged one below the other if possible. This makes them easier to skim.
+The name should be to the right.
 
-## Drop-Down Listen [#DropDown](#DropDown)
+## Drop-down lists [#DropDown](#DropDown)
 
-Mit Hilfe von Drop-Down Listen können Nutzer genau eine Option aus zwei oder mehreren sich gegenseitig ausschließenden Optionen wählen. Sie werden anstelle von [Radio Buttons](Visual-Style-Guide#RadioButtons) für lange Listen mit Optionen verwendet.
+Drop-down lists allow users to select exactly one option from two or more mutually exclusive options. They are used instead of [Radio Buttons](Visual-Style-Guide#RadioButtons) for long lists of options.
 
-### Sortierung der Optionen
-Die Optionen sollten aufgabenlogisch oder natürlich angeordnet werden z. B. bei Wochentagen zuerst Montag, Dienstag. Falls es keine logisch sinnvolle Reihenfolge gibt, sollten die Optionen alphabetisch (bzw. alphanumerisch) angeordnet werden.
+### Sorting the options
+The options should be arranged in a logical or natural order, e.g. Monday, Tuesday first for weekdays. If there is no logically sensible order, the options should be arranged alphabetically (or alphanumerically).
 
 http://uxmovement.com/forms/stop-misusing-select-menus
 
-### Verhalten
-Drop-Down Listen sollten möglichst einen voreingestellten Wert haben.
+### Behavior
+Drop-down lists should preferably have a default value.
 
-## List Boxen
-### Verwendung
-List Boxen können als Alternative zu einer Reihe von [Radio Buttons](Visual-Style-Guide#RadioButton), die es ermöglichen, genau eine Option aus einer Reihe von sich gegenseitig ausschließenden Optionen zu wählen. Oder als eine Alternative zu [Checkboxen](Checkboxen) dienen, die es ermöglichen, eine beliebige Anzahl von Auswahlmöglichkeiten, aus einer Liste von Optionen auszuwählen. Sie benötigen weniger Platz auf dem Bildschirm als eine Liste von Radio-Buttons oder Checkboxen.
+## List boxes
+### Use
+List boxes can be used as an alternative to a series of [Radio Buttons](Visual-Style-Guide#RadioButton), which allow you to select exactly one option from a series of mutually exclusive options. Or serve as an alternative to [Checkboxes](Checkboxes), which allow you to select any number of choices from a list of options. They take up less space on the screen than a list of radio buttons or checkboxes.
 
-List Boxen sollten nur sehr sparsam verwendet werden.
+List boxes should only be used very sparingly.
 
-## Datumseingaben
-* Veranstaltungstermin anlegen/bearbeiten
-* Termin im Terminkalender anlegen
-* Zeitbereich für Export im Terminkalender definieren
-* Regelmäßige Zeit anlegen/bearbeiten
-* Anzuzeigendes Datum im Belegungsplan definieren
-* Ressourcenbelegung eintragen/bearbeiten
-* Gültigkeitsdauer von
+## Date entries
+* Create/edit event date
+* Create appointment in the appointment calendar
+* Define time range for export in the appointment calendar
+* Create/edit regular time
+* Define date to be displayed in the booking plan
+* Enter/edit resource allocation
+* Validity period of
   * News
   * Votings
-  * Evaluationen
-* Anmeldezeitraum für Veranstaltungen definieren
-* Eigene "Veranstaltung" in Stundenplan eintragen
-* generische Datenfelder vom Typ "Datum"?
+  * Evaluations
+* Define registration period for events
+* Enter your own "event" in the timetable
+* Generic data fields of type "Date"?

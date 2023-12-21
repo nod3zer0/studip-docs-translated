@@ -1,56 +1,56 @@
 ---
-title: Seitenaufbau
-sidebar_label: Seitenaufbau
+title: Page structure
+sidebar_label: Page layout
 ---
 
-Jede Seite von Stud.IP ist auf gleiche Art und Weise aufgebaut und enthält folgende Elemente:
+Each Stud.IP page is structured in the same way and contains the following elements:
 
-## Kopfzeile 
+## Header
 
-Einleitende Zeile, die eine systemweite Suche beinhaltet. Wird die Hauptnavigation durch Scrollen aus dem Sichtbereich verschoben, wird diese in kompakter Form in der Kopfzeile aufgenommen. Die Kopfzeile kann vom Betreiber erweitert werden.
+Introductory line containing a system-wide search. If the main navigation is moved out of view by scrolling, it is included in compact form in the header. The header can be extended by the operator.
 
-## Hauptnavigation
+## Main navigation
 
-Sie leitet jede Seite ein und ist das feststehende Navigationselement, das die Systembereiche miteinander verbindet. Die Zusammenstellung der Kopfzeile hängt von den globalen Rechten des Benutzers ab. Die Kopfzeile repräsentiert die 1. Navigationsebene.
-Scopes: Scopes verbinden bestimmte Funktionen eines Hauptbereiches, etwa dem Nachrichtensystem oder alle Funktionen innerhalb von Veranstaltungen. Ein Scope besitzt einen Bereich bzw. ein Icon in der Hauptnavigation und verweist auf mehrere Funktionen. Ein Scope repräsentiert bzw. beinhaltet stets die 2. Navigationsebene.
+It introduces each page and is the fixed navigation element that connects the system areas. The composition of the header depends on the global rights of the user. The header represents the 1st navigation level.
+Scopes: Scopes connect certain functions of a main area, such as the messaging system or all functions within events. A scope has an area or an icon in the main navigation and refers to several functions. A scope always represents or contains the 2nd navigation level.
 
-## Sidebar 
-Diese befindet sich am linken Bildschirmrand und enthält in definierter Form mehrere Widgets, etwa 
-Navigation (der gewählten Funktion im gewählten Scope), Aktionen, Ansichten, Export und ggf. weitere Widgets.
+## Sidebar
+This is located on the left-hand side of the screen and contains several widgets in a defined form, such as
+Navigation (of the selected function in the selected scope), actions, views, export and possibly other widgets.
 
-### Navigationswidget 
-Dieses Widget erscheint stets als erstes Widget und repräsentiert, wenn vorhanden, die 3. Navigationsebene.
+### Navigation widget
+This widget always appears as the first widget and, if available, represents the 3rd navigation level.
 
-### Inhaltsbereich
-Hier werden sämtliche Inhalte dargestellt. Ein Inhaltsbereich wird aus Tabellen und ContentBoxen 
-bzw. Eingabefeldern gebildet. Für den Inhaltsbereich existieren feste Elemente, aus denen dieser gestaltet werden muss.
-Der Inhaltsbereich umfasst alle jene Inhalte, die von der jeweiligen Funktion angezeigt oder bearbeitet werden.
-In diesem Bereich finden alle Objektmanipulationen und die Inhaltsanzeige statt. Entscheidend ist, dass in diesem Bereich eigentlich nur Objekte (die als solche gekennzeichnet sind, siehe später), sie manipulierende Methoden und verschiedene weitere (Meta-)Informationen zu diesen Objekten platziert werden sollten. Erklärungstexte, verweise auf andere Systemteile und andere Navigationselemente dürfen nicht in diesem Bereich erscheinen.
-Für die Gestaltung sollten standardisierte grafische Elemente verwendet werden, Funktionen, die bereits in ähnlicher Weise im System vorhanden sind, müssen sich in der Bedienung daran anlehnen. Gerade im Inhaltsbereich muss es das erklärte Ziel sein, mit bekannten Elementen zu arbeiten, um dem Nutzer eine vertraute Umgebung &#8211; auch bei neuen Funktionen &#8211; zu bieten.
+### Content area
+All content is displayed here. A content area is made up of tables and ContentBoxes
+or input fields. There are fixed elements for the content area from which it must be designed.
+The content area includes all content that is displayed or edited by the respective function.
+All object manipulations and the content display take place in this area. It is crucial that only objects (which are marked as such, see later), methods that manipulate them and various other (meta) information about these objects should actually be placed in this area. Explanatory texts, references to other parts of the system and other navigation elements must not appear in this area.
+Standardized graphic elements should be used for the design; functions that already exist in the system in a similar way must be based on them in terms of operation. In the content area in particular, the declared aim must be to work with familiar elements in order to offer the user a familiar environment, even with new functions.
 
-Einige grundsätzliche Hinweise zur Gestaltung des Inhaltsbereiches:
-* Vermeiden Sie, im Inhaltsbereich der Seiten Texte frei zu platzieren. Es gibt eine Reihe von grafischen Gestaltungsmöglichkeiten, die im folgenden beschrieben werden, mit denen Sie jedwede Inhalte innerhalb des Inhaltsbereiches markieren und jeweils von anderen Objekten abgrenzen können.
+Some basic tips for designing the content area:
+* Avoid placing text freely in the content area of pages. There are a number of graphic design options, which are described below, with which you can mark any content within the content area and separate it from other objects.
 
 
-## Fußzeile
-Diese enthält weitere Links und Verweise, die analog zur Kopfzeile vom Betreiber erweitert werden kann.
+## Footer
+This contains further links and references, which can be expanded by the operator in the same way as the header.
 
-//TODO: Screenshot einer idealtypischen Seite
+//TODO: Screenshot of a typical page
 
-Die eigentliche Seite setzt sich aus Sidebar und Inhaltsbereich zusammen. Beide Bereiche werden vom einem
-Seitentitel eingeleitet. Im Gegensatz zum Design bis Stud.IP 3.5 bringt der Inhaltsbereich nun keinen eigenen Titel
-(bisher teilweise als h1-Objekt gestaltet) mit.
+The actual page consists of a sidebar and content area. Both areas are introduced by a
+page title. In contrast to the design up to Stud.IP 3.5, the content area now does not have its own title
+(previously partially designed as an h1 object).
 
-## Seitentitel
+## Page title
 
-* Der Titel muss namensgleich mit dem Eintrag in der Navigation in der Sidebar sein
-* Bei Veranstaltungen wird automatisch der Name der Veranstaltung mit ausgegeben (gleiches gilt für den Einrichtungsbereich bei gewählter Einrichtung)
+* The title must have the same name as the entry in the navigation in the sidebar
+* For events, the name of the event is automatically displayed (the same applies to the institution area for the selected institution)
 
-## Weitere Vorgaben
+## Further specifications
 
-* Jede Seite enthält zwingend eine Sidebar.
-* Jede Sidebar enthält mindestens ein Schmuckbild.
-* am rechten Rand ist der Zugriff auf die Hilfe (Fragezeichen-Icon) als Abschluss des Seitentitels vorgesehen.
-* Aktionen der Sidebar (zu finden im gleichnamigen Widget) werden in Dialogen ausgeführt.
+* Each page must contain a sidebar.
+* Each sidebar contains at least one decorative image.
+* Access to help (question mark icon) is provided on the right-hand side as the end of the page title.
+* Sidebar actions (found in the widget of the same name) are executed in dialogs.
 
-Weitere Informationen zur Sidebar: siehe Abschnitt [Sidebar](seitenaufbau#sidebar)
+Further information on the sidebar: see section [Sidebar](seitenaufbau#sidebar)

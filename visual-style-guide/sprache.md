@@ -1,19 +1,19 @@
 ---
-title: Sprache
-sidebar_label: Sprache
+title: Language
+sidebar_label: Language
 ---
 
-## Allgemein 
-Keine unnötigen Texte, schon gar keine, die dem Nutzer erzählen, was er auf dieser Seite tun oder lassen kann
-* Duzen vs. Siezen
+## General
+No unnecessary texts, especially none that tell the user what they can or cannot do on this site
+* Use the first name vs. the last name
 * ...
 
-* TODO: Regeln übernehmen und übersetzen http://developer.android.com/design/style/writing.html
+* TODO: Adopt and translate rules http://developer.android.com/design/style/writing.html
 
-## Terminologie
-* Allgemein: Keine Fachausdrücke: Speak the User's Language
-* "Vokabelliste"
-    * Veranstaltung
-    * Inhaltselemente
-    * Ankündigungen
+## Terminology
+* General: No technical terms: Speak the User's Language
+* "Vocabulary list"
+    * Event
+    * Content elements
+    * Announcements
     * ...

@@ -1,32 +1,32 @@
 ---
-title: Inhaltselemente
-sidebar_label: Inhaltselemente
+title: Content elements
+sidebar_label: Content elements
 ---
 
-Generell gilt: Alle Elemente im Inhaltsbereich müssen durch passende Objekte eingefasst werden. 
-Meistens sind dies Content-Boxen (bzw. Fieldareas in Formularen) oder Tabellen. 
-Texte und Eingabemöglichkeiten dürfen nicht frei auf dem (weißen) Hintergrund gesetzt werden.
+As a general rule, all elements in the content area must be enclosed by suitable objects.
+These are usually content boxes (or field areas in forms) or tables.
+Texts and input options may not be placed freely on the (white) background.
 
 ## Text
-Fließtext sollte in Stud.IP durch die Verwendung semantisch entsprechender HTML Attribute strukturiert werden. Dies gilt auch für die Formatierung des Textbildes. Die inhaltliche und logische Struktur des Textes wird somit auf den Quellcode übertragen. Dadurch wird der Text nicht nur lesbarer für den Entwickler, sondern auch zugänglicher für Screenreader.
+Continuous text should be structured in Stud.IP by using semantically appropriate HTML attributes. This also applies to the formatting of the text image. The content and logical structure of the text is thus transferred to the source code. This not only makes the text more readable for the developer, but also more accessible for screen readers.
 
-### Übersicht der HTML Markups
+### Overview of HTML markups
 
-### Überschriften
-Überschriften werden seit Stud.IP 4.0 im Inhaltsbereich nicht mehr verwendet. Entsprechende Auszeichnungen von Überschriften dürfen nur noch im Content der jeweiligen Funktion (etwa Wiki-Texte, Informationsseite oder Foren-Beiträge) verwendet werden, dienen aber nicht mehr der Gliederung oder Beschreibung des Inhaltsbereiches.
+### Headings
+Headings are no longer used in the content area since Stud.IP 4.0. Corresponding markups of headings may only be used in the content of the respective function (such as wiki texts, information pages or forum posts), but are no longer used to structure or describe the content area.
 
-### Einfache Listen und Aufzählungen
-Um einfache Listen in Stud.IP darzustellen wird das `<ul>` - Markup verwendet.
-Entsprechende Listenelemente werden mittels `<li>` eingefügt. Auch für Listen gilt, dass diese durch gliedernde Elemente (in der Regel Content-Boxen) eingefasst werden.
+### Simple lists and enumerations
+The `<ul>` markup is used to display simple lists in Stud.IP.
+Corresponding list elements are inserted using `<li>`. Lists are also enclosed by structuring elements (usually content boxes).
 
-Beispiel:
+Example:
 
 ```html
 <ul>
-<li> Eintrag 1</li>
-<li> Eintrag 2</li>
+<li> Entry 1</li>
+<li> Entry 2</li>
 ...
-<li> Eintrag N</li>
+<li> Entry N</li>
 </ul>
 ```
 
@@ -34,46 +34,46 @@ Beispiel:
 TODO
 
 ## Lightbox
-Einfache Bildergallerien können in Stud.IP erzeugt werden, indem eine Vorschau des Bilds eingebunden und verlinkt wird. Dieser Link erhält das Attribut `data-lightbox`, wodurch das verlinkte Bild anschliessend in einer Dialog-ähnlichen "Lightbox" angezeigt wird. Sollen mehrere Bilder zusammengefasst werden, so ist das Attribut `data-lightbox` aller verlinkten Bilder mit dem eindeutigen Namen der entsprechenden Lightbox zu füllen, bspw. `data-lightbox="blubber"`.
+Simple image galleries can be created in Stud.IP by including and linking a preview of the image. This link is given the attribute `data-lightbox`, whereby the linked image is then displayed in a dialog-like "lightbox". If several images are to be combined, the attribute `data-lightbox` of all linked images must be filled with the unique name of the corresponding lightbox, e.g. `data-lightbox="blubber"`.
 
-## Tabellen
+## Tables
 
-Stud.IP verfügt über ein einheitliches und einfach gehaltenes Tabellenlayout, das für alle tabellarischen Darstellungen verwendet werden soll. Kernelemente sind dabei ein sehr einfach zu verwendendes CSS und eine angenehme und unaufdringliche grafische Gestaltung.
+Stud.IP has a standardized and simple table layout that should be used for all tabular representations. The core elements are a very easy-to-use CSS and a pleasant and unobtrusive graphic design.
 
-Eine Tabelle ist ungefähr so aufgebaut, wie in diesem Beispiel der Teilnehmerseite:
+A table is structured roughly as in this example of the participant page:
 
 ![image](../assets/30d74c57a521f139c0050de6d55866a7/image.png)
 
-### Aufbau & Elemente
-Jede Tabelle setzt sich zusammen aus einer Beschriftung (Label) für die gesamte Tabelle, die Kopfzeile mit den Spaltenbeschriftungen, optionale Trenner-Zeilen, um Segmente in Tabellen gegeneinander abzugrenzen, eine Fußzeile und die normalen Tabellenzeilen. Tabellen selbst sind transparent, die Hintergrundfarbe (in Stud.IP einfaches Weiß) scheint durch.
+### Structure & elements
+Each table consists of a label for the entire table, the header row with the column labels, optional separator rows to separate segments in tables, a footer row and the normal table rows. Tables themselves are transparent, the background color (simple white in Stud.IP) shines through.
 
-Grundsätzlich bauen sich die Spalten wie folgt auf:
+The columns are structured as follows:
 
-* Bereich für Bulk-Aktionen: Wenn Bull-Aktionen vorgesehen sind, nehmen diese die erste Spalte auf. Die erste Spalte besteht in diesem Fall aus Chdeckboxen, in der Kopfzeile ist eine Checkbox für das Aktivieren aller Chechboxen vorzusehen.
-* Icon: Das passende Icon für das Objekt
-* Name/Bezeichnung: Der Name des Objektes, dass die Tabellenzeile repräsentiert. Üblicherweise ist der Name klickbar, wenn dadurch der Zugriff auf das Objekt ermöglicht wird (etwa Download im Dateibereich, Link in die Veranstaltung auf der Seite "Meine Veranstaltungen"
-* weitere Spalten mit Namen des Autors/Erstellers, weitere Metadaten eines Objektes
-* Aktionsspalte: Diese nimmt entweder bis zu drei Aktionselemente (in Form von Icons) auf, oder, wenn mehr als drei Aktionen möglich sind, das Aktionsmenu. Dieses hier ist hier definiert:
+* Area for bulk actions: If bull actions are provided, these take up the first column. In this case, the first column consists of checkboxes; a checkbox for activating all checkboxes must be provided in the header.
+* Icon: The appropriate icon for the object
+* Name/Label: The name of the object that represents the table row. The name is usually clickable if it enables access to the object (e.g. download in the file area, link to the event on the "My events" page).
+* Further columns with the name of the author/creator, further metadata of an object
+* Action column: This either takes up to three action elements (in the form of icons), or, if more than three actions are possible, the action menu. This one is defined here:
 
-Der Klick auf den Header einer Spalte sortiert diese, sofern sinnvoll möglich. Ein weiterer Klick kehrt diese Sortierung um.
+Clicking on the header of a column sorts it, if sensibly possible. Another click reverses this sorting.
 
-Aktionselemente finden sich außerdem an folgenden Stellen:
+Action elements can also be found in the following places:
 
-* Elemente, die sich auf die gesamte Tabelle beziehen: Oberhalb der Tabelle (Label-Zeile) in Form von Icons/Aktionsmenu.
-* Elemente die sich auf eine Zeile beziehen: Pro Spalte auf der rechten Seite in Form von Icons/Aktionsmenu.
-* Elemente, die sich auf ausgewählte Zeilen beziehen: Im Footer der Seite mit dazu gehörigen Checkboxen auf der linken Seite in jeder Tabellenzeile (Die Checkbox in der Tabellenkopfzeile neben den Überschriften der Spalten markiert alle sichtbaren Zeilen der Tabelle).
+* Elements that refer to the entire table: Above the table (label row) in the form of icons/action menu.
+* Elements that refer to a row: Per column on the right-hand side in the form of icons/action menu.
+* Elements that refer to selected rows: In the footer of the page with associated checkboxes on the left-hand side in each table row (The checkbox in the table header next to the column headings marks all visible rows in the table).
 
 ### CSS
 
-Das folgende Beispiel verdeutlicht eine simple Tabelle, die nach aktuellen Vorgaben aufgebaut ist:
+The following example illustrates a simple table that is structured according to current specifications:
 
 ```html
 <table class="default">
   <caption>
       <span class="actions">
-         <!-- Bereich für Aktions-Icons, die die gesamte Tabelle umfassen -->
+         <!-- Area for action icons that encompass the entire table -->
       </span>
-    TutorInnen
+    Tutors
   </caption>
   <colgroup>
       <col style="width: 20%">
@@ -82,9 +82,9 @@ Das folgende Beispiel verdeutlicht eine simple Tabelle, die nach aktuellen Vorga
   </colgroup>
   <thead>
     <tr class="sortable">
-      <th>Nr.</th>
-      <th>Nachname, Vorname</th>
-      <th style="text-align: right">Aktionen</th>
+      <th>No.</th>
+      <th>Last name, first name</th>
+      <th style="text-align: right">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -92,7 +92,7 @@ Das folgende Beispiel verdeutlicht eine simple Tabelle, die nach aktuellen Vorga
       <td style="text-align: right">01</td>
       <td>Kater, Cornelis</td>
       <td>
-        <!-- Bereich für Aktions-Icons, die die Zeile Tabelle umfassen -->
+        <!-- Area for action icons that include the row table -->
       </td>
     </tr>
   </tbody>
@@ -100,7 +100,7 @@ Das folgende Beispiel verdeutlicht eine simple Tabelle, die nach aktuellen Vorga
     \\
     <tr>
       <td colspan="3">
-        <!-- Bereich für Aktions-Icons, die die gesamte Tabelle umfassen -->\\
+        <!-- Area for action icons that cover the entire table -->\\
       </td>
     </tr>
   </tfoot>
@@ -108,14 +108,14 @@ Das folgende Beispiel verdeutlicht eine simple Tabelle, die nach aktuellen Vorga
 ```
 
 
-Das Beispiel zeigt, das relativ wenige CSS-Stile verwendet werden müssen, um das Standard-Design von Stud.IP zu erhalten. Die Tabelle wird als Default-Klasse definiert, dadurch ergibt sich bereits der größte Teil des Aussehens.
-Im Beispiel nicht gezeigt wird ist eine eigene Klassen namens `collapsable`, die in einem `<tboby>`-Element zugewiesen 
-wird, wenn Tabellen in sich gegliederte (und auch zuklappbare) Bereiche aufweisen.
+The example shows that relatively few CSS styles need to be used to achieve the standard Stud.IP design. The table is defined as a default class, which already results in most of the appearance.
+Not shown in the example is a separate class called `collapsable`, which is assigned in a `<tboby>` element
+element if tables have sections that are divided into themselves (and can also be collapsed).
 
-Weitere Hinweise:
+Further notes:
 
-* Jede Tabelle muss ein Label führend, das die Tabelle klar benennt
-* Weitere Gestaltungselemente sollen nicht eingeführt werden (ggf. bitte Rücksprache mit der GUI-Gruppe halten)
-* Tabellenbereiche können auf- und zuklappbar gestaltet werden
-* Hierarchische Tabellenstrukturen sind zukünftig nicht mehr vorgesehen. Stattdessen soll das das Auswählen eines Knotens (der in der Regel einer Zeile entspricht) die nächste Ebene springen, die dann vollständig angezeigt wird (übergeordnete Ebene werden ausgeblendet). Beispiel dafür ist die Umsetzung des Dateibereiches ab der Version Stud.IP 4.0
-* Dieses neue Tabellenlayout gilt lediglich für rein tabellarische Darstellungen. Systembereiche, die bisher Tabellen genutzt haben, um den allgemeinen Seitenaufbau zu beeinflussen, dürfen nicht au die diese Stile umgestellt werden. Hier empfiehlt sich, entweder das bestehe Aussehen (zunächst) beizubehalten oder ohne HTML-Tabellenstrukturen neue aufzubauen. In der Regel sind Forms hier die bessere Alternative.
+* Each table must have a label that clearly identifies the table
+* Additional design elements should not be introduced (if necessary, please consult the GUI group)
+* Table areas can be designed to be expandable and collapsible
+* Hierarchical table structures are no longer planned for the future. Instead, selecting a node (which usually corresponds to a row) should jump to the next level, which is then displayed in full (higher levels are hidden). An example of this is the implementation of the file area as of Stud.IP 4.0
+* This new table layout only applies to purely tabular displays. System areas that previously used tables to influence the general page layout must not be converted to these styles. It is recommended that you either retain the existing look (for the time being) or create new ones without HTML table structures. Forms are generally the better alternative here.

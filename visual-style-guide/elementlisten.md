@@ -1,133 +1,133 @@
 ---
-title: Elementlisten
-sidebar_label: Elementlisten
+title: Element lists
+sidebar_label: Element lists
 ---
 
-In Stud.IP werden verschiedenste Objekte/Elemente in Listenform ausgegeben: Personen (z.B. Veranstaltungsteilnehmer), Veranstaltungen (z.B. auf der Seite »Meine Veranstaltungen«), Einrichtungen, News, Votings, Studiengänge und vieles mehr.
+In Stud.IP various objects/elements are displayed in list form: People (e.g. event participants), events (e.g. on the "My events" page), facilities, news, votes, study programs and much more.
 
-Durch die konsequente Verwendung der neuen Stud.IP-Tabellen ist die Einheitlichkeit der Darstellung bereits stark verbessert worden. Einige alte Seiten müssen noch auf das neue Design umgestellt bzw. templateisiert werden (Stand August 2015)
-
-
-## Darstellung
-* Die einzelnen Elemente einer Liste werden in einzelnen Zeilen **untereinander** angeordnet.
-* In den Zeilen einer Elementliste findet **kein Zeilenumbruch** statt.
-* Jede Zeile enthält den Namen des Elements bzw. andere, möglichst wenige Informationen, die das Element identifizieren (bei Terminen z. B. Datum und Uhrzeit).
-* Sofern die Elemente einander hierarchisch untergeordnet werden sollen, wird diese **Hierarchie durch Einrückungen** dargestellt
-* als Design gilt das aktuelle Tabellendesign von Stud.IP (siehe dort).
-* Jede Elementliste sollte **tabellarisch** aufgebaut sein. Dies erhöht die Lesbarkeit der Inhalte.
-    * Zu einer Tabelle gehört ein **Tabellenkopf**, der für jede Spalte der Tabelle eine Überschrift liefert.
-    * Die **horizontale Ausrichtung** innerhalb einer jeden Spalte ist abhängig von den Inhalten und deren Zweck sinnvoll zu wählen.
-    * Die Ausrichtung in Tabellenkopf und Tabellenkörper sollte gleich sein.
-    * Bei langen Elementlisten kann es sinnvoll sein, die Liste durch **Zwischenüberschriften** zu unterbrechen. In solchen Fällen ist der Tabellenkopf über jeder Teil-Liste zu wiederholen.
-* Wenn die Elementliste für die Darstellung auf einer einzigen Seite zu lang ist, ist eine **Paginierung** vorzusehen.
-    * Zum Blättern werden rechts unterhalb der Elementliste die Seiten angezeigt, auf die sich die gesamte Liste verteilt.
-    * Bei einem Klick auf eine Seitennummer gelangt man auf die jeweilige Seite
-    * Zusätzlich gibt es links neben den Seitennummern einen Link "zurück" (außer auf Seite 1) sowie rechts neben den Seitennummern den Link "weiter" (außer auf der letzten Seite).
-    * (zu weiteren Details siehe Paginierung auf score.php)
-
-## Aktionen
-* Einzelaktionen
-    * Einzelaktionen sind Aktionen, die sich auf einzelne Elemente einer Liste beziehen.
-    * Bei Einzelaktionen ist zwischen Standardaktionen und erweiterten Aktionen zu unterscheiden.
-    * Standardaktionen sind Aktionen, die auf die meisten Arten von Listenelementen angewendet werden können. Sie werden durch Icons (nicht durch Buttons!) in der Überschriftszeile des Listenelements ausgelöst. Standardaktionen sind
-        * Löschen
-        * Auf- und Zuklappen
-        * Sortieren/Reihenfolge ändern
-    * Erweiterte Einzelaktionen sind Aktionen, die über die Standardaktionen hinausgehen. Sie sind nur für einzelne Arten von Listenelementen anwendbar und/oder erfordern umfangreichere Formulare o.ä., die allein schon vom Platz her nicht in die Überschriftszeile passen würden. Beispiele für erweiterte Aktionen sind das Einstellen der Laufzeit von Evaluationen oder das Buchen eines Raumes für einen Termin.
-    * Um erweiterte Einzelaktionen ausführen können, muss der Benutzer das jeweilige Listenelement erst aufklappen. Unter dem Listenelement öffnet sich dann ein Bereich, in dem die Interaktionselemente angezeigt werden, mit denen die Aktion ausgeführt werden kann.
-    * Löschen
-        * Das Löschen eines Listenelements wird durch den Klick auf ein Mülleimersymbol rechts in der Titelzeile des Listenelements durchgeführt (nicht durch einen Löschen-Button, der erst nach dem Aufklappen sichtbar wird).
-    * Auf- und Zuklappen
-        * Oft braucht man die Möglichkeit, ein Listenelement aufzuklappen. Dies ist regelmäßig dann der Fall, ...
-            * ... wenn man zu einem Element zusätzliche Informationen einblenden möchte, die nicht in die Überschriftszeile des Listenelements passen (z.B. Informationen über Teilnehmer einer Veranstaltung)
-            * ... wenn man umfangreiche Bearbeitungsmöglichkeiten bereitstellen möchte, die nicht in die Überschriftszeile des Listenelements passen (z.B. bei Umfragen oder Evaluationen)
-            * ... wenn man weitere Listenelemente einblenden möchte, die dem Listenelement hierarchisch untergeordnet sind (z.B. in der Veranstaltungshierarchie)
-            * ... wenn man Objekte einblenden möchte, die in dem Listenelement enthalten sind (z.B. Personen in einer Statusgruppe)
-            * ... wenn man Objekte einblenden möchte, die dem Listenelement auf die andere Art zugeordnet sind (z.B. Einzeltermine eines regelmäßigen Termins)
-        * Zum Auf- und Zuklappen ist ein ">"-Icon am linken Ende der Titelzeile anzuzeigen. Ein Klick darauf klappt das jeweilige Listenelement auf. Das Icon wird dabei gegen eines ausgetauscht, dessen Spitze nach unten zeigt.
-        * Bei aktiviertem JavaScript sollte das Auf- und Zuklappen ohne Page Reload realisiert werden.
-        * Grundsätzlich sollte es durch das Aufklappen eines Listenelements möglich sein, die Grundinformationen zu ändern, die in der Titelzeile des Listenelements enthalten sind. Dazu wird in der Titelzeile dort, wo im zugeklappten Zustand die jeweilige Information/Eigenschaft ausgegeben wird, ein entsprechendes Formularfeld angezeigt, das mit den aktuellen Werte gefüllt ist.
-        * Manchmal ist es sinnvoll, alle Listenelemente auf einmal auszudrucken. Dies wird durch ein Icon realisiert, das einen Pfeil nach oben und einen nach unten zeigt. Dieses Icon wird in einer Zeile zwischen dem Tabellenkopf und dem Tabellenkörper eingefügt.
-    * Sortieren/Reihenfolge ändern
-        * Eine Elementliste sollte grundsätzlich sortierbar sein. Dadurch wird es den Benutzern ermöglicht, die Inhalte ihren Wünschen und Nutzungszielen entsprechend darzustellen. Von einer Sortierbarkeit kann bei hierarchischen oder geschachtelten Listen verzichtet werden.
-        * Die Liste sollte nach den Kriterien sortierbar sein, die durch die Überschriften im Tabellenkopf repräsentiert sind, sofern dies sinnvoll möglich ist.
-        * Beim ersten Aufruf der Liste sollte diese bereits nach einem sinnvollen Kriterium sortiert sein.
-        * Nach welchem Kriterium und in welcher Richtung (auf- oder absteigend) eine Liste sortiert ist, wird durch ein kleines blaues Dreieck rechts neben der jeweiligen Überschrift im Tabellenkopf angezeigt. Eine aufsteigende Sortierung wird durch ein nach oben zeigendes Dreieck, eine absteigende Sortierung durch ein nach unten zeigendes Dreieck angezeigt.
-        * Die Sortierung der Liste erfolgt durch den Klick auf die jeweilige Überschrift im Tabellenkopf oder auf das gelbe Dreieck. Ist die Liste bereits nach dem
-          Kriterium sortiert, das man anklickt, so wird die Reihenfolge der Sortierung umgekehrt.
-        * Die Möglichkeit des Klicks auf den Namen wird durch blaue Schrift (Standardfarbe für Links) dargestellt, die Farbe entspricht der Farbe des Dreiecks.
-    * In bestimmten Fällen kann es sinnvoll sein, die Reihenfolge der Elemente manuell festzulegen (also keine Sortierung nach einem Kriterium).
-        * Hat der Benutzer in seinem Brwoser JavaScript aktiviert, so sollte er die Möglichkeit haben, die Reihenfolge per Drag and Drop festzulegen.
-        * (spezifizieren)
-        * Wenn im Browser des Benutzers JavaScript ausgeschaltet ist, sollten gelbe Sortierpfeile im rechten Bereich der jeweiligen Zeile zur Verfügung stehen, mit denen die Reihenfolge festgelegt werden kann. Diese sind in zwei Spalten angeordnet: Die Pfeile, die nach unten zeigen, befinden sich in der linken Spalte, die Pfeile, die nach oben zeigen, in der rechten Spalte. Die oberste Zeile enthält nur einen Pfeil nach unten, die unterste Zeile nur einen pfeil nach oben.
-        * Wenn die Elementliste sehr lang ist, kann es für den Benutzer schwierig werden, einzelne Listenelemente an eine weiter entfernte Position innerhalb der Liste zu befördern. In so einem Fall können dem Benutzer zusätzlich Optionsfelder und gewinkelte Pfeile zur Verfügung gestellt werden, mit denen einzelne Listenelemente ausgewählt und an eine bestimmte Stelle einsortiert werden können (Beispiel: Nutzerverwaltung in Einrichtungen).
-* Sammelaktionen
-    * Eine Sammelaktion ist eine Aktion, die auf mehrere Listenelemente gleichzeitig angewendet wird.
-    * Das Auswählen der Listenelemente für eine Sammelaktion erfolgt mittels Checkboxes links in den Titelzeilen der Listenelemente.
-    * Unterhalb der Elementliste steht eine Dropdown-Box zur Verfügung, aus der man die gewünschte Aktion auswählen kann. Mit einem Klick auf einen Button "OK" wird die Sammelaktion ausgeführt.
-    * Zusätzlich stehen in der Dropdown-Box Optionen zur Veränderung der Auswahl zur Verfügung (mindestens "alle auswählen", "keine auswählen" und "Auswhl umkehren").
-
-## Auf- und Zuklappen
-
-* Sofern es zu einem Element mehr Informationen gibt, als man es in einer Textzeile darstellen kann, soll dies durch Auf- und Zuklappen des Elements dargestellt werden. Hierzu ist ganz links in der entsprechenden Zeile ein nach rechts weisendes Dreieck auszugeben. Ein Klick auf dieses Dreieck bewirkt, dass unterhalb des gewählten Elements die Detailinformationen eingeblendet werden, ggf. mit Möglichkeiten, diese zu bearbeiten. Die Elemente unter dem aufgeklappten Element rutschen entsprechend weiter nach unten. Das Dreieck, dessen Anklicken das Aufklappen bewirkt hat, weist nach unten, wenn das Element aufgeklappt ist. Ein weiterer Klick darauf "schließt" das aufgeklappte Element wieder. Das Auf- und Zuklappen soll zusätzlich durch Klicken auf den Namen des Elements ermöglicht werden.
-*  Wie soll das Bearbeiten der Elementeigenschaften umgesetzt werden? Soll es immer identisch funktionieren? Falls nicht: Welche Abweichungen sollen erlaubt sein, und unter welchen Bedingungen sollen sie erlaubt sein?
-*  Variante 1: Beim Aufklappen bleibt die Titelzeile unverändert, sämtliche Informationen (also auch die in der Titelzeile eingeblendeten) werden unterhalb der Titelzeile in Formularfelder eingeblendet und können mit einem Klick auf den Button "übernehmen" gespeichert werden. Temporär widersprechen sich also die Angaben aus der Titelzeile und dem Formularfeld, in dem man diese Information gerade ändert. (Beispiel: Ablaufplan, Gruppen/Funktionen in Einrichtungen)
-*  Variante 2: Beim Aufklappen ist zunächst noch nichts bearbeitbar. Dazu muss man erst auf den Button "bearbeiten" klicken (der erst durch Aufklappen sichtbar wird). Die in der Titelzeile enthaltenen Attribute werden in der Titelzeile bearbeitbar gemacht; unterhalb dieser werden zuätzliche Informationen bearbeitbar gemacht. Ein Klick auf den Button "übernehmen" (unterhalb der bearbeitbaren Informationen) speichert alles. (Beispiel: Dateibereich, Forum)
-*  Variante 3: Wie Variante 2, aber die Informationen aus der Titelzeile werden nicht in der Titelzeile selbst, sondern (wie in Variante 1) unterhalb der Titelzeile bearbeitbar gemacht. (Beispiel: Literaturverwaltung)
-*  Variante 4: Durch Aufklappen werden bereits alle Informationen bearbeitbar gemacht. Die Information aus der Titelzeile wird daselbst bearbeitbar gemacht. Ein Klick auf den Button "übernehmen" unterhalb sämtlicher Informationen speichert die Änderungen und schließt das Element. (Beispiel: Einzeltermin auf Raumzeitseite)
-*  Variante 5: Durch Aufklappen (oder durch Klick auf ein Bearbeiten-Icon in der Titelzeile) wird die Information aus der Titelzeile bearbeitbar gemacht und durch Klick auf den Button "übernehmen" (der sich innerhalb der Titelzeile befindet) gespeichert. Gleichzeitig wird das Element zugeklappt. (Beispiel: regelmäßige Zeit auf Raumzeitseite)
-*  Variante 6: Durch Aufklappen werden alle Informationen bearbeitbar gemacht. Die Information aus der Titelzeile wird daselbst bearbeitbar gemacht, zusätzlich werden unterhalb der Titelzeile weitere Informationen bearbeitbar eingeblendet. Der Klick auf den Button "übernehmen" (unterhalb sämtlicher Informationen) speichert die Änderungen und schließt das Element. (Beispiel: Gruppierungs- und Fragenblöcke in Evaluationen)
-*  Variante 7: Durch Aufklappen werden Zusatzinformationen und -eigenschaften eingeblendet und bearbeitbar gemacht und durch Klick auf den Button "übernehmen" gespeichert, wobei das Element gleichzeitig geschlossen wird. Die Information aus der Titelzeile kann hierbei jedoch nicht geändert werden. Dazu muss man auf den Button "bearbeiten" in der Titelzeile klicken. Dies führt zu einer neuen Seite, auf der man die Information aus der Titelzeile, aber auch eine Reihe weiterer Informationen/Eigenschaften des Elements bearbeiten kann. (Beispiel: Evaluationen und Evakuationsvorlagen)
-*  Variante 8: Wie Variante 7, nur wird hier durch bloßes Aufklappen nichts bearbeitbar gemacht. Vielmehr muss man zum Bearbeiten sämtlicher Informationen auf den Button "bearbeiten" in der Titelzeile klicken, wodurch man auf eine andere Seite gelangt. (Beispiel: Votings)
-*  Variante 9: Das Element ist nicht aufklappbar. Um die Elementeigenschaften zu ändern, klickt man auf den Button "bearbeiten" in der Titelzeile. Dieser führt auf eine neue Seite, auf der man sämtliche Eigenschaften bearbeiten kann. Ein Klick auf den Button "übernehmen" (oder auf einen Text-Link "zurück" o. ä.) führt zurück zur vorherigen Seite. (Beispiel: News, Klausuren und Übungsblätter in Vips)
-*  Variante 10: In der Titelzeile befindet sich ein Bearbeiten-Icon. Ein Klick darauf verändert die Hintergrundfarbe der Titelzeile, um anzuzeigen, dass es sich im Bearbeiten-Modus befindet. Oben auf der Seite wird ein bereits bestehendes Formular (das zum Festlegen der Eigenschaften neu anzulegender Elemente verwendet wird) durch ein ähnliches Formular ersetzt, das mit den Werten des ausgewählten Elements befüllt wird, wodurch man sie bearbeiten kann. Ein Klick auf den Button "speichern" innerhalb dieses Formulars übernimmt die Änderungen, setzt die Hintergrundfarbe der Titelzeile sowie das Formular zurück. (Beispiel: Gruppen/Funktionen in Veranstaltungen, Gruppenverwaltung in Vips funktioniert ähnlich)
-
-## Löschen
-
-Sofern es möglich sein soll, einzelne Listenelemente zu löschen, so soll dies durch ein Mülleimer-Icon symbolisiert werden. Dieses Icon befindet sich ganz rechts in der jeweiligen Zeile. Ein Klick darauf bewirkt, dass das Element gelöscht bzw. aus dem jeweiligen abstrakten "Container" (Veranstaltung, Statusgruppe usw.) entfernt wird. Das Mülleimer-Icon steht sowohl im zu- als auch im aufgeklappten Zustand zur Verfügung.
-
-## Sortieren
-
-### Frei
-* Sofern die Reihenfolge der Elemente dauerhaft geändert werden soll (wenn also nicht nur die momentane Darstellung von z. B. Suchergebnissen verändert werden soll), sind Interaktionselemente vorzusehen, mit denen man dies bewerkstelligen kann.
-* Beispiele für sortierbare Elemente: Personen, Dateien, Forumsbeiträge, Veranstaltungen, Literatur, Termine, Themen, Ressourcen, Statusgruppen, News, Votings, Evaluationen, Nachrichten, Raumanfragen, Studienbereiche, ...
-* JavaScript aktiviert
-    * Drag and Drop: Hierfür ist ein Anfasser-Icon am linken Rand der jeweiligen Zeile anzuzeigen. (Befindet sich dort ein Auf- und Zuklapp-Dreieck, so wird der Anfasser direkt rechts daneben angezeigt.) Klicken und Festhalten dieses Icons bewirkt, dass man die jeweilige Zeile in gerader Linie nach oben oder unten bewegen und durch Loslassen an einer andere Stelle einsortieren kann. Dieses Drag and Drop steht sowohl im auf- als auch im zugeklappten Zustand zur Verfügung.
-* JavaScript deaktiviert
-    * Sortierpfeile: Anstelle der Riffelung sind gelbe Doppeldreiecke anzuzeigen. Das obere und untere Element einer sortierbaren Liste enthält nur ein Doppeldreieck, das nach unten bzw. nach oben zeigt. Alle anderen Zeilen enthalten jeweils zwei Doppeldreiecke, von denen einer nach oben, der andere nach unten zeigt. Ein Klick auf ein Doppeldreieck verschiebt das jeweilige Element um eine Stelle nach oben bzw. unten, während das vormals darüber liegende Element die Position des verschobenen Elements einnimmt.
-    * Radiobuttons plus Winkelpfeile: In bestimmten Kontexten ist es mitunter erforderlich, mehrere Elemente nacheinander um eine große Anzahl von Positionen zu verschieben. Hierfür kann eine alternative Sortierfunktion angeboten werden. Bei dieser Lösung markiert man einen Eintrag mittels eines Radiobuttons (links vom Auf- und Zuklapp-Dreieck) und wählt durch Anklicken eines Icons (in Form eines gewinkelten Pfeils links des jeweiligen Radiobuttons) die Stelle, an welcher der gewählte Eintrag einsortiert werden soll.
-### nach Kriterium
-* Manchmal möchte man Listenelemente nach einem bestimmten kriterium sortieren (Name, Dateigröße, Datum usw.). Hierzu gelten folgende Regeln:
-    * Listenelemente können nur nach Kriterien sortiert werden, deren Werte an der Oberfläche sichtbar sind. Eine Liste von Dateien sollte also zum Beispiel nicht nach Datum sortiert werden können, wenn das Datum der Datei nicht auch eingeblendet ist.
-    * Das Sortieren erfolgt durch das Klicken auf eine Spaltenüberschrift, unterhalb der die Werte dieses Kriteriums für jedes Listenelement aufgeführt ist.
-    * Grundsätzlich soll es möglich sein, durch mehrfaches Klicken auf eine Spaltenüberschrift die Elementliste aufsteigend und absteigend nach dem jeweiligen Kriterium zu sortieren.
-### Probleme/Fragen beim Sortieren:
-* Wie sortiert man innerhalb hierarchischer Gliederungen die Elemente verschiedener Ebenen (Beispiel: Gruppen/Funktionen in Veranstaltungen)?
-* Wie geht man mit Paginierung um? Sortiert man die gesamte Liste oder nur die sichtbaren Elemente?
+The consistent use of the new Stud.IP tables has already greatly improved the uniformity of the presentation. Some old pages still need to be converted to the new design or templateized (as of August 2015)
 
 
-# Meldungen
+## Presentation
+* The individual elements of a list are arranged **below each other** in individual rows.
+* There is **no line break** in the lines of an element list.
+* Each line contains the name of the element or as little information as possible that identifies the element (e.g. date and time for appointments).
+* If the elements are to be subordinated to each other hierarchically, this **hierarchy is represented by indentations**
+* The current table design of Stud.IP applies (see there).
+* Each element list should be **tabular**. This increases the readability of the contents.
+    * A table has a **table header** which provides a heading for each column of the table.
+    * The **horizontal alignment** within each column should be chosen sensibly depending on the content and its purpose.
+    * The alignment in the table header and table body should be the same.
+    * For long element lists, it may be useful to interrupt the list with **subheadings**. In such cases, the table header should be repeated above each sub-list.
+* If the element list is too long to be displayed on a single page, **pagination** should be provided.
+    * For scrolling, the pages on which the entire list is distributed are displayed on the right below the element list.
+    * Clicking on a page number takes you to the relevant page
+    * There is also a "back" link to the left of the page numbers (except on page 1) and a "next" link to the right of the page numbers (except on the last page).
+    * (for further details see pagination on score.php)
 
-Wo wird Rückmeldung angezeigt?
-* Nutzer befindet sich unten auf der Seite
-* da macht oben die Infomeldung anzuzeigen, keinen Sinn
+## Actions
+* Single actions
+    * Single actions are actions that refer to individual elements of a list.
+    * A distinction must be made between standard actions and extended actions.
+    * Standard actions are actions that can be applied to most types of list elements. They are triggered by icons (not buttons!) in the heading line of the list element. Standard actions are
+        * Delete
+        * Expand and collapse
+        * Sort/change order
+    * Extended individual actions are actions that go beyond the standard actions. They can only be used for individual types of list elements and/or require more extensive forms or similar, which would not fit into the header line simply because of the space available. Examples of extended actions are setting the duration of evaluations or booking a room for an appointment.
+    * In order to be able to carry out extended individual actions, the user must first expand the respective list element. An area then opens under the list element in which the interaction elements are displayed with which the action can be carried out.
+    * Delete
+        * A list element can be deleted by clicking on a trash can symbol on the right in the title bar of the list element (not by clicking on a delete button, which only becomes visible after the list element has been expanded).
+    * Expanding and collapsing
+        * You often need the option to expand a list element. This is regularly the case ...
+            * ... if you want to show additional information for an element that does not fit into the heading line of the list element (e.g. information about participants in an event)
+            * ... if you want to provide extensive editing options that do not fit into the heading line of the list element (e.g. for surveys or evaluations)
+            * ... if you want to show additional list elements that are hierarchically subordinate to the list element (e.g. in the event hierarchy)
+            * ... if you want to show objects that are contained in the list element (e.g. persons in a status group)
+            * ... if you want to show objects that are assigned to the list element in a different way (e.g. individual appointments of a regular event)
+        * To expand and collapse, a ">" icon must be displayed at the left end of the title bar. Click on it to expand the respective list element. The icon is then replaced by one with the top pointing downwards.
+        * If JavaScript is activated, the expansion and collapse should be realized without page reload.
+        * In principle, it should be possible to change the basic information contained in the title bar of the list element by expanding it. For this purpose, a corresponding form field filled with the current values is displayed in the title bar where the respective information/property is displayed in the collapsed state.
+        * Sometimes it makes sense to print all list elements at once. This is realized by an icon that shows an arrow pointing upwards and downwards. This icon is inserted in a line between the table header and the table body.
+    * Sort/change order
+        * An element list should always be sortable. This enables users to display the content according to their wishes and usage objectives. Sorting is not necessary for hierarchical or nested lists.
+        * The list should be sortable according to the criteria represented by the headings in the table header, if this makes sense.
+        * When the list is first called up, it should already be sorted according to a meaningful criterion.
+        * The criterion and direction (ascending or descending) by which a list is sorted is indicated by a small blue triangle to the right of the relevant heading in the table header. Ascending sorting is indicated by a triangle pointing upwards, descending sorting by a triangle pointing downwards.
+        * The list is sorted by clicking on the respective heading in the table header or on the yellow triangle. If the list is already sorted according to the
+          If the list is already sorted by the criterion you click on, the sort order is reversed.
+        * The possibility of clicking on the name is indicated by blue text (standard color for links), the color corresponds to the color of the triangle.
+    * In certain cases, it may be useful to specify the order of the elements manually (i.e. no sorting according to a criterion).
+        * If the user has activated JavaScript in his browser, he should be able to specify the order using drag and drop.
+        * (specify)
+        * If JavaScript is switched off in the user's browser, yellow sorting arrows should be available in the right-hand area of the respective line, which can be used to specify the order. These are arranged in two columns: The arrows pointing downwards are in the left-hand column, the arrows pointing upwards are in the right-hand column. The top line contains only a down arrow, the bottom line only an up arrow.
+        * If the element list is very long, it can be difficult for the user to move individual list elements to a more distant position within the list. In such a case, the user can be provided with additional radio buttons and angled arrows with which individual list elements can be selected and sorted to a specific position (example: user management in facilities).
+* Collective actions
+    * A collective action is an action that is applied to several list elements at the same time.
+    * The list elements for a collective action are selected using checkboxes on the left in the title lines of the list elements.
+    * A drop-down box is available below the element list from which you can select the desired action. Click on the "OK" button to execute the collection action.
+    * In addition, options for changing the selection are available in the drop-down box (at least "Select all", "Select none" and "Reverse selection").
 
-Rückfrage bei Löschen von Objekten, ob wirklich gelöscht werden soll?
-* derzeit unterschiedlich in Stud.IP
+## Expand and collapse
+
+* If there is more information about an element than can be displayed in a line of text, this should be displayed by expanding and collapsing the element. To do this, a triangle pointing to the right should be displayed on the far left of the corresponding line. Clicking on this triangle causes the detailed information to be displayed below the selected element, possibly with options for editing it. The elements below the expanded element slide down accordingly. The triangle that was clicked to expand the element points downwards when the element is expanded. Another click on it "closes" the expanded element again. It should also be possible to expand and collapse the element by clicking on the name of the element.
+* How should the editing of element properties be implemented? Should it always work identically? If not: What deviations should be allowed and under what conditions should they be allowed?
+* Variant 1: When expanding, the title bar remains unchanged, all information (including that shown in the title bar) is shown in form fields below the title bar and can be saved by clicking on the "Apply" button. This means that the information in the title bar and the form field in which this information is currently being changed temporarily contradict each other. (Example: Schedule, groups/functions in facilities)
+* Variant 2: Initially, nothing can be edited when the form is expanded. To do this, you must first click on the "Edit" button (which only becomes visible when you expand the form). The attributes contained in the title bar are made editable in the title bar; additional information is made editable below this. Clicking on the "Apply" button (below the editable information) saves everything. (Example: file area, forum)
+* Variant 3: Like variant 2, but the information from the title bar is not made editable in the title bar itself, but (as in variant 1) below the title bar. (Example: Literature management)
+* Variant 4: All information is already made editable by expanding. The information from the title line is made editable itself. Clicking on the "Apply" button below all the information saves the changes and closes the element. (Example: Single appointment on spacetime page)
+* Variant 5: By expanding (or by clicking on an edit icon in the title bar), the information from the title bar is made editable and saved by clicking on the "Apply" button (which is located within the title bar). At the same time, the element is collapsed. (Example: regular time on spacetime page)
+* Variant 6: All information is made editable by expanding it. The information from the title bar is made editable, and additional editable information is displayed below the title bar. Clicking on the "Apply" button (below all the information) saves the changes and closes the element. (Example: Grouping and question blocks in evaluations)
+* Variant 7: By expanding, additional information and properties are displayed and made editable and saved by clicking on the "Apply" button, whereby the element is closed at the same time. However, the information in the title bar cannot be changed. To do this, you must click on the "Edit" button in the title bar. This takes you to a new page where you can edit the information from the title bar as well as a range of other information/properties for the element. (Example: Evaluations and evacuation templates)
+* Variant 8: Like variant 7, except that nothing is made editable by simply expanding it. Instead, you have to click on the "Edit" button in the title bar to edit all the information, which takes you to another page. (Example: Votings)
+* Variant 9: The element cannot be expanded. To change the element properties, click on the "Edit" button in the title bar. This takes you to a new page where you can edit all the properties. Clicking on the "Apply" button (or on a text link "Back" or similar) takes you back to the previous page. (Example: News, exams and exercise sheets in Vips)
+* Variant 10: There is an edit icon in the title bar. Clicking on it changes the background color of the title bar to indicate that it is in edit mode. At the top of the page, an existing form (which is used to define the properties of newly created elements) is replaced by a similar form, which is filled with the values of the selected element, allowing you to edit them. A click on the "Save" button within this form accepts the changes and resets the background color of the title bar and the form. (Example: groups/functions in events, group management in Vips works similarly)
+
+## Delete
+
+If it should be possible to delete individual list elements, this should be symbolized by a trash can icon. This icon is located on the far right of the respective line. Clicking on it causes the element to be deleted or removed from the respective abstract "container" (event, status group, etc.). The trash can icon is available both in the collapsed and expanded state.
+
+## Sort
+
+### Free
+* If the order of the elements is to be changed permanently (i.e. if not only the current display of e.g. search results is to be changed), interaction elements must be provided with which this can be done.
+* Examples of sortable elements: people, files, forum posts, events, literature, dates, topics, resources, status groups, news, votes, evaluations, messages, room requests, study areas, ...
+* JavaScript activated
+    * Drag and drop: For this purpose, a handle icon must be displayed on the left edge of the respective line. (If there is an expand and collapse triangle, the handle is displayed directly to the right of it). By clicking and holding this icon, you can move the respective line up or down in a straight line and sort it to another position by releasing it. This drag and drop is available both in the expanded and collapsed state.
+* JavaScript deactivated
+    * Sorting arrows: Yellow double triangles are to be displayed instead of the ripples. The top and bottom elements of a sortable list contain only one double triangle pointing downwards and upwards respectively. All other lines contain two double triangles, one of which points upwards and the other downwards. Clicking on a double triangle moves the respective element one position up or down, while the element previously above it takes the position of the moved element.
+    * Radio buttons plus angle arrows: In certain contexts, it is sometimes necessary to move several elements one after the other by a large number of positions. An alternative sorting function can be offered for this purpose. With this solution, you select an entry using a radio button (to the left of the expand/collapse triangle) and click on an icon (in the form of an angled arrow to the left of the respective radio button) to select the position at which the selected entry is to be sorted.
+### by criterion
+* Sometimes you want to sort list items according to a specific criterion (name, file size, date, etc.). The following rules apply:
+    * List elements can only be sorted according to criteria whose values are visible on the interface. For example, a list of files should not be able to be sorted by date if the date of the file is not also displayed.
+    * Sorting is done by clicking on a column heading, below which the values of this criterion are listed for each list element.
+    * In principle, it should be possible to sort the element list in ascending and descending order according to the respective criterion by clicking several times on a column heading.
+### Problems/questions when sorting:
+* How do you sort the elements of different levels within hierarchical structures (example: groups/functions in events)?
+* How do you deal with pagination? Do you sort the entire list or only the visible elements?
+
+
+# Messages
+
+Where is feedback displayed?
+* User is at the bottom of the page
+* It makes no sense to display the info message at the top
+
+Query when deleting objects, whether they should really be deleted?
+* currently different in Stud.IP
 
 
 
-## Sicherheitsabfragen
-* als modalen Dialog?
-* teilweise werden diese nicht als Dialog, sondern auf der Seite angezeigt
+## Security queries
+* as a modal dialog?
+* sometimes these are not displayed as a dialog, but on the page
 
 
-Quelle: http://developer.android.com/design/patterns/confirming-acknowledging.html
+Source: http://developer.android.com/design/patterns/confirming-acknowledging.html
 
-## Weiterführende Links
+## Further links
 * http://patternry.com/p=feedback-messages/
 * http://www.userfocus.co.uk/articles/errormessages.html
 * http://uxmag.com/articles/are-you-saying-no-when-you-could-be-saying-yes-in-your-web-forms
 
-Buch:
-Designed for Use Chapter 6 über Text Usability
+Book:
+Designed for Use Chapter 6 on Text Usability

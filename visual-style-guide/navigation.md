@@ -3,104 +3,104 @@ title: Navigation
 sidebar_label: Navigation
 ---
 
-Die Navigation in Stud.IP ist in mehreren Ebenen organisiert. Es ist zu unterscheiden in:
+The navigation in Stud.IP is organized in several levels. A distinction is made between:
 
-* Hauptnavigation: Die Kopfzeile des Systems. Von hier aus werden komplette Funktionsbereiche erschlossen. Jeder
-  dieser Bereiche entspricht einem der Hauptpunkte in der Sitemap und jeder dieser Bereiche präsentiert sich mit einem eigenen Reitersystem.
-* Scopes: Jeder Hauptbereich (zB. Profil oder Community) bringt einen Scope mit, der die Funktionen eines Bereiches
-  aufnimmt. Ein Scope entspricht jeweils der zweiten Ebene in der Sitemap. Eine Funktion darf nur an einer einzigen
-  Stelle in einem Scope eingehangen werden. Somit hat jede Funktion eine eindeutige Zuordnung zu einem der Hauptbereiche.
-* Navigation in der Sidebar: Verschiedene Aufgaben innerhalb einer Funktion finden sich im Navigationsbereich der
-  Sidebar. Diese führen an dieser Stelle zu einem neuen Seitenaufruf (im Gegensatz zu Aktionen in der Sidebar).
-* Aus der Navigation der Sidebar sind auch Links in andere Hauptbereiche möglich, sollten jedoch vermieden werden.
-  Im Idealfall bleibt auch die Navigation einer Funktion innerhalb ihrer eigenen Aufgaben bzw. innerhalb des
-  jeweiligen Scopes. Ein Eintrag in der Navigation der Sidebar entspricht der dritten Ebene in der Navigation.
+* Main navigation: The header of the system. Complete functional areas are accessed from here. Each
+  of these areas corresponds to one of the main points in the sitemap and each of these areas is presented with its own tab system.
+* Scopes: Each main area (e.g. profile or community) has a scope that contains the functions of an area.
+  of an area. A scope corresponds to the second level in the sitemap. A function may only be attached to a single
+  only one position in a scope. This means that each function has a unique assignment to one of the main areas.
+* Navigation in the sidebar: Various tasks within a function can be found in the navigation area of the
+  sidebar. These lead to a new page call at this point (in contrast to actions in the sidebar).
+* Links to other main areas are also possible from the sidebar navigation, but should be avoided.
+  Ideally, the navigation of a function should also remain within its own tasks or within the respective scope.
+  respective scope. An entry in the sidebar navigation corresponds to the third level in the navigation.
 
-Weitere Hinweise zum Aufbau der Sidebar und ihrer unterschiedlichen Widgets findet sich im entsprechenden [Bereich
-des Styleguides](#Sidebar)
+Further information on the structure of the sidebar and its various widgets can be found in the corresponding [section
+of the style guide](#Sidebar)
 
-## Kopfzeile
+## Header
 
-Die Kopfzeile leitet jede Seite ein und bietet Zugriff auf alle Kernbestandteile von Stud.IP:
+The header introduces each page and provides access to all core components of Stud.IP:
 
 Mini:kopfzeile.png
 
-Je nach Rechtestufe des angemeldeten Nutzers und eingerichteten Systemplugins werden unterschiedliche Systembereiche von hier aus zugänglich gemacht.
+Depending on the permission level of the registered user and the system plugins set up, different system areas are made accessible from here.
 
-Die Kopfzeile sieht den größten Gestaltungsspielraum für Anpassungen an die Corporate Identity des Betreibers vor.
+The header provides the greatest scope for customization to the operator's corporate identity.
 
-Folgende Anpassungen sind hier möglich:
-* Einfügen des eigenen Logos an beliebiger Position (Vorschlag: Rechts neben dem Stud.IP Logo)
-* Einfügen weiterer eigener Links in der Kopfzeile (Vorschlag: links neben der globalen Suchen)
+The following customizations are possible here:
+* Insert your own logo in any position (suggestion: to the right of the Stud.IP logo)
+* Insert your own links in the header (suggestion: to the left of the global search)
 
-Noch einige Hinweise zur Eigenanpassung der Kopfzeile:
-* Entfernen Sie nicht die Icons aus der Kopfzeile, da die Icons ihre Gestaltung innerhalb des Systems wiederholt
-  auftauchen und damit eine Verbindung zu dieser Navigation schaffen
-* Entfernen Sie nicht die Beschriftung der Icons, da die Nutzer über diese Beschriftung wichtige Erklärungen erhalten
-  und der Text auch in anderen Systemsprachen zur Verfügung steht.
-* Ändern Sie nicht die Reihenfolge der Icons oder teilen Sie die Icons in mehrere Zeilen auf.
-* Ordnen Sie Kopfzeile nicht an andere Stellen (etwa als Seitenleiste) an. Das Stud.IP-System benötigt an einigen
-  Stellen teilweise eine sehr breite Darstellung. Die Kopfzeile ist in dieser Form am besten auf das System abgestimmt.
+A few more notes on customizing the header:
+* Do not remove the icons from the header, as the icons repeat their design within the system
+  appear repeatedly within the system and thus create a link to this navigation
+* Do not remove the labeling of the icons, as users receive important explanations via this labeling
+  and the text is also available in other system languages.
+* Do not change the order of the icons or divide the icons into several lines.
+* Do not arrange headers in other places (e.g. as a sidebar). The Stud.IP system sometimes requires a very
+  some places a very wide display. The header is best adapted to the system in this form.
 
-## Reite (Scopes)
-Scopes fassen die Funktion eines Hauptbereiches (etwa alle Funktionen innerhalb einer Veranstaltung oder innerhalb des Nachrichtensystems) zusammen.
+## Rides (scopes)
+Scopes summarize the function of a main area (e.g. all functions within a course or within the messaging system).
 
 Mini:style_reiter.jpg
 
-Stud.IP ergänzt in einem Scope (ebenso wie in der Hauptnavigation) automatisch einen "Überlauf", der in einem
-Drop-Down-Menü alle Icons aufnimmt, die nicht mehr in die horizontale Darstellung (je nach Bildschirmbreite) passen
-würde. Grundsätzlich sollte beim Entwerfen neuer Funktionen darauf achten, möglichst knappe Bezeichnungen zu wählen,
-sodass möglichst viele Funktionen nebeneinander Platz finden. Die Breite der jeweiligen Beschriftungen bedingt die Breite des Scopes!
+Stud.IP automatically adds an "overflow" in a scope (as well as in the main navigation), which lists all icons in a drop-down menu.
+drop-down menu contains all icons that no longer fit into the horizontal display (depending on the screen width).
+would. When designing new functions, care should be taken to choose the shortest possible names,
+so that as many functions as possible fit next to each other. The width of the respective labels determines the width of the scope!
 
 ## Sidebar
 
-### Vorbemerkung
+### Preliminary remark
 
-Das Konzept der Infoboxen (Stud.IP-Versionen bis 3.0) hat sich grundlegend geändert zum Sidebar-Konzept (ab Stud.IP
-3.1), das viele der Funktionen aus den alten Infoboxen aufnimmt, jedoch nicht direkt ersetzt. In Rahmen dieser
-Umstellung wurde die 3. Navigationsebene als Zeile unterhalb der Reiter in ein Navigationswidget der Sidebar verlegt.
+The concept of the info boxes (Stud.IP versions up to 3.0) has changed fundamentally to the sidebar concept (from Stud.IP
+3.1), which incorporates many of the functions from the old info boxes, but does not directly replace them. As part of this
+changeover, the 3rd navigation level was moved to a navigation widget in the sidebar as a line below the tabs.
 
 Attach:Style/Sidebar-dafault.jpg
 
-### Kurzbeschreibung
-Die Sidebar befindet sich an fester Position am linken Rand einer Stud.IP-Seite. Die Sidebar ersetzt die Infobox älterer Stud.IP-Versionen und enthält mindestens eins, meistens mehrere Widgets. In der Sidebar befinden sich innerhalb von diesen Widgets die Elemente der 3. Navigationsebene, Aktionen, Ansichtsoptionen, seiteninterne Suchmöglichkeiten und Exportfunktionen. Sofern diese Standardwidgets nicht passend sind, kann eine Seite weitere Widgets haben.
-Die Sidebar besitzt zudem Orientierungsbild im Kopfbereich, das den Namen der Seite enthält, das Baisisicon des jeweiligen Bereiches zeigt und einen Avatar aufnehmen kann.
-Jede Seite sollte eine Sidebar besitzen.
+### Short description
+The sidebar is located in a fixed position on the left-hand side of a Stud.IP page. The sidebar replaces the info box of older Stud.IP versions and contains at least one, usually several widgets. The sidebar contains the elements of the 3rd navigation level, actions, view options, page-internal search options and export functions within these widgets. If these standard widgets are not suitable, a page can have additional widgets.
+The sidebar also has an orientation image in the header area, which contains the name of the page, shows the baisis icon of the respective area and can include an avatar.
+Every page should have a sidebar.
 
-### Aufbau & Elemente
+### Structure & elements
 
-#### Orientierungsbild
-Das Orientierungsbild ist 520px breit und 200px hoch. Zu allen Basisfunktionen (bzw. aufbauend auf deren Icons) werden entsprechende Orientierungsbilder ausgeliefert. Grundsätzlich können Standorte diese Bilder tauschen, sollten aber darauf achten, dass Bildinhalt und Helligkeit zum umgebenden Design passen. Im Zweifel steht die Stud.IP-GUI-Gruppe bereit, weitere Bilder zu erstellen oder Tipps zu geben, wie man eigenen Bilder integrieren kann.
+#### Orientation image
+The orientation image is 520px wide and 200px high. Corresponding orientation images are delivered for all basic functions (or based on their icons). In principle, locations can swap these images, but should ensure that the image content and brightness match the surrounding design. If in doubt, the Stud.IP GUI group is available to create additional images or provide tips on how to integrate your own images.
 
-#### Typen von Widgets
-| Typ | Beschreibung |
+#### Types of widgets
+| Type | Description |
 | ---- | ---- |
-| Navigation | Enthält automatisch die 3. Navigationsbene entsprechend der Stud.IP-Navigationsstruktur (ehemals 3. Navigationsebene unterhalb der Reiterleiste). Navigationspunkte springen auf andere Seiten aber bleiben idealerweise innerhalb eines Navigationskontextes (=Reitersystem). Die aktuell gewählte Seite wird mit einem blauen Pfeil markiert. Navigationspunkte zeigen keine Icons. |
-| Aktionen | Enthält Aktionen, die den Inhalt der aktuellen Seite beeinflussen. Aktionen öffnen grundsätzlich einen Dialog und verlassen somit nicht den aktuellen View, den der Nutzer sieht. |
-| Ansichten | Diese enthalten Ansichtsoptionen bzw. Filter, die den angezeigten Content auf der jeweiligen Seite einschränken. Die jeweils gewählte Ansicht bzw. der Filter ist mit einem gelben Pfeil markiert. |
-| Suche | Ein Such-Widget ist seitenspezifisch, ermöglicht also das Suchen innerhalb des Contents der Seite. Idealerweise gilt, dass eine Suche hier nur innerhalb des Contents filtert, den ich auf dieser Seite insgesamt sehen kann bzw. erreichen kann. Wenn der Content einer Seite selbst ein Suchergebnis liefert (z.B. bei allen Suchfunktionen in Stud.IP) muss diese Suche außerhalb der Sidebar, z.B. in einer Content-Box im Content-Bereich der Seite realisiert werden. Ein Suchwidget könnte dann theoretisch den gefunden Content dynamisch Einschränken, idealerweise ohne Reload der Seite |
-| Export | Hier werden alle Funktionen aufgenommen, die konkret eine Datei (z.B. PDF, XLS-Export, CSV-Datei) zum Download anbieten. |
+| Navigation | Automatically contains the 3rd navigation level according to the Stud.IP navigation structure (formerly 3rd navigation level below the tab bar). Navigation points jump to other pages but ideally remain within a navigation context (= tab system). The currently selected page is marked with a blue arrow. Navigation points do not show any icons. |
+| Actions | Contains actions that influence the content of the current page. Actions always open a dialog and therefore do not leave the current view that the user sees. |
+| Views | These contain view options or filters that restrict the content displayed on the respective page. The selected view or filter is marked with a yellow arrow. |
+| Search | A search widget is page-specific, i.e. it allows you to search within the content of the page. Ideally, a search here only filters within the content that I can see or reach on this page as a whole. If the content of a page itself provides a search result (e.g. for all search functions in Stud.IP), this search must be implemented outside the sidebar, e.g. in a content box in the content area of the page. A search widget could then theoretically limit the content found dynamically, ideally without reloading the page.
+| Export | All functions that specifically offer a file (e.g. PDF, XLS export, CSV file) for download are included here. |
 
-Grundsätzlich beginnen Seiten mit der Navigation und den Aktionen, dann folgende weitere Widgets (in der Regel Suche, Ansichten oder Export). Die weitere Widgets können je nach Nutzungshäufigkeit der jeweiligen Seite platziert werden, die ersten beiden Positionen sind in der Reihenfolge fest vorgegeben.
+Pages generally start with navigation and actions, followed by other widgets (usually search, views or export). The other widgets can be placed according to the frequency of use of the respective page, the first two positions are fixed in order.
 
 
-#### Weitere Typen von Widgets
+#### Other types of widgets
 
-Gelegentlich tauchen folgende Type auf:
+The following types occasionally appear:
 
-| Type | Beschreibung |
+| Type | Description |
 | ---- | ---- |
-| Einstellungen | Für Einstellungen, die sich direkt auf die Seite auswirken und schnell in der Sidebar vorgenommen werden sollen |
-| Merkliste | Für das Zwischenspeichern von beliebigen Objekten |
+| Settings | For settings that have a direct effect on the page and can be made quickly in the sidebar |
+| watchlist | For caching any objects |
 
 
-### Was nicht in die Sidebar gehört
+### What does not belong in the sidebar
 
-* Hilfetexte: Bisher oft in der Infobox verwendet, gehören erklärende oder einleitende Texte über die Funktion einer Seite nicht mehr in die Sidebar. Der beste Platz dafür ist die in der Version 3.1 neu geschaffene Hilfe-Lasche, in der auch Touren gestartet werden und der Link zum Hilfe-Wiki zu finden ist.
-* Formulare: Mit Ausnahme eines Eingabefeldes für das Such-Widget gehören Formulare nicht in die Sidebar.
+* Help texts: Previously often used in the info box, explanatory or introductory texts about the function of a page no longer belong in the sidebar. The best place for this is the new help tab created in version 3.1, where tours can also be started and the link to the help wiki can be found.
+* Forms: With the exception of an input field for the search widget, forms do not belong in the sidebar.
 
-### Sonst noch zu beachten
+### Other things to note
 
-* Für die Sidebar gibt es eine feststehende API, die für die Erstellung verwendet werden muss.
-* Die Umstellung des Admin-Bereiches erfolgt voraussichtlich im Rahmen der Arbeiten der Version 3.2, bis dahin ist nur die Navigation in das entsprechende Widget verlegt.
-* Außer im Navigationswidget sollten in der Sidebar eindeutige und passende Icons in der Farbe blau verwendet werden und klickbar sein. Insbesondere Aktionen profitieren von der leichten Auffindbarkeit durch Icon + Text.
+* There is a fixed API for the sidebar that must be used to create it.
+* The conversion of the admin area is expected to take place as part of the work on version 3.2, until then only the navigation has been moved to the corresponding widget.
+* Except in the navigation widget, clear and matching icons in the color blue should be used in the sidebar and be clickable. Actions in particular benefit from being easy to find using icons + text.

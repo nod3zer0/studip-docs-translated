@@ -1,85 +1,85 @@
 ---
-title: Suche
-sidebar_label: Suche
+title: Search
+sidebar_label: Search
 ---
 
-* Objekte, nach denen gesucht werden kann (und was man dann damit macht)
-    * Personen
-        * Adressbuch: zum Adressbuch hinzufügen; zu einer Gruppe im Adressbuch hinzufügen
-        * Globale Einstellungen: Globale Eigenschaften ändern
-        * Veranstaltungen: als Dozent/Tutor zu einer Veranstaltung hinzufügen
-        * Veranstaltungen: als Teilnehmer zu einer Veranstaltung hinzufügen
-        * Messaging: zur Empfängerliste hinzufügen
-        * allg. Personensuche: persönliche Homepage aufrufen, Nachricht schicken
-        * Einrichtungen: zur Mitarbeiterliste hinzufügen
-        * Ressourcenverwaltung: als lokalen/globalen Ressourcenadmin eintragen
-    * Veranstaltungen
-        * Veranstaltungssuche für Studis: zu einzelnen Veranstaltungen wechseln (= zur Übersichtsseite wechseln); persönliche Homepage einzelner Veranstaltungen aufrufen
-        * Veranstaltungssuche für Admins: Veranstaltung zum Bearbeiten auswählen, diverse "Batch-Aktionen" (Sichtbarkeit, Sperrebenen usw.) ausführen
-        * im Archiv: diverse Aktionen (Details aufrufen, Dateisammlung herunterladen, endgültig löschen, ...)
-        * Veranstaltungshierarchie: Veranstaltung(en) zu Studienbereichen hinzufügen
-    * Einrichtungen
-        * Zur Einrichtung in Stud.IP wechseln
-        * Zur Website der Einrichtung wechseln
-        * eine E-Mail an den Ansprechpartner schreiben
-    * Ressourcen
-        * diverse Aktionen (die man auch sonst an Ressourcen vornehmen kann: Belegungsplan aufrufen, Eigenschaften bearbeiten, ...)
-    * Bereiche (in News-, Voting- und Evaluationsverwaltung)
-        * Neues Voting/neuen Test in einem Bereich erstellen
-        * Bereich auswählen (um dort anschließend eine News zu erstellen/bearbeiten)
-    * Forenbeiträge
-        * diverse Aktionen (die man auch sonst an Forenbeiträgen vornehmen kann: antworten, zitieren, bearbeiten, ...)
-        * Öffentliche Evaluationsvorlagen
-        * zu den eigenen Evaluationsvorlagen hinzufügen
-    * Wikiseiten
-        * Wikiseiten aufrufen
-    * Literatur (= Einträge in Literaturlisten)
-        * Details aufrufen
-        * in Merkliste eintragen
-        * zum Eintrag im externen Katalog (OPAC) wechseln
-* Formulierung der Suchanfrage
-    * Variante 1: nur ein einzeiliges Textfeld
-    * Variante 2: Textfeld(er) plus weitere Formularfelder (z. B. Veranstaltungssuche, Personensuche, Ressourcensuche)
+* Objects that can be searched for (and what to do with them)
+    * People
+        * Address book: add to address book; add to a group in the address book
+        * Global settings: Change global properties
+        * Events: add to an event as a lecturer/tutor
+        * Events: add as participant to an event
+        * Messaging: add to recipient list
+        * General person search: call up personal homepage, send message
+        * Facilities: add to the list of employees
+        * Resource management: enter as local/global resource admin
+    * Events
+        * Event search for students: switch to individual events (= switch to overview page); call up personal homepage of individual events
+        * Event search for admins: select event for editing, perform various "batch actions" (visibility, lock levels, etc.)
+        * In the archive: various actions (call up details, download file collection, permanently delete, ...)
+        * Event hierarchy: add event(s) to study areas
+    * Institutions
+        * Switch to the institution in Stud.IP
+        * Go to the website of the institution
+        * Write an e-mail to the contact person
+    * Resources
+        * Various actions (which you can also perform on resources: Call up occupancy plan, edit properties, ...)
+    * Areas (in news, voting and evaluation management)
+        * Create new voting/new test in an area
+        * Select an area (to subsequently create/edit a news item there)
+    * Forum posts
+        * Various actions (which you can also perform on forum posts: reply, quote, edit, ...)
+        * Public evaluation templates
+        * Add to your own evaluation templates
+    * Wiki pages
+        * Call up wiki pages
+    * Literature (= entries in literature lists)
+        * Call up details
+        * Add to watch list
+        * Switch to the entry in the external catalog (OPAC)
+* Formulate the search query
+    * Variant 1: only a single-line text field
+    * Variant 2: text field(s) plus additional form fields (e.g. event search, person search, resource search)
 
-* Auto-Complete
+* Auto-complete
     * ...
 
-* Auslösen der Suchanfrage
-    * Variante 1: Klick auf Icon "Lupe" (z. B. Suche nach Dozenten auf admin_seminare1.php, Suchen eines Wunschraums auf admin_room_request.php)
-    * Variante 2: Klick auf Button "Suche starten" (z. B. Suche nach Veranstaltungen auf sem_portal.php, Suche nach Ressourcen, Suchen im Archiv,
-    * Variante 3: Klick auf Button "suchen" (z. B. Suche nach Personen auf browse.php, Suche nach Literatur auf lit_search.php)
+* Triggering the search query
+    * Variant 1: Click on the "magnifying glass" icon (e.g. search for lecturers on admin_seminare1.php, search for a desired room on admin_room_request.php)
+    * Variant 2: Click on the "Start search" button (e.g. search for events on sem_portal.php, search for resources, search in the archive,
+    * Variant 3: Click on the "Search" button (e.g. search for people on browse.php, search for literature on lit_search.php)
 
-## Mögliche Guidelines
-* Die Eingabe von Suchbegriffen erfolgt grundsätzlich in ein einzeiliges Texteingabefeld (input type="text").
-* Sofern das Suchformular nur aus diesem Textfeld besteht, wird die Suche durch Klicken auf ein rechts neben dem Textfeld angebrachtes Lupen-Icon ausgelöst.
-* Besteht das Suchformular aus mehreren Formularfeldern (z. B. zum Einschränken der Suchergebnisse), so wird die Suche grundsätzlich durch einen Button mit dem Text "Suche starten" ausgelöst.
+## Possible guidelines
+* Search terms are always entered in a single-line text input field (input type="text").
+* If the search form only consists of this text field, the search is triggered by clicking on a magnifying glass icon to the right of the text field.
+* If the search form consists of several form fields (e.g. to limit the search results), the search is always triggered by a button with the text "Start search".
 
-## Darstellung von Suchergebnissen
+## Display of search results
 
-### Stand der Dinge
-* **Variante 1:** Dropdownliste ersetzt Eingabefeld (Beispiele: Zuweisen eines Dozenten zu einer Veranstaltung auf admin_seminare1.php; Auswählen eines Wunschraums beim Formuliren einer Raumanfrage)
-* **Variante 2:** Aufklappbare (bzw. bereits aufgeklappte) Listenelemente (z. B. Ressourcensuche, Literatursuche)
-* **Variante 3:** Einfache Liste (z. B. Veranstaltungssuche sem_portal.php, Personensuche browse.php und_new_user_md5.php)
-* **Variante 4:** Aufgeklappte Elemente innerhalb einer hierarchischen Liste von ansonsten zugeklappten Elementen (Suche nach Einrichtungen institut_browse.php)
-* **Variante 5:** Mehrzeilige Selectbox (Freie Suche nach Personen in der Gruppenverwaltung in Einrichtungen, Gruppenverwaltung im Adressbuch)
+### State of play
+**Variant 1:** Drop-down list replaces input field (examples: Assigning a lecturer to a course on admin_seminare1.php; selecting a desired room when formulating a room request)
+** **Variant 2:** Expandable (or already expanded) list elements (e.g. resource search, literature search)
+**Variant 3:** Simple list (e.g. event search sem_portal.php, person search browse.php and_new_user_md5.php)
+**Variant 4:** Expanded elements within a hierarchical list of otherwise collapsed elements (search for institutions institut_browse.php)
+* **Variant 5:** Multi-line select box (free search for persons in the group management in institutions, group management in the address book)
 
-### Mögliche Guidelines
-* Oberhalb der Suchergebnisse soll die Anzahl gefundener Elemente ausgegeben werden.
-* Unterscheidung nach Verwendungszweck der Ergebnisse
-    * **Auswählen genau eines Elements der Ergebnisliste** (z. B. Zuordnung eines Dozenten zu einer Veranstaltung, Auswählen eines Wunschraumes in einer Raumanfrage)
-    * **Auswählen ggf. mehrerer Elemente der Ergebnisliste** (z. B. Zuordnung von Veranstaltungen zu Studienbereichen in der Studienbereichsverwaltung, Zuordnen von per Suche gefundenen Personen in der Gruppenverwaltung in Einrichtungen)
-    * **Anklicken genau eines Elements der Ergebnisliste, um es anzusteuern** (z. B. Veranstaltungssuche [sem_portal], Personensuche [browse.php])
+### Possible guidelines
+* The number of elements found should be displayed above the search results.
+* Differentiation according to the intended use of the results
+    * Selection of exactly one element in the results list** (e.g. assignment of a lecturer to a course, selection of a desired room in a room request)
+    * Selecting several elements of the results list** (e.g. assigning courses to study areas in the study area administration, assigning persons found by search in the group administration in institutions)
+    **Click on exactly one element of the results list to access it** (e.g. event search [sem_portal], person search [browse.php])
 
-### Fragen/Ideen
-* Wie hängen die Guidelines zu den Suchergebnissen mit denen zu Elementlisten zusammen? M.a.W.: Wann sollen Suchergebnisse in Form von Elementlisten ausgegeben werden, für die dann automatisch die dort definierten Regeln greifen?
-    * Idee: Suchergebnisse werden grundsätzlich in Form von Elementlisten dargestellt. (Ggf. mit definierten Ausnahmen wie z.B. Dozentensuche auf admin_seminare1.php)
-* Wovon kann/sollte man die Art der Darstellung abhängig machen?
-    * Verwendungszweck der Suchergebnisse (s.o.)
-    * Art und Darstellung des Suchformulars, aus dem die Suchergebnisse stammen
-    * Zur Verfügung stehender Platz (z.B. innerhalb von auf- und zuklappbaeren Elementlisten, Beispiel: Personensuche innerhalb der Gruppenverwaltung in Einrichtungen)
-    * Art der gesuchten Elemente (Personen vs. Veranstaltungen vs. Ressourcen vs. ...)
-    * Vorhersagbarkeit der Treffermenge (iframe oder selectbox bei potenziell großen Treffermengen)
-    * %blue% Denkbar ist eine Matrix mit zwei Kriterien, in der für jede Kombination aus Kriterienausprägungen ein eigenes Set von Darstellungsregeln definiert ist
-* Blättern
-    * Soll (grundsätzlich bzw. nach definierten Kriterien) innerhalb der Suchergebnisse geblättert werden können?
-    * Wenn ja, wie soll das Blättern dargestellt werden? (Ggf. generelle Regeln für Blätterfunktion)
+### Questions/ideas
+* How are the guidelines for search results related to those for element lists? In other words: When should search results be output in the form of element lists, for which the rules defined there then automatically apply?
+    * Idea: Search results are always displayed in the form of element lists. (Possibly with defined exceptions, e.g. lecturer search on admin_seminare1.php)
+* What can/should the type of display depend on?
+    * Intended use of the search results (see above)
+    * Type and display of the search form from which the search results originate
+    * Space available (e.g. within expandable and collapsible element lists, example: person search within the group administration in institutions)
+    * Type of elements searched for (persons vs. events vs. resources vs. ...)
+    * Predictability of the hit list (iframe or selectbox for potentially large hit lists)
+    * %blue% A matrix with two criteria is conceivable, in which a separate set of display rules is defined for each combination of criteria values
+* Scroll
+    * Should it be possible to scroll (in principle or according to defined criteria) within the search results?
+    * If so, how should the scrolling be displayed? (If applicable, general rules for scrolling function)

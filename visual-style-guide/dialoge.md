@@ -1,74 +1,74 @@
 ---
-title: Dialoge
-sidebar_label: Dialoge
+title: Dialogs
+sidebar_label: Dialogs
 ---
 
 
-Dialoge werden verwendet um Eingaben oder Bestätigungen vom Benutzer einzuholen.
-Seit der Einführung der Sidebar gelten Dialoge auch grundsätzlich als Repräsentation von Aktionen.
-Aktionen verbleiben dabei auf der jeweiligen Seite und vermeiden einen Kontextwechsel
+Dialogs are used to obtain input or confirmations from the user.
+Since the introduction of the sidebar, dialogs are also generally regarded as a representation of actions.
+Actions remain on the respective page and avoid a context change
 
-Trotzdem sollten Dialoge nicht inflationär eingesetzt werden. Wenn möglich sollte eine Interaktion direkt auf der Seite stattfinden,
-auf der auch die zu bearbeitenden Informationen oder Elemente dargestellt werden.
-
-
-## Allgemeines
-Dialoge sollten einfach gehalten und nicht zu komplex sein, d. h. nur eine zugehörige Aktion sollte pro Dialog ausgeführt werden.
-
-Dialoge sollten selbst erklärend sein und möglichst wenig (Erklärungs-) Texte enthalten.
-
-Dialoge sollten nicht gestapelt werden, d. h. ein Dialog sollte sich nicht in einem Dialog öffnen (außer z . B. Datepicker, wo kein Button gedrückt werden muss). Für komplexere Dialoge sollten Wizards verwendet werden, in dene mehrere Dialoge hintereinander geschaltet sind oder Bereich innerhalb der Dialoge auf- und zugeklappt werden.
-
-## Modale und nicht-modale Dialogfenster
-Bei modalen Dialogfenstern kann der Benutzer nicht in anderen Fenstern der Anwendung weiterarbeiten, sondern nur im Dialogfenster. Im Unterschied dazu erlauben nicht-modale Dialogfenster dem Benutzer auch die Interaktion mit dem Hintergrundfenster. Nicht-modale Dialogfenster werden in Stud.IP beispielsweise beim Stundenplan zur Eingabe von Terminen verwendet. Die Mehrzahl der Dialoge in Stud.IP ist jedoch modal.
-
-Beim Aufruf eines modalen Dialogfensters wird das Hintergrundfenster durch geeignete optische Manipulation ("Ausgrauen" bzw. abdunkeln mit einem Overlay in Dunkelblau) als inaktiv gekennzeichnet.
-
-Dialoge sind abzugrenzen von Notifications, die nie modal sind und nicht als eigenes Fenster erscheinen.
-
-## Popup-Fenster
-
-Popup-Fenster, d. h. sich separat öffnende Fenster, dürfen nicht verwendet werden.
-
-## Eigenschaften
-Dialogfenster sind meist [formularartig](Visual-Style-Guide#Formulare) aufgebaut.
-
-Dialoge sollten lesbar sein, ohne dass ein Scrollen im Dialog erforderlich wird. Eine Ausnahme bildet das vertikale Scrollen: Wenn es sich nicht vermeiden lässt (etwa weil Inhalte, lange Listen oder Aufklappelemente nicht das Dialogfenster passen) darf innerhalb des Dialogfensters gescrollt werden.
-
-Die Seitengröße innerhalb eines Dialogfensters sollte sich während seiner Bearbeitung nicht ändern. Ausgenommen von dieser Einschränkung ist beispielsweise das dynamische Nachladen von Elementen einer Drop-Down-Liste oder das dynamische Einblenden von Ausfüllhinweisen bei Pflichtfeldern.
-
-## Verhalten
-Wenn man neben ein Dialogfester klickt, sollte sich dieses nicht schließen.
-
-Wenn der Benutzer den Button Escape drückt, schließt sich das Dialogfenster, es sei denn, es wurden bereits Eingaben gemacht. Hier muss der Auto-Formsaver aktiviert werden, so dass der Nutzer auf eventuelle verlorengehende Inhalte hingewiesen wird.
+Nevertheless, dialogs should not be used excessively. If possible, interaction should take place directly on the page,
+on which the information or elements to be processed are also displayed.
 
 
-### Schematischer Aufbau eines Dialogfensters
+## General
+Dialogs should be kept simple and not too complex, i.e. only one associated action should be executed per dialog.
+
+Dialogs should be self-explanatory and contain as little (explanatory) text as possible.
+
+Dialogs should not be stacked, i.e. a dialog should not open in a dialog (except e.g. date picker, where no button needs to be pressed). For more complex dialogs, wizards should be used in which several dialogs are connected in series or areas within the dialogs are expanded and collapsed.
+
+## Modal and non-modal dialog windows
+With modal dialog windows, the user cannot continue working in other windows of the application, but only in the dialog window. In contrast, non-modal dialog windows also allow the user to interact with the background window. Non-modal dialog windows are used in Stud.IP, for example, in the timetable for entering appointments. However, the majority of dialog boxes in Stud.IP are modal.
+
+When a modal dialog window is called up, the background window is marked as inactive by suitable optical manipulation ("greying out" or darkening with an overlay in dark blue).
+
+Dialogs must be distinguished from notifications, which are never modal and do not appear as a separate window.
+
+## Pop-up window
+
+Pop-up windows, i.e. windows that open separately, must not be used.
+
+## Properties
+Dialog windows are usually [form-like](Visual-Style-Guide#Forms).
+
+Dialogs should be readable without requiring scrolling in the dialog. Vertical scrolling is an exception: If it cannot be avoided (for example, because content, long lists or drop-down elements do not fit the dialog box), scrolling is allowed within the dialog box.
+
+The page size within a dialog box should not change during editing. Exceptions to this restriction are, for example, the dynamic reloading of elements in a drop-down list or the dynamic display of completion instructions for mandatory fields.
+
+## Behavior
+If you click next to a dialog window, it should not close.
+
+If the user presses the Escape button, the dialog window closes, unless entries have already been made. The auto-formsaver must be activated here so that the user is notified of any lost content.
+
+
+### Schematic structure of a dialog window
 ![image](../assets/ce19cb16e52e35fa80ad2fd66ee7fbac/image.png)
 
 #### Layout/Design
 
-Grundsätzlich sind Dialoge gestalterisch so aufgebaut, dass sie von einer dunkelblauen Kopfzeile (Stud.
-IP-Brand-Color, siehe [design](Design)) eingeleitet werden und einen weißen Hintergrund haben. Sie haben einen 
-dünnen weißen Rand, einen leichten Schatten und dunkeln die dahinterliegende Seite ab. Buttons haben einen separaten Footer, analog zu Tabellen oder Formularen.
+Generally, dialogs are designed in such a way that they start with a dark blue header (Stud.
+IP-Brand-Color, see [design](Design)) and have a white background. They have a
+thin white border, a slight shadow and darken the page behind it. Buttons have a separate footer, similar to tables or forms.
 
-Beispiel für das Design:
+Example for the design:
 
 ![image](../assets/c37f69398215d78b12784d3428c89a9c/Bildschirmfoto_2021-11-15_um_15.35.11.png)
 
-#### Text in der Titelleiste
-Der Titeltext sollte aussagekräftig und spezifisch sein, damit Benutzer genau wissen, was sie tun sollen. Eine Dopplung zum Content muss vermeiden werden.
+#### Text in the title bar
+The title text should be meaningful and specific so that users know exactly what they are supposed to do. Duplication with the content must be avoided.
 
 #### Buttons
-Jeder Dialog ein X-Icon rechts in der Titelleiste, um den Dialog schließen zu können. Zusätzlich gibt es einen separaten "Abbrechen"/"Schließen"-Button, da viele Benutzer das x-Icon in der Titelleiste übersehen.
+Each dialog has an X icon on the right in the title bar to close the dialog. There is also a separate "Cancel"/"Close" button, as many users overlook the x icon in the title bar.
 
-Auf dem Übernehmen-Button (accept-Button) wird ein Häkchen-Icon angezeigt.
+A tick icon is displayed on the accept button.
 
-Der Text auf dem Übernehmen-Button sollte ein spezifisches Verb sein wie beispielsweise "Löschen" oder "Anlegen" und nicht nur "OK".
+The text on the accept button should be a specific verb such as "Delete" or "Create" and not just "OK".
 
-### Sicherheitsabfragen
-Sicherheitsabfragen werden verwendet insbesondere beim Löschen wichtiger Elemente oder bei anderen kritischen und unwiderruflichen Aktionen.
+### Security queries
+Security prompts are used especially when deleting important elements or for other critical and irrevocable actions.
 
-Sicherheitsabfrage sind eine vereinfachte Form des modalen Dialogs.
+Security prompts are a simplified form of the modal dialog.
 
-Sie enthalten einen Hinweis- oder Fragetext und zwei Buttons zum Bestätigen und Verwerfen.
+They contain a message or question text and two buttons for confirming and rejecting.
