@@ -2,9 +2,9 @@
 
 <div class="landing-page-box">
     <div>
-        <a href="./quickstart/">
+        <a href="./schnellstart/">
             <img src="https://develop.studip.de/studip/assets/images/icons/blue/play.svg" />
-            <div><strong>Quickstart</strong></div>
+            <div><strong>Schnellstart</strong></div>
         </a>
     </div>
     <div>
@@ -14,7 +14,7 @@
         </a>
         </div>
     <div>
-        <a href="./rules/introduction">
+        <a href="./Regeln/Einführung">
             <img src="https://develop.studip.de/studip/assets/images/icons/blue/source.svg" />
             <div><strong>Organisation</strong></div>
         </a>
@@ -49,4 +49,3 @@
         </a>
     </div>
 </div>
-

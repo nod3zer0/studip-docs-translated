@@ -2,63 +2,63 @@
 title: Coding Style
 ---
 
-### Geltungsbereich
+### Scope
 
-Dieses Dokument bietet Richtlinien für die Formatierung von Code und Dokumentation für Entwickler, die an Stud.IP mitarbeiten. Die folgenden Bereiche werden vom Stud.IP Coding Standard abgedeckt: 
-
-
-## PHP Dateiformatierung
-
-Für Dateien, die nur PHP Code beinhalten ist der schliessende Tag ("?>") nicht zugelassen. Er wird von PHP nicht benötigt, und das weglassen verhindert, dass versehentlich Leerzeilen in die Antwort eingefügt werden.
-
-**WICHTIG:** Einbeziehen von beliebigen binären Daten durch __HALT_COMPILER() ist in den PHP Dateien verboten. Das Benutzen ist nur für einige Installationsskripte erlaubt.
-
-## Einrücken
-
-Ein Einzug sollte aus 4 Leerzeichen bestehen. Tabulatoren sind nicht erlaubt.
-
-## Maximale Zeilenlänge
-
-Die Zielzeilenlänge ist 80 Zeichen. Entwickler sollten jede Zeile Ihres Codes unter 80 Zeichen halten, soweit dies möglich und praktikabel ist. Trotzdem sind längere Zeilen in einigen Fällen erlaubt. Die maximale Länge einer Zeile beträgt 120 Zeichen.
-
-## Zeilenbegrenzung
-
-Die Zeilenbegrenzung folgt der Unix-Textdateikonvention. Zeilen müssen mit einem einzelnen Zeilenvorschubzeichen (LF) enden. Zeilenvorschubzeichen werden duch eine 10 (dezimal) bzw. durch 0x0A (hexadezimal) dargestellt.
-
-Beachte: Benutzen Sie nicht den Wagenrücklauf (CR &#8594; 0x0D) oder die Kombination aus Wagenrücklauf und Zeilenvorschub (CRLF &#8594; 0x0D 0x0A).
+This document provides guidelines for formatting code and documentation for developers working on Stud.IP. The following areas are covered by the Stud.IP Coding Standard:
 
 
-## Namenskonventionen
+## PHP file formatting
 
-### Klassen
+For files containing only PHP code, the closing tag ("?>") is not allowed. It is not required by PHP, and omitting it prevents blank lines from being accidentally inserted into the response.
 
-Klassennamen dürfen nur alphanumerische Zeichen enthalten. Nummern sind in Klassennamen gestattet, es wird aber in den meisten Fällen davon abgeraten.
+**IMPORTANT:** Inclusion of arbitrary binary data by __HALT_COMPILER() is forbidden in PHP files. Its use is only allowed for some installation scripts.
 
-Wenn ein Klassenname aus mehr als einem Wort besteht, muß der erste Buchstabe von jedem neuen Wort großgeschrieben werden.
+## Indentation
 
-Um Pseudo-Namensräume zu definieren, dürfen in Klassennamen einzelne Unterstriche verwendet werden.
+An indent should consist of 4 spaces. Tabs are not allowed.
 
-Beispiel: `class Trails_Controller`
+## Maximum line length
 
-Sobald echte Namensräume verfügbar sind, müssen diese Pseudo-Namensräume entsprechend ersetzt werden.
+The target line length is 80 characters. Developers should keep each line of code under 80 characters where possible and practicable. However, longer lines are allowed in some cases. The maximum length of a line is 120 characters.
 
-### Dateinamen
+## Line limit
 
-In Dateinamen sind nur alphanumerische Zeichen ("a-zA-Z0-9"), Unterstriche ("_"), Bindestriche ("-") und Punkte (".") gestattet. Leerzeichen sind völlig verboten.
+The line limit follows the Unix text file convention. Lines must end with a single line feed character (LF). Line feed characters are represented by a 10 (decimal) or by 0x0A (hexadecimal).
 
-Jede Datei die PHP-Code enthält, sollte mit der Endung ".php" enden.
+Note: Do not use the carriage return (CR &#8594; 0x0D) or the combination of carriage return and line feed (CRLF &#8594; 0x0D 0x0A).
 
-Dateinamen müssen den Klassennamen wie oben beschrieben entsprechen.
 
-### Funktionen und Methoden
+## Naming conventions
 
-Methodennamen dürfen nur alphanumerische Zeichen enthalten. Unterstriche sind nicht gestattet. Ziffern sind in Funktionsnamen gestattet, aber in den meisten Fällen nicht empfohlen.
+### Classes
 
-Funktions- und Methodennamen müssen immer mit einem Kleinbuchstaben anfangen. Wenn ein Methodenname aus mehr als einem Wort bestehen, muß der erste Buchstabe eines jeden Wortes großgeschrieben werden. Das wird üblicherweise "camelCase"-Formatierung genannt.
+Class names may only contain alphanumeric characters. Numbers are allowed in class names, but are not recommended in most cases.
 
-Wortreichtum wird generell befürwortet. Funktionsnamen sollten so wortreich wie möglich sein, um deren Zweck und Verhalten zu erklären.
+If a class name consists of more than one word, the first letter of each new word must be capitalized.
 
-Beispiele für Methodenamen:
+To define pseudo namespaces, single underscores may be used in class names.
+
+Example: `class Trails_Controller`
+
+As soon as real namespaces are available, these pseudo namespaces must be replaced accordingly.
+
+### File names
+
+Only alphanumeric characters ("a-zA-Z0-9"), underscores ("_"), hyphens ("-") and dots (".") are permitted in file names. Spaces are completely forbidden.
+
+Any file containing PHP code should end with the extension ".php".
+
+File names must correspond to the class names as described above.
+
+### Functions and methods
+
+Method names may only contain alphanumeric characters. Underscores are not permitted. Digits are permitted in function names, but are not recommended in most cases.
+
+Function and method names must always start with a lower case letter. If a method name consists of more than one word, the first letter of each word must be capitalized. This is usually called "camelCase" formatting.
+
+Wordiness is generally encouraged. Function names should be as verbose as possible to explain their purpose and behavior.
+
+Examples of method names:
 
 ```php
 filterInput()
@@ -68,32 +68,32 @@ getElementById()
 widgetFactory()
 ```
 
-Für objekt-orientiertes Programmieren sollten Zugriffsmethoden für Instanz- oder Klassenvariablen immer mit `get` oder `set` beginnen. Wenn Design-Pattern implementiert werden sollte, sollte der Name der Methode den Konventionen des Patterns entsprechen, um das Verhalten besser zu beschreiben.
+For object-oriented programming, access methods for instance or class variables should always begin with ``get` or ``set`. If design patterns should be implemented, the name of the method should follow the conventions of the pattern to better describe the behavior.
 
-Globale Funktionen sind gestattet, aber es wird von ihnen in den meisten Fällen abgeraten. Diese Funktionen sollten in einer statischen Klasse gekapselt werden.
+Global functions are allowed, but are discouraged in most cases. These functions should be encapsulated in a static class.
 
-### Variablen
+### Variables
 
-Variablennamen dürfen nur alphanumerische Zeichen und den Unterstrich enthalten. Ziffern sind in Variablen gestattet, in den meisten Fällen aber nicht empfohlen.
+Variable names may only contain alphanumeric characters and the underscore. Digits are permitted in variables, but are not recommended in most cases.
 
-Wie bei Funktionsnamen (siehe oben) müssen Variablennamen immer mit einem Kleinbuchstaben anfangen.
+As with function names (see above), variable names must always begin with a lower case letter.
 
-Sprechende Bezeichner werden generell befürwortet. Variablen sollen immer so wortreich wie möglich sein, um die Daten zu beschreiben, die der Entwickler in ihnen zu speichern gedenkt. Von sehr kurzen Variablennamen wie `$i` und `$n` wird abgesehen von der Verwendung in kleinen Schleifen abgeraten. Wenn eine Schleife mehr als 20 Codezeilen enthält, sollten die Index-Variablen einen ausführlicheren Namen haben.
+Speaking identifiers are generally recommended. Variables should always be as verbose as possible to describe the data that the developer intends to store in them. Very short variable names such as `$i` and `$n` are discouraged except for use in small loops. If a loop contains more than 20 lines of code, the index variables should have a more detailed name.
 
-### Konstanten
+### Constants
 
-Konstantenbezeichner können alphanumerische Zeichen und Unterstriche enthalten.
+Constant identifiers can contain alphanumeric characters and underscores.
 
-Alle Buchstaben, die in Konstantenname verwendet werden, müssen großgeschrieben werden. Wörter in einem Konstantennamen müssen durch Unterstriche getrennt werden.
+All letters used in constant names must be capitalized. Words in a constant name must be separated by underscores.
 
-Beispiel: `EMBED_SUPPRESS_EMBED_EXCEPTION` ist gestattet,`EMBED_SUPPRESSEMBEDEXCEPTION` jedoch nicht.
+Example: `EMBED_SUPPRESS_EMBED_EXCEPTION` is permitted, but `EMBED_SUPPRESSEMBEDEXCEPTION` is not.
 
-Konstanten müssen als Klassenkonstanten (Schlüsselwort "const") definiert werden. Die Definition von Konstanten mit der `define` Funktion im globalen Bereich ist gestattet, jedoch wird davon stark abgeraten.
+Constants must be defined as class constants (keyword "const"). Defining constants with the `define` function in the global scope is allowed, but strongly discouraged.
 
 
-## PHP Code-Abgrenzung
+## PHP code delimitation
 
-PHP Code muß immer mit der kompletten Form des Standard-PHP Tags abgegrenzt sein:
+PHP code must always be delimited with the complete form of the standard PHP tag:
 
 ```php
 <?php
@@ -101,30 +101,30 @@ PHP Code muß immer mit der kompletten Form des Standard-PHP Tags abgegrenzt sei
 ?>
 ```
 
-Kurze Tags sind nur in Templates erlaubt. Für Dateien die nur PHP Code enthalten, darf das schließende Tag nie angegeben werden.
+Short tags are only allowed in templates. For files that only contain PHP code, the closing tag must never be specified.
 
 ## Strings
-### String-Literale
+### String literals
 
-Bei String-Literalen, wenn ein String also keine Variablen enthält, sollte immer das Apostroph "'" (single quote) verwendet werden um den String abzugrenzen:
+For string literals, i.e. if a string does not contain any variables, the apostrophe "'" (single quote) should always be used to delimit the string:
 
 ```php
 $aString = 'Example String';
 ```
 
 
-## String-Literale mit Apostrophen
+## String literals with apostrophes
 
-Wenn ein String-Literal selbst Apostrophe enthält, ist es gestattet den String mit Anführungszeichen (double quotes)  abzugrenzen. Das ist speziell für SQL-Anweisungen nützlich:
+If a string literal itself contains apostrophes, it is permitted to delimit the string with double quotes. This is especially useful for SQL statements:
 
 ```php
 $sql = "SELECT `id`, `name` from `people` "
      . "WHERE `name`='Fred' OR `name`='Susan'";
 ```
 
-Diese Syntax ist gegenüber dem Schützen des Apostrophs durch "\'" aus Gründen der besseren Lesbarkeit zu bevorzugen.
+This syntax is preferable to protecting the apostrophe with "\'" for reasons of better readability.
 
-### Variable Substitution
+### Variable substitution
 
 Variable substitution is permitted using either of these forms:
 
@@ -143,15 +143,15 @@ $greeting = "Hello ${name}, welcome back!";
 ```
 
 
-## String-Konkatenation
+## String concatenation
 
-Strings müssen mit dem "."-Operator konkateniert werden. Ein Leerzeichen muß immer vor und nach dem "." Operator eingefügt werden, um die Lesbarkeit zu erhöhen:
+Strings must be concatenated with the "." operator. A space must always be inserted before and after the "." operator to increase readability:
 
 ```php
 $company = 'Zend' . ' ' . 'Technologies';
 ```
 
-Werden Strings mit dem "." Operator konkateniert, sollte die Anweisung in mehrere Zeilen umgebrochen werden, um die Lesbarkeit zu erhöhen. In diesen Fällen sollte jede folgende Zeile mit Leerraum aufgefüllt werden so das der "." Operator genau unterhalb des "=" Operators steht:
+If strings are concatenated with the "." operator, the statement should be broken into several lines to increase readability. In these cases, each subsequent line should be filled with whitespace so that the "." operator is exactly below the "=" operator:
 
 ```php
 $sql = "SELECT `id`, `name` FROM `people` "
@@ -161,17 +161,17 @@ $sql = "SELECT `id`, `name` FROM `people` "
 
 
 ## Arrays
-### Numerisch indizierte Arrays
+### Numerically indexed arrays
 
-Negative Indizes sind nicht gestattet. Ein solches Array darf mit einer nicht-negativen Zahl beginnen, es wird jedoch davon abgeraten.
+Negative indices are not permitted. Such an array may begin with a non-negative number, but this is not recommended.
 
-Werden indizierte Arrays mehrzeilig mit Hilfe der "array"-Funktion definiert, muß ein Leerzeichen nach jeder Kommabegrenzung folgen, um die Lesbarkeit zu erhöhen:
+If indexed arrays are defined in multiple lines using the "array" function, a space must follow each comma delimiter to improve readability:
 
 ```php
 $sampleArray = array(1, 2, 3, 'Zend', 'Studio');
 ```
 
-Es ist gestattet, mehrzeilige indizierte Arrays mit der "array"-Funktion zu definieren. In diesem Fall, muß jede folgende Zeile mit Leerzeichen aufgefüllt werden so das der Beginn jeder Zeile ausgerichtet ist:
+It is allowed to define multi-line indexed arrays with the "array" function. In this case, each subsequent line must be padded with spaces so that the beginning of each line is aligned:
 
 ```php
 $sampleArray = array(1, 2, 3, 'Zend', 'Studio',
@@ -180,34 +180,34 @@ $sampleArray = array(1, 2, 3, 'Zend', 'Studio',
 ```
 
 
-### Assoziative Arrays
+### Associative arrays
 
-Wenn assoziative Arrays mit der "array"-Funktion deklariert werden, ist das Umbrechen der Anweisung in mehrere Zeilen gestattet. In diesem Fall muß jede folgende Linie mit Leerraum aufgefüllt werden so das beide, der Schlüssel und der Wert, untereinander stehen:
+If associative arrays are declared with the "array" function, wrapping the statement into multiple lines is permitted. In this case, each subsequent line must be filled with white space so that both the key and the value are below each other:
 
 ```php
 $sampleArray = array(
-    'firstKey'  => 'firstValue',
+    'firstKey' => 'firstValue',
     'secondKey' => 'secondValue'
 );
 ```
 
 
-## Klassen
-### Klassendeklaration
+## Classes
+### Class declaration
 
-Klassen müssen den Namenskonventionen entsprechend benannt werden.
+Classes must be named according to the naming conventions.
 
-Die Klammer sollte immer in der Zeile unter dem Klassennamen geschrieben werden.
+The parenthesis should always be written on the line below the class name.
 
-Jede Klasse muß einen Dokumentationsblock haben der dem PHPDocumentor Standard entspricht.
+Each class must have a documentation block that conforms to the PHPDocumentor standard.
 
-Jeder Code in der Klasse muß mit vier Leerzeichen eingerückt sein.
+All code in the class must be indented with four spaces.
 
-Nur eine Klasse ist in jeder PHP Datei gestattet.
+Only one class is allowed in each PHP file.
 
-Das Platzieren von zusätzlichem Code in Klassendateien ist gestattet, aber es wird davon abgeraten.
+Placing additional code in class files is allowed, but discouraged.
 
-Das folgende ist ein Beispiel einer gültige Klassendeklaration:
+The following is an example of a valid class declaration:
 
 ```php
 /**
@@ -221,26 +221,26 @@ class SampleClass
 ```
 
 
-### Klassenvariablen
+### Class variables
 
-Klassenvariablen müssen entsprechend den Variablennamenskonventionen benannt werden.
+Class variables must be named according to the variable naming conventions.
 
-Jede Variable die in der Klasse deklariert wird muß am Beginn der Klasse aufgelistet werden, vor der Deklaration von allen Methoden.
+Each variable declared in the class must be listed at the beginning of the class, before the declaration of any methods.
 
-Das "var"-Schlüsselwort ist nicht gestattet. Klassenvariablen definieren ihre Sichtbarkeit durch die Verwendung der private, protected, oder public Modifikatoren. Öffentliche Klassenvariable (Sichtbarkeit "public") sind erlaubt, es wird aber zu Gunsten von Zugriffsmethoden (getter/setter) davon abgeraten.
+The "var" keyword is not allowed. Class variables define their visibility by using the private, protected, or public modifiers. Public class variables (visibility "public") are allowed, but are discouraged in favor of access methods (getter/setter).
 
-## Funktionen und Methoden
-### Deklaration von Funktionen und Methoden
+## Functions and methods
+### Declaration of functions and methods
 
-Funktionen müssen nach der Funktionsnamenskonvention benannt werden.
+Functions must be named according to the function naming convention.
 
-Methoden innerhalb von Klassen müssen immer ihre Sichtbarkeit durch Verwendung eines der private, protected, oder public Modifikatoren definieren.
+Methods within classes must always define their visibility by using one of the private, protected, or public modifiers.
 
-Wie bei Klassen sollte die Klammer immer in der Zeile unterhalb des Funktionsnamens geschrieben werden. Leerzeichen zwischen dem Funktionsnamen und der öffnenden Klammer für die Argumente sind nicht erlaubt.
+As with classes, the parenthesis should always be written in the line below the function name. Spaces between the function name and the opening parenthesis for the arguments are not allowed.
 
-Von globalen Funktionen wird abgeraten.
+Global functions are not recommended.
 
-Das folgende ist ein Beispiel einer gültigen Funktionsdeklaration in einer Klasse:
+The following is an example of a valid function declaration in a class:
 
 ```php
 /**
@@ -275,9 +275,9 @@ class Foo
 }
 ```
 
-Call-time pass-by-reference ist strikt verboten.
+Call-time pass-by-reference is strictly forbidden.
 
-Der Rückgabewert darf nicht in Klammern stehen. Das kann die Lesbarkeit behindern und zusätzlich zu Fehlern führen, wenn eine Methode später auf Rückgabe durch Referenz geändert wird.
+The return value must not be enclosed in brackets. This can hinder readability and also lead to errors if a method is later changed to return by reference.
 
 ```php
 /**
@@ -304,11 +304,11 @@ class Foo
 ```
 
 
-### Aufruf von Funktionen and Methoden
+### Calling functions and methods
 
-Wie bei Funktionsdeklaration darf zwischen Funktionsnamen und der öffnenden Klammer für die Argumente beim Funktionsaufruf kein Leerzeichen stehen.
+As with function declarations, there must be no space between the function name and the opening parenthesis for the arguments when calling the function.
 
-Funktionsargumente sollten durch ein einzelnes trennendes Leerzeichen nach dem Komma getrennt werden. Das folgende ist ein Beispiel für einen gültigen Aufruf einer Funktion die drei Argumente benötigt:
+Function arguments should be separated by a single separating space after the comma. The following is an example of a valid call to a function that takes three arguments:
 
 ```php
 threeArguments(1, 2, 3);
@@ -327,7 +327,7 @@ threeArguments(array(1, 2, 3, 'Zend', 'Studio',
 ```
 
 
-## Kontrollstrukturen
+## Control structures
 ### if/else/elseif
 
 Control statements based on the if and elseif constructs must have a single space before the opening parenthesis of the conditional and a single space after the closing parenthesis.
@@ -410,19 +410,19 @@ Every file that contains PHP code must have a docblock at the top of the file th
  *
  * LICENSE: Some license information
  *
- * @author     Vorname Nachname <email>
- * @copyright  2008 Zend Technologies
- * @license    http://framework.zend.com/license   BSD License
- * @category   Stud.IP
+ * @author first name last name <email>
+ * @copyright 2008 Zend Technologies
+ * @license http://framework.zend.com/license BSD License
+ * @category Stud.IP
 */
 ```
 
 Optional tags:
 ```php
 /**
- * @package    calendar 
- * @link       http://framework.zend.com/package/PackageName
- * @since      File available since Release 1.5.0
+ * @package calendar
+ * @link http://framework.zend.com/package/PackageName
+ * @since File available since Release 1.5.0
 */
 ```
 
@@ -442,8 +442,8 @@ Every class must have a docblock that contains {-these phpDocumentor tags-} at a
 Optional tags:
 ```php
 /**
- * @link       http://framework.zend.com/package/PackageName
- * @since      Class available since Release 1.5.0
+ * @link http://framework.zend.com/package/PackageName
+ * @since Class available since Release 1.5.0
  * @deprecated Class deprecated in Release 2.0.0
  */
 ```
@@ -470,17 +470,17 @@ If a function/method may throw an exception, use @throws for all known exception
 
 ## Templates
 
-Für Templates gelten alle obigen Aussagen. Zusätzlich gelten aber folgende Regeln:
+All of the above statements apply to templates. However, the following rules also apply:
 
-Bei Short-Tag-Zuweisungen muss nach dem eröffnenden und vor dem schließenden Tag genau ein Leerzeichen eingefügt werden:
+For short tag assignments, exactly one space must be inserted after the opening tag and before the closing tag:
 
 ```php
 <div class="<?= $css_class ?>"></div>
 ```
 
-Semikola werden nicht verwendet.
+Semicolons are not used.
 
-Zur Steigerung der Lesbarkeit können die alternativen Kontrollstrukturen verwendet werden:
+To increase readability, the alternative control structures can be used:
 
 ```php
 <? if (true) : ?>
@@ -493,21 +493,21 @@ Zur Steigerung der Lesbarkeit können die alternativen Kontrollstrukturen verwen
 ...
 <? endforeach ?>
 
-usw.
+etc.
 ```
 
-Dabei ist zu beachten, dass die Doppelpunkte mit je einem Leerzeichen umschlossen werden. Die abschließenden `endif`, `endforeach` usw. dürfen (genau wie bei den sonst üblichen {}) nicht mit einem Semikolon beendet werden.
+Please note that the colons are each enclosed with a space. The final `endif`, `endforeach` etc. must not be ended with a semicolon (just like the usual {}).
 
 
 
-### Ziele
+### Goals
 
-Coding Standards sind in jedem Softwareprojekt wichtig, insbesondere wenn viele Entwickler daran arbeiten. Coding Standards helfen sicherzustellen, dass der Code von hoher Qualität ist, weniger Fehler hat und einfach zu warten ist.
+Coding standards are important in any software project, especially when many developers are working on it. Coding standards help to ensure that the code is of high quality, has fewer errors and is easy to maintain.
 
 
-### Pagelevel-Doc-Block für copy&paste
+### Pagelevel doc block for copy&paste
 
-Dieser Absatz ist nicht-normativ.
+This paragraph is non-normative.
 
 ```php
 /**
@@ -520,8 +520,8 @@ Dieser Absatz ist nicht-normativ.
  * published by the Free Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
  *
- * @author      name <email>
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
- * @category    Stud.IP
+ * @author name <email>
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
+ * @category Stud.IP
  */
 ```
