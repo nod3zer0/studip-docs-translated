@@ -1,18 +1,18 @@
 ---
-Titel: Allgemeine Struktur
+Title: General structure
 ---
 
 
 
-Jeder, der schon einmal mit einer Programmiersprache angefangen hat, weiß, womit man beginnt: mit einem Hallo-Welt-Programm. Ja, man sieht sie vielleicht nicht mehr, aber sie sind nützlich, um die grobe Syntax und die minimalen Konventionen zu verstehen.
+Anyone who has ever started with a programming language knows what you start with: a hello world program. Yes, you may not see them anymore, but they are useful to understand the rough syntax and minimal conventions.
 
 
 
-Schauen wir uns in Studip eine völlig leere Seite an, die nur ein Zeichen enthält. Um zu sehen, wie viel einheitliches Design und Sitzungsroutinen in Anspruch nehmen, sollten Sie sich einfach vor Augen führen, wie viele Programmzeilen eine solche "nackte" Studip-Seite klein ist.
+Let's look at a completely blank page in Studip that contains only one character. To see how much uniform design and session routines take up, just imagine how many lines of program such a "naked" Studip page is small.
 
 
 
-Die folgende Datei könnte problemlos im öffentlichen Ordner von Studip liegen:
+The following file could easily be located in the Studip public folder:
 
 
 
@@ -37,27 +37,27 @@ Die folgende Datei könnte problemlos im öffentlichen Ordner von Studip liegen:
 ```php
 <?php
 /*
-test.php - Anzeige einer leeren Gerüstseite von Stud.IP
+test.php - Display of an empty Stud.IP scaffold page
 Copyright (C) 2009 Rasmus Fuhse <ras@fuhse.org>
 
 
 
-Dieses Programm ist freie Software; Sie können es weitergeben und/oder
-Sie können es unter den Bedingungen der GNU General Public License
-wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren; entweder in Version 2
-der Lizenz oder (nach Ihrer Wahl) jeder späteren Version.
+This program is free software; you can redistribute it and/or
+You can distribute it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License or (at your option) any later version.
 
 
 
-Dieses Programm wird in der Hoffnung weitergegeben, dass es nützlich sein wird,
-aber OHNE JEGLICHE GEWÄHRLEISTUNG; auch ohne die stillschweigende Garantie der
-MARKTGÄNGIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.  Siehe die
-GNU General Public License für weitere Einzelheiten.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY.
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
 
 
-Sie sollten ein Exemplar der GNU General Public License
-zusammen mit diesem Programm erhalten haben; falls nicht, schreiben Sie an die Free Software
+You should have received a copy of the GNU General Public License
+with this program; if not, write to the Free Software Foundation, Inc.
 Foundation, Inc, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 
@@ -67,16 +67,16 @@ $Id: test.php 12381 2009-06-03 16:57:46Z Krassmus $
 
 
 
-//Ab hier fangen wir an, über den Code nachzudenken.
+//Afrom here we start thinking about the code.
 
 
 
-//// Initialisierungen: Include-Pfad etc.
+//// Initializations: Include path etc.
 require '../lib/bootstrap.php';
 
 
 
-//// Hier wird eine Sitzung gestartet.
+//// A session is started here.
 page_open(array('sess' => 'Seminar_Session',
   auth' => 'Seminar_Default_Auth',
   'perm' => 'Seminar_Perm',
@@ -86,32 +86,32 @@ $perm->check("user");
 
 
 
-include ('lib/seminar_open.php'); // Stud.IP-Sitzung initialisieren
+include ('lib/seminar_open.php'); // Initialize Stud.IP session
 
 
 
 
 
 
-//// Variablen, die bei der Anzeige helfen.
-$HELP_KEYWORD="Basis.Testseite"; // Wenn Sie auf Hilfe klicken, werden Sie zur Basis.Testseite weitergeleitet.
-$CURRENT_PAGE = _("Testseite"); // Zeigt den Namen dieser Seite
+//// Variables that help with the display.
+$HELP_KEYWORD="Basis.Testseite"; // If you click on Help, you will be redirected to the Basis.Testseite.
+$CURRENT_PAGE = _("Test page"); // Shows the name of this page
 
 
 
 
 
 
-//// Ab hier wird der erste Text in das HTML-Dokument geschrieben
+//// From here, the first text is written in the HTML document
 
 
 
-//HTML-Header bis zu den <body>-Anweisungen
+//HTML header up to the <body> instructions
 include 'lib/include/html_head.inc.php';
 
 
 
-//Studip-Header, d.h. die Navigationssymbole, die über fast jeder Seite erscheinen.
+//Studip header, i.e. the navigation icons that appear above almost every page.
 include 'lib/include/header.php';
 
 
@@ -119,7 +119,7 @@ include 'lib/include/header.php';
 
 
 
-//Hier kommt die eigentliche Nachricht
+//Here comes the actual message
 $output_format = '<table class="blank" width="100%%"
 border="0" cellpadding="0" cellspacing="0">
 <tr><td class="topic"><b>&nbsp;%s </b>%s</td></tr>
@@ -129,14 +129,14 @@ border="0" cellpadding="0" cellspacing="0">
 
 
 
-printf ($output_format, htmlReady( _("und jetzt") ), *, formatReady( _("Hello World!") ));
+printf ($output_format, htmlReady( _("and now") ), *, formatReady( _("Hello World!") ));
 
 
 
 
 
 
-// Daten zurück in die Datenbank speichern.
+// Save data back to the database.
 page_close();
 
 
@@ -149,32 +149,32 @@ page_close();
 
 
 
-# Wichtige Elemente der Testseite: Bootstrap
+# Important elements of the test page: Bootstrap
 [#bootstrap](#bootstrap)
 
 
 
-Die erste Anweisung eines Skriptes in `public` ist immer:
+The first statement of a script in `public` is always:
 
 
 
 ```php
-// Initialisierungen: Include-Pfad etc.
+// Initializations: Include path etc.
 require '../lib/bootstrap.php';
 ```
 
 
 
-Dies setzt den $STUDIP_BASE_PATH, passt den Include-Pfad an und lädt alle wichtigen Konfigurations- und Systemklassendateien.
+This sets the $STUDIP_BASE_PATH, adjusts the include path and loads all important configuration and system class files.
 
 
 
-# Wichtige Elemente der Testseite: Sessions
+# Important elements of the test page: Sessions
 [#page_open](#page_open)
 
 
 
-Studip macht aus dem einen oder anderen Grund einiges anders als andere PHP-Module. Das beginnt zum Beispiel mit der Session. PHP hat eine eingebaute Sitzungsverwaltung, die es theoretisch erlaubt, global auf dem Server Variablen darüber zu speichern, was der Benutzer gerade tut, welche Daten er eingegeben hat und so weiter. Leider ist dies aber erst ab PHP4 möglich. Da Studip unter PHP3 erstellt wurde, wird auch heute noch ein Session-Management-System verwendet, das auf der PHPLIB-Erweiterung basiert und für moderne PHP-Entwickler etwas altbacken wirkt. Im Grunde ist es aber dasselbe wie eine normale PHP-Session und auch einfach zu bedienen. Auf der Testseite wird diese Session repräsentiert durch
+For one reason or another, Studip does things differently from other PHP modules. This starts, for example, with the session. PHP has a built-in session management, which theoretically allows variables to be stored globally on the server about what the user is currently doing, what data they have entered and so on. Unfortunately, this is only possible from PHP4 onwards. Since Studip was created under PHP3, a session management system is still used today that is based on the PHPLIB extension and looks a little old-fashioned to modern PHP developers. However, it is basically the same as a normal PHP session and is also easy to use. On the test page, this session is represented by
 
 
 
@@ -187,23 +187,23 @@ page_open(array('sess' => 'Seminar_Session',
 
 
 
-und geschlossen durch
+and closed by
 
 
 
-`Seite_schließen();`
+`close_page();`
 
 
 
-wieder geschlossen. Die PHPLIB-Sitzung muss beendet werden, damit in der nächsten Sitzung (auf der nächsten Stud.IP-Seite) wirklich alle Variablen wieder zur Verfügung stehen.
+closed again. The PHPLIB session must be closed so that all variables are really available again in the next session (on the next Stud.IP page).
 
 
 
-# Sicherheitsüberprüfung
+# Security check
 
 
 
-Unmittelbar nach dem page_open(...) folgt die Sicherheitsüberprüfung, ob der Benutzer die Seite überhaupt sehen darf. Mit
+Immediately after the page_open(...) follows the security check whether the user is allowed to see the page at all. With
 
 
 
@@ -211,7 +211,7 @@ Unmittelbar nach dem page_open(...) folgt die Sicherheitsüberprüfung, ob der B
 
 
 
-wird z.B. geprüft, ob der Betrachter der Seite die Rechte eines "Benutzers" hat. Bei einer Seite, die nur mit Admin-Rechten betrachtet werden soll, wäre dies
+is used, for example, to check whether the viewer of the page has the rights of a "user". For a page that should only be viewed with admin rights, this would be
 
 
 
@@ -219,8 +219,8 @@ wird z.B. geprüft, ob der Betrachter der Seite die Rechte eines "Benutzers" hat
 
 
 
-angezeigt werden.
-Es gibt fünf Sicherheitsstufen: Gast (d.h. ohne besondere Rechte, der nur öffentliche Veranstaltungen sehen darf, für die die Sicherheitsabfrage im Code fehlt), "user", "tutor", "lecturer" und "admin". Unmittelbar nach der Sicherheitsabfrage wird die Include-Datei
+be displayed.
+There are five security levels: Guest (i.e. without special rights, who may only view public events for which the security query is missing from the code), "user", "tutor", "lecturer" and "admin". Immediately after the security prompt, the include file
 
 
 
@@ -228,15 +228,15 @@ Es gibt fünf Sicherheitsstufen: Gast (d.h. ohne besondere Rechte, der nur öffe
 
 
 
-die Session mit allen möglichen Variablen gefüllt, die auf den meisten Seiten relevant sind, aber noch nicht auf unserer kleinen Testseite.
+is filled with all possible variables that are relevant on most pages, but not yet on our small test page.
 
 
 
-# Aufbau der Kopfzeilen
+# Structure of the headers
 
 
 
-Studip bemüht sich um ein einheitliches, solides Design. Das bedeutet, dass alle Seiten (mit Ausnahme des Messengers, zum Beispiel) die gleiche Kopfzeile und die gleichen Stilanweisungen haben. Dies geschieht in den Zeilen:
+Studip strives for a uniform, solid design. This means that all pages (with the exception of the messenger, for example) have the same header and the same style instructions. This is done in the lines:
 
 
 
@@ -244,7 +244,7 @@ Studip bemüht sich um ein einheitliches, solides Design. Das bedeutet, dass all
 
 
 
-für die grundlegende HTML-Struktur von `<html>` bis `<body>` einschließlich aller CSS-Dateien und so weiter und
+for the basic HTML structure from `<html>` to `<body>` including all CSS files and so on and
 
 
 
@@ -252,33 +252,33 @@ für die grundlegende HTML-Struktur von `<html>` bis `<body>` einschließlich al
 
 
 
-die den eigentlich sichtbaren Header mit den Icons für die Startseite, News, Homepage, das Studip-Logo usw. darstellt. Der Header enthält auch den Namen der Seite und einen Link zur Hilfeseite, die auch Informationen darüber enthält, was genau eine Hilfeseite darstellen soll. Beide Informationen werden in der header.php über zwei Variablen gesetzt. Aus diesem Grund sollte der Code diese Informationen bereits VORHER enthalten:
+which represents the actually visible header with the icons for the start page, news, homepage, Studip logo etc. The header also contains the name of the page and a link to the help page, which also contains information about what exactly a help page should display. Both pieces of information are set in the header.php via two variables. For this reason, the code should already contain this information BEFOREhand:
 
 
 
 ```php
 $HELP_KEYWORD="Basis.testpage";
-$CURRENT_PAGE = _("Testseite");
+$CURRENT_PAGE = _("Test page");
 ```
 
 
 
-# Textbausteine in Studip
+# Text modules in Studip
 
 
 
-Was wir [später in dieser Hilfe] noch genauer erklären werden (Schnellstart/Internationalisierung), sind die Textbausteine, wie der eben erschienene
+What we will explain in more detail [later in this help] (quick start/internationalization) are the text modules, such as the just appeared
 
 
 
 ```php
-_("Testseite")
+_("test page")
 ```
 
 
 
-Ein Studip-Neuling wird sich unweigerlich fragen, was diese Unterstrich-Funktion sein soll. Normaler Text würde hier sicherlich ausreichen. Das Problem ist gewissermaßen die Möglichkeit, jede Studip-Seite in Englisch oder theoretisch auch in jeder anderen Sprache anzeigen zu lassen. Die entsprechende Übersetzungsarbeit wird nicht im Code geleistet (was den Code noch unübersichtlicher machen würde, als er ohnehin schon ist), sondern in der Deklaration der Funktion Unterstrich "_" oder gettext(). Daher müssen Entwickler sicherstellen, dass jedes Stück Text, das keine HTML-Anweisung ist, durch die Funktion _("...") geleitet wird.
+A Studip newcomer will inevitably wonder what this underscore function is supposed to be. Normal text would certainly suffice here. In a way, the problem is the possibility to display every Studip page in English or theoretically in any other language. The corresponding translation work is not done in the code (which would make the code even more confusing than it already is), but in the declaration of the underscore "_" or gettext() function. Therefore, developers must ensure that any piece of text that is not an HTML statement is passed through the _("...") function.
 
 
 
-Das obige Beispiel ist ein gutes Beispiel dafür, was genau von gettext gesetzt werden muss und was nicht. Die Variable `$CURRENT_PAGE` wird als tatsächlich sichtbarer Text in die Kopfzeile geschrieben und die Variable `$HELP_KEYWORD` wird nur als Link-Parameter verwendet, der nicht sichtbar ist, sondern nur in der Adressleiste des Browsers an die Hilfeseite übergeben wird.
+The example above is a good example of what exactly needs to be set by gettext and what does not. The variable `$CURRENT_PAGE` is written as actual visible text in the header and the variable `$HELP_KEYWORD` is only used as a link parameter, which is not visible but only passed to the help page in the browser address bar.
