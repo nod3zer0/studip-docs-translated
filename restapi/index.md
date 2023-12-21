@@ -49,12 +49,12 @@ Die Anwendung verwendet dann folgende Konfigurationsdaten:
 
 ### Verwendung der REST-API
 
-Die REST-API kann über die HTTP-Methoden `GET`, `POST`, `PUT` und `DELETE` benutzt werden. 
+Die REST-API kann über die HTTP-Methoden `GET`, `POST`, `PUT` und `DELETE` benutzt werden.
 Zum Lesen wird `GET` verwendet. `POST` und `PUT` sind für schreibende Zugriffe gedacht und `DELETE` zum Löschen von Daten im Stud.IP System über die API.
 
-Sollte die Notwendigkeit bestehen, einen Request mit einer anderen als der für den API-Aufruf genutzen Methode durchzuführen, 
-so kann die HTTP-Methode über den Header `X-HTTP-Method-Override` ab Stud.IP 4.3 explizit gesetzt werden. 
-Dies ist zum Beispiel notwendig, wenn man über einen `GET`-Request mehr Daten übermitteln will als die Länge des Requests zulässt. 
+Sollte die Notwendigkeit bestehen, einen Request mit einer anderen als der für den API-Aufruf genutzen Methode durchzuführen,
+so kann die HTTP-Methode über den Header `X-HTTP-Method-Override` ab Stud.IP 4.3 explizit gesetzt werden.
+Dies ist zum Beispiel notwendig, wenn man über einen `GET`-Request mehr Daten übermitteln will als die Länge des Requests zulässt.
 In diesem Fall kann man einen `POST`-Request absetzen und die Methode mittels des HTTP-Headers `X-HTTP-Method-Override` explizit auf `GET` setzen.
 
 ### Anmeldung
@@ -65,7 +65,7 @@ Die meisten REST-Routen sind nur im Zusammenhang mit einem angemeldeten Stud.IP-
 
 Bei der Anmeldung via OAuth wird ein Programm vom Nutzer autorisiert, mit seinem Nutzerkonto über die API auf Daten im Stud.IP-System zuzugreifen.
 
-Damit eine Anwendung via OAuth genutzt werden kann, muss sie zuerst dafür freigeschaltet werden und über einen OAuth `consumer key` 
+Damit eine Anwendung via OAuth genutzt werden kann, muss sie zuerst dafür freigeschaltet werden und über einen OAuth `consumer key`
 und OAuth `consumer secret` verfügen (siehe Abschnitt ["Einrichtung einer Anwendung für OAuth-Authentifizierung"](#einrichtung-einer-anwendung-für-oauth-authentifizierung)).
 
 Nach der Autorisierung durch den Nutzer erhält die Anwendung eigene Zugangsdaten, die dauerhaft gespeichert werden und zur Anmeldung genutzt werden können.
@@ -73,12 +73,12 @@ Nach der Autorisierung durch den Nutzer erhält die Anwendung eigene Zugangsdate
 
 #### Anmeldung mit Nutzername und Passwort
 
-Wird eine Anmeldung via Nutzername und Passwort durchgeführt, müssen für jede API-Anfrage die Zugangsdaten mitgesendet werden. 
-Nutzername und Passwort eines Stud.IP Nutzers werden hierbei via HTTP Basic Authentication an die API gesendet. 
-Da bei der HTTP Basic Authentication weder eine Verschlüsselung der Daten noch ein Hashing des Passwortes stattfindet, 
+Wird eine Anmeldung via Nutzername und Passwort durchgeführt, müssen für jede API-Anfrage die Zugangsdaten mitgesendet werden.
+Nutzername und Passwort eines Stud.IP Nutzers werden hierbei via HTTP Basic Authentication an die API gesendet.
+Da bei der HTTP Basic Authentication weder eine Verschlüsselung der Daten noch ein Hashing des Passwortes stattfindet,
 sollte die API über HTTPS aufgerufen werden, um einen Zugriff auf die Nutzerdaten durch Dritte zu erschweren.
 
-Die Anmeldung via Nutzername und Passwort ist zwar auf Clientseite einfacher zu realisieren, sollte aber nicht verwendet werden, 
+Die Anmeldung via Nutzername und Passwort ist zwar auf Clientseite einfacher zu realisieren, sollte aber nicht verwendet werden,
 da der Nutzername und das Passwort in die Hände von anderen Programmen gelegt werden, was ein Sicherheitsrisiko darstellen kann.
 
 
@@ -154,19 +154,19 @@ Das Unterobjekt "collection" besitzt für jedes Listen-Objekt ein eigenes Attrib
 
 ##### Beispiel zum Aufruf der API
 
-Zuerst wird die Route `/discovery` aufgerufen, um zu erfahren, welche Routen freigeschaltet sind. 
+Zuerst wird die Route `/discovery` aufgerufen, um zu erfahren, welche Routen freigeschaltet sind.
 Diese Route liefert eine List mit den aktivierten Routen zurück, welche von der Anwendung genutzt werden können.
 
-Im Beispiel sollen alle Blubber-Streams des aktuell angemeldeten Nutzers ermittelt werden. Dazu wird zuerst die Route `/user` aufgerufen, 
-um Informationen des aktuellen Nutzers zu finden. 
-In der Antwort ist die user-ID enthalten, welche für die nächste Abfrage relevant ist: Dem Abruf aller Blubber-Streams eines Nutzers. 
+Im Beispiel sollen alle Blubber-Streams des aktuell angemeldeten Nutzers ermittelt werden. Dazu wird zuerst die Route `/user` aufgerufen,
+um Informationen des aktuellen Nutzers zu finden.
+In der Antwort ist die user-ID enthalten, welche für die nächste Abfrage relevant ist: Dem Abruf aller Blubber-Streams eines Nutzers.
 Dazu wird die Route `/user/:user_id/blubber` verwendet, welche alle Blubber-Objekte eines Nutzers zurückliefert.
 
 
 #### Paginierung
 
-Mit den Request-Parametern `offset` und `limit kann die Paginierung der Daten gesteuert werden. Mittels "offset" kann die 
-Startposition innerhalb einer Datensammlung festgelegt werden. 
+Mit den Request-Parametern `offset` und `limit kann die Paginierung der Daten gesteuert werden. Mittels "offset" kann die
+Startposition innerhalb einer Datensammlung festgelegt werden.
 Der Parameter `limit` gibt die maximale Anzahl an Einträgen an, die zurückgegeben werden soll.
 
 #### Statuscodes
@@ -182,8 +182,8 @@ Im Falle, dass die REST-Route einen `PHP Fatal Error` verursacht, wird dieser an
 
 ### Beispiel: Erstellung einer Anwendung für die Stud.IP API (inklusive OAuth)
 
-Auf die Stud.IP API kann je nach Programmiersprache mit relativ wenig Code zugegriffen werden. 
-Hier wird die Erstellung einer kleinen Anwendung für Stud.IP beschrieben, welche sich via OAuth authentifiziert und danach Daten 
+Auf die Stud.IP API kann je nach Programmiersprache mit relativ wenig Code zugegriffen werden.
+Hier wird die Erstellung einer kleinen Anwendung für Stud.IP beschrieben, welche sich via OAuth authentifiziert und danach Daten
 des angemeldeten Nutzers abfragt.
 
 
@@ -345,9 +345,9 @@ Liefert eine Liste mit globalen Ankündigungen (Ankündigungen für das gesamte 
 
 Legt eine neue globale Ankündigung an.
 
-Der Titel der Ankündigung wird über den Parameter `topic` gesetzt, der Inhalt über `body`. 
-Es gibt zwei optionale Parameter, `expire` und `allow_comments`. "expire" gibt die Zeitspanne in Sekunden ab dem aktuellen Datum an, 
-an dem die Ankündigung ablaufen soll. Ist der Parameter `allow_comments` auf 1 gesetzt, so sind Kommentare erlaubt. 
+Der Titel der Ankündigung wird über den Parameter `topic` gesetzt, der Inhalt über `body`.
+Es gibt zwei optionale Parameter, `expire` und `allow_comments`. "expire" gibt die Zeitspanne in Sekunden ab dem aktuellen Datum an,
+an dem die Ankündigung ablaufen soll. Ist der Parameter `allow_comments` auf 1 gesetzt, so sind Kommentare erlaubt.
 Standardmäßig ist er auf 0 gesetzt.
 
 ###### Parameter
@@ -953,7 +953,7 @@ Liefert die Werte bestimmter Konfigurationsvariablen zurück.
 
 Liefert Daten des aktuellen Benutzers zurück.
 
-Diese REST-Route ist vergleichbar mit dem Aufruf `User::findCurrent()` im Stud.IP System. 
+Diese REST-Route ist vergleichbar mit dem Aufruf `User::findCurrent()` im Stud.IP System.
 Sie liefert ein Objekt mit Daten des Nutzers zurück, welcher sich über die API angemeldet hat.
 
 
@@ -2405,7 +2405,7 @@ Neben den Methoden zum Holen aller Blubber eines Nutzers bzw. einer Veranstaltun
 
 ##### `POST` /blubber/postings
 
-Erstellt einen neuen Blubber. Es müssen Parameter angegeben werden, damit ein neuer Blubber erstellt werden kann. Über den Parameter "content" wird der Inhalt des Blubbers gesetzt. Mittels "context_type" wird angegeben, ob der Blubber öffentlich (public), privat (private) oder zu einer Veranstaltung (course) gehört. 
+Erstellt einen neuen Blubber. Es müssen Parameter angegeben werden, damit ein neuer Blubber erstellt werden kann. Über den Parameter "content" wird der Inhalt des Blubbers gesetzt. Mittels "context_type" wird angegeben, ob der Blubber öffentlich (public), privat (private) oder zu einer Veranstaltung (course) gehört.
 
 Im Falle, dass der Blubber zu einer Veranstaltung gehört, muss der Parameter course_id gesetzt sein und dieser muss eine Veranstaltungs-ID enthalten.
 
@@ -3164,7 +3164,7 @@ $data enthält die zu sendenden Daten, $total die Anzahl der Datensätze (gesamt
 
 #### Überschreiben von Kernrouten
 
-Es ist möglich, vorhandene Kernrouten zu überschreiben. Dabei sollte aber in jedem Fall sichergestellt sein, dass die Rückgabe dem eigentlichen Format entspricht. 
+Es ist möglich, vorhandene Kernrouten zu überschreiben. Dabei sollte aber in jedem Fall sichergestellt sein, dass die Rückgabe dem eigentlichen Format entspricht.
 
 #### Beispiel eines REST-API Plugins
 
