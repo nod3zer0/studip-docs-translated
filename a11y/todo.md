@@ -1,139 +1,139 @@
 ---
-title: Barrierefreiheit
-sidebar_label: TODO Abgleichen
+title: Accessibility
+sidebar_label: TODO Matching
 ---
 
-Um Barrieren in Stud.IP zu vermeiden, ist es notwendig, die folgenden Hinweise
-zur Barrierefreiheit zu beachten und bestimmte Konstrukte im HTML-Code,
-sowie in CSS-Regeln zu vermeiden.
+In order to avoid barriers in Stud.IP, it is necessary to observe the following notes
+on accessibility and to avoid certain constructs in the HTML code,
+and in CSS rules.
 
 
-## Farben und Kontraste
+## Colors and contrasts
 
-Es gibt Richtlinien für Kontrastverhältnisse von, Text zu Hintergrund,
-Vordergrundfarbe zum Hintergrund und von Grafiken zum Hintergrund. Damit gemeint
-ist der Helligkeitsunterschied zwischen zwei benachbarten Farben. Dieser reicht
-vom schlechtesten Kontrast von 1:1, bei dem Farben identisch sind bis zum
-bestmöglichen Kontrast von 21:1 (schwarz auf weiß oder umgekehrt).
+There are guidelines for contrast ratios of text to background,
+foreground color to background and graphics to background. This refers to
+is the difference in brightness between two adjacent colors. This ranges
+from the worst contrast of 1:1, where colors are identical, to the best possible contrast of
+best possible contrast of 21:1 (black on white or vice versa).
 
-### Anforderungen zum Kontrastverhältnis
+### Contrast ratio requirements
 
-In den WCAG (Web Content Accessibility Guidelines) finden sich drei
-Punkte (Erfolgskriterien) zum Kontrastverhältnis:
+In the WCAG (Web Content Accessibility Guidelines) there are three
+points (success criteria) on the contrast ratio:
 
-- **WCAG 1.4.3:** Mindestkontrast 4,5:1 bzw. 3:1 (großer Text)
-- **WCAG 1.4.6:** Erhöhter Kontrast 7:1  bzw. 4,5:1 (großer Text)
-- **WCAG 1.4.11:** Nicht-Text-Kontrast
+- **WCAG 1.4.3:** Minimum contrast 4.5:1 or 3:1 (large text)
+- WCAG 1.4.6:** Increased contrast 7:1 or 4.5:1 (large text)
+- WCAG 1.4.11:** Non-text contrast
 
-Diese Anforderungen gelten für Texte und Grafiken, die einen
-**Informationswert** besitzen. Reine **Schmuckbilder und -schriften**
-ohne für den Nutzenden relevante Information sind davon **ausgenommen.**
+These requirements apply to text and graphics that have an
+**informational value**. Pure **decorative images and fonts**
+without information relevant to the user are **excluded**.
 
-### Textkontraste
+### Text contrasts
 
-Generell gilt: Es wird zwischen kleineren und größeren Schriftgrößen
-unterschieden. Ein Mindestkontrastverhältnis von 4,5:1 ist für alle
-Schriftgrößen anzustreben. In Ausnahmefällen reicht ein Wert von 3:1; ideal ist
-jedoch ein Wert von 7:1.
+As a general rule, a distinction is made between smaller and larger font sizes.
+are distinguished. A minimum contrast ratio of 4.5:1 is required for all font sizes.
+font sizes. In exceptional cases, a value of 3:1 is sufficient; however, a value of
+however, a value of 7:1 is ideal.
 
-Für Schriftgrößen unter 24px oder 18pt (18,7px, beziehungsweise 14pt bei fetter
-Schrift) reicht ein Mindestkontrastverhältnis von 4,5:1.
+For font sizes below 24px or 18pt (18.7px, or 14pt for bold font), a minimum contrast ratio of
+font), a minimum contrast ratio of 4.5:1 is sufficient.
 
-Für Schriftgrößen ab 24px oder 18pt reicht ein Mindestkontrastverhältnis
-von 3:1.
+For font sizes from 24px or 18pt, a minimum contrast ratio
+of 3:1 is sufficient.
 
-#### Linkhervorhebungen
+#### Link highlights
 
-Linkhervorhebungen müssen deutlich gekennzeichnet werden, sowohl mit einem
-ausreichend hohen Kontrast von (mindestens) 3:1 sowie durch andere
-Hervorhebungen, beispielsweise Unterstreichungen.
+Link highlights must be clearly marked, both with a sufficiently high contrast of
+sufficiently high contrast of (at least) 3:1 as well as through other
+highlighting, for example underlining.
 
-Wird der Link fokussiert (CSS-Pseudoklassen :hover und :focus) muss der Kontrast
-noch verstärkt werden, beispielsweise durch eine andere Farbe. Auch hier ist auf
-ausreichenden Kontrast zum Hintergrund zu achten. Wenn dieser nicht ausreichend
-ist, muss eine Hervorhebung des fokussierten Links erzeugt werden.
+If the link is focused (CSS pseudo-classes :hover and :focus), the contrast must be
+must be increased, for example by using a different color. Here too
+sufficient contrast to the background. If this is not sufficient
+is not sufficient, the focused link must be highlighted.
 
-### Kontraste von Elementen, die kein Text sind
+### Contrasts of elements that are not text
 
-Dieser Punkt betrifft grafische Elemente, wie zum Beispiel Icons, Diagramme
-oder Symbole.
+This point concerns graphic elements such as icons, diagrams or symbols.
+or symbols.
 
-Wichtige Elemente des User Interface (Buttons, Icons) sowie grafisch
-dargestellte Informationen (Diagramme) dürfen Informationen nicht
-ausschließlich durch Farben vermitteln.
+Important elements of the user interface (buttons, icons) as well as graphically
+graphically displayed information (diagrams) must not convey information
+exclusively through colors.
 
-Aktive Menüpunkte oder Icons, die einen aktiven Zustand kennzeichnen
-(zum Beipsiel Textformatierungswerkzeuge und Checkboxen), müssen von inaktiven
-Elementen klar unterscheidbar sein. Das Mindestkontrastverhältnis für alle
-Zustände beträgt 3:1.
+Active menu items or icons that indicate an active state
+(e.g. text formatting tools and checkboxes) must be clearly distinguishable from inactive
+clearly distinguishable from inactive elements. The minimum contrast ratio for all
+states is 3:1.
 
-Von Farbänderungen ausgenommen sind beispielsweise Flaggen, Hitzekarten, Logos
-und andere grafische Elemente, bei der sich durch eine Farbänderung eine
-Änderung der Bedeutung ergeben würde.
-
-
-### Ausnahmen
-
-Von den Richtlinien ausgenommen sind folgende Elemente:
-
-- rein dekorativer Text, der keinen Informationswert besitzt
-- Logos oder Text in Logos
-- native UI-Komponenten
-- inaktive Elemente wie Schaltflächen, die mit „disabled“ gekennzeichnet sind
-- der browsereigene Fokus-Indikator, sofern er die Kontrastvoraussetzungen
-  erfüllt
+Excluded from color changes are, for example, flags, heat maps, logos
+and other graphic elements for which a color change would result in a change of meaning.
+would result in a change of meaning.
 
 
-## Tastaturbedienbarkeit
+### Exceptions
 
-Tastaturbedienbarkeit bedeutet, dass alle Elemente einer Seite auch per Tastatur
-erreichbar sind und ohne die Bedienung der Maus oder anderer Eingabeelemente
-genutzt werden können.
+The following elements are excluded from the guidelines:
 
-### Steuerung über die Tastatur
-
-Eine sehr grundlegende Steuerung per Tastatur kann über die Tabulator-Taste
-erreicht werden. Damit können durch alle fokussierbaren Elemente navigiert
-werden. Durch die Tastenkombination der Tabulatortaste mit der Umschalttaste
-navigiert man rückwärts durch die fokussierbaren Elemente.
-
-Bei auswählbaren Elemente wie Checkboxen und Radio-Buttons können die
-Pfeiltasten zur Navigation durch die Einträge verwendet werden.
-
-Durch Betätigen der Leertaste lassen sich Checkboxen und Radio-Buttons
-aktivieren oder deaktivieren. Select-Felder lassen sich damit auch öffnen.
-
-Die Eingabetaste dient zum Folgen von Links, Betätigen von Buttons,
-der Auswahl eines Eintrags eines Select-Feldes und zum Absenden von Formularen.
-
-Screenreader bieten zusätzliche Tastenkombinationen und Tastenbelegungen
-an, mit denen schnell zu Textabsätzen, Tabellen, Regionen der Seite oder
-Links navigiert werden kann. Diese sind jedoch je nach verwendetem
-Screenreader unterschiedlich.
+- purely decorative text that has no informational value
+- logos or text in logos
+- native UI components
+- inactive elements such as buttons that are labeled "disabled"
+- the browser's own focus indicator, provided it meets the contrast requirements
+  fulfilled
 
 
-### Elemente tastaturbedienbar machen
+## Keyboard operability
 
-HTML-Elemente, die standardmäßig nicht tastaturbedienbar sind, können über das
-Attribut „tabindex“ tastaturbedienbar gemacht werden. Hier als Beispiel für ein
-LABEL-Element:
+Keyboard operability means that all elements of a page can also be accessed using the keyboard
+keyboard and can be used without using the mouse or other input elements.
+or other input elements.
+
+### Control via the keyboard
+
+Very basic keyboard control can be achieved using the tab key
+can be used. This can be used to navigate through all focusable elements
+can be navigated. The key combination of the tab key with the shift key
+to navigate backwards through the focusable elements.
+
+For selectable elements such as checkboxes and radio buttons, the
+arrow keys can be used to navigate through the entries.
+
+By pressing the space bar, checkboxes and radio buttons can be
+activated or deactivated. It can also be used to open select fields.
+
+The Enter key is used to follow links and press buttons,
+selecting an entry in a select field and submitting forms.
+
+Screen readers offer additional key combinations and key assignments
+to quickly navigate to text paragraphs, tables, regions of the page or links.
+navigate to text paragraphs, tables, regions of the page or links. However, these vary depending on the
+screen reader used.
+
+
+### Making elements keyboard accessible
+
+HTML elements that are not keyboard accessible by default can be made keyboard accessible via the
+attribute "tabindex" can be made keyboard operable. Here is an example of a
+LABEL element:
 
     <label for="some-element" tabindex="0">
     ....
     </label>
 
-Das „tabindex“-Attribut mit dem Wert 0 fügt das LABEL-Element in die Liste mit
-fokussierbaren Elementen ein.
+The "tabindex" attribute with the value 0 inserts the LABEL element into the list with
+focusable elements.
 
-Der Wert für das „tabindex“-Attribut soll auf 0 gesetzt sein, wenn ein
-standardmäßig nicht fokussierbares Element fokussierbar gemacht werden soll.
-Für den umgekerten Fall, bei dem ein fokussierbares Element nicht fokussierbar
-gemacht werden soll, beträgt der Wert des „tabindex“-Attributes -1.
+The value for the "tabindex" attribute should be set to 0 if an element that is
+element that is not focusable by default is to be made focusable.
+In the opposite case, where a focusable element is not to be made focusable
+is to be made focusable, the value of the "tabindex" attribute is -1.
 
-Andere Werte als 0 und -1 sollten für tabindex nicht verwenden werden, weil sie
-in die „natürliche“ Reihenfolge der fokussierbaren Elemente eingreifen und zu
-unerwarteten Sprüngen führen können, wenn zwei Elemente in unterschiedlichen
-Seitenbereichen eine feste Nummer im Tabindex bekommen haben. Beispiel:
+Values other than 0 and -1 should not be used for tabindex because they
+interfere with the "natural" order of the focusable elements and can lead to unexpected
+unexpected jumps if two elements in different page areas have a fixed number in the tabindex.
+page areas have been given a fixed number in the tabindex. Example:
 
     <main>
         <div tabindex="2">E1</div>
@@ -145,18 +145,18 @@ Seitenbereichen eine feste Nummer im Tabindex bekommen haben. Beispiel:
         <button tabindex="3">F2</button>
     </footer>
 
-Die Reihenfolge der Fokussierbaren Elemente wäre hier: F1, E1, F2, E2 statt
-der „natürlichen“ Reihenfolge E1, E2, F1, F2.
+The order of the focusable elements here would be F1, E1, F2, E2 instead of
+the "natural" order E1, E2, F1, F2.
 
 
-### „click“-Event auch beim Drücken der Eingabetaste auslösen
+### Trigger "click" event also when pressing the enter key
 
-Seit der Behebung von [BIESt 106](https://gitlab.studip.de/studip/studip/-/issues/106)
-gibt es ein Stück generellen JavaScript-Code, der bei allen Elementen aktiv
-wird, die der Klasse „enter-accessible“ angehören. Wird solch ein Element
-fokussiert und die Eingabetaste gedrückt, wird das click-Event ausgelöst,
-das normalerweise nur bei Mausklicks ausgelöst wird.
-Das LABEL-Element aus dem Beispiel von oben müsste so erweitert werden:
+Since the fix of [BIESt 106](https://gitlab.studip.de/studip/studip/-/issues/106)
+there is a piece of general JavaScript code that becomes active for all elements
+that belong to the "enter-accessible" class. If such an element
+is focused and the enter key is pressed, the click event is triggered,
+which is normally only triggered by mouse clicks.
+The LABEL element from the example above should be extended as follows
 
     <label for="some-element" class="enter-accessible" tabindex="0">
     ....
@@ -165,121 +165,121 @@ Das LABEL-Element aus dem Beispiel von oben müsste so erweitert werden:
 
 ### Skiplinks
 
-Skiplinks erleichern die Bedienung einer Seite, da man dank ihnen direkt zum
-interessanten Bereich der Seite springen kann und nicht gezwungen ist, alle
-Elemente einer Seite in der üblichen Reihenfolge durchzugehen, bis man das
-richtige Element gefunden hat.
+Skiplinks make it easier to use a page, as they allow you to jump directly to the
+interesting area of the page and you are not forced to scroll through all the
+elements of a page in the usual order until you find the right element.
+until you have found the right element.
 
-In Stud.IP hilft die SkipLink-Klasse bei der Bereitstellung dieser
-Funktionalität. Es lassen sich damit bestimmte Seitenelemente anspringen und
-fokussieren. Wird ein Skiplink hinzugefügt, kann dessen Position ebenfalls
-festgelegt werden.
+In Stud.IP, the SkipLink class helps to provide this functionality.
+functionality. It can be used to jump to and focus on specific page elements.
+focus. If a skip link is added, its position can also be
+can also be defined.
 
-#### Standardmäßig vorhandenen Skiplinks und deren Positionen
+#### Skiplinks available by default and their positions
 
-Folgende Skiplinks sind standardmäßig im Stud.IP aktiviert:
+The following skiplinks are activated by default in Stud.IP:
 
-| Name                      | Element-ID               | Position** |
+| Name | Element ID | Position** |
 | ------------------------- | ------------------------ | ---------- |
-| Profilmenü                | header_avatar_image_link |          1 |
-| Hauptnavigation           | barTopMenu               |          2 |
-| Zweite Navigationsebene*  | tabs                     |         10 |
-| Dritte Navigationsebene** | nav_layer_3              |         20 |
-| Aktionen**                | sidebar_actions          |         21 |
-| Hauptinhalt               | layout_content           |        100 |
-| Fußzeile**                | layout_footer            |        900 |
-| Suche**                   | globalsearch-input       |        910 |
-| Tipps & Hilfe**           | helpbar_icon             |        920 |
+| profile menu | header_avatar_image_link | 1 |
+| Main navigation | barTopMenu | 2 |
+| Second navigation level* | tabs | 10 |
+| Third navigation level** | nav_layer_3 | 20 |
+| actions** | sidebar_actions | 21 |
+| main content | layout_content | 100 |
+| footer** | layout_footer | 900 |
+| search** | globalsearch-input | 910 |
+| tips & help** | helpbar_icon | 920 |
 
-*= bis Stud.IP 5.0: Erste Reiternavigation
+*= until Stud.IP 5.0: First tab navigation
 
-**=erst ab Stud.IP 5.1
+**=only from Stud.IP 5.1
 
-#### Skiplink hinzufügen
+#### Add skiplink
 
-Es können z.B. in Plugins zusätzliche Skiplinks hinzugefügt werden, wenn diese
-auf ein Element verweisen, das schnell erreichbar sein soll. Dazu wird die
-SkipLink-Klasse folgendermaßen aufgerufen:
+Additional skiplinks can be added in plugins, for example, if these
+refer to an element that should be quickly accessible. To do this, the
+SkipLink class is called as follows:
 
-    //Füge den Skiplink mit der Beschriftung „Neuer Skiplink“ hinzu, der auf
-    //das Element mit der ID „id_zum_element“ verweist. Der Skiplink soll an
-    //die Position 200 gesetzt werden und nicht von anderen Codestellen
-    //überschreibbar sein (false):
-    SkipLinks::addIndex('Neuer Skiplink', 'id_zum_element', 200, false);
+    //Add the skiplink labeled "New skiplink" that points to
+    //the element with the ID "id_to_element". The skiplink should be set to
+    //be set to position 200 and not be overwritten by other code positions
+    //be overwritable (false):
+    SkipLinks::addIndex('New skiplink', 'id_to_element', 200, false);
 
-Neue Skiplinks sollten nur sparsam hinzugefügt werden und nicht zwischen den
-Skiplinks des Kernsystems platziert werden, damit das „Muskelgedächtnis“
-für die Standard-Skiplinks bei der Bedienung mit der Tastatur funktionieren
-kann.
-
-
-## Verwendung von ARIA-Rollen und -Landmarks
-
-Nicht alle ARIA-Rollen können sinnvoll in Stud.IP verwendet werden.
-
-### „menu“ und „menuitem“ nicht verwenden
-
-Die Rollen „menu“ und „menuitem“ sollten in Stud.IP nicht verwendet werden.
-Hintergrund ist, dass „menu“ ein Menü beschreibt, das genauso bedienbar sein
-soll, wie das Menü einer Desktop-Anwendung: Pfeiltasten statt Tab oder
-Umschalt-Tab. Bei einem HTML-Element mit der Rolle „menu“ sagen Screenreader
-wie JAWS, das Element sei mit Pfeiltasten bedienbar, was im Stud.IP-Kontext bei
-keinem Menü der Fall ist.
-
-Mehr Informationen zur Problematik der „menu“ und „menuitem“-Rollen
-findet sich hier: https://adrianroselli.com/2017/10/dont-use-aria-menu-roles-for-site-nav.html
+New skiplinks should only be added sparingly and should not be placed between the
+ski links of the core system so that the "muscle memory" for the
+for the standard skiplinks can function when using the keyboard.
+can work.
 
 
-## Testen mit Screenreadern
+## Use of ARIA roles and landmarks
 
-Um zu testen, dass eine Entwicklung auch für Blinde oder Personen mit sehr
-eingeschränkter Sicht nutzbar ist, können Screenreader genutzt werden.
-Mit ihnen wird der Inhalt einer Seite vorgelesen. Über besondere
-Tastenkombinationen können bestimmte Elemente einer Seite direkt angesprungen
-werden, um eine langwierige Navigation über die Tabulator-Taste zu vermeiden.
+Not all ARIA roles can be used sensibly in Stud.IP.
 
-## Welche Screenreader gibt es?
+### Do not use "menu" and "menuitem"
 
-* Für Windows: JAWS oder NVDA
-* Für Mac OS X und iOS: VoiceOver
-* Für GNU/Linux: Orca
-* Für Android: TalkBack in Kombination mit eSpeak
+The roles "menu" and "menuitem" should not be used in Stud.IP.
+The background to this is that "menu" describes a menu that should be just as operable
+the same way as the menu of a desktop application: arrow keys instead of tab or
+Shift-Tab. For an HTML element with the role "menu", screen readers
+like JAWS say that the element can be operated with arrow keys, which is not the case for any menu in the Stud.IP context.
+is not the case for any menu.
 
-## Kombinationen von Screenreadern und Browsern
-
-Nicht alle Screenreader funktionieren mit allen Browsern gut. Folgende
-Kombinationen haben sich bei Tests als „harmonierend“ erwiesen:
-
-* JAWS mit Microsoft Edge
-* Orca mit Chromium
+More information on the problem of the "menu" and "menuitem" roles
+can be found here: https://adrianroselli.com/2017/10/dont-use-aria-menu-roles-for-site-nav.html
 
 
-## Tipps & Tricks
+## Testing with screen readers
 
-### Checkboxen und Radio-Buttons verstecken
+In order to test that a development can also be used by blind people or people with very
+blind people or people with very limited vision, screen readers can be used.
+They read out the content of a page. Using special
+specific elements of a page can be accessed directly using special key
+to avoid tedious navigation using the tab key.
 
-Wenn man Checkboxen bzw. Radio-Buttons verstecken möchte, sollte man das nicht
-mit display:none oder visibility:hidden tun, denn dann sind die dazugehörigen
-Inhalte nicht mehr mit der Tastatur fokussierbar.
+## Which screen readers are available?
 
-Eine browserübergreifende Lösung ist Folgendes:
+* For Windows: JAWS or NVDA
+* For Mac OS X and iOS: VoiceOver
+* For GNU/Linux: Orca
+* For Android: TalkBack in combination with eSpeak
+
+## Combinations of screen readers and browsers
+
+Not all screen readers work well with all browsers. The following
+combinations have proven to "harmonize" in tests:
+
+* JAWS with Microsoft Edge
+* Orca with Chromium
+
+
+## Tips & tricks
+
+### Hide checkboxes and radio buttons
+
+If you want to hide checkboxes or radio buttons, you should not do this
+with display:none or visibility:hidden, because then the associated content can no longer be
+content can no longer be focused with the keyboard.
+
+The following is a cross-browser solution:
 
     position: fixed;
     opacity: 0;
     pointer-events: none;
 
-Es ist auch nicht ratsam, anstelle der regulären Checkboxen eigene Grafiken
-zu verwenden.
+It is also not advisable to use your own graphics instead of the regular checkboxes
+instead of the regular checkboxes.
 
 
 
-## Weiterführende Links
+## Further links
 
-### Farben und Kontraste
+### Colors and contrasts
 
-- Kontrastrechner zur Berechnung und Überprüfung barrierefreier
-  Farbkombinationen: https://www.leserlich.info/werkzeuge/kontrastrechner/
+- Contrast calculator for calculating and checking accessible color combinations
+  color combinations: https://www.leserlich.info/werkzeuge/kontrastrechner/
 
-### ARIA-Rollen
+### ARIA roles
 
 - https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques

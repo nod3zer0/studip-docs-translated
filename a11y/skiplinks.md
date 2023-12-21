@@ -4,64 +4,64 @@ title: Skiplinks
 sidebar_label: Skiplinks
 ---
 
-Skiplinks ermöglichen für Tastaturbenutzer das schnelle Navigieren innerhalb einer Seite. In Stud.IP sind die Skiplinks zunächst verborgen. Erst durch das Drücken der Tab-Taste werden die Skiplinks eingeblendet. Dabei bekommt der erste Link der Liste den Focus, so dass durch weiteres Drücken der Tab-Taste durch die Liste navigiert werden kann. Durch Drücken der Eingabetaste wird das Ziel des Links angesprungen.
+Skiplinks enable keyboard users to navigate quickly within a page. In Stud.IP the skiplinks are initially hidden. The skiplinks are only displayed by pressing the tab key. The first link in the list becomes the focus, so that you can navigate through the list by pressing the Tab key again. Pressing the Enter key jumps to the target of the link.
 
-Diese Klasse ermöglicht das Platzieren von Skiplinks an einer zentralen Stelle im Seitenlayout in Stud.IP. Diese Stelle besteht aus einem DIV-Container, der ziemlich direkt nach dem schließenden header-Tag ausgegeben wird. Grundsätzlich gibt jede Seite in Stud.IP, die ein Layout besitzt oder die `lib/include/html_head.inc.php` einbindet, diesen Container aus.
+This class makes it possible to place skiplinks at a central point in the page layout in Stud.IP. This location consists of a DIV container which is output fairly directly after the closing header tag. Basically, every page in Stud.IP that has a layout or includes `lib/include/html_head.inc.php` outputs this container.
 
-Dieser Container enthält die eigentliche Liste mit Skiplinks als Aufzählungsliste. Jedes Listenelement besteht aus einem Skiplink.
+This container contains the actual list with skiplinks as an enumerated list. Each list element consists of a skip link.
 
-Die Klasse SkipLinks ermöglicht ein hinzufügen von Skiplinks zu dieser Liste zu jedem Zeitpunkt des Renderprozesses. Sie stellt auch Methoden zur Ausgabe der Liste bereit, die aber normalerweise nicht explizit aufgerufen werden müssen. Die Ausgabe erfolgt, wie bereits gesagt, an zentraler Stelle.
+The SkipLinks class makes it possible to add skiplinks to this list at any time during the rendering process. It also provides methods for outputting the list, but these do not normally have to be called explicitly. As already mentioned, the output takes place in a central location.
 
-## Methoden der Klasse
+## Methods of the class
 
-Die Klasse SkipLinks kann nicht instanziiert werden, sie bietet ausschließlich Klassenmethoden, d.h. der Aufruf einer Methode erfolgt über `SkipLinks::`*Name*.
+The SkipLinks class cannot be instantiated, it only offers class methods, i.e. a method is called via `SkipLinks::`*Name*.
 
-* **addIndex($name, $id, $position = NULL, $overwritable = false)**
+**addIndex($name, $id, $position = NULL, $overwritable = false)**
 
-  Registriert einen Link zu einem Ziel auf der ausgegbenen Seite (Anker).
-  
-  `$name` ist der Name des Links, der in der Liste ausgegeben werden soll.
-  
-  `$id` ist die id des HTML-Elements, das durch den Skiplink angesprungen werden soll. Dieses Element muss ein Attribut *id* mit dem hier übergebenen Wert besitzen. Die IDs müssen auf einer Seite natürlich eindeutig sein.
-  
-  `$position` ist die Position des Skiplinks in der Liste. Dieser Parameter ermöglicht also ein Einsortieren der Links an eine bestimmte Position. Wird keine Position angegeben, wird der Link nach der ersten freien Position größer 100 angelegt.
-  
-  Mit `$overwritable` kann festgelegt werden, ob ein Link an einer bestimmten Position von einem später im Renderprozess der Seite hinzugefügten Skiplink überschrieben werden kann.
+  Registers a link to a destination on the output page (anchor).
+
+  `$name` is the name of the link to be output in the list.
+
+  `$id` is the id of the HTML element that is to be jumped to by the skiplink. This element must have an attribute *id* with the value transferred here. The IDs must of course be unique on a page.
+
+  `$position` is the position of the skiplink in the list. This parameter therefore allows the links to be sorted to a specific position. If no position is specified, the link is created after the first free position greater than 100.
+
+  With `$overwritable` you can specify whether a link at a certain position can be overwritten by a skiplink added later in the page rendering process.
 
 * **addLink($name, $url, $position = NULL, $overwritable = false)**
 
-  Registriert einen Link auf eine andere (auch externe) Seite.
-  
-  Statt einer id für einen Anker wird durch den Parameter `$url` eine beliebige URL and die Methode übergeben, auf die der Link verweisen soll. Die anderen Parameter haben die gleiche Funktion wie bei addIndex().
+  Registers a link to another (also external) page.
 
-* **insertContainer()**
+  Instead of an id for an anchor, the parameter `$url` is used to pass any URL to the method to which the link is to refer. The other parameters have the same function as with addIndex().
 
-  Fügt dem Pagelayout einen Container hinzu, der die Liste mit den Skiplinks aufnimmt.
-  
-  Diese Funktion wird normalerweise beim Rendern einer Stud.IP-Seite automatisch an der richtigen Stelle Aufgerufen, so dass ein manuelles Aufrufen nicht erforderlich ist.
+**insertContainer()**
+
+  Adds a container to the page layout that holds the list of ski links.
+
+  This function is normally called automatically at the right place when a Stud.IP page is rendered, so that it is not necessary to call it manually.
 
 * **getHTML()**
 
-  Gibt die registrierten Skiplinks formatiert anhand des Templates `templates/skiplinks` zurück. Das Template rendert die Skiplinks als HTML-Liste.
-  
-  Auch diese Funktion wird beim Rendern einer Stud.IP-Seite automatisch aufgerufen, ein manuelles Aufrufen ist also auch hier nicht erforderlich.
+  Returns the registered skiplinks formatted according to the template `templates/skiplinks`. The template renders the skiplinks as an HTML list.
 
-## Vorbelegte Positionen
+  This function is also called automatically when a Stud.IP page is rendered, so it is not necessary to call it manually.
 
-Eine Seite in Stud.IP verfügt in der Regel immer über einen Satz gleicher Inhaltsbereiche. Für diese werden automatisch Skiplinks mit einer festen Position registriert. Im einzelnen sind das:
+## Pre-assigned positions
 
-* Hauptnavigation im Header (Position 1, nicht überschreibbar)
-* Erste Reiternavigation (Position 10, nicht überschreibbar)
-* Zweite Reiternavigation (Position 20, nicht überschreibbar)
-* Hauptinhalt (Position 100, überschreibbar)
-* Infokasten (Position 10000, nicht überschreibbar)
+A page in Stud.IP usually always has a set of identical content areas. Ski links with a fixed position are automatically registered for these. In detail these are
+
+* Main navigation in the header (position 1, cannot be overwritten)
+* First tab navigation (position 10, cannot be overwritten)
+* Second tab navigation (position 20, cannot be overwritten)
+* Main content (position 100, can be overwritten)
+* Info box (position 10000, cannot be overwritten)
 
 
-Durch diese vorbelegten Positionen ist es möglich, auch zwischen z.B. zweiter Reiternavigation und Hauptinhalt einen Skiplink zu setzen. Es sollte allerdings darauf geachtet werden, dass die Skiplinks zu den Haupnavigationsbereichen immer auf allen Seiten einheitlich am Anfang der Liste stehen, um den Benutzer nicht zu verwirren.
+These pre-assigned positions make it possible to set a skiplink between the second tab navigation and the main content, for example. However, care should be taken to ensure that the ski links to the main navigation areas are always placed uniformly at the top of the list on all pages so as not to confuse the user.
 
-## Beispiele
+## Examples
 
-Einfügen des Skiplinks für die Haupnavigation:
+Inserting the ski link for the main navigation:
 
 ```php
 [...]
@@ -69,7 +69,7 @@ Einfügen des Skiplinks für die Haupnavigation:
 <div id="barTopFont">
 <?= htmlentities($GLOBALS['UNI_NAME_CLEAN']) ?>
 </div>
-<? SkipLinks::addIndex(_("Hauptnavigation"), 'barTopMenu', 1); ?>
+<? SkipLinks::addIndex(_("main navigation"), 'barTopMenu', 1); ?>
 <ul id="barTopMenu" role="navigation">
 <? $accesskey = 0 ?>
 <? foreach (Navigation::getItem('/') as $nav) : ?>
@@ -77,13 +77,13 @@ Einfügen des Skiplinks für die Haupnavigation:
 [...]
 ```
 
-Verwendung von `addLink()` auf der `index_nobody.php`. Die Links der Startseite werden in die Skiplink-Liste übertragen, so dass der Benutzer z.B. direkt die Anmeldeseite aufrufen kann:
+Use of `addLink()` on the `index_nobody.php`. The links of the start page are transferred to the skiplink list so that the user can directly access the login page, for example:
 
 ```php
 [...]
 
 <? foreach (Navigation::getItem('/login') as $key => $nav) : ?>
-    <? if ($nav->isVisible()) : ?>        <? list($name, $title) = explode(' - ', $nav->getTitle()) ?>
+    <? if ($nav->isVisible()) : ?> <? list($name, $title) = explode(' - ', $nav->getTitle()) ?>
         <div style="margin-left:70px; margin-top:10px; padding: 2px;">
             <? if (is_internal_url($url = $nav->getURL())) : ?>
                 <a class="index" href="<?= URLHelper::getLink($url) ?>">
@@ -101,6 +101,6 @@ Verwendung von `addLink()` auf der `index_nobody.php`. Die Links der Startseite 
 [...]
 ```
 
-## Ein wenig Magie
+## A little magic
 
-Die Liste mit Skiplinks wird zunächst an das Ende der Seite angefügt. Per Javascript wird die Liste in den Container am Anfang der Seite verschoben. Um auch Benutzern älterer Screenreader die Navigation und das Erkennen von Inhaltsbereichen zu erleichtern wird per Javascript jedes Ziel eines Skiplinks mit dem Linktext als *h2*-Überschrift versehen. Das verlinkte HTML-Element wird mit dem Attribut `aria-labelledby` versehen, dass auf die Überschrift verweist, so dass der Inhaltsbereich entsprechend benannt ist.
+The list of skiplinks is first added to the end of the page. Javascript moves the list to the container at the top of the page. To make it easier for users of older screen readers to navigate and recognize content areas, each target of a skiplink is provided with the link text as an *h2* heading via Javascript. The linked HTML element is provided with the attribute `aria-labelledby`, which refers to the heading, so that the content area is named accordingly.

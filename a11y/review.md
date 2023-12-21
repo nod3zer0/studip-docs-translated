@@ -1,47 +1,60 @@
 ---
-title: Kriterien für Barrierefreiheits-Reviews
+title: Criteria for accessibility reviews
 slug: /a11y/review
 sidebar_label: Reviews
 ---
 
-Generelle Informationen zur Barrierefreiheit sind auf der Seite [Barrierefreiheit](start) zu finden.
 
-Tests auf Barrierefreiheit sind in mehrere Bestandteile unterteilt:
+General information on accessibility can be found on the [Accessibility](start) page.
 
-1. Prüfung auf ausreichenden Kontrast und Kenntlichmachung bei GUI-Elementen
-2. Prüfung auf Tastaturbedienbarkeit von Seitenelementen
-3. Prüfung auf Nutzbarkeit von Seitenelementen mit Screenreadern
 
-Die Fragestellungen der einzelnen Testschritte werden im folgenden aufgeführt.
+Accessibility tests are divided into several components:
 
-## Prüfung auf ausreichenden Kontrast und Kenntlichmachung bei GUI-Elementen
 
-- Haben Vordergrund- und Hintergrundfarbe einen ausreichenden Kontrast zueinander?
-- Werden Links passend hervorgehoben?
-- Sind die angezeigten Informationen auch ohne Farben erkennbar?
+1. testing for sufficient contrast and labeling of GUI elements
+2. testing the keyboard operability of page elements
+3. testing the usability of page elements with screen readers
 
-##  Prüfung auf Tastaturbedienbarkeit von Seitenelementen
 
-Lässt sich ein neuer oder geänderter Seitenbestandteil per Tastatur bedienen?
+The questions of the individual test steps are listed below.
 
-- Kann ein Link, Button oder anderes interaktives Element per TAB angesprungen werden?
-- Können die üblichen Tasten zur Steuerung von interaktiven Elementen genutzt werden?
-    - Link, Button: Eingabetaste zum Aufrufen/Auflösen
-    - Checkbox, Radio-Button: Leertaste zum Auswählen/Abwählen
-    - Select-Box: Pfeiltasten zum Auswahl eines Eintrags
 
-## Prüfung auf Nutzbarkeit von Seitenelementen mit Screenreadern
+## Test for sufficient contrast and identification of GUI elements
 
-Wird ein neuer oder geänderter Seitenbestandteil korrekt für Screenreader ausgezeichnet?
 
-- Werden Formularelemente und Aktionselemente korrekt vorgelesen?
-    - Buttons als „Schalter“?
-        - Ein Button ändert einen Teil der Seite oder löst eine Aktion auf der aktuellen Seite aus. Beispiele: Aufklappen von Bereichen, Löschen oder Sortieren von Elementen in einer Liste.
-    - Links als „Link“?
-        - Ein Link ruft eine neue Seite im Hauptbereich oder im Dialog auf oder der Link ist ein Anker zu einer Position der aktuellen Seite.
-    - Select-Feld als „Auswahlfeld“?
+- Do the foreground and background colors contrast sufficiently with each other?
+- Are links highlighted appropriately?
+- Is the displayed information recognizable even without colors?
+
+
+## Check for keyboard operability of page elements
+
+
+Can a new or changed page element be operated using the keyboard?
+
+
+- Can a link, button or other interactive element be accessed via TAB?
+- Can the usual keys be used to control interactive elements?
+    - Link, button: Enter key to call up/resolve
+    - Checkbox, radio button: Space bar to select/deselect
+    - Select box: Arrow keys to select an entry
+
+
+## Checking the usability of page elements with screen readers
+
+
+Is a new or changed page element correctly labeled for screen readers?
+
+
+- Are form elements and action elements read out correctly?
+    - Buttons as "switches"?
+        - A button changes a part of the page or triggers an action on the current page. Examples: Expanding areas, deleting or sorting elements in a list.
+    - Links as a "link"?
+        - A link calls up a new page in the main area or in the dialog or the link is an anchor to a position on the current page.
+    - Select field as a "selection field"?
     - ...
-- Sind Icons, die nur Schmuckelemente sind, für Screenreader unsichtbar?
-- Sind Bilder oder Icons, die eine wichtige Information mitliefern, mit einem Alternativtext versehen?
+- Are icons that are only decorative elements invisible to screen readers?
+- Are images or icons that provide important information provided with an alternative text?
 
-Getestet wird hauptsächlich mit der Kombination aus JAWS und Microsoft Edge. Beim Test mit anderen Screenreadern und Browsern sollten deren Marktanteile beachtet werden, damit eine getestete Lösung für möglichst viele Personen funktioniert: https://webaim.org/projects/screenreadersurvey9/
+
+Testing is mainly carried out with the combination of JAWS and Microsoft Edge. When testing with other screen readers and browsers, their market shares should be taken into account so that a tested solution works for as many people as possible: https://webaim.org/projects/screenreadersurvey9/
