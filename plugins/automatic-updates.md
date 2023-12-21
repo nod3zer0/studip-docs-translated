@@ -1,42 +1,42 @@
 ---
-title: Automatische Plugin-Updates
+title: Automatic plugin updates
 slug: /plugins/automatic-updates
-sidebar_label: Automatische Updates
+sidebar_label: Automatic updates
 ---
 
 ### Installation
 
-Ab der Version 3.2 kann man in Stud.IP Plugins direkt von github oder anderen Repositories wie gitlab installieren. Dazu geht man als Root in die Pluginverwaltung und klickt in der Sidebar auf "Plugin von URL installieren".
+As of version 3.2, you can install plugins in Stud.IP directly from github or other repositories such as gitlab. To do this, go to the plugin administration as root and click on "Install plugin from URL" in the sidebar.
 
-Es öffnet sich ein Dialogfenster, in der man die URL eingibt. Diese URL muss zum ZIP-Download auf github führen. Es reicht also nicht, die Grund-URL des Repositories anzugeben wie https://github.com/studip/PluginMarket, sondern man muss da die URL zur ZIP-Datei angeben wie https://github.com/studip/PluginMarket/archive/master.zip . So eine URL sollte es bei den meisten Systemen wie gitlab, github oder bitbucket geben.
+A dialog box opens in which you enter the URL. This URL must lead to the ZIP download on github. It is therefore not enough to enter the basic URL of the repository like https://github.com/studip/PluginMarket, but you have to enter the URL to the ZIP file like https://github.com/studip/PluginMarket/archive/master.zip . Most systems such as gitlab, github or bitbucket should have such a URL.
 
-Jetzt kann man direkt auf Speichern klicken und das Plugin wird installiert.
+Now you can click on Save and the plugin will be installed.
 
-### Einrichtung
+### Setup
 
-Was einmal klappt, kann auch öfter klappen. Warum also sollte Stud.IP das aus dem Web installierte Plugin nicht öfter automatisch installieren und so immer auf dem neusten Stand bleiben? Genau, es spricht kaum etwas dagegen. Stud.IP wird das aber erst tun, wenn github sich bei Stud.IP meldet und Bescheid gibt, dass ein Update des Plugins vorliegt.
+What works once can also work more often. So why shouldn't Stud.IP automatically install the plugin installed from the web more often and thus always stay up to date? Exactly, there is hardly anything against it. However, Stud.IP will only do this when github contacts Stud.IP and informs them that the plugin has been updated.
 
-Der Vorgang wird dann so aussehen:
-* Eine Änderung des Plugins wird ins Repository eingecheckt.
-* Das Repository meldet sich per Webhook bei Stud.IP mit der Nachricht "bei Plugin xyz hat sich was geändert".
-* Stud.IP überprüft diesen Webhook-Request, denn da könnte ja jeder kommen. Nur wenn auch wirklich das richtige Repository anruft, wird Stud.IP das auch ernst nehmen.
-* Stud.IP wird dann von sich aus die eingerichtete URL des ZIP-Downloads wieder aufrufen und das veränderte Plugin installieren.
+The process will then look like this:
+* A change to the plugin is checked into the repository.
+* The repository reports to Stud.IP via webhook with the message "something has changed with plugin xyz".
+* Stud.IP checks this webhook request, because anyone could come here. Stud.IP will only take it seriously if the correct repository is really calling.
+* Stud.IP will then automatically call up the URL of the ZIP download and install the modified plugin.
 
-Damit das funktioniert, muss einerseits Stud.IP als auch das Repository speziell eingerichtet werden.
+For this to work, both Stud.IP and the repository must be specially set up.
 
-Stud.IP braucht die URL des ZIP-Downloads und die Angabe, ob der Webhook über einen Security-Token abgesichert werden soll. Die Absicherung per Security-Token funktioniert zur Zeit nur mit github.
+Stud.IP needs the URL of the ZIP download and information on whether the webhook should be secured via a security token. The security token currently only works with github.
 
-Das Repository muss die genaue URL kennen, die vom Webhook aufgerufen werden soll. So eine URL sieht in etwa so aus: 
+The repository must know the exact URL to be called by the webhook. A URL looks something like this:
 http://www.superstudip.de/studip/dispatch.php/plugins/trigger_automaticupdate/OnlineList?s=8d1e6b52927a7f5f567f7aedeb8b17b0
-Diese URL beinhaltet schon einen Sicherheitstoken; nur wer den Token, also die exakte URL kennt, kann überhaupt den Request aufrufen. Dazu muss gesagt werden, dass Tokens in URLs nicht besonders sicher sind. Aber sie sind besser als nichts. Und bei gitlab oder anderen Systemen ist dies zur Zeit die einzige mögliche Absicherung.
-Falls gewünscht, kann in github der Webhook noch über einen Security-Token abgesichert werden. Damit ist NICHT der Token aus der URL gemeint, sondern der separate Token, der in Stud.IP unter der URL angezeigt wird.
+This URL already contains a security token; only those who know the token, i.e. the exact URL, can call up the request at all. It must be said that tokens in URLs are not particularly secure. But they are better than nothing. And with gitlab or other systems, this is currently the only possible safeguard.
+If desired, the webhook in github can still be secured using a security token. This does NOT mean the token from the URL, but the separate token that is displayed in Stud.IP under the URL.
 
-Sind Stud.IP und das Repository gleichermaßen eingerichtet, so ist eigentlich alles getan.
+If Stud.IP and the repository are set up in the same way, everything is actually done.
 
-### Wichtig
+### Important
 
-Wir empfehlen nicht, diese automatischen Updates für den Produktivbetrieb einzusetzen. Aber für Testsysteme können sie Gold wert sein. Besonders bei umfangreichen und komplizierten Plugins will man vielleicht immer die ganzen Plugins nach jeder Änderung über die Oberfläche von Stud.IP hochladen. Man bedenke, dazu muss man als Root angemeldet sein, zur Pluginverwaltung gehen, in die Sidebar klicken, runter scrollen, den Dateiupload anklicken, feststellen, dass man vergessen hat, das Plugin zu zippen, dann zippt man das Plugin, wählt nochmal die Datei aus. Und dann dauert es je nach Größe des Plugins noch quälend lange, bis das Plugin hochgeladen worden ist. Und mal ehrlich: wer hat in dem ganzen Prozedere noch nie ein fertig gezipptes Plugin mit ins Repository hochgeladen?
+We do not recommend using these automatic updates for productive operation. But they can be worth their weight in gold for test systems. Especially with extensive and complicated plugins, you may always want to upload all the plugins via the Stud.IP interface after every change. Remember, you have to be logged in as root, go to the plugin administration, click in the sidebar, scroll down, click on the file upload, realize that you forgot to zip the plugin, then zip the plugin, select the file again. And then, depending on the size of the plugin, it takes an agonizingly long time for the plugin to be uploaded. And let's be honest: who has never uploaded a fully zipped plugin to the repository during the whole process?
 
-Automatische Updates vereinfachen also das Testen mit Testservern ungemein. Man muss nur noch den Fortschritt des Plugins ins Repository pushen, was man eh machen muss, und die angeschlossenen Testsysteme aktualisieren sich alle gleichzeitig. Wenn man mehrere Testsysteme hat (bei der Entwicklung vom CampusConnect-Plugin ist das zum Beispiel absolut notwendig), verhindert das automatische Update so auch zielsicher, dass man irgendwo ein Update vergessen hat und dann Fehlern nachjagd, die im Code gar nicht existieren.
+Automatic updates therefore simplify testing with test servers immensely. You only have to push the progress of the plugin into the repository, which you have to do anyway, and the connected test systems all update themselves at the same time. If you have several test systems (this is absolutely necessary when developing the CampusConnect plugin, for example), the automatic update also prevents you from forgetting an update somewhere and then chasing errors that don't even exist in the code.
 
-Ebenso hat das automatische Update den Vorteil, dass der Entwickler des Plugins nicht notwendigerweise Root-Zugriff auf das Testsystem haben muss, um Updates einspielen zu können.
+The automatic update also has the advantage that the developer of the plugin does not necessarily have to have root access to the test system in order to be able to install updates.

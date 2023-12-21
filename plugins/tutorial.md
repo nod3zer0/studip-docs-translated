@@ -4,15 +4,15 @@ sidebar_label: Tutorial
 ---
 
 
-In diesem Tutorial wird die Erstellung von Plugins vorgestellt. Da es in Stud.IP verschiedene Arten von Plugins gibt, werden diese anhand verschiedener Beispiele verdeutlicht.
+This tutorial introduces the creation of plugins. As there are different types of plugins in Stud.IP, these are illustrated using various examples.
 
-### Das Grundgerüst bauen
+### Building the basic framework
 
-Ein Stud.IP-Plugin besteht immer aus mindestens zwei Dateien: Der Plugin-Klasse mit dem PHP-Code und einer Textdatei mit Informationen über das Plugin (Name, Version, Autor usw.). Im Folgenden wird das Grundgerüst eines Plugins erstellt, welches nichts weiter macht als sich im System zu registrieren.
+A Stud.IP plugin always consists of at least two files: The plugin class with the PHP code and a text file with information about the plugin (name, version, author etc.). In the following, the basic structure of a plugin is created, which does nothing more than register in the system.
 
-#### Plugin-Klasse
+#### Plugin class
 
-Die Plugin-Klasse kann im einfachsten Fall so aussehen:
+The plugin class can look like this in the simplest case:
 
 **MyPlugin.php**
 
@@ -24,76 +24,76 @@ class MyPlugin extends StudipPlugin implements SystemPlugin
 }
 ```
 
-Wichtig ist hierbei:
-* Die Datei ist nach der Klasse ("`MyPlugin`") benannt und hat die Endung "`.class.php`".
-* Die eigene Plugin-Klasse muss von der Klasse `StudIPPlugin` abgeleitet werden.
-* Die Plugin-Klasse muss mindestens eines der Interfaces implementieren, die festlegen, an welchen Stellen in Stud.IP es aktiv werden kann. Im obigen Beispiel ist es das Interface `SystemPlugin`, womit das Plugin auf jeder Seite aktiv sein soll (mehr dazu später).
+Important here:
+* The file is named after the class ("`MyPlugin`") and has the extension "`.class.php`".
+* Your own plugin class must be derived from the class `StudIPPlugin`.
+* The plugin class must implement at least one of the interfaces that determine where it can become active in Stud.IP. In the example above, it is the interface `SystemPlugin`, with which the plugin should be active on every page (more on this later).
 
-Das Plugin selbst tut nichts und tritt damit außerhalb der Plugin-Verwaltung nicht in Erscheinung.
+The plugin itself does nothing and therefore does not appear outside the plugin administration.
 
 #### plugin.manifest
 
-Die Datei mit den Informationen über das Plugin wird von Stud.IP (unter anderem) verwendet, um dem Administrator Informationen zum Plugin anzeigen zu können. Sie hat immer den Namen "[`plugin.manifest`](PluginSchnittstelle#toc4)" und sollte mindestens folgende Einträge enthalten:
+The file with the information about the plugin is used by Stud.IP (among other things) to display information about the plugin to the administrator. It always has the name "[`plugin.manifest`](PluginSchnittstelle#toc4)" and should contain at least the following entries:
 
-* *pluginname*: Der Name für das Plugin
-* *pluginclassname*: Der Name der Plugin-Klasse (in PHP). Falls die Endung .class.php verwendet wird, kann das .class hier weggelassen werden.
-* *origin*: Der Name oder die Mail-Adresse des Autors oder dessen Institution oder Gruppe
-* *version*: Die Versionsnummer des Plugins
-* *description*: Eine kurze Beschreibung, was das Plugin macht
-* *studipMinVersion*: Die minimal erforderliche Stud.IP Version
+* *pluginname*: The name for the plugin
+* *pluginclassname*: The name of the plugin class (in PHP). If the extension .class.php is used, the .class can be omitted here.
+* *origin*: The name or mail address of the author or their institution or group
+* *version*: The version number of the plugin
+* *description*: A short description of what the plugin does
+* *studipMinVersion*: The minimum required Stud.IP version
 
-Eine plugin.manifest Datei kann beispielsweise folgenden Inhalt haben:
+A plugin.manifest file can have the following content, for example:
 
 ```ini
 pluginname=MyPlugin
 pluginclassname=MyPlugin
 origin=elmar@example.com
 version=1.0
-description=Ein völlig nutzloses Beispiel-Plugin
+description=A completely useless example plugin
 studipMinVersion=2.0
 ```
 
 
-#### Plugin installieren
+#### Install plugin
 
-Aus den Plugin-Dateien muss nun ein Installationsarchiv erstellt werden. Dazu packt man alle Plugin-Dateien in ein ZIP-Archiv ein. Hierbei ist es wichtig, den Ordner, in dem das Plugin liegt, nicht mit einzupacken, da sonst die Installation fehlschlägt. Im Wurzelverzeichnis des Archivs sollten also direkt die Dateien plugin.manifest und die PHP-Datei mit der Plugin-Klasse sichtbar sein:
+An installation archive must now be created from the plugin files. To do this, pack all the plugin files into a ZIP archive. It is important not to include the folder in which the plugin is located, otherwise the installation will fail. The files plugin.manifest and the PHP file with the plugin class should therefore be directly visible in the root directory of the archive:
 
 ```text
-Length      Date    Time    Name
----------  ---------- -----   ----
-       71  2011-04-20 11:26   MyPlugin.php
-      152  2011-04-20 11:26   plugin.manifest
----------                     -------
-      223                     2 files
+Length Date Time Name
+--------- ---------- ----- ----
+       71 2011-04-20 11:26 MyPlugin.php
+      152 2011-04-20 11:26 plugin.manifest
+--------- -------
+      223 2 files
 ```
 
-Anschließend kann man das Plugin über die [Plugin-Verwaltung](http://docs.studip.de/admin/Admins/PluginVerwaltung) in Stud.IP installieren. Am einfachsten geht dies, indem man das ZIP-Archiv einfach in den Drag&Drop-Bereich auf der linken Seite der Plugin-Verwaltung zieht.
+You can then install the plugin in Stud.IP via [Plugin management](http://docs.studip.de/admin/Admins/PluginVerwaltung). The easiest way to do this is to simply drag the ZIP archive into the drag & drop area on the left-hand side of the plugin administration.
 
 Attach:plugin-install.png
 
-Nach der Installation muss das Plugin auf der Seite der Plugin-Verwaltung noch aktiviert werden, damit es auch tatsächlich geladen wird. Außerdem kann man in der Spalte "Aktionen" die Rechteverwaltung für das Plugin vornehmen. In der Voreinstellung kann ein Plugin von allen angemeldeten Nutzern im System verwendet werden.
+After installation, the plugin must be activated on the plugin management page so that it is actually loaded. You can also manage the rights for the plugin in the "Actions" column. By default, a plugin can be used by all logged-in users in the system.
 
-#### Das Plugin ausbauen
+#### Expanding the plugin
 
-Nach der Installation des Plugins liegt dieses im Ordner `/public/plugins_packages/<origin>/<Plugin-Name>/`. "origin" ist hierbei der Wert des Konfigurationsparameters "origin" aus der plugin.manifest Datei. Während der Entwicklung des Plugins kann es einfacher sein, wenn man die installierte Version des Plugins unterhalb des Stud.IP Verzeichnisses weiter bearbeitet, da man sich dann die Neuinstallation des Plugins nach jeder Änderung sparen kann.
+After installing the plugin, it is located in the folder `/public/plugins_packages/<origin>/<plugin name>/`. "origin" is the value of the configuration parameter "origin" from the plugin.manifest file. During the development of the plugin, it can be easier if you continue to edit the installed version of the plugin below the Stud.IP directory, as you can then save reinstalling the plugin after each change.
 
-Je nachdem, welche Art von Plugin man programmieren möchte, muss das Plugin von unterschiedlichen Klassen abgeleitet werden und es müssen unterschiedliche Methoden implementiert werden.
+Depending on the type of plugin you want to program, the plugin must be derived from different classes and different methods must be implemented.
 
-### Vorstellung verschiedener Plugin-Typen
+### Presentation of different plugin types
 
 #### SystemPlugin
 
-Angenommen, wir wollen, dass hinter dem Namen der Stud.IP-Installation in der Kopfzeile immer die Anmeldekennung des gerade angemeldeten Nutzers angezeigt wird. Wie funktioniert so etwas?
+Suppose we want the login ID of the user currently logged in to be displayed after the name of the Stud.IP installation in the header. How does this work?
 
-* Wir müssen dafür sorgen, dass das Plugin auf jeder Seite aktiv ist.
-* Wir müssen irgendwie die Kennung des angemeldeten Nutzers ermitteln.
-* Wir müssen diesen Text in die Kopfzeile einbauen können.
+* We have to make sure that the plugin is active on every page.
+* We must somehow determine the ID of the logged-in user.
+* We need to be able to include this text in the header.
 
-Der Punkt 1 ist zum Glück bereits erledigt: Da unser Plugin das Interface `SystemPlugin` implementiert, ist es automatisch auf jeder Seite aktiv.
+Fortunately, point 1 is already done: Since our plugin implements the 'SystemPlugin' interface, it is automatically active on every page.
 
-Punkt 2 führt uns direkt in die Untiefen der Stud.IP-API. Zum Glück gibt es hier aber eine sehr einfach zu bedienende Funktion, die uns die aktuelle Nutzerkennung liefert: `get_username()`.
+Point 2 leads us directly into the depths of the Stud.IP API. Fortunately, there is a very easy-to-use function that provides us with the current user ID: `get_username()`.
 
-Für Punkt 3 kann man sich etwas CSS bedienen, um Inhalte auf einer Seite zu verändern:
+For point 3, you can use some CSS to change content on a page:
 
 ```css
 #id:after {
@@ -101,9 +101,9 @@ Für Punkt 3 kann man sich etwas CSS bedienen, um Inhalte auf einer Seite zu ver
 }
 ```
 
-Dieses Stück CSS sorgt dafür, daß hinter dem Element mit der ID "`id`" im HTML der Text "some text" angezeigt wird. In unserem Fall hat das gesuchte Element in der Kopfzeile die ID "barTopFont". Soweit, so gut. Aber wie bekommen wir das CSS auf die Stud.IP-Seite?
+This piece of CSS ensures that the text "some text" is displayed after the element with the ID "`id`" in the HTML. In our case, the element we are looking for in the header has the ID "barTopFont". So far, so good. But how do we get the CSS onto the Stud.IP page?
 
-Dazu gibt es eine API in Stud.IP, die es Plugins ermöglicht, Eingriffe in den Seitenaufbau vorzunehmen: [PageLayout](PageLayout). Unter anderem kann man damit auch eigenes CSS in die erzeugte Seite einbauen. Zusammen sieht das ganze dann etwa so aus:
+There is an API in Stud.IP that allows plugins to intervene in the page layout: [PageLayout](PageLayout). Among other things, you can use it to add your own CSS to the generated page. Together it looks something like this:
 
 ```php
 class MyPlugin extends StudipPlugin implements SystemPlugin
@@ -119,21 +119,21 @@ class MyPlugin extends StudipPlugin implements SystemPlugin
 }
 ```
 
-Da ein System-Plugin keinen speziellen Einsprungpunkt für Stud.IP hat, wird der Code direkt in den Konstruktor integriert. Natürlich sollte man hier nicht vergessen, den Konstruktor der Basisklasse aufzurufen... Das fertige Plugin sieht dann so aus:
+As a system plugin does not have a special entry point for Stud.IP, the code is integrated directly into the constructor. Of course, you should not forget to call the constructor of the base class here... The finished plugin then looks like this:
 
 Attach:myplugin.png
 
-##### Quellcode des Plugins
+##### Source code of the plugin
 
 Attach:MyPlugin.zip
 
-#### PortalPlugin  Ein eigenes Plugin auf der Startseite
+#### PortalPlugin Your own plugin on the start page
 
-Kommen wir nun zu einem weiteren Beispiel, das zeigt, wie ein Plugin eigene Inhalte auf der Startseite anzeigen kann. Als Beispiel wollen wir bei jedem Aufruf der Seite ein zufälliges Zitat aus einer bekannten Fernsehserie einblenden. Und das sowohl für angemeldete als auch für nicht angemeldetet Nutzer.
+Let's now move on to another example that shows how a plugin can display its own content on the start page. As an example, we want to display a random quote from a well-known TV series each time the page is called up. And this for both logged-in and non-logged-in users.
 
-##### Das Interface `PortalPlugin`
+##### The `PortalPlugin` interface
 
-Das Plugin-Interface PortalPlugin bietet jedem Plugin die Möglichkeit, einen eigenen Kasten auf der Startseite zu platzieren, ganz analog zu den vorhandenen Kästen für die Termine, systemweiten Ankündigungen oder Umfragen. Dieses sieht folgendermaßen aus:
+The PortalPlugin plugin interface offers each plugin the option of placing its own box on the start page, similar to the existing boxes for events, system-wide announcements or surveys. This looks as follows:
 
 ```php
 interface PortalPlugin
@@ -146,24 +146,24 @@ interface PortalPlugin
      * The template will automatically get a standard layout, which
      * can be configured via attributes set on the template:
      *
-     *  title        title to display, defaults to plugin name
-     *  icon_url     icon for this plugin (if any)
-     *  admin_url    admin link for this plugin (if any)
-     *  admin_title  title for admin link (default: Administration)
+     * title title to display, defaults to plugin name
+     * icon_url icon for this plugin (if any)
+     * admin_url admin link for this plugin (if any)
+     * admin_title title for admin link (default: Administration)
      *
-     * @return object   template object to render or NULL
+     * @return object template object to render or NULL
      */
     function getPortalTemplate();
 }
 ```
 
-Offensichtlich benötigt man ein *Template*-Objekt für die Ausgabe, und man kann noch gewisse Eigenschaften des erzeugten Kastens vorgeben (Icon, Titel usw.).
+Obviously you need a *Template* object for the output, and you can still specify certain properties of the generated box (icon, title, etc.).
 
-##### Wichtig: Flexi-Templates
+##### Important: Flexi-Templates
 
-Text- oder HTML-Ausgabe sollte in Stud.IP immer über *Templates* passieren, das sind (in PHP geschriebene) Vorlagen für die Ausgabe, die mit Platzhaltern bestückt sein können, um Werte aus dem Programmcode an bestimmte Stellen in der Ausgabe zu bringen. Eine komplette Beschreibung mit vielen Beispielen befindet sich hier im Wiki unter dem Punkt [FlexiTemplates](FlexiTemplates).
+Text or HTML output in Stud.IP should always be done via *Templates*, these are templates (written in PHP) for the output, which can be equipped with placeholders to bring values from the program code to certain places in the output. A complete description with many examples can be found here in the wiki under [FlexiTemplates](FlexiTemplates).
 
-In unserem Fall brauchen wir nur einen kleinen Bereich, in dem ein vorformatierter Text angezeigt werden kann. Das Template dafür steht in einer eigenen PHP-Datei und kann etwa so aussehen:
+In our case, we only need a small area in which a pre-formatted text can be displayed. The template for this is in a separate PHP file and can look something like this:
 
 **templates/fortune.php**
 
@@ -173,13 +173,13 @@ In unserem Fall brauchen wir nur einen kleinen Bereich, in dem ein vorformatiert
 </pre>
 ```
 
-Das "`<pre>`" sollte nicht überraschend sein, aber wieso steht da *htmlReady()*? Nun, damit spezielle Zeichen in dem auszugebenden Text nicht versehentlich vom Browser als HTML-Markup ausgewertet werden (man stelle sich vor, die Variable $fortune enthielte selbst Dinge wie "`<b>`"), müssen diese vor der Ausgabe entsprechend kodiert werden. Aus "`<b>`" würde dann "&lt;b&gt;", was vom Browser wieder als "`<b>`" angezeigt würde.
+The "`<pre>`" shouldn't be surprising, but why does it say *htmlReady()*? Well, so that special characters in the text to be output are not inadvertently evaluated by the browser as HTML markup (imagine the $fortune variable itself contained things like "`<b>`"), they must be encoded accordingly before output. "`<b>`" would then become "&lt;b&gt;", which would be displayed by the browser as "`<b>`" again.
 
-Daher ist es wichtig, bei jeder Ausgabe eines Werts in einem Template an die Verwendung von *htmlReady()* (oder *formatReady()*, wenn man mit der Stud.IP-Formatierung arbeitet) zu denken. Die einzige Ausnahme sind Werte, die bereits fertige HTML-Fragmente für die Anzeige enthalten. Ein Beispiel dafür sehen wir später.
+It is therefore important to remember to use *htmlReady()* (or *formatReady()* if you are working with Stud.IP formatting) every time you output a value in a template. The only exceptions are values that already contain ready-made HTML fragments for display. We will see an example of this later.
 
-##### Die Plugin-Klasse
+##### The plugin class
 
-Das Plugin wird wie im ersten Beispiel von der Klasse `StudipPlugin` abgeleitet, implementiert jetzt aber - wie oben besprochen - das Interface `PortalPlugin`. Zusätzlich benötigen wir nun noch eine eigene *TemplateFactoy* für unser Plugin, damit das Template aus dem Ordner des Plugins geladen werden kann. Es ist üblich, alle Templates für ein Plugin in einem Ordner mit dem Namen "`templatess`" abzulegen. Der Code zum Laden des Templates sieht dann so aus:
+As in the first example, the plugin is derived from the class `StudipPlugin`, but now implements the interface `PortalPlugin`, as discussed above. In addition, we now need a separate *TemplateFactoy* for our plugin so that the template can be loaded from the plugin's folder. It is usual to store all templates for a plugin in a folder called "`templatess`". The code for loading the template then looks like this:
 
 ```php
 $template_path = $this->getPluginPath().'/templates';
@@ -187,16 +187,16 @@ $template_factory = new Flexi_TemplateFactory($template_path);
 $template = $template_factory->open('fortune');
 ```
 
-Die Methode *getPluginPath()* eines Plugins liefert einen Dateisystempfad zum Installationsordner des Plugins, relativ zu diesem Ort kann man dann z.B. Template-Dateien laden. Dieser Pfad ist aber nur serverseitig gültig, er kann nicht zum erzeugen von URLs verwendet werden.
+The *getPluginPath()* method of a plugin returns a file system path to the installation folder of the plugin; template files, for example, can then be loaded relative to this location. However, this path is only valid on the server side and cannot be used to generate URLs.
 
-Schließlich soll unser Plugin noch ein Icon und einen Titel für die Anzeige bekommen. Dazu muß man die entsprechenden Attribute "icon_url" und "title" in dem Template setzen. Als Titel setzen wir einfach den Namen des Plugins ein. Für die URL des Icons benötigen wir eine URL zu einer Ressource im Plugin, dazu gibt es - analog zu *getPluginPath()* für serverseitge Pfade - auch eine Methode *getPluginURL()*, die eine für den Nutzer gültige URL auf den Installationsort des Plugins liefert. Diese URL kann dann als Basis für die Icon-URL verwendet werden:
+Finally, our plugin should have an icon and a title for the display. To do this, the corresponding attributes "icon_url" and "title" must be set in the template. We simply enter the name of the plugin as the title. For the URL of the icon, we need a URL to a resource in the plugin. There is also a method *getPluginURL()* - analogous to *getPluginPath()* for server-side paths - which returns a URL to the installation location of the plugin that is valid for the user. This URL can then be used as the basis for the icon URL:
 
 ```php
 $template->title = $this->getPluginName();
 $template->icon_url = $this->getPluginURL() . '/images/icon.gif';
 ```
 
-Schließlich muß noch die Template-Varianble *$fortune* aus der Template-Datei mit einem Zitattext gefüllt werden. Eine einfache Möglichkeit ist, einfach das (hoffentlich auf dem Rechner installierte) *fortune* Kommando aufzurufen, das gleiche eine entsprechende Zitat-Datenbank mitbringt. Die komplette Plugin-Klasse sieht dann am Ende so aus:
+Finally, the template variable *$fortune* from the template file must be filled with a quote text. A simple possibility is to simply call the *fortune* command (hopefully installed on the computer), which brings along a corresponding quotation database. The complete plugin class then looks like this at the end:
 
 ```php
 class Fortune extends StudipPlugin implements PortalPlugin
@@ -216,7 +216,7 @@ class Fortune extends StudipPlugin implements PortalPlugin
 }
 ```
 
-Im template-Verzeichnis des Plugins muss nun folgende Template Datei namens fortune.php angelegt werden:
+The following template file named fortune.php must now be created in the template directory of the plugin:
 
 ```php
 <div id="fortune">
@@ -224,18 +224,18 @@ Im template-Verzeichnis des Plugins muss nun folgende Template Datei namens fort
 </div>
 ```
 
-#### HomepagePlugin - Ein Plugin auf der Profilseite
+#### HomepagePlugin - A plugin on the profile page
 
-Im nächsten Beispiel geht es nun um ein Plugin auf der Profilseite. Als Aufgabe nehmen wir uns vor, eine einfache Version der "Eigenen Kategorien" des Profils in einem Plugin nachzubauen: Es soll in einem Kasten im Nutzerprofil ein (ggf. formatierter) Text angezeigt werden, der dort vom Nutzer selbst auch bearbeitet werden kann. Im Gegensatz zu den "Eigenen Kategorien" gibt es aber immer nur einen Kasten und es können weder Titel noch die Sichtbarkeit eingestellt werden. Dazu müssen wir uns mit folgenden neuen Fragen beschäftigen:
+The next example is about a plugin on the profile page. Our task is to recreate a simple version of the profile's "My Categories" in a plugin: A (possibly formatted) text is to be displayed in a box in the user profile, which can also be edited there by the user. In contrast to the "Own categories", however, there is only ever one box and neither the title nor the visibility can be set. We have to deal with the following new questions:
 
-# Anzeige von Inhalten auf der Profilseite
-# Umgang mit der Stud.IP-Formatierung
-# Ausgabe und Auswertung von Formularen (Nutzerinteraktion)
-# Speichern von Nutzereingaben in der Datenbank
+# Displaying content on the profile page
+# Dealing with Stud.IP formatting
+# Output and evaluation of forms (user interaction)
+# Saving user entries in the database
 
-##### Das Interface `HomepagePlugin`
+##### The `HomepagePlugin` interface
 
-Ganz analog zur Anzeige von eigenen Inhalten auf der Startseite gibt es auch ein entsprechendes Interface zur Anzeige von Inhalten auf der Profilseite: `HomepagePlugin`. Es bietet die gleichen Möglichkeiten und wird auch exakt genauso benutzt:
+Just like displaying your own content on the start page, there is also a corresponding interface for displaying content on the profile page: `HomepagePlugin`. It offers the same options and is used in exactly the same way:
 
 ```php
 interface HomepagePlugin
@@ -248,22 +248,22 @@ interface HomepagePlugin
      * The template will automatically get a standard layout, which
      * can be configured via attributes set on the template:
      *
-     *  title        title to display, defaults to plugin name
-     *  icon_url     icon for this plugin (if any)
-     *  admin_url    admin link for this plugin (if any)
-     *  admin_title  title for admin link (default: Administration)
+     * title title to display, defaults to plugin name
+     * icon_url icon for this plugin (if any)
+     * admin_url admin link for this plugin (if any)
+     * admin_title title for admin link (default: Administration)
      *
-     * @return object   template object to render or NULL
+     * @return object template object to render or NULL
      */
     function getHomepageTemplate($user_id);
 }
 ```
 
-Auch hier benötigt man natürlich wieder ein Template-Objekt und entsprechende Template-Dateien für die Ausgabe.
+Here too, of course, you need a template object and corresponding template files for the output.
 
-#### Ausgabe von formatiertem Text
+#### Output of formatted text
 
-Das Template für die Anzeige kann wieder sehr einfach gehalten werden:
+The template for the display can again be kept very simple:
 
 Attach:editbox.png
 
@@ -275,9 +275,9 @@ Attach:editbox.png
 </div>
 ```
 
-Anders als bei dem vorhergehenden Beispiel wird hier die Funktion *formatReady()* aufgerufen, um den auszugebenden Text für die Anzeige aufzubereiten. Während *htmlReady()* sich nur um die Kodierung von Sonderzeichen kümmert, wertet *formatReady()* zusätzlich auch die Stud.IP-Formatierungssyntax aus, d.h. bestimmte [Markierungen im Text](http://docs.studip.de/help/2.0/de/Basis/VerschiedenesFormat) führen zu speziellen Hervorhebungen bei der Anzeige. Zusätzlich können auch Listen, Tabellen, Links, Bilder und anderes angezeigt werden. Die "*id*" auf dem umschließenden DIV wird später verwendet, um diesen Punkt auf der Profilseite gezielt anspringen zu können.
+Unlike the previous example, the *formatReady()* function is called here to prepare the text to be output for display. While *htmlReady()* only takes care of the coding of special characters, *formatReady()* also evaluates the Stud.IP formatting syntax, i.e. certain [markings in the text](http://docs.studip.de/help/2.0/de/Basis/VerschiedenesFormat) lead to special highlighting in the display. In addition, lists, tables, links, images and other items can also be displayed. The "*id*" on the surrounding DIV is used later to be able to jump to this point on the profile page.
 
-Für die Erstellung des Templates kann man im wesentlichen den Code aus dem letzten Beispiel wiederverwenden (auf ein Icon verzichten wir hier). Der anzuzeigende Inhalt kommt von einer eigenen Methode *getContents()*, die später den Text aus der Datenbank lesen wird:
+To create the template, you can essentially reuse the code from the last example (we are dispensing with an icon here). The content to be displayed comes from a separate method *getContents()*, which will later read the text from the database:
 
 ```php
 class EditBox extends StudipPlugin implements HomepagePlugin
@@ -295,9 +295,9 @@ class EditBox extends StudipPlugin implements HomepagePlugin
 }
 ```
 
-##### Formulare und URLs
+##### Forms and URLs
 
-Das oben gezeigte Template erlaubt noch keine Bearbeitung des angezeigen Inhaltes. Darum soll es in nun diesem Abschnitt gehen: Wir brauchen dazu noch ein entsprechendes Template für die Eingabe - also ein HTML-Formular - sowie etwas Logik in unserem Plugin zur Auswertung dieser Eingabe. Falls der Stud.IP-Nutzer seine eigene Profilseite aufruft, sollte er einen speziellen Editiermodus des Plugins aktivieren können (dazu gleich mehr), der dann ein entsprechedes Formular anzeigt:
+The template shown above does not yet allow editing of the displayed content. This is what this section is about: We still need an appropriate template for the input - i.e. an HTML form - as well as some logic in our plugin to evaluate this input. If the Stud.IP user calls up his own profile page, he should be able to activate a special editing mode of the plugin (more on this in a moment), which then displays a corresponding form:
 
 Attach:editbox-edit.png
 
@@ -308,25 +308,25 @@ Attach:editbox-edit.png
     <textarea name="text" style="display: block; width: 80%; height: 8em;"><?=
         htmlReady($text)
     ?></textarea>
-    <?= makeButton('uebernehmen', 'input', false, 'save') ?>
-    <?= makeButton('abbrechen', 'input', false, 'cancel') ?>
+    <?= makeButton('apply', 'input', false, 'save') ?>
+    <?= makeButton('cancel', 'input', false, 'cancel') ?>
 </form>
 ```
 
-Das Formular ist sehr einfach aufgebaut: Es gibt eine TEXTAREA zum Bearbeiten des Inhalts sowie zwei Schaltflächen zum Speichern bzw. Verwerfen der Änderungen. Auch hier darf das *htmlReady()* natürlich nicht fehlen. Ein *formatReady()* wäre an dieser Stelle übrigens falsch, da wir ja nicht die bereits formatierte Ansicht bearbeiten wollen. Zur Anzeige von Formularschaltflächen gibt es eine Hilfsfunktion *[makeButton()](http://hilfe.studip.de/api/language_8inc_8php.html#a029ae0013a8aa35f8cea9e5ab43cda16)* in Stud.IP, die wir auch hier verwenden. Dies ist ein Beispiel für eine Funktion, die bereits fertige HTML-Fragmente liefert, das Resultat von *makeButton()* darf also nicht mehr mit htmlReady() behandelt werden. Das von makeButton() erzeugte HTML wird hinterher etwa so aussehen:
+The form has a very simple structure: There is a TEXTAREA to edit the content and two buttons to save or discard the changes. Of course, the *htmlReady()* must not be missing here either. A *formatReady()* would be wrong at this point, as we do not want to edit the already formatted view. There is an auxiliary function *[makeButton()](http://hilfe.studip.de/api/language_8inc_8php.html#a029ae0013a8aa35f8cea9e5ab43cda16)* in Stud.IP for displaying form buttons, which we also use here. This is an example of a function that already returns finished HTML fragments, so the result of *makeButton()* must no longer be treated with htmlReady(). The HTML generated by makeButton() will look something like this afterwards:
 
 ```php
-<input class="button" type="image" src="[...]/uebernehmen-button.png" name="save">
-<input class="button" type="image" src="[...]/abbrechen-button.png" name="cancel">
+<input class="button" type="image" src="[...]/take-button.png" name="save">
+<input class="button" type="image" src="[...]/cancel-button.png" name="cancel">
 ```
 
-Beim Absenden des Formulars soll unser Plugin die eingegebenen Daten verarbeiten können, wir müssen also dafür sorgen, daß wieder die Profilseite (dort lebt ja das Plugin) angezeigt wird, zusätzlich soll der Kasten des Plugins direkt angesprungen werden. Als URL für das Formular müssen wir also eine passende URL zur Profilseite generieren, inklusive Ansprungpunkt auf der Seite. URLs auf Seiten in Stud.IP werden immer - bis auf wenige, spezielle Ausnahmen - über die Klasse [URLHelper](URLHelper) erzeugt. Im einfachsten Fall gibt man nur den Namen des ensprechenden PHP-Skriptes für die Seite im Aufruf von *URLHelper::getURL()* an und bekommt die entsprechende URL zurück. Hier ist es sogar noch einfacher: Wir befinden uns ja schon auf der Profilseite, müssen also nur den Ansprungpunkt auf der aktuellen Seite angeben: "`#edit_box`".
+When submitting the form, our plugin should be able to process the data entered, so we have to make sure that the profile page (where the plugin lives) is displayed again, and the plugin box should also be jumped to directly. As URL for the form we have to generate a suitable URL to the profile page, including a jump point on the page. URLs to pages in Stud.IP are always generated via the [URLHelper](URLHelper) class - with a few special exceptions. In the simplest case, you just enter the name of the corresponding PHP script for the page in the call to *URLHelper::getURL()* and get the corresponding URL back. Here it is even easier: We are already on the profile page, so we only have to specify the starting point on the current page: "`#edit_box`".
 
-Auch hier gilt: Beim Einsetzen von Werten in HTML muß man sich immer überlegen, ob noch ein *htmlReady()* erforderlich ist. Normalerweise wäre das der Fall, da das Erzeugen von Links aber recht häufig vorkommt, gibt es hierzu eine Hilfsfunktion im `URLHelper`, die das Kodieren gleich mit erledigt: *URLHelper::getLink()*. Das Resultat dieser Funktion kann also (wie *makeButton()*) immer direkt in die Ausgabe eingesetzt werden.
+The following also applies here: When inserting values in HTML, you must always consider whether an *htmlReady()* is still required. Normally this would be the case, but since the creation of links occurs quite frequently, there is a helper function in the `URLHelper` that takes care of the coding at the same time: *URLHelper::getLink()*. The result of this function can therefore (like *makeButton()*) always be used directly in the output.
 
-##### Verarbeitung von Nutzereingaben
+##### Processing user input
 
-Unser Plugin kennt zwei Arten von Nutzerinteraktion: Aktivieren des *Editiermodus* und Abspeichern bzw. Verwerfen der Formulareingaben. Beides ist nur für den Besitzer des angezeigten Profils erlaubt. Um darauf reagieren zu können, müssen wir unsere Plugin-Methode um einige Code-Zeilen erweitern (und zwar in der Funktion getHomepageTemplate zwischen den Zeilen $template = $template_factory->open('edit_box'); und $template->title = $this->getPluginName();) :
+Our plugin recognizes two types of user interaction: activating *edit mode* and saving or discarding form entries. Both are only permitted for the owner of the displayed profile. To be able to react to this, we have to add a few lines of code to our plugin method (in the getHomepageTemplate function between the lines $template = $template_factory->open('edit_box'); and $template->title = $this->getPluginName();) :
 
 ```php
 if ($user_id == $GLOBALS['user']->id) {
@@ -337,43 +337,43 @@ if ($user_id == $GLOBALS['user']->id) {
     }
 
     $template->admin_url = URLHelper::getURL('#edit_box', array('edit' => 1));
-    $template->admin_title = 'Inhalt bearbeiten';
+    $template->admin_title = 'Edit content';
 }
 ```
 
-In der globalen Variablen `$user` ist der gerade in Stud.IP angemeldete Nutzer hinterlegt. Wir können also leicht überprüfen, ob der aktuelle Nutzer auch der Besitzer des angezeigten Profils ist. Falls ja, kann der Editiermodus über ein spezielles Icon in der Titelzeile des Kastens für das Plugin angewählt werden (ganz rechts, analog zu dem Icon für eigene Ankündigungen und Umfragen). Über das Template kann der Link, ggf. mit weiteren URL-Parametern, und ein Tooltip für das Icon vorgegeben werden. Ist der Editiermodus aktiviert worden, wird das entsprechende Template geladen.
+The user currently logged into Stud.IP is stored in the global variable `$user`. We can therefore easily check whether the current user is also the owner of the displayed profile. If so, the edit mode can be selected via a special icon in the title bar of the box for the plugin (on the far right, analogous to the icon for own announcements and surveys). The template can be used to specify the link, possibly with additional URL parameters, and a tooltip for the icon. If the editing mode has been activated, the corresponding template is loaded.
 
-Zur Abfrage von URL- und Formular-Parametern in Stud.IP sollte man immer die Klasse [Request](Request) verwenden, die unter anderem auch typsicheren Zugriff auf die Parameterwerte erlaubt. Die Namen der Parameter entsprechen denen aus dem Template, d.h. "`Request::submitted('save')`" ermittelt, ob die Schaltfläche mit dem Namen "save" im Formular angeklickt wurde.
+To query URL and form parameters in Stud.IP, you should always use the [Request](Request) class, which also allows type-safe access to the parameter values. The names of the parameters correspond to those in the template, i.e. "`Request::submitted('save')`" determines whether the button with the name "save" has been clicked in the form.
 
 
-#### Plugins mit Navigation
+#### Plugins with navigation
 
-Die bisher gezeigten Beispiele für Plugins haben sich alle in vorhandene Seiten integriert, ein Plugin kann aber auch komplett eigene Seiten in Stud.IP anbieten oder sogar Inhalte ausliefern, die gar nicht auf das Stud.IP-Design zurückgreifen wie Web-Services oder Datei-Downloads. Wie das funktioniert wird im diesem Abschitt beschrieben. Auch hier fangen wie wieder mit einem kleinen Beispiel an, diesmal soll die Aufgabe so aussehen:
+The examples of plugins shown so far have all been integrated into existing pages, but a plugin can also offer completely separate pages in Stud.IP or even deliver content that does not use the Stud.IP design at all, such as web services or file downloads. How this works is described in this section. Again, we start with a small example, this time the task should look like this:
 
-* Das Plugin soll ein eigenes Icon in der Navigation bekommen.
-* Das Plugin soll als Punkt auf der Startseite verlinkt sein.
-* Es soll beim Aufruf eine komplett eigenständige Seite anzeigen, inklusive einer Infobox:
+* The plugin should have its own icon in the navigation.
+* The plugin should be linked as a point on the start page.
+* It should display a completely independent page when called up, including an info box:
 
 Attach:demoplugin.png
 
 
-### Weitere Entwicklungsschritte
+### Further development steps
 
-#### Zugriff auf die Datenbank
+#### Access to the database
 
-Zugriffe auf die Datenbank werden in Stud.IP über [SimpleORMap](SimpleORMap) (SORM) durchgeführt. Plugins können eine eigene SimpleORMap-Klasse definieren und damit die Vorteile von SimpleORMap nutzen.
+The database is accessed in Stud.IP via [SimpleORMap](SimpleORMap) (SORM). Plugins can define their own SimpleORMap class and thus use the advantages of SimpleORMap.
 
-##### Neue Tabelle mittels Migration erstellen
+##### Creating a new table via migration
 
-Auch wenn es sich um das Anlegen einer neuen Datenbanktabelle handelt, kann hierfür eine Migration verwendet werden. Dadurch werden das Anlegen der Datenbanktabelle und spätere Migrationen auf die gleiche Art und Weise durchgeführt.
+A migration can also be used to create a new database table. This means that the creation of the database table and subsequent migrations are carried out in the same way.
 
-Zum Erstellen einer Migration wird im Plugin-Verzeichnis ein neuer Ordner namens "migrations" erstellt. In diesem werden nummerierte Migrations-Dateien untergebracht, wobei es sich um PHP-Skripte handelt, welche eine einzige Klasse enthalten und deren Dateiname einem besonderen Schema entspricht. Der Dateiname darf nur kleingeschriebene Buchstaben beinhalten, da sonst keine Migration durchgeführt werden kann. 01_initial.php wäre zum Beispiel ein gültiger Dateiname, während 01_Initial.php (großes "i") zu einem Fehler führen würde.
+To create a migration, a new folder called "migrations" is created in the plugin directory. This folder contains numbered migration files, which are PHP scripts that contain a single class and whose file name corresponds to a special scheme. The file name may only contain lower case letters, otherwise no migration can be carried out. For example, 01_initial.php would be a valid file name, while 01_Initial.php (capital "i") would result in an error.
 
-In der Migrations-Datei wird nun eine Klasse erzeugt, welche die Klasse "Migration" erweitert. Ihr Name kann aus Gründen der Einfachheit genauso gewählt werden wie der Dateiname hinter der Nummerierung, im Beispiel also "Initial" (hier sind Großbuchstaben erlaubt). Die Klasse muss die Methoden up() und down() implementieren. up() dient zum Durchführen einer Migration, während down() die Änderungen an Datenbanktabellen, welche mit up() durchgeführt wurden, rückgängig macht. Zum Zugriff auf die Datenbank bedient man sich der Klasse DBManager, welche durch die Methode get() eine Datenbankverbindung zurückliefert:
+A class is now created in the migration file which extends the "Migration" class. For reasons of simplicity, its name can be chosen in the same way as the file name after the numbering, i.e. "Initial" in the example (capital letters are permitted here). The class must implement the methods up() and down(). up() is used to perform a migration, while down() undoes the changes to database tables that were made with up(). To access the database, the DBManager class is used, which returns a database connection via the get() method:
 
 `$db = DBManager::get();`
 
-Nun kann mit `$db->exec` SQL-Code auf der Datenbank ausgeführt werden, wie das folgende Beispiel zeigt:
+SQL code can now be executed on the database with `$db->exec`, as the following example shows:
 
 ```php
 $db->exec("CREATE TABLE edit_box (
@@ -384,19 +384,19 @@ $db->exec("CREATE TABLE edit_box (
           );
 ```
 
-Die Tabelle wurde angelegt, ist aber noch leer. An dieser Stelle kann natürlich noch mit einem zweiten `$db->exec` Aufruf und einer `INSERT INTO` SQL-Anweisung die Tabelle gefüllt werden. Damit ist die up()-Methode fertig. Nun muss die down()-Methode geschrieben werden. Da es sich um die erste Migration handelt, kann beim rückgängig machen der Migration die Tabelle gelöscht werden:
+The table has been created, but is still empty. At this point, the table can of course be filled with a second `$db->exec` call and an `INSERT INTO` SQL statement. This completes the up() method. Now the down() method must be written. As this is the first migration, the table can be deleted when the migration is undone:
 
 ```php
 $db = DBManager::get();
 $db->exec("DROP TABLE hallo_welt;");
 ```
 
-Damit ist die Migrations-Datei fertig bearbeitet.
+The migration file is now complete.
 
 
-##### Anlegen einer SimpleORMap-Klasse
+##### Creating a SimpleORMap class
 
-Nun muss im Plugin eine SORM-Klasse angelegt werden, mit der Einträge aus der Datenbank-Tabelle in Objekte umgewandelt werden können. Dazu legt man im Plugin-Verzeichnis den Unterordner models an und in diesem eine PHP-Datei, welche die Datenklasse, welche man gerne in der Datenbank haben möchte, beinhaltet. Der Name der PHP-Datei muss dem Namen der Klasse entsprechen. Die Klassendefinition kann im einfachen Fall folgendermaßen aussehen:
+Now a SORM class must be created in the plugin with which entries from the database table can be converted into objects. To do this, create the models subfolder in the plugin directory and a PHP file in it containing the data class that you would like to have in the database. The name of the PHP file must correspond to the name of the class. The class definition can look like this in a simple case:
 
 ```php
 class EditBox extends SimpleORMap {
@@ -410,103 +410,103 @@ class EditBox extends SimpleORMap {
 }
 ```
 
-Damit können Objekte der Klasse EditBox aus der Datenbank geholt werden, sofern die Datenbanktabelle existiert.
+This allows objects of the EditBox class to be retrieved from the database, provided the database table exists.
 
 
-**Hinweis:** Man sollte beim Erstellen von neuen Tabellen möglichst immer die Standardeinstellungen der Datenbank übernehmen, d.h. keine Zeichenkodierung oder Storage-Engine vorgeben.
+**Note:** When creating new tables, you should always use the default settings of the database if possible, i.e. do not specify any character encoding or storage engine.
 
-##### Von der Datenbank lesen und schreiben
+##### Reading and writing from the database
 
-Lese- und Schreibzugriffe werden im Wiki-Artikel [SimpleORMap](SimpleORMap) erklärt.
+Read and write accesses are explained in the wiki article [SimpleORMap](SimpleORMap).
 
 
-#### Lokalisierung mit gettext
+#### Localization with gettext
 
-Zur Lokalisierung eines Plugins sind mehrere Schritte notwendig. Zuerst müssen die Templates zur Übersetzung vorbereitet werden. Mit deren Hilfe werden die Übersetzungsdateien erzeugt.
+Several steps are necessary to localize a plugin. First, the templates must be prepared for translation. These are used to generate the translation files.
 
-##### Übersetzungen in Templates
+##### Translations in templates
 
-Um in den Templates eines Plugins Übersetzungen verwenden zu können, wird die Funktion dgettext verwendet. Diese funktioniert fast wie gettext, mit dem Unterschied, dass dgettext zuerst die Übersetzungs-Domäne mitgegeben wird, bevor der zu übersetzende String übergeben wird. Dies hängt damit zusammen, dass die zu übersetzenden Strings des Plugins nicht in den Übersetzungsdateien von Stud.IP gefunden werden können und deswegen im Plugin gesonderte Übersetzungsdateien angelegt werden müssen.
-Ein zu übersetzender Text wird folgendermaßen umgeschrieben:
-vorher: `echo "Hallo Welt!";`
-nachher: `echo dgettext("MyPlugin", "Hallo Welt!");`
+The dgettext function is used to be able to use translations in the templates of a plugin. This works almost like gettext, with the difference that dgettext is first given the translation domain before the string to be translated is passed. This is due to the fact that the strings to be translated by the plugin cannot be found in the Stud.IP translation files and therefore separate translation files must be created in the plugin.
+A text to be translated is rewritten as follows:
+before: `echo "Hello world!";`
+after: `echo dgettext("MyPlugin", "Hello world!");`
 
-Mittels dgettext wurde angegeben, dass die Übersetzung der Zeichenkette "Hallo Welt" in der Übersetzungs-Domäne "MyPlugin" gefunden werden kann, welche nur im Plugin genutzt wird.
+Using dgettext, it was specified that the translation of the character string "Hello world" can be found in the translation domain "MyPlugin", which is only used in the plugin.
 
-##### Anlegen der Übersetzungsdateien
+##### Creating the translation files
 
-Zum Anlegen der Übersetzungsdateien kann das Unix-Shellskript makeStudIPPluginTranslations.sh verwendet werden, welches für die Übersetzung in mehrere Sprachen verwendet werden kann und einfach für andere Projekte angepasst werden kann. Es befindet sich auf der Entwickler-Installation von Stud.IP: [https://develop.studip.de/studip/dispatch.php/document/download/1bea6c139b56abc3ef0c505731bcc6b6](https://develop.studip.de/studip/dispatch.php/document/download/1bea6c139b56abc3ef0c505731bcc6b6)
+To create the translation files, the Unix shell script makeStudIPPluginTranslations.sh can be used, which can be used for translation into several languages and can be easily adapted for other projects. It is located on the developer installation of Stud.IP: [https://develop.studip.de/studip/dispatch.php/document/download/1bea6c139b56abc3ef0c505731bcc6b6](https://develop.studip.de/studip/dispatch.php/document/download/1bea6c139b56abc3ef0c505731bcc6b6)
 
-Die Ordnerstruktur, in welcher die Übersetzungsdateien unterhalb des Plugin-Verzeichnisses liegen, muss exakt dem folgenden Schema entsprechen: /locale/<Abkürzung der Sprache>/LC_MESSAGES/. Neben Englisch sind natürlich auch weitere Sprachen möglich. Da zurzeit (Juni 2016) in Stud.IP nur Deutsch und Englisch als Sprachen verfügbar sind, können zusätzlichen Sprachen, in die das Plugin übersetzt wurde, nicht aktiviert werden.
-Nach der Ausführung des Skriptes liegen im Ordner LC_MESSAGES eine Datei vor: MyPlugin.pot. Diese kann nun mit einem Übersetzungs-Editor, wie beispielsweise Poedit, bearbeitet werden. Der Editor sollte beim Speichern der Übersetzungen aus der pot-Datei automatisch eine .mo-Datei erzeugen, sodass die Übersetzung in maschinenlesbarer Form vorliegt.
+The folder structure in which the translation files are located below the plugin directory must correspond exactly to the following scheme: /locale/<abbreviation of the language>/LC_MESSAGES/. In addition to English, other languages are of course also possible. As only German and English are currently (June 2016) available as languages in Stud.IP, additional languages into which the plugin has been translated cannot be activated.
+After running the script, a file is available in the LC_MESSAGES folder: MyPlugin.pot. This can now be edited with a translation editor such as Poedit. The editor should automatically create a .mo file from the pot file when saving the translations so that the translation is available in machine-readable form.
 
-#### Anpassungen im Konstruktor der Plugin-Klasse
+#### Adjustments in the constructor of the plugin class
 
-Um festzulegen, dass Übersetzungen im Plugin von der eigenen Übersetzungs-Domäne bezogen werden sollen, muss im Konstruktor der Plugin-Klasse folgender Code eingefügt werden:
+To specify that translations in the plugin should be obtained from your own translation domain, the following code must be inserted in the constructor of the plugin class:
 `bindtextdomain('MyPlugin', __DIR__ . '/locale');`
 
-Mittels bindtextdomain wird die Übersetzungs-Domäne auf "MyPlugin" festgelegt. Damit gettext auch weis, wo die zugehörigen Übersetzungsdateien zu finden sind, wird der absolute Pfad zum Unterordner des Plugins, in welchem die Übersetzungen liegen, benötigt.
-WICHTIG: `$this->getPluginPath()` liefert nur einen relativen Pfad, welcher in einem Unterordner des Stud.IP Installationsverzeichnisses beginnt und kann deswegen an dieser Stelle nicht verwendet werden, um den Pfad zu den Übersetzungsdateien anzugeben!
+The translation domain is set to "MyPlugin" using bindtextdomain. So that gettext also knows where to find the associated translation files, the absolute path to the subfolder of the plugin in which the translations are located is required.
+IMPORTANT: `$this->getPluginPath()` only returns a relative path, which starts in a subfolder of the Stud.IP installation directory and therefore cannot be used at this point to specify the path to the translation files!
 
-Nach diesen Schritten sind alle Voraussetzungen erfüllt, um ein Plugin lokalisieren zu können.
+After these steps, all requirements for localizing a plugin are met.
 
-#### Controller im Plugin anlegen
+Create #### controller in the plugin
 
-Es kann notwendig sein, dass ein Plugin eigene Controller besitzt, welche eigene Seiten im Plugin bereitstellen. Solche Seiten werden in [Trails](Trails) realisiert. Trails ist ein Framework, welches das MVC-Paradigma umsetzt, sodass die Programmlogik (Controller) von der HTML-Ausgabe (View) und dem Datenbankmodell (Models) getrennt ist. Da in Stud.IP bereits SimpleORMap für die Umsetzung von Modellen verwendet wird, bleiben nur noch Ansichten (views) und Controller übrig, die über Trails umgesetzt werden müssen.
+It may be necessary for a plugin to have its own controllers, which provide their own pages in the plugin. Such pages are realized in [Trails](Trails). Trails is a framework that implements the MVC paradigm so that the program logic (controller) is separated from the HTML output (view) and the database model (models). As SimpleORMap is already used in Stud.IP for the implementation of models, only views and controllers remain, which have to be implemented via trails.
 
-##### Erstellen eines Controllers
+##### Creating a controller
 
-Im Verzeichnis des Plugins wird ein Unterordner namens "controllers" angelegt. In diesem wird für jeden Controller eine eigene PHP-Datei angelegt, in welcher jeweils nur eine Controller-Klasse enthalten ist. Der Dateiname, in welchem der Controller enthalten ist, wird in Kleinbuchstaben gehalten. Die Klasse, welche den Controller implementiert, wird in der üblichen Notation (Großbuchstaben an jedem Wortanfang, ohne Unterstriche) geschrieben. Sie erweitert die Klasse PluginController.
+A subfolder called "controllers" is created in the plugin directory. In this folder, a separate PHP file is created for each controller, each containing only one controller class. The file name in which the controller is contained is kept in lower case. The class that implements the controller is written in the usual notation (capital letters at the beginning of each word, without underscores). It extends the PluginController class.
 
-Vor der Klassendefinition sollte aus Kompatibilitätsgründen mit alten Stud.IP Versionen noch folgende Zeile eingefügt werden:
+The following line should be inserted before the class definition for reasons of compatibility with old Stud.IP versions:
 `require_once('app/controllers/plugin_controller.php');`
 
-Ein einfacher Controller kann so aussehen:
+A simple controller can look like this:
 
 ```php
 <?php
-class HalloController extends PluginController {
+class HelloController extends PluginController {
     public function index_action() {
-        $this->text = dgettext('MyPlugin', 'Hallo Welt!');
+        $this->text = dgettext('MyPlugin', 'Hello world!');
     }
 }
 ```
 
-##### Erstellen einer Ansicht (view)
+##### Creating a view
 
-Jede Ansicht muss im Unterordner "views" des Plugin-Ordners angelegt werden. Dort wird für jeden Controller ein eigener Unterordner erzeugt, in welchem dann die einzelnen Ansichten abgelegt sind. Für jede Aktion eines Controllers wird eine eigene Ansicht erzeugt, wobei jede Ansicht ihre eigene PHP-Datei besitzt. In einer Ansicht kann beliebiger HTML-Code untergebracht sein. Attribute des Controllers sind als einfache Variablen in normaler PHP-Syntax abrufbar.
+Each view must be created in the "views" subfolder of the plugin folder. A separate subfolder is created there for each controller, in which the individual views are then stored. A separate view is created for each action of a controller, whereby each view has its own PHP file. Any HTML code can be stored in a view. Attributes of the controller can be called up as simple variables in normal PHP syntax.
 
-Der obige Controller besitzt nur eine Aktion: "index". Außerdem heißt er "HalloController" und seine PHP-Datei heißt folglich hallo.php und liegt im Ordner /controllers/. Die zugehörige Ansicht (view) muss im Ordner /views/hallo/index liegen. Für obigen Controller kann sich die Ansicht auf folgenden Code beschränken:
+The controller above has only one action: "index". It is also called "HalloController" and its PHP file is therefore called hallo.php and is located in the /controllers/ folder. The corresponding view must be located in the /views/hallo/index folder. For the above controller, the view can be limited to the following code:
 
 ```php
 <strong><?= $text; ?></strong>
 ```
 
-Das Attribut `$this->text` aus dem Controller wurde einfach zu `$text`. Andere Attribute der Controller-Klasse werden ebenfalls der Ansicht übergeben, beispielsweise das Attribute `$this->plugin`, welches vordefiniert ist.
+The attribute `$this->text` from the controller has simply become `$text`. Other attributes of the controller class are also passed to the view, for example the attribute `$this->plugin`, which is predefined.
 
-#### Zugriff für nicht angemeldete Nutzer
+#### Access for users who are not logged in
 
-Wollen wir, daß unser Plugin auch für nicht angemeldete Nutzer sichtbar ist, so muß man der Installation noch bei den Rechteeinstellungen auswählen, daß neben den voreingestellten Standardrollen auch die Rolle "nobody" (diese Rolle ist speziell für nicht angemeldete Nutzer) das Plugin verwenden kann:
+If we want our plugin to be visible to users who are not logged in, we have to select in the rights settings during installation that the role "nobody" (this role is specifically for users who are not logged in) can also use the plugin in addition to the preset standard roles:
 
 Attach:roles-nobody.png
 
-Das installierte Plugin sieht dann beim Aufruf im System so aus:
+The installed plugin then looks like this when called in the system:
 
 Attach:fortune.png
 
-##### Quellcode des Plugins
+##### Source code of the plugin
 
 Attach:Fortune.zip
 
-### Veröffentlichung
+### Publication
 
-Ist das eigene Plugin funktionsfähig, kann es auf den Stud.IP Marktplatz hochgeladen werden, damit andere das Plugin testen und nutzen können.
+If your own plugin is functional, it can be uploaded to the Stud.IP marketplace so that others can test and use the plugin.
 
-Um ein Plugin in den Martkplatz einstellen zu können, ist ein Benutzerkonto auf der Stud.IP Installation [https://develop.studip.de](https://develop.studip.de) erforderlich. Dort gibt es in der oberen Leiste einen Reiter namens PluginMarktplatz. Auf diesem befindet sich ein Reiter namens "Meine Plugins", unter welchem das HalloWelt-Plugin hochgeladen werden kann. Nach dem Klick auf "Meine Plugins" wählt man dazu im linken Bereich "Neues Plugin eintragen" aus und füllt den sich öffnenden Dialog auf. Bildschirmfotos vom Plugin zeigen anderen Benutzern schnell, was das Plugin alles kann und sollten daher hinzugefügt werden.
+In order to upload a plugin to the marketplace, a user account on the Stud.IP installation [https://develop.studip.de](https://develop.studip.de) is required. There is a tab called PluginMarketplace in the top bar. On this tab there is a tab called "My plugins", under which the HalloWelt plugin can be uploaded. After clicking on "My plugins", select "Add new plugin" in the left-hand area and fill in the dialog that opens. Screenshots of the plugin quickly show other users what the plugin can do and should therefore be added.
 
-Im Punkt "Release hinzufügen" wählt man "als Datei" aus. Nun packt man das fertige Plugin erneut in eine ZIP-Datei und wählt diese nach dem Klick auf den "Durchsuchen" Button im Dialog aus. Nach dem Klick auf "Speichern" wurde das Plugin hochgeladen und muss von einem Administrator des Marktplatzes freigeschaltet werden. Sobald dies geschehen ist, wird das Plugin auf der Startseite des Plugin-Marktplatzes unter "Neueste Plugins" aufgeführt.
+Under "Add release", select "as file". Now pack the finished plugin into a ZIP file again and select it after clicking on the "Browse" button in the dialog. After clicking on "Save", the plugin has been uploaded and must be activated by a marketplace administrator. As soon as this has been done, the plugin will be listed on the start page of the plugin marketplace under "Newest plugins".
 
-**Herzlichen Glückwunsch zum ersten veröffentlichten Stud.IP Plugin!**
+**Congratulations on the first published Stud.IP plugin!
 
-Moritz Strohm hat ein weiteres Tutorial zur Erstellung von Plugins
-erstellt. Dieses finden Sie hier: https://develop.studip.de/studip/dispatch.php/document/download/5747961f81b385b1520cf7dc393f1db6
+Moritz Strohm has created another tutorial for the creation of plugins
+created. You can find it here: https://develop.studip.de/studip/dispatch.php/document/download/5747961f81b385b1520cf7dc393f1db6

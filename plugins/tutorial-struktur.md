@@ -1,47 +1,47 @@
-Dieses Tutorial dient zum ersten Kontakt mit Stud.IP Plugins.
-Es wird beispielhaft ein Stud.IP Plugin erstellt,
-um aufzuzeigen, welche Komponenten für ein Stud.IP Plugin relevant sind.
-Dabei werden die einzelnen Komponenten nicht ausführlich noch einmal erklärt,
-stattdessen werden auf ausführliche Erklärung im Wiki verwiesen, die sich vorher angeschaut werden sollten.
-Dieses Tutorial stellt somit eine Art Leitfaden dar, der verfolgt werden kann,
-um die verschiedenen Stud.IP Komponenten kennenzulernen und in einen sinnvollen Zusammenhang zu bringen.
+This tutorial serves as a first contact with Stud.IP plugins.
+A Stud.IP plugin is created as an example,
+to show which components are relevant for a Stud.IP plugin.
+The individual components are not explained again in detail,
+Instead, reference is made to detailed explanations in the wiki, which should be looked at beforehand.
+This tutorial is therefore a kind of guide that can be followed,
+to get to know the various Stud.IP components and to bring them into a meaningful context.
 
-Diese Seite stellt dabei den ersten Teil des Tutorials dar,
-indem erst einmal die Grundstruktur eines Plugins erklärt und erstellt wird.
-Dieser Teil ist somit größtenteils unabhängig von der eigentlichen Funktionalität des Plugins
-und kümmert sich nur darum eine Basis zu Erstellen,
-mit der angenehm Plugins erstellt und weiterentwickelt werden.
-Ein wenig Kontext für die Funktionalitäten des Plugins ist aber notwendig und fürs Verständnis auch sinnvoll.
+This page is the first part of the tutorial,
+by first explaining and creating the basic structure of a plugin.
+This part is therefore largely independent of the actual functionality of the plugin
+and is only concerned with creating a basis,
+with which pleasant plugins can be created and further developed.
+However, a little context for the functionalities of the plugin is necessary and useful for understanding.
 
-Als Ziel soll das Plugin beliebigen Stud.IP Nutzern das Erstellen von "Texten" ermöglichen.
-"Texte" bestehen dabei erst einmal nur aus einem Titel, einem Inhalt und besitzen einen Typ.
-Außerdem sollen die Nutzer eine Übersicht über alle erstellten Texte einsehen können.
+The aim of the plugin is to enable any Stud.IP user to create "texts".
+"Texts" initially only consist of a title, content and have a type.
+Users should also be able to view an overview of all texts created.
 
-Am Ende dieser Seite ist eine ZIP-Datei mit dem bisherigen Code und zusätzlicher phpDoc angehangen,
-damit der eigene Fortschritt überprüft werden kann.
-Es sollte jedoch versucht werden, dass PluginTutorial eigenständig nachzuverfolgen.
+A ZIP file with the existing code and additional phpDoc is attached at the end of this page,
+so that you can check your own progress.
+However, you should try to follow the plugin tutorial on your own.
 
-Um dieses Tutorial vernünftig mitverfolgen zu können,
-wird eine laufende Stud.IP Testumgebung (mind. Stud.IP 4.6) inklusive Webserver, php und Datenbanksystem benötigt.
+In order to be able to follow this tutorial properly,
+a running Stud.IP test environment (at least Stud.IP 4.6) including web server, php and database system is required.
 
 
-## Studip-Coding Style
-Um das Arbeiten mit mehreren Entwicklern zu erleichtern,
-sollte ein einheitlicher Coding Style angestrebt werden.
-Der Coding Style für Stud.IP ist [hier](CodingStyle) zu finden.  
-Als zweite untergestellte Quelle kann [dieser](https://www.php-fig.org/psr/psr-12/) Artikel herangezogen werden.
+## Studip coding style
+In order to facilitate working with several developers,
+a uniform coding style should be aimed for.
+The coding style for Stud.IP can be found [here](CodingStyle).
+This](https://www.php-fig.org/psr/psr-12/) article can be used as a second source.
 
-## Grundgerüst
-Damit ein Verzeichnis von Stud.IP als ein Plugin erkannt wird,
-sind in der Wurzel des Verzeichnisses zwei Dateien notwendig.  
-Eine `plugin.manifest` Datei, welches Meta-Daten über das Plugin enthält
-wie z.B. den Pluginnamen oder die aktuelle Versionsnummer des Plugin, und eine Plugin-Klasse,
-welche als initiale Instanz von Stud.IP aufgerufen wird.
+## Basic framework
+In order for a directory to be recognized as a plugin by Stud.IP,
+two files are required in the root of the directory.
+A `plugin.manifest` file, which contains meta data about the plugin
+such as the plugin name or the current version number of the plugin, and a plugin class,
+which is called as the initial instance of Stud.IP.
 
 ### Plugin manifest
-Welche Meta-Daten im `plugin.manifest` hinterlegt werden können,
-ist in [Plugin-Manifest](PluginSchnittstelle#plugin-manifest) ersichtlich.  
-Für unser Beispiel-Plugin würde das `plugin.manifest` folgendermaßen aussehen:
+Which meta data can be stored in the `plugin.manifest`,
+can be seen in [Plugin-Manifest](PluginSchnittstelle#plugin-manifest).
+For our example plugin, the `plugin.manifest` would look like this:
 ```
 pluginname=TextPlugin
 pluginclassname=TextPlugin
@@ -49,15 +49,15 @@ origin=UOL
 version=1.0
 studipMinVersion=4.6
 ```
-### Haupt-Plugin-Klasse
-Diese Datei beinhaltet die Plugin-Klasse. Sie muss den Klassennamen tragen,
-der in `plugin.manifest` mit `pluginclassname` festgelegt wurde.
-Der Dateiname muss identisch mit dem Klassennamen sein.
-Im Beispiel muss also der Dateiname `TextPlugin.class.php` lauten und darin eine Klasse `TextPlugin` enthalten sein.  
-Die Plugin-Klasse erbt standardmäßig von der `StudipPlugin`-Klasse und implementiert ein oder mehrere Plugin-Interfaces.  
-Die verschiedenen Typen von Plugins sind in [Plugin-Interfaces](PluginSchnittstelle#plugin-interfaces) erläutert.  
-Da das TextPlugin systemweit erreichbar sein soll, implementiert es die `SystemPlugin` Schnittstelle.  
-Die Plugin-Klasse sieht dann folgendermaßen aus:
+### Main plugin class
+This file contains the plugin class. It must have the class name
+which was defined in `plugin.manifest` with `pluginclassname`.
+The file name must be identical to the class name.
+In the example, the file name must therefore be `TextPlugin.class.php` and contain a class `TextPlugin`.
+By default, the plugin class inherits from the `StudipPlugin` class and implements one or more plugin interfaces.
+The different types of plugins are explained in [Plugin-Interfaces](PluginSchnittstelle#plugin-interfaces).
+As the TextPlugin should be accessible system-wide, it implements the `SystemPlugin` interface.
+The plugin class then looks like this:
 ```php
 <?php
 
@@ -68,38 +68,38 @@ class TextPlugin extends StudIPPlugin implements SystemPlugin
 ```
 
 ### Installation
-Da das Plugin nun so weit ist, dass es von Stud.IP als Plugin erkannt wird, kann es nun installiert werden.
-Dafür gibt es im Wesentlichen zwei Möglichkeiten: Man kann das Plugin zu einer `.zip`-Datei komprimieren
-und direkt in Stud.IP installieren oder falls es ein Repository für das Plugin gibt,
-kann das Plugin auch zuerst geklont werden und dann in Stud.IP eingebunden werden.
+As the plugin is now ready to be recognized as a plugin by Stud.IP, it can now be installed.
+There are two main ways to do this: You can compress the plugin into a `.zip` file
+and install it directly in Stud.IP or if there is a repository for the plugin,
+the plugin can also be cloned first and then integrated into Stud.IP.
 
-Installierte Plugins sind unabhängig davon, wie sie installiert wurden,
-im Studip-Verzeichnis unter `public/plugin_packages/<origin>` zu finden,
-wobei `<origin>` jenes origin ist, welches im jeweiligen `plugin.manifest` angegeben ist.
+Installed plugins are independent of how they were installed,
+can be found in the Studip directory under `public/plugin_packages/<origin>`,
+where `<origin>` is the origin specified in the respective `plugin.manifest`.
 
-#### Plugin als ZIP-Datei installieren
-Um das Plugin als `.zip`-Datei direkt zu installieren,
-muss als aktiver `root`-User nach `Admin` => `System` => `Plugins` navigiert werden.
-Links in der Sidebar kann dann die `.zip`-Datei ausgewählt oder per Drag and Drop installiert werden. 
+Install #### plugin as a ZIP file
+To install the plugin directly as a `.zip` file,
+the active `root` user must navigate to `Admin` => `System` => `Plugins`.
+The `.zip` file can then be selected in the sidebar on the left or installed using drag and drop.
 
-Wenn das Plugin installiert ist, muss es schließlich noch aktiviert werden.
-Dafür muss lediglich in der gleichen Ansicht das Plugin mit der "Aktiv" checkbox aktiviert
-und die Änderung ganz unten auf der Seite gespeichert werden.
+Once the plugin has been installed, it still needs to be activated.
+To do this, simply activate the plugin in the same view using the "Active" checkbox
+and save the change at the bottom of the page.
 
 
-#### Plugin aus einem Repo installieren
-Falls für das Plugin ein Repository existiert,
-kann das Repository auch geklont werden und das Plugin dann installiert werden.
-Mit dem Repository kann dann ganz normal gearbeitet werden.
+Install #### plugin from a repo
+If a repository exists for the plugin,
+the repository can also be cloned and the plugin can then be installed.
+You can then work with the repository as normal.
 
-Dazu muss das Repository des Plugins in das entsprechende Verzeichnis geklont werden.
-Im Falle des TextPlugins muss das Repo also in `public/plugin_packages/UOL` geklont werden,
-da der `origin` im `plugin.manifest` als `UOL` festgelegt ist.
-Dabei sollte außerdem darauf geachtet werden, dass der Repository-Pfadname, der gleiche ist,
-wie der festgelegte `pluginname`.  
-Insgesamt würde das Stud.IP also dann folgendermaßen aussehen:
+To do this, the repository of the plugin must be cloned into the corresponding directory.
+In the case of the TextPlugin, the repo must be cloned to `public/plugin_packages/UOL`,
+as the `origin` is defined as `UOL` in `plugin.manifest`.
+Care should also be taken to ensure that the repository path name is the same,
+as the defined `pluginname`.
+Overall, the Stud.IP would then look like this:
 ```ini
-<studip-verzeichnis>
+<studip-directory>
   public\
     plugin_packages\
       core\
@@ -109,65 +109,65 @@ Insgesamt würde das Stud.IP also dann folgendermaßen aussehen:
           plugin.manifest
           TextPlugin.class.php
 ```
-Als `root`-User muss dann auch hier nach `Admin` => `System` => `Plugins` navigiert werden
-und links in der Sidebar unter "Ansichten" die Ansicht "Vorhandene Plugins registrieren" gewählt werden.
-Das TextPlugin sollte nun hier als Installationsmöglichkeit gelistet sein und installiert werden.
+As the `root` user, you must then also navigate to `Admin` => `System` => `Plugins`
+and select the "Register existing plugins" view in the sidebar on the left under "Views".
+The TextPlugin should now be listed here as an installation option and installed.
 
-Wie beim Installieren des Plugins als ZIP-Datei
-muss das Plugin nach dem Installieren noch unter `Admin` => `System` => `Plugins`aktiviert werden.
+As with installing the plugin as a ZIP file
+the plugin must be activated after installation under `Admin` => `System` => `Plugins`.
 
-#### Weitere Arbeit mit dem Plugin
-Da das Plugin nun installiert ist,
-können alle folgenden Änderungen direkt im Verzeichnis des Plugins erfolgen
-und werden von Stud.IP automatisch erkannt.  
-Das Plugin muss und sollte somit nicht bei jeder Änderung neu installiert werden.
+#### Further work with the plugin
+Now that the plugin is installed,
+all subsequent changes can be made directly in the plugin directory
+and are automatically recognized by Stud.IP.
+The plugin therefore does not have to and should not be reinstalled for every change.
 
-## Inhalt des Plugins
-Da nun das Plugin installiert und aktiviert ist,
-kann sich um die eigentliche Funktionalität des Plugins gekümmert werden.  
-Wir möchten eine Übersichtsseite zum Anzeigen aller Texte als initiale Anlaufstelle des Plugins erstellen.
+## Content of the plugin
+Now that the plugin is installed and activated,
+the actual functionality of the plugin can be taken care of.
+We would like to create an overview page to display all texts as the initial point of contact for the plugin.
 
 ### Navigation
-Dazu muss nun erstmal eine Navigation erstellt werden, um auf diese Seite navigieren zu können.
-Wie die Navigation in Stud.IP funktioniert ist in [Navigation](Navigation) erläutert.
-Da die Navigation zur Übersichtsseite immer erstellt werden soll,
-wird die Navigation in der `__construct`-Methode des TextPlugins erstellt.
+To do this, a navigation must first be created in order to be able to navigate to this page.
+How navigation works in Stud.IP is explained in [Navigation](Navigation).
+As the navigation to the overview page should always be created,
+the navigation is created in the `__construct` method of the TextPlugin.
 
 ```php
     public function __construct()
     {
         parent::__construct();
 
-        $root_nav = new Navigation('Texte', PluginEngine::getURL($this, [], 'overview'));
+        $root_nav = new Navigation('Texts', PluginEngine::getURL($this, [], 'overview'));
         $root_nav->setImage(Icon::create('file-text', Icon::ROLE_NAVIGATION));
         Navigation::addItem('/text_root', $root_nav);
 
-        $navigation = new Navigation('Übersicht', PluginEngine::getURL($this, [], 'overview'));
+        $navigation = new Navigation('Overview', PluginEngine::getURL($this, [], 'overview'));
         $root_nav->addSubNavigation('text_overview', $navigation);
     }
 ```
-Den initialen Reiter des Plugins nennen wir einfach `Texte`
-und hängen das Navigationselement an die Wurzel der Navigation an,
-damit es im Hauptnavigationsreiter auftaucht.
-Alle weiteren Navigationspunkte hängen wir dann an dieses Navigationselement an.
-Bisher haben wir nur eine Übersichtsseite geplant,
-sodass wir ein weiteres Navigationselement `Übersicht` erstellen,
-welches wir an unsere `Texte`-Navigation anhängen.
-Der Hauptnavigationspunkt taucht jetzt bereits in Stud.IP auf,
-jedoch wird bisher noch auf eine nicht existierende Seite verlinkt.
+We simply call the initial tab of the plugin `texts`
+and append the navigation element to the root of the navigation,
+so that it appears in the main navigation tab.
+We then attach all further navigation points to this navigation element.
+So far we have only planned an overview page,
+so we create another navigation element 'Overview',
+which we attach to our 'Texts' navigation.
+The main navigation item already appears in Stud.IP,
+but it still links to a non-existent page.
 
-### Plugin- und Controller-Klassen
-Bevor wir die fehlende Seite ergänzen,
-nehmen wir unserem zukünftigen Ich ein wenig Arbeit ab.  
-Ein Plugin-Verzeichnis kann im Allgemeinen mehrere Plugins beinhalten
-und wird oft mehrere Controller-Klassen beinhalten.
-Wir werden später noch Code schreiben,
-die alle unsere Plugin- und Controller-Klassen benötigen werden
-und um redundanten Code zu vermeiden,
-erstellen wir jeweils eine Klasse,
-von der dann alle unsere Plugin- und Controller-Klassen erben können.
+### Plugin and controller classes
+Before we add the missing page,
+let's do a little work for our future self.
+A plugin directory can generally contain several plugins
+and will often contain several controller classes.
+We'll write some code later,
+that will require all of our plugin and controller classes
+and to avoid redundant code,
+we will create one class each,
+from which all our plugin and controller classes can inherit.
 
-Die beiden Dateien `Plugin.php` und `Controller.php` erstellen wir in einem neuen `classes`-Verzeichnis.
+We create the two files `Plugin.php` and `Controller.php` in a new `classes` directory.
 
 ```php
 <?php
@@ -190,27 +190,27 @@ use PluginController;
 
 class Controller extends PluginController
 {
-    
+
 }
 ```
 
-Außerdem setzen wir einen `namespace` für beide Klassen,
-um sie von anderen gleichnamigen Klassen unterscheiden zu können.
-Wir sollten auch daran denken,
-dass nun unser `TextPlugin`-Klasse von `\TextPlugin\Plugin` erben sollte,
-und nicht mehr von `StudIPPlugin`.
+We also set a `namespace` for both classes,
+to distinguish them from other classes with the same name.
+We should also remember
+that our `TextPlugin` class should now inherit from `\TextPlugin\Plugin`,
+and no longer from `StudIPPlugin`.
 
 
 ### Autoload
-Dateien im Plugin-Verzeichnis werden in der Regel von Stud.IP nicht automatisch geladen.
-Für unsere neuen Klassen im `classes`-Verzeichnis müssen wir also Stud.IP explizit sagen,
-dass er die Klassen mit unserem Plugin laden soll, damit wir sie auch nutzen können.
+Files in the plugin directory are usually not loaded automatically by Stud.IP.
+For our new classes in the `classes` directory we have to tell Stud.IP explicitly,
+that it should load the classes with our plugin so that we can also use them.
 
-Das Laden von anderen Klassen wird in der Regel in eine `bootstrap.inc.php`-Datei ausgelagert,
-die dann vom Plugin immer mit `require_once` geladen wird.
-Wir erstellen also in der Wurzel des Plugin-Verzeichnisses eine `bootstrap.inc.php`-Datei,
-in der wir mit dem `StudipAutoloader` alle Dateien im Verzeichnis `models` laden.  
-Als prefix für den autoloader sollte der `namespace` der Klassen angegeben werden.
+The loading of other classes is usually outsourced to a `bootstrap.inc.php` file,
+which is then always loaded by the plugin with `require_once`.
+We therefore create a `bootstrap.inc.php` file in the root of the plugin directory,
+in which we load all files in the `models` directory with the `StudipAutoloader`.
+The `namespace` of the classes should be specified as the prefix for the autoloader.
 
 ```php
 <?php
@@ -218,30 +218,30 @@ Als prefix für den autoloader sollte der `namespace` der Klassen angegeben werd
 StudipAutoloader::addAutoloadPath(__DIR__ . '/classes', 'TextPlugin');
 ```
 
-Die Datei wird dann in der `TextePlugin.class.php` mit `require_once __DIR__ . '/bootstrap.inc.php';` eingebunden,
-vorzugsweise vor der Klassendefinition.
+The file is then added to `TextePlugin.class.php` with `require_once __DIR__ . '/bootstrap.inc.php';`,
+preferably before the class definition.
 
 ### Trails
-Nun sind wir endlich so weit,
-dass wir uns um die Übersichtsseite kümmern können.  
-[Trails](Trails) ist das Model-View-Controller Framework von Stud.IP und legt unter anderem fest,
-welche Seite bei welcher URL aufgerufen wird.
+Now we are finally ready,
+that we can take care of the overview page.
+[Trails](Trails) is the model view controller framework of Stud.IP and determines, among other things
+which page is called at which URL.
 
-Allgemein beinhaltet eine URL für ein Plugin immer `plugins.php/<pluginname>/<controller-name>/<actions-name>`.
-Der `pluginname` ist in der `plugin.manifest` festgelegt.  
-Der `controller-name` ist der Dateiname des Controllers.
-Wenn die Controller-Datei `overview.php` heißt,
-muss die Klasse in der Datei `OverviewController` heißen.  
-Der `action-name` ist der name einer "action", also einer Methode innerhalb des Controllers,
-die mit `_action` endet.
+In general, a URL for a plugin always contains `plugins.php/<pluginname>/<controller-name>/<actions-name>`.
+The `pluginname` is defined in the `plugin.manifest`.
+The `controller-name` is the file name of the controller.
+If the controller file is called `overview.php`,
+the class in the file must be called `OverviewController`.
+The `action-name` is the name of an "action", i.e. a method within the controller,
+which ends with `_action`.
 
-Die URL `plugins.php/textplugin/overview/index` würde beispielsweise eine Methode `index_action()` im Controller `overview`
-im Plugin `TextPlugin` aufrufen.
-Die action `index` wird dabei immer aufgerufen,
-wenn kein `action-name` in der URL angegeben ist.  
-Da wir in unserer Navigation mit `PluginEngine::getURL($this, [], 'overview')` auf einen overview Controller innerhalb unseres Plugins verweisen
-und keine action angegeben haben, sollten wir einen Controller in einem neuen Verzeichnis `controllers` namens `overview.php`
-erstellen, der die Methode `index_action` beinhaltet.
+For example, the URL `plugins.php/textplugin/overview/index` would be a method `index_action()` in the controller `overview`
+in the `TextPlugin` plugin.
+The action `index` is always called,
+if no `action-name` is specified in the URL.
+Since we refer in our navigation with `PluginEngine::getURL($this, [], 'overview')` to an overview controller within our plugin
+and have not specified an action, we should create a controller in a new directory `controllers` called `overview.php`
+which contains the method `index_action`.
 
 ```php
 <?php
@@ -255,26 +255,26 @@ class OverviewController extends \TextPlugin\Controller
 }
 ```
 
-Alle weiteren Angaben in der URL werden jeweils als Parameter in die actions reingegeben.
-Wenn im OverviewController also eine action `test_action($param1, $param2)` existiert
-und die URL `plugins.php/textplugin/overview/test/hallo/welt` aufgerufen wird,
-enthält `$param1` den string `hallo` und `$param2` den string `welt`.  
-Da `/` zum Separieren in der URL genutzt wird, sollte daher auch vermieden werden,
-strings die `/` enthalten, als Parameter zu übergeben.
+All other details in the URL are entered as parameters in the actions.
+So if an action `test_action($param1, $param2)` exists in the OverviewController
+and the URL `plugins.php/textplugin/overview/test/hallo/welt` is called,
+contains `$param1` the string `hello` and `$param2` the string `world`.
+Since `/` is used for separating in the URL, this should also be avoided,
+strings containing `/` as parameters.
 
-Nachdem Trails die jeweilige action-methode aufgerufen hat und sie durchgelaufen ist,
-wird eine view gerendert, die sich auch aus der URL ergibt.
-Dabei muss es in einem `views` Verzeichnis innerhalb des Plugins ein Verzeichnis existieren,
-welches nach dem Controller benannt ist
-und innerhalb dieses Verzeichnis eine `.php` Datei die nach der action benannt ist.  
-Controller-Klassen im `controllers`-Verzeichnis und view-Dateien im `views`-Verzeichnis
-werden von Stud.IP automatisch geladen,
-sodass wir sie **nicht** mit dem autoloader laden müssen.
+After Trails has called the respective action method and it has run through,
+a view is rendered, which also results from the URL.
+A directory must exist in a `views` directory within the plugin,
+which is named after the controller
+and within this directory a `.php` file named after the action.
+Controller classes in the `controllers` directory and view files in the `views` directory
+are automatically loaded by Stud.IP,
+so we **don't** have to load them with the autoloader.
 
-Wenn sowohl der Controller mit der action-methode als auch die passende view erstellt wurde
-und die Namenskonvention dabei eingehalten wurde,
-sollte Stud.IP nun eine leere Seite auf der TextPlugin Übersichtsseite anzeigen.
-Die Dateistruktur für das Plugin sollte bis hierhin wie folgt aussehen:
+If both the controller with the action method and the appropriate view have been created
+and the naming convention has been adhered to,
+Stud.IP should now display an empty page on the TextPlugin overview page.
+The file structure for the plugin should look as follows up to this point:
 
 ```ini
 TextPlugin\
@@ -291,14 +291,14 @@ TextPlugin\
   TextPlugin.class.php
 ```
 
-### Datenbanktabellen erstellen (Migration)
-Bevor die Seite mit vernünftigem Inhalt gefüllt werden kann,
-müssen noch die entsprechenden Datenbanktabellen erstellt werden.
-Dies geschieht in Stud.IP mittels [Migrationen](Migrations).
+### Create database tables (migration)
+Before the page can be filled with reasonable content,
+the corresponding database tables must be created.
+This is done in Stud.IP using [Migrations](Migrations).
 
-Für die erste Version des Plugins benötigen wir nur eine Tabelle, um die erstellten Texte zu speichern.
-Die Migrationsdatei erstellen wir in einem neuen Verzeichnis `migrations` und nennen sie `01_init_texte.php`.
-Die Klasse innerhalb der Datei muss dementsprechend `InitTexte` heißen.
+For the first version of the plugin, we only need one table to save the created texts.
+We create the migration file in a new directory `migrations` and name it `01_init_texte.php`.
+The class within the file must be named `InitTexte` accordingly.
 
 ```php
 <?php
@@ -311,13 +311,13 @@ class InitTexte extends Migration
         $db = DBManager::get();
 
         $query = "CREATE TABLE IF NOT EXISTS tp_texte (
-                    text_id     CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
-                    title       TEXT NOT NULL,
+                    text_id CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
+                    title TEXT NOT NULL,
                     description TEXT NULL DEFAULT NULL,
-                    type        TINYINT(2) NOT NULL DEFAULT 1,
-                    mkdate      INT(11) NOT NULL,
-                    chdate      INT(11) NOT NULL,
-                    author_id   CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
+                    type TINYINT(2) NOT NULL DEFAULT 1,
+                    mkdate INT(11) NOT NULL,
+                    chdate INT(11) NOT NULL,
+                    author_id CHAR(32) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
                     PRIMARY KEY (text_id)
                   )";
         $db->exec($query);
@@ -331,23 +331,23 @@ class InitTexte extends Migration
 }
 ```
 
-Neue Migrationen werden von Stud.IP zwar auch wie die andere Dateien automatisch erkannt,
-jedoch müssen Migrationen explizit durchgeführt bzw. installiert werden.
-Migrationen können als root-User unter `Admin` => `System` => `Plugins` in der Spalte `Schema` ausgeführt werden.
-In dieser Spalte wird standardmäßig die aktuelle migrations-version angegeben.
-In unserem Fall, da wir noch keine migration durchgeführt haben, ist die Version 0.
-Falls Stud.IP neue Migrationsdateien im Plugin-Verzeichnis erkennt,
-wird in der Spalte ein Icon angezeigt, mit dem alle neue Migrationen ausgeführt werden können.  
-Wie auf der [Migrationen](Migrations) Wiki-Seite erläutert,
-stellt die Nummer im Namen der Migrationsdatei die Version der Migration dar,
-sodass neue Migrationen mit aufsteigenden Nummern zu versehen sind. 
+New migrations are also automatically recognized by Stud.IP like the other files,
+however, migrations must be carried out or installed explicitly.
+Migrations can be carried out as root user under `Admin` => `System` => `Plugins` in the `Schema` column.
+The current migration version is specified in this column by default.
+In our case, as we have not yet carried out a migration, the version is 0.
+If Stud.IP recognizes new migration files in the plugin directory,
+an icon is displayed in the column with which all new migrations can be carried out.
+As explained on the [Migrations](Migrations) wiki page,
+the number in the name of the migration file represents the version of the migration,
+so that new migrations are to be provided with ascending numbers.
 
 
-### Model-Klassen
-Damit wir einfache SQL-Anfragen nicht selber schreiben müssen und Einträge der Tabelle als php-Objekte nutzen können,
-erstellen wir für jede Tabelle eine [SimpleORMap](SimpleORMap)-Klasse in einem neuen Verzeichnis `models`.
-Den Model-Klassen geben wir außerdem auch den `namespace` `TextPlugin`.  
-Da wir nur eine Tabelle haben, erstellen wir eine Modelklasse `Text.php`:
+### Model classes
+So that we do not have to write simple SQL queries ourselves and can use table entries as php objects,
+we create a [SimpleORMap](SimpleORMap) class for each table in a new directory `models`.
+We also give the model classes the `namespace` `TextPlugin`.
+Since we only have one table, we create a model class `Text.php`:
 
 ```php
 <?php
@@ -375,9 +375,9 @@ class Text extends SimpleORMap
 }
 ```
 
-Damit wir die Modelklassen nutzen können, müssen wir wie bei `classes` dran denken,
-sie in der `bootstrap.inc.php` mit `StudipAutoloader::addAutoloadPath(__DIR__ . '/models', 'TextPlugin');` zu laden.  
-Das Plugin-Verzeichnis sieht zu diesem Punkt folgendermaßen aus:
+So that we can use the model classes, we have to remember the same as with `classes`,
+load them in `bootstrap.inc.php` with `StudipAutoloader::addAutoloadPath(__DIR__ . '/models', 'TextPlugin');`.
+The plugin directory looks like this at this point:
 ```ini
 TextPlugin\
   classes\
@@ -386,9 +386,9 @@ TextPlugin\
   controllers\
     overview.php
   migrations\
-    01_init_texte.php
+    01_init_texts.php
   models\
-    Text.php
+    text.php
   views\
     overview\
       index.php
@@ -397,34 +397,34 @@ TextPlugin\
   TextPlugin.class.php
 ```
 
-### javascript- und css-Dateien
-Wenn css und/oder javascript Dateien genutzt werden sollen,
-sollten diese in einem neuen Verzeichnis `assets` abgelegt werden.
-Um die Dateien dann zu laden,
-kann entweder in der Plugin-Klasse `$this->addStylesheet('<css-dateipfad>');`
-bzw. `$this->addScript(<js-dateipfad>');`
-oder in Controller-Klassen `PageLayout::addStylesheet($this->plugin->getPluginURL() . '/<css-dateipfad>');`
-bzw. `PageLayout::addScript($this->plugin->getPluginURL() . '/<js-dateipfad>');` aufgerufen werden.
+### javascript and css files
+If css and/or javascript files are to be used,
+these should be stored in a new directory `assets`.
+To then load the files,
+either in the plugin class `$this->addStylesheet('<css-filepath>');`
+or `$this->addScript(<js-filepath>');`
+or in controller classes `PageLayout::addStylesheet($this->plugin->getPluginURL() . '/<css-filepath>');`
+or `PageLayout::addScript($this->plugin->getPluginURL() . '/<js-filepath>');` can be called.
 
 
-### Lokalisierung
-Da Stud.IP nicht nur von deutschsprachigen Nutzern genutzt wird,
-sollte das Plugin auch auf andere Sprachen übersetzbar sein.
-Wie in [Internationalisierung](Howto/Internationalisierung) erklärt ist,
-geschieht dies in Stud.IP mithilfe des `gettext`-Packets.
+### Localization
+Since Stud.IP is not only used by German-speaking users,
+the plugin should also be translatable into other languages.
+As explained in [Internationalization](Howto/Internationalization),
+this is done in Stud.IP using the `gettext` package.
 
-#### Texte als Übersetzbar kennzeichnen
-Da aber eventuell strings ausgegeben werden, für die in Stud.IP noch keine Übersetzung existieren,
-muss innerhalb des Plugins eine Übersetzungsdatei angelegt werden,
-die genau diese neuen string übersetzt.
-Bevor dies jedoch gemacht wird, sollten die entsprechenden strings als übersetzbar gekennzeichnet werden
-und damit dies nicht im Nachhinein für alle strings gemacht werden muss,
-wird dies eingeführt, bevor die eigentliche Funktionalität des Plugins erstellt wird.
+#### Mark texts as translatable
+However, as strings may be output for which no translation yet exists in Stud.IP,
+a translation file must be created within the plugin,
+which translates exactly these new strings.
+However, before this is done, the corresponding strings should be marked as translatable
+and so that this does not have to be done retrospectively for all strings,
+this is introduced before the actual functionality of the plugin is created.
 
-Innerhalb unseres Plugins muss mit `bindtextdomain` festgelegt werden,
-wo die Übersetzungsdatei zu finden ist und mit `bind_textdomain_codeset` die Zeichenkodierung festgelegt werden.
-Um dies nicht einzeln für alle Plugins innerhalb des Plugin-Verzeichnisses festzulegen,
-nutzen wir die vorher erstellten `Plugin`-Klasse, von der das `TextPlugin` erbt.
+Within our plugin, `bindtextdomain` must be used to specify
+where the translation file is to be found and the character encoding must be defined with `bind_textdomain_codeset`.
+In order not to specify this individually for all plugins within the plugin directory,
+we use the previously created `Plugin` class, from which the `TextPlugin` inherits.
 
 ```php
 <?php
@@ -446,9 +446,9 @@ class Plugin extends StudIPPlugin
 }
 ```
 
-Damit innerhalb des Plugins nun lediglich `$this->_()` bzw. `$this->_n()` für gettext aufgerufen werden kann
-und nicht immer `dgettext()` bzw. `dngettext()`,
-sollten noch zwei Methoden in die Plugin-Klasse ergänzt werden:
+So that within the plugin only `$this->_()` or `$this->_n()` can be called for gettext
+and not always `dgettext()` or `dngettext()`,
+two more methods should be added to the plugin class:
 
 ```php
     public function _($string)
@@ -478,8 +478,8 @@ sollten noch zwei Methoden in die Plugin-Klasse ergänzt werden:
     }
 ```
 
-Zum Erstellen der Navigation in `TextPlugin.class.php` hatten wir bereits zwei Texte erstellt ("Texte" und "Übersicht").
-Diese können wir nun mit dem Aufruf von `$this->_()` übersetzbar machen, sodass das TextPlugin folgendermaßen aussieht:
+To create the navigation in `TextPlugin.class.php` we had already created two texts ("Texts" and "Overview").
+We can now make these translatable by calling `$this->_()` so that the TextPlugin looks like this:
 
 ```php
 <?php
@@ -492,23 +492,23 @@ class TextPlugin extends \TextPlugin\Plugin implements SystemPlugin
     {
         parent::__construct();
 
-        $root_nav = new Navigation($this->_('Texte'), PluginEngine::getURL($this, [], 'overview'));
+        $root_nav = new Navigation($this->_('Texts'), PluginEngine::getURL($this, [], 'overview'));
         $root_nav->setImage(Icon::create('file-text', Icon::ROLE_NAVIGATION));
         Navigation::addItem('/text_root', $root_nav);
 
-        $navigation = new Navigation($this->_('Übersicht'), PluginEngine::getURL($this, [], 'overview'));
+        $navigation = new Navigation($this->_('overview'), PluginEngine::getURL($this, [], 'overview'));
         $root_nav->addSubNavigation('text_overview', $navigation);
     }
 }
 
 ```
 
-Nun möchten wir aber nicht nur die Texte übersetzen, die wir in einer Plugin-Klasse erstellen,
-sondern auch in Controller-Klassen und views.
-Dazu leiten wir alle Aufrufe von `_()` in Controllers auf das Plugin um,
-sodass wir in Controllers einfach komfortable `$this->_()` aufrufen können.
-Hierfür nutzen wir analog zur `Plugin`-Klasse die `Controller`-Klasse,
-damit wir dies direkt für alle Controller übernehmen.
+Now we don't just want to translate the texts that we create in a plugin class,
+but also in controller classes and views.
+To do this, we redirect all calls to `_()` in Controllers to the plugin,
+so that we can simply call `$this->_()` in Controllers.
+To do this, we use the `Controller` class analogous to the `Plugin` class,
+so that we can do this directly for all controllers.
 
 ```php
 <?php
@@ -553,36 +553,36 @@ class Controller extends PluginController
 }
 ```
 
-Nun sind Texte in Plugins und Controllers übersetzbar.
-Texte in javascript Dateien können wie im Kern mit `String.toLocaleString()` übersetzt werden.
-Texte in Model-Klassen wie `Text.php` müssen allerdings noch direkt
-mit dem Aufruf von `dgettext(Plugin::GETTEXT_DOMAIN, $string)` als übersetzbar gekennzeichnet werden.
-In view Dateien kann dahingehen `$controller->_($string)` oder alternativ `$_($string)` genutzt werden.
+Now texts in plugins and controllers can be translated.
+Texts in javascript files can be translated as in the core with `String.toLocaleString()`.
+However, texts in model classes such as `Text.php` must still be translated directly
+be marked as translatable by calling `dgettext(Plugin::GETTEXT_DOMAIN, $string)`.
+In view files, `$controller->_($string)` or alternatively `$_($string)` can be used for this purpose.
 
-#### Übersetzungsdatei anlegen
-Das Anlegen der Übersetzungsdatei geschieht in der Regel einfach mit dem Unix-Shellskript `makeStudIPPluginTranslations.sh`,
-welches auf der [Entwickler-Installation von Stud.IP](https://develop.studip.de/studip/dispatch.php/document/download/1bea6c139b56abc3ef0c505731bcc6b6) verfügbar ist.
-Es sammelt alle als übersetzbar gekennzeichneten strings und erstellt damit eine `.pot` Datei,
-weshalb die Übersetzungsdatei auch erst angelegt werden sollte,
-wenn das Plugin fertiggestellt wurde.  
-Mithilfe eines Übersetzungseditors können die gesammelten Texte strings der `.pot`-Datei dann übersetzt werden
-und eine maschinenlesbare `.mo`-Datei erzeugt werden.
+#### Create translation file
+The translation file is usually created simply using the Unix shell script `makeStudIPPluginTranslations.sh`,
+which is available on the [developer installation of Stud.IP](https://develop.studip.de/studip/dispatch.php/document/download/1bea6c139b56abc3ef0c505731bcc6b6).
+It collects all strings marked as translatable and creates a `.pot` file,
+which is why the translation file should only be created
+when the plugin has been completed.
+With the help of a translation editor, the collected text strings of the `.pot` file can then be translated
+and a machine-readable `.mo` file can be created.
 
-## Zusammenfassung
-Es wurde
+## Summary
+A
 
-* Eine `plugin.manifest` mit meta-daten erstellt ([Plugin-Manifest](PluginSchnittstelle#plugin-manifest))
-* Eine Plugin-Klasse zur Initialisierung erstellt ([Plugin-Interfaces](PluginSchnittstelle#plugin-interfaces))
-* Das Plugin installiert und aktiviert
-* Eine Navigation für eine Hauptseite erstellt ([Navigation](Navigation))
-* Jeweils eine Eltern-Klasse für Plugin- und Controller-Klassen erstellt
-* Mit dem Autoloader die Klassen in `classes` und später in `models` automatisch eingebunden
-* Ein Controller mit einer `action` und einer passender `view` erstellt ([Trails](Trails))
-* Eine Migration für die Datenbank-Tabellen-Struktur ([Migrationen](Migrations))
-* Eine SORM-Klasse für die Datenbank-Tabellen erstellt ([SimpleORMap](SimpleORMap))
-* Erläutert wie js- und cc-Dateien einzubinden sind
-* Eine Basis erstellt, um strings zu übersetzen ([Internationalisierung](Howto/Internationalisierung))
+* A `plugin.manifest` with meta data was created ([plugin-manifest](PluginSchnittstelle#plugin-manifest))
+* Created a plugin class for initialization ([Plugin-Interfaces](PluginSchnittstelle#plugin-interfaces))
+* Installed and activated the plugin
+* Created a navigation for a main page ([Navigation](Navigation))
+* Created a parent class for each of the plugin and controller classes
+* Automatically included the classes in `classes` and later in `models` using the autoloader
+* Created a controller with an `action` and a matching `view` ([Trails](Trails))
+* A migration for the database table structure ([Migrations](Migrations))
+* Created a SORM class for the database tables ([SimpleORMap](SimpleORMap))
+* Explains how to include js and cc files
+* Created a base to translate strings ([Internationalization](Howto/Internationalization))
 
-Der komplette bisher erstellte Code ist hier ([TextPlugin.zip](../assets/862928c482008450a61d0c4156987dee/TextPlugin.zip)) als ZIP-Datei verfügbar.
+The complete code created so far is available here ([TextPlugin.zip](../assets/862928c482008450a61d0c4156987ene/TextPlugin.zip)) as a ZIP file.
 
-Zum [zweiten Teil](Plugin-Tutorial-II-(Beispiel-Funktionalitäten))
+To the [second part](Plugin-Tutorial-II-(example functionalities))
